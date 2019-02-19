@@ -9,3 +9,4 @@ We will have discussed the user case scenarios. We will have an overview of UI r
 We will have gone through the Prattle code. We will have run the code locally and tested the client-server implementation working over a LAN.
 
 We will have written tests for the Prattle code. The branch coverage of 85% would have been achieved for the given code.
+
