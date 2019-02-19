@@ -1,0 +1,12 @@
+By sprint 1’s end, we as a group will have understood the requirements and discussed the backlog of the project. We would have created backlogs on JIRA with at least 1 assigned to each of the group members.
+
+We will have developed the first draft of the UML diagrams. The design of the software and the work flow will be decided.
+
+We will have developed Entity Relationship Diagrams. We will show the overview of classes which will be implemented for showing the relation between them.
+
+We will have discussed the user case scenarios. We will have an overview of UI ready which will be base for the implementation as well.
+
+We will have gone through the Prattle code. We will have run the code locally and tested the client-server implementation working over a LAN.
+
+We will have written tests for the Prattle code. The branch coverage of 85% would have been achieved for the given code.
+
