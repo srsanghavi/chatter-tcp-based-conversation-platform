@@ -1,3 +1,5 @@
+package edu.northeastern.ccs.im;
+
 import edu.northeastern.ccs.im.client.IMConnection;
 import edu.northeastern.ccs.im.server.Prattle;
 import edu.northeastern.ccs.im.server.ServerConstants;

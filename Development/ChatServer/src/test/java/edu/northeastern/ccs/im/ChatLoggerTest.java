@@ -1,3 +1,5 @@
+package edu.northeastern.ccs.im;
+
 import edu.northeastern.ccs.im.ChatLogger;
 import org.junit.jupiter.api.Test;
 
