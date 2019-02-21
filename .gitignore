@@ -1,5 +1,7 @@
 #MAC Extras 
 .DS_Store
+.idea/
+target/
 
 # Compiled class file
 *.class
@@ -15,7 +17,8 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
+#!/src/main/java/edu/northeastern/ccs/im/resources/*.jar
 *.war
 *.ear
 *.zip

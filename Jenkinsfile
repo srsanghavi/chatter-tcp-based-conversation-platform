@@ -26,8 +26,8 @@ pipeline {
 
              stage('Build') {
                steps {
-                 echo "Building Chatter"
-                 sh 'mvn -f Development/Chatter/pom.xml install'
+                 //echo "Building Chatter"
+                 //sh 'mvn -f Development/Chatter/pom.xml install'
                  echo "Building ChatServer"
                  sh 'mvn -f Development/ChatServer/pom.xml compile'
                }

@@ -68,11 +68,12 @@
 		</dependency>
 		<dependency>
 			<groupId>edu.northeastern.ccs</groupId>
-			<artifactId>chatClient</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/java/edu/northeastern/ccs/im/resources/Chatter.jar</systemPath>
-		</dependency>
+			<artifactId>Chatter</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+            <systemPath>${project.basedir}/src/main/java/edu/northeastern/ccs/im/resources/Chatter.jar</systemPath>
+
+        </dependency>
 
 	</dependencies>
 
