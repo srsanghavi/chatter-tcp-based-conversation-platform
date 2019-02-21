@@ -142,6 +142,6 @@ public class PrattleTest {
 
     @Test
     void checkStopServer(){
-        Prattle.stopServer();
+        Prattle.stopServer(); 
     }
 }
