@@ -67,7 +67,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>edu.northeastern.ccs</groupId>
+			<groupId>CS5500</groupId>
 			<artifactId>Chatter</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>test</scope>
