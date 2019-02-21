@@ -35,8 +35,6 @@ public class ServerConstants {
 	protected static final String BOUNCER_ID = "Bouncer";
 
 	/** Private constructor to prevent anyone from creating one of these. */
-	private ServerConstants() {
-		/* does nothing. */
-	}
+	private ServerConstants() {/* does nothing. */}
 
 }

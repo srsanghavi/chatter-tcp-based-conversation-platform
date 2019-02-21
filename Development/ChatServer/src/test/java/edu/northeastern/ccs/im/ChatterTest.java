@@ -27,7 +27,7 @@ public class ChatterTest {
             o.printStackTrace();
         }
     }
-     
+
 
     @AfterEach
     public final void tearDown() {
