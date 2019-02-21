@@ -228,13 +228,11 @@ public class ClientRunnable implements Runnable {
 		if (messageIter.hasNext()) {
 			// Get the next message
 			Message msg = messageIter.next();
-			System.out.println(msg);
 			// If the message is a broadcast message, send it out
 			if (msg.terminate()) {
 				// Stop sending the poor client message.
 				terminate = true;
 				// Reply with a quit message.
-				System.out.println("message is BYE : " + msg);
 
 				enqueueMessage(Message.makeQuitMessage(name));
 			} else {
@@ -243,7 +241,6 @@ public class ClientRunnable implements Runnable {
 					// Check for our "special messages"
 					if (msg.isBroadcastMessage()) {
 						// Check for our "special messages"
-						System.out.println("message is broadcasting: "+msg);
 						Prattle.broadcastMessage(msg);
 					}
 				} else {

@@ -40,6 +40,7 @@ public abstract class Prattle {
 
 	/** Collection of threads that are currently being used. */
 	private static ConcurrentLinkedQueue<ClientRunnable> active;
+	private static int counterForTest=-1;
 
 	/** All of the static initialization occurs in this "method" */
 	static {
@@ -111,7 +112,12 @@ public abstract class Prattle {
 			// If we get this far than the server is initialized correctly
 			isReady = true;
 			// Now listen on this port as long as the server is ready
+			int count = 0;
 			while (isReady) {
+				if(counterForTest>0){
+					count++;
+					isReady = count < counterForTest;
+				}
 				// Check if we have a valid incoming request, but limit the time we may wait.
 				while (selector.select(ServerConstants.DELAY_IN_MS) != 0) {
 					// Get the list of keys that have arrived since our last check
