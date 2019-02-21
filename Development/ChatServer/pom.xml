@@ -70,7 +70,7 @@
 			<groupId>edu.northeastern.ccs</groupId>
 			<artifactId>Chatter</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
+			<scope>system</scope>
             <systemPath>${project.basedir}/src/main/java/edu/northeastern/ccs/im/resources/Chatter.jar</systemPath>
 
         </dependency>
