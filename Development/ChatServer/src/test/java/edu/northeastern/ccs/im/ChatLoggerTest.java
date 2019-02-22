@@ -22,10 +22,16 @@ public class ChatLoggerTest {
         ChatLogger.setMode(ChatLogger.getHandlerType("both"));
         try {
             ChatLogger.setMode(ChatLogger.getHandlerType("test"));
+        }
+        catch(IllegalArgumentException e){
+            System.out.println("IllegalArgumentException caught");
+        }
+
+        try {
             ChatLogger.setMode(ChatLogger.getHandlerType("test1"));
         }
         catch(IllegalArgumentException e){
-            System.out.println("IllegalArgumentExceptions caught");
+            System.out.println("IllegalArgumentException caught");
         }
     }
 }
