@@ -19,7 +19,7 @@ public class PrattleMainTest {
         try {
             Field f = Prattle.class.getDeclaredField("counterForTest");
             f.setAccessible(true);
-            f.set(null, 100);
+            f.set(null, 10000);
         }catch(Exception e){
             e.printStackTrace();
             fail("could not set breakLoopAfter via reflection");
@@ -38,9 +38,18 @@ public class PrattleMainTest {
                 IMConnection clientTerminal = new IMConnection("127.0.0.1", 4545, "srs");
                 clientTerminal.connect();
                 clientTerminal.sendMessage("this is a message!");
-                clientTerminal.disconnect();
+//                clientTerminal.disconnect();
             });
             t2.start();
+
+            Thread t3 = new Thread(() -> {
+                // set up client thread
+                IMConnection clientTerminal1 = new IMConnection("127.0.0.1", 4545, "srs1");
+                clientTerminal1.connect();
+                clientTerminal1.sendMessage("this is a message!");
+//                clientTerminal.disconnect();
+            });
+            t3.start();
         }catch (Exception e){
             e.printStackTrace();
             fail("main did not work with valid args");
