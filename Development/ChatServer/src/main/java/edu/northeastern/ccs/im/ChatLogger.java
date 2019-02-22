@@ -149,6 +149,8 @@ public class ChatLogger {
     FILE,
     /** The console handler. */
     CONSOLE,
+    /** Test Handler*/
+    TEST,
     /** Both handlers. */
     BOTH;
   }
@@ -166,6 +168,8 @@ public class ChatLogger {
           return HandlerType.CONSOLE;
         case "both":
           return HandlerType.BOTH;
+        case "test":
+          return HandlerType.TEST;
         default:
           throw new IllegalArgumentException("Invalid  Handler Type");
       }
