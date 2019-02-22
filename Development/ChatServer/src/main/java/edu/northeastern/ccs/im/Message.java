@@ -37,7 +37,7 @@ public class Message {
 	 * @param srcName Name of the individual sending this message
 	 * @param text    Text of the instant message
 	 */
-	private Message(MessageType handle, String srcName, String text) {
+	public Message(MessageType handle, String srcName, String text) {
 		msgType = handle;
 		// Save the properly formatted identifier for the user sending the
 		// message.

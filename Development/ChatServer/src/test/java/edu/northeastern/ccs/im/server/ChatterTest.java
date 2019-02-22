@@ -1,5 +1,7 @@
 package edu.northeastern.ccs.im.server;
 
+import edu.northeastern.ccs.im.client.Message;
+import edu.northeastern.ccs.im.MessageType;
 import edu.northeastern.ccs.im.NetworkConnection;
 import edu.northeastern.ccs.im.client.IMConnection;
 import edu.northeastern.ccs.im.server.ClientRunnable;
@@ -122,7 +124,9 @@ public class ChatterTest {
             assertFalse(clientRunnable1.setUserName(null));
             assertEquals(clientRunnable1.getUserId(),-1);
             clientRunnable1.setName(null);
-            client1.sendMessage("hi");
+//            client1.sendMessage("hi");
+            Message m = Message.makeBroadcastMessage("","sd");
+            client1.socketConnection.print(m);
             System.out.println(clientRunnable1.getName());
             clientRunnable1.run();
 
