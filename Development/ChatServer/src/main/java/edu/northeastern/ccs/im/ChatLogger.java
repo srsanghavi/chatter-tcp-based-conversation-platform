@@ -167,7 +167,7 @@ public class ChatLogger {
         case "both":
           return HandlerType.BOTH;
         default:
-          throw new IllegalArgumentException("Invalid Handler Type");
+          throw new IllegalArgumentException("Invalid  Handler Type");
       }
   }
 }
