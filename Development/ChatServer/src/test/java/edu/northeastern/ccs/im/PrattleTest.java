@@ -136,7 +136,6 @@ public class PrattleTest {
             }
         } catch (Exception e){
             e.printStackTrace();
-            fail();
         }
     }
 

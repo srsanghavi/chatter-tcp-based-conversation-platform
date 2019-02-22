@@ -16,7 +16,15 @@ public class PrattleMainTest {
 
     @Test
     void main() {
-        // run the main in one thread, and add clients in another
+        try {
+            Field f = Prattle.class.getDeclaredField("counterForTest");
+            f.setAccessible(true);
+            f.set(null, 100);
+        }catch(Exception e){
+            e.printStackTrace();
+            fail("could not set breakLoopAfter via reflection");
+        }
+
         try {
             String[] args = new String[1];
             Thread t1 = new Thread(() -> {

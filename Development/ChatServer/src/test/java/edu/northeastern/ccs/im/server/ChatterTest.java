@@ -108,4 +108,27 @@ public class ChatterTest {
 
         }
     }
+
+    @Test
+    public void connectUserWithoutUsernameAndSendMessage(){
+        SocketChannel socket;
+        try {
+            IMConnection client1 = newClient(null);
+            client1.connect();
+            socket = serverSocket.accept();
+            NetworkConnection networkConnection = new NetworkConnection(socket);
+            ClientRunnable clientRunnable1 = new ClientRunnable(networkConnection);
+            clientRunnable1.run();
+            assertFalse(clientRunnable1.setUserName(null));
+            assertEquals(clientRunnable1.getUserId(),-1);
+            clientRunnable1.setName(null);
+            client1.sendMessage("hi");
+            System.out.println(clientRunnable1.getName());
+            clientRunnable1.run();
+
+            client1.disconnect();
+        }catch (Exception e){
+
+        }
+    }
 }

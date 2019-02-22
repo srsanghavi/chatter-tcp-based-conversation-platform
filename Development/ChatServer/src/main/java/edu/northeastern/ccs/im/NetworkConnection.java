@@ -244,7 +244,7 @@ public class NetworkConnection implements Iterable<Message> {
 	        int seen = 0;
 	        // Assert that this character is a digit representing the length of the first
 	        // argument
-	        assert Character.isDigit(charBuffer.get(pos));
+			assert Character.isDigit(charBuffer.get(pos));
 	        // Now read in the length of the first argument
 	        while (Character.isDigit(charBuffer.get(pos))) {
 	            // My quick-and-dirty numeric converter
