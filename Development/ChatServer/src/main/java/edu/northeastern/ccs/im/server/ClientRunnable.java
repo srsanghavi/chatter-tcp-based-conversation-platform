@@ -133,7 +133,6 @@ public class ClientRunnable implements Runnable {
 	//changing a private method to protected to test
 	protected boolean setUserName(String userName) {
 		boolean result = false;
-		System.out.println(userName);
 		// Now make sure this name is legal.
 		if (userName != null) {
 			// Optimistically set this users ID number.
