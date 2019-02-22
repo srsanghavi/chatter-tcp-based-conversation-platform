@@ -149,7 +149,29 @@ public class ChatLogger {
     FILE,
     /** The console handler. */
     CONSOLE,
+    /** Test Handler*/
+    TEST,
     /** Both handlers. */
     BOTH;
+  }
+
+  /**
+   * Returns the handler type from Enum class HandlerType
+   * @param hType the type of handler in String
+   * @return the ENUM class HandlerType
+   */
+  public static HandlerType getHandlerType(String hType){
+      switch(hType){
+        case "file":
+          return HandlerType.FILE;
+        case "console":
+          return HandlerType.CONSOLE;
+        case "both":
+          return HandlerType.BOTH;
+        case "test":
+          return HandlerType.TEST;
+        default:
+          throw new IllegalArgumentException("Invalid  Handler Type");
+      }
   }
 }
