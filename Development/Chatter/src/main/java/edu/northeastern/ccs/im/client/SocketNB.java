@@ -223,7 +223,7 @@ public final class SocketNB {
 	 * @param msg
 	 *            Message to be sent out over the network.
 	 */
-	protected void print(Message msg) {
+	public void print(Message msg) {
 		if (!isConnected()) {
 			throw new IllegalOperationException("Cannot send a message when we are not connected!");
 		}

@@ -27,7 +27,7 @@ public class IMConnection {
 	 * Real Connection instance which this class wraps and makes presentable to the
 	 * user
 	 */
-	private SocketNB socketConnection;
+	public SocketNB socketConnection;
 
 	/**
 	 * List of instances that have registered as a listener for connection events.
