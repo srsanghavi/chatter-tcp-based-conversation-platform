@@ -146,4 +146,21 @@ public class PrattleTest {
     void checkStopServer(){
         Prattle.stopServer();
     }
+
+    @Test
+    public void sendUnInitialisedMsg(){
+        Message testMsg = new Message(MessageType.BROADCAST,null,null);
+        try {
+            int cntr = 0;
+            Iterator threaditerator = active.iterator();
+            ClientRunnable tt = (ClientRunnable) threaditerator.next();
+            tt.setUserName(null);
+            tt.setInitialized(false);
+            tt.isInitialized();
+            Prattle.broadcastMessage(testMsg);
+//            tt.run();
+        }catch (Exception e){}
+
+
+    }
 }

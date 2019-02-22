@@ -302,4 +302,8 @@ public class ClientRunnable implements Runnable {
 		// And remove the client from our client pool.
 		runnableMe.cancel(false);
 	}
+
+	public void setInitialized(boolean b) {
+		initialized = b;
+	}
 }
