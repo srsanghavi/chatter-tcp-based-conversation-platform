@@ -125,10 +125,58 @@ public class ChatterTest {
             assertEquals(clientRunnable1.getUserId(),-1);
             clientRunnable1.setName(null);
 //            client1.sendMessage("hi");
-            Message m = Message.makeBroadcastMessage("","sd");
+            Message m = Message.makeBroadcastMessage("srs","sd");
             client1.socketConnection.print(m);
-            System.out.println(clientRunnable1.getName());
             clientRunnable1.run();
+
+
+
+            client1.disconnect();
+        }catch (Exception e){
+
+        }
+    }
+
+    @Test
+    public void connectUserAndFalseMsgValid(){
+        SocketChannel socket;
+        try {
+            IMConnection client1 = newClient(null);
+            client1.connect();
+            socket = serverSocket.accept();
+            NetworkConnection networkConnection = new NetworkConnection(socket);
+            ClientRunnable clientRunnable1 = new ClientRunnable(networkConnection);
+            clientRunnable1.run();
+
+            Message m1= Message.makeBroadcastMessage("","sd1");
+            client1.socketConnection.print(m1);
+            clientRunnable1.run();
+
+
+
+            client1.disconnect();
+        }catch (Exception e){
+
+        }
+    }
+
+    @Test
+    public void connectUserAndMessageNotBroadCast(){
+        SocketChannel socket;
+        try {
+            IMConnection client1 = newClient("srs");
+            client1.connect();
+            socket = serverSocket.accept();
+            NetworkConnection networkConnection = new NetworkConnection(socket);
+            ClientRunnable clientRunnable1 = new ClientRunnable(networkConnection);
+            clientRunnable1.run();
+
+
+            Message m2= Message.makeLoginMessage("srs");
+            client1.socketConnection.print(m2);
+            clientRunnable1.run();
+
+
 
             client1.disconnect();
         }catch (Exception e){
@@ -136,3 +184,5 @@ public class ChatterTest {
         }
     }
 }
+
+

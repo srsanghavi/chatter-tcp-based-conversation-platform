@@ -243,6 +243,8 @@ public class ClientRunnable implements Runnable {
 					if (msg.isBroadcastMessage()) {
 						// Check for our "special messages"
 						Prattle.broadcastMessage(msg);
+					}else {
+						ChatLogger.warning("User already logged in");
 					}
 				} else {
 					Message sendMsg;
