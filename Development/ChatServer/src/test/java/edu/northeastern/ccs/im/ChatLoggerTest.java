@@ -19,8 +19,13 @@ public class ChatLoggerTest {
     public void checkChatLoggerMode(){
         ChatLogger.setMode(ChatLogger.getHandlerType("file"));
         ChatLogger.setMode(ChatLogger.getHandlerType("console"));
-        ChatLogger.setMode(ChatLogger.getHandlerType("test"));
         ChatLogger.setMode(ChatLogger.getHandlerType("both"));
-        ChatLogger.setMode(ChatLogger.getHandlerType("test1"));
+        try {
+            ChatLogger.setMode(ChatLogger.getHandlerType("test"));
+            ChatLogger.setMode(ChatLogger.getHandlerType("test1"));
+        }
+        catch(IllegalArgumentException e){
+            System.out.println("IllegalArgumentExceptions caught");
+        }
     }
 }
