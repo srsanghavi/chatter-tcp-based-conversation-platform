@@ -15,6 +15,7 @@ import java.nio.channels.SocketChannel;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertTrue;
 
 
@@ -47,6 +48,12 @@ public class MessageTest {
       assertTrue(m.isBroadcastMessage());
       assertFalse(m.isInitialization());
       assertFalse(m.terminate());
+    }
+
+    @Test
+    public void testMakeMessage(){
+      Message newMsg = Message.makeMessage("",null,null);
+      assertNull(newMsg);
     }
 
 
