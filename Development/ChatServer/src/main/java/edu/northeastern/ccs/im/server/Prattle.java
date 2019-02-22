@@ -136,6 +136,7 @@ public abstract class Prattle {
 					}
 				}
 			}
+
 		} catch (IOException ex) {
 			ChatLogger.error("Fatal error: " + ex.getMessage());
 			throw new IllegalStateException(ex.getMessage());
