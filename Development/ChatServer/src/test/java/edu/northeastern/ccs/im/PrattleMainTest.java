@@ -2,7 +2,6 @@ package edu.northeastern.ccs.im;
 
 import edu.northeastern.ccs.im.client.IMConnection;
 import edu.northeastern.ccs.im.server.Prattle;
-import edu.northeastern.ccs.im.server.ServerConstants;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -15,14 +14,14 @@ public class PrattleMainTest {
 
 
     @Test
-    void main() {
+    void checkMain() {
         try {
             Field f = Prattle.class.getDeclaredField("counterForTest");
             f.setAccessible(true);
-            f.set(null, 10000);
+            f.set(null,100);
         }catch(Exception e){
             e.printStackTrace();
-            fail("could not set breakLoopAfter via reflection");
+            fail("could not set counterForTest via reflection");
         }
 
         try {
@@ -33,23 +32,22 @@ public class PrattleMainTest {
                 }catch (Exception e){fail();e.printStackTrace();}
             });
             t1.start();
+
             Thread t2 = new Thread(() -> {
                 // set up client thread
-                IMConnection clientTerminal = new IMConnection("127.0.0.1", 4545, "srs");
+                for(int i=0;i<100000;i++){
+
+                }
+                IMConnection clientTerminal = new IMConnection("", 4545, "srs");
                 clientTerminal.connect();
                 clientTerminal.sendMessage("this is a message!");
-//                clientTerminal.disconnect();
+
+                clientTerminal.disconnect();
             });
             t2.start();
+            t1.join();
+            t2.join();
 
-            Thread t3 = new Thread(() -> {
-                // set up client thread
-                IMConnection clientTerminal1 = new IMConnection("127.0.0.1", 4545, "srs1");
-                clientTerminal1.connect();
-                clientTerminal1.sendMessage("this is a message!");
-//                clientTerminal.disconnect();
-            });
-            t3.start();
         }catch (Exception e){
             e.printStackTrace();
             fail("main did not work with valid args");

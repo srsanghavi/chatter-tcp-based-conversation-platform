@@ -36,7 +36,7 @@ import edu.northeastern.ccs.im.NetworkConnection;
 public abstract class Prattle {
 
 	/** Don't do anything unless the server is ready. */
-	private static boolean isReady = false;
+	public static boolean isReady = false;
 
 	/** Collection of threads that are currently being used. */
 	private static ConcurrentLinkedQueue<ClientRunnable> active;
@@ -98,7 +98,7 @@ public abstract class Prattle {
 	 * @throws IOException Exception thrown if the server cannot connect to the port
 	 *                     to which it is supposed to listen.
 	 */
-	public static void main(String[] args) {
+	public static int main(String[] args) {
 		// Connect to the socket on the appropriate port to which this server connects.
 		try (ServerSocketChannel serverSocket = ServerSocketChannel.open()) {
 			serverSocket.configureBlocking(false);
@@ -116,7 +116,9 @@ public abstract class Prattle {
 			while (isReady) {
 				if(counterForTest>0){
 					count++;
-					isReady = (count<counterForTest);
+					if(count>counterForTest){
+						break;
+					}
 				}
 				// Check if we have a valid incoming request, but limit the time we may wait.
 				while (selector.select(ServerConstants.DELAY_IN_MS) != 0) {
@@ -125,20 +127,26 @@ public abstract class Prattle {
 					// Now iterate through all of the keys
 					Iterator<SelectionKey> it = acceptKeys.iterator();
 					while (it.hasNext()) {
+
 						// Get the next key; it had better be from a new incoming connection
 						SelectionKey key = it.next();
 						it.remove();
+
 						// Assert certain things I really hope is true
 						// Create new thread to handle client for which we just received request.
+
 						createClientThread(serverSocket, threadPool);
 					}
+
 				}
+
 			}
 
 		} catch (IOException ex) {
 			ChatLogger.error("Fatal error: " + ex.getMessage());
 			throw new IllegalStateException(ex.getMessage());
 		}
+		return 0;
 	}
 
 	/**
@@ -152,11 +160,14 @@ public abstract class Prattle {
 			// Accept the connection and create a new thread to handle this client.
 			SocketChannel socket = serverSocket.accept();
 			// Make sure we have a connection to work with.
+
 			if (socket != null) {
-			    NetworkConnection connection = new NetworkConnection(socket);
+
+				NetworkConnection connection = new NetworkConnection(socket);
 				ClientRunnable tt = new ClientRunnable(connection);
 				// Add the thread to the queue of active threads
 				active.add(tt);
+
 				// Have the client executed by our pool of threads.
 				ScheduledFuture<?> clientFuture = threadPool.scheduleAtFixedRate(tt, ServerConstants.CLIENT_CHECK_DELAY,
 						ServerConstants.CLIENT_CHECK_DELAY, TimeUnit.MILLISECONDS);
