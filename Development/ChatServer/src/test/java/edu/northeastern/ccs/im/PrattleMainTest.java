@@ -102,6 +102,7 @@ public class PrattleMainTest {
         }
 
         try {
+
             String[] args = new String[1];
             args[0]="3000";
             Thread t1 = new Thread(() -> {
@@ -110,12 +111,17 @@ public class PrattleMainTest {
                 }catch (Exception e){fail();}
             });
             t1.start();
-            Thread t2 = new Thread(()->{
-                Prattle.stopServer();
+            Thread t2 = new Thread(() -> {
+                // set up client thread
+                IMConnection clientTerminal = new IMConnection("", 3000, "srs");
+                clientTerminal.connect();
+                clientTerminal.sendMessage("this is a message!");
+                clientTerminal.disconnect();
+//                t1.interrupt();
+
             });
             t2.start();
-            t1.interrupt();
-            t2.join();
+            t1.join(2000);
         }catch (Exception e){
             e.printStackTrace();
             fail("main did not work with valid args");
