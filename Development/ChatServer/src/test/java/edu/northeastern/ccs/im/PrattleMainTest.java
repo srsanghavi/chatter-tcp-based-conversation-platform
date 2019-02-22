@@ -56,7 +56,7 @@ public class PrattleMainTest {
 
 
     @Test
-    void checkMainWithoutCounterForTest() {
+    void runMultipleServerOnSameServer() {
         try {
             Field f = Prattle.class.getDeclaredField("counterForTest");
             f.setAccessible(true);
