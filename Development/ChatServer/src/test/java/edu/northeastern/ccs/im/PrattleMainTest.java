@@ -96,6 +96,7 @@ public class PrattleMainTest {
         try {
             Field f = Prattle.class.getDeclaredField("counterForTest");
             f.setAccessible(true);
+            f.set(null,-2);
         }catch(Exception e){
             e.printStackTrace();
             fail("could not set counterForTest via reflection");
@@ -121,7 +122,7 @@ public class PrattleMainTest {
 
             });
             t2.start();
-            t1.join(2000);
+            t1.join(5000);
         }catch (Exception e){
             e.printStackTrace();
             fail("main did not work with valid args");
