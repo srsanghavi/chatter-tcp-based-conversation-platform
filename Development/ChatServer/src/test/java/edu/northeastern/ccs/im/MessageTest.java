@@ -55,7 +55,5 @@ public class MessageTest {
       Message newMsg = Message.makeMessage("",null,null);
       assertNull(newMsg);
     }
-
-
 }
 
