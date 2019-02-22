@@ -6,6 +6,7 @@ import edu.northeastern.ccs.im.NetworkConnection;
 import edu.northeastern.ccs.im.client.IMConnection;
 import edu.northeastern.ccs.im.client.MessageScanner;
 import edu.northeastern.ccs.im.server.ClientRunnable;
+import edu.northeastern.ccs.im.server.ClientTimer;
 import edu.northeastern.ccs.im.server.Prattle;
 import edu.northeastern.ccs.im.server.ServerConstants;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -141,6 +143,7 @@ public class PrattleTest {
             e.printStackTrace();
         }
     }
+
 
     @Test
     void checkStopServer(){

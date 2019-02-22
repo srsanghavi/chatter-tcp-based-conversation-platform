@@ -164,8 +164,7 @@ public abstract class Prattle {
 			SocketChannel socket = serverSocket.accept();
 			// Make sure we have a connection to work with.
 
-//			if (socket != null) {
-//				System.out.println("hi"+socket);
+
 				NetworkConnection connection = new NetworkConnection(socket);
 				ClientRunnable tt = new ClientRunnable(connection);
 				// Add the thread to the queue of active threads
@@ -176,7 +175,6 @@ public abstract class Prattle {
 						ServerConstants.CLIENT_CHECK_DELAY, TimeUnit.MILLISECONDS);
 				tt.setFuture(clientFuture);
 
-//		    }
 		} catch (AssertionError ae) {
 			ChatLogger.error("Caught Assertion: " + ae.toString());
 		} catch (IOException e) {

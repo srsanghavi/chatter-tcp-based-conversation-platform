@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
 
 public class ServerConstantsTest {
+    
+    @SuppressWarnings("")
     @Test
     public void checkServerConstantInitialization(){
-        ServerConstants s = ServerConstants.getServerConstant();
-        assertEquals(s.PORT,4545);
+        assertEquals(ServerConstants.getServerConstant().PORT,4545);
     }
 }
