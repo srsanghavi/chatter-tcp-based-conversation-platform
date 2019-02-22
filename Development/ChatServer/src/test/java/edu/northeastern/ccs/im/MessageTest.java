@@ -32,4 +32,12 @@ public class MessageTest {
         Message m = Message.makeSimpleLoginMessage(null);
         assertEquals("HLO 2 -- 2 --",m.toString());
     }
+
+    @Test
+    public void checkMakeHelloMessage(){
+      Message m = Message.makeHelloMessage("Hello");
+      assertEquals("HLO 2 -- 5 Hello",m.toString());
+    }
+
 }
+
