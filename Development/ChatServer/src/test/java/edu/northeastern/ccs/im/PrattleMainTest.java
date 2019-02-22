@@ -55,6 +55,41 @@ public class PrattleMainTest {
     }
 
 
+    @Test
+    void checkMainWithoutCounterForTest() {
+        try {
+            Field f = Prattle.class.getDeclaredField("counterForTest");
+            f.setAccessible(true);
+            f.set(null,100);
+        }catch(Exception e){
+            e.printStackTrace();
+            fail("could not set counterForTest via reflection");
+        }
+
+        try {
+            String[] args = new String[1];
+            Thread t1 = new Thread(() -> {
+                try{
+                    Prattle.main(args);
+                }catch (Exception e){fail();}
+            });
+            t1.start();
+
+            Thread t2 = new Thread(() -> {
+                // set up client thread
+                try{
+                    Prattle.main(args);
+                }catch (Exception e){fail();}
+            });
+            t2.start();
+            t1.join();
+            t2.join();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            fail("main did not work with valid args");
+        }
+    }
 
 
 }

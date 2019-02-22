@@ -1,5 +1,8 @@
 package edu.northeastern.ccs.im;
 
+import edu.northeastern.ccs.im.Message;
+import edu.northeastern.ccs.im.MessageType;
+import edu.northeastern.ccs.im.NetworkConnection;
 import edu.northeastern.ccs.im.client.IMConnection;
 import edu.northeastern.ccs.im.client.MessageScanner;
 import edu.northeastern.ccs.im.server.ClientRunnable;

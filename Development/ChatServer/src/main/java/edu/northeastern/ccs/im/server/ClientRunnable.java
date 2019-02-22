@@ -131,8 +131,8 @@ public class ClientRunnable implements Runnable {
 	 * @param userName The new value to which we will try to set userName.
 	 * @return True if the username is deemed acceptable; false otherwise
 	 */
-	//changing a private method to protected to test
-	protected boolean setUserName(String userName) {
+	//changing a private method to public to test
+	public boolean setUserName(String userName) {
 		boolean result = false;
 		// Now make sure this name is legal.
 		if (userName != null) {

@@ -98,7 +98,7 @@ public abstract class Prattle {
 	 * @throws IOException Exception thrown if the server cannot connect to the port
 	 *                     to which it is supposed to listen.
 	 */
-	public static int main(String[] args) {
+	public static void main(String[] args) {
 		// Connect to the socket on the appropriate port to which this server connects.
 		try (ServerSocketChannel serverSocket = ServerSocketChannel.open()) {
 			serverSocket.configureBlocking(false);
@@ -144,7 +144,6 @@ public abstract class Prattle {
 			ChatLogger.error("Fatal error: " + ex.getMessage());
 			throw new IllegalStateException(ex.getMessage());
 		}
-		return 0;
 	}
 
 	/**
