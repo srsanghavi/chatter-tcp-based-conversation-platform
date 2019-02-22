@@ -94,6 +94,9 @@ public class ChatterTest {
 
             client1.sendMessage("hi");
             clientRunnable1.run();
+            clientRunnable1.run();
+            clientRunnable1.run();
+
             client1.disconnect();
         }catch (Exception e){
 

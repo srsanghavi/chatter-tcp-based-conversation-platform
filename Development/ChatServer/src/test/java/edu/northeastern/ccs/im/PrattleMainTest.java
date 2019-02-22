@@ -2,13 +2,18 @@ package edu.northeastern.ccs.im;
 
 import edu.northeastern.ccs.im.client.IMConnection;
 import edu.northeastern.ccs.im.server.Prattle;
+import edu.northeastern.ccs.im.server.ServerConstants;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.lang.reflect.Field;
 
 import static junit.framework.TestCase.fail;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PrattleMainTest {
+
+
     @Test
     void main() {
         // use reflection to prevent the main loop from running forever
@@ -43,4 +48,5 @@ public class PrattleMainTest {
             fail("main did not work with valid args");
         }
     }
+
 }
