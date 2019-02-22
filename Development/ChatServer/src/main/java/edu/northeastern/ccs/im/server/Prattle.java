@@ -175,7 +175,8 @@ public abstract class Prattle {
 				ScheduledFuture<?> clientFuture = threadPool.scheduleAtFixedRate(tt, ServerConstants.CLIENT_CHECK_DELAY,
 						ServerConstants.CLIENT_CHECK_DELAY, TimeUnit.MILLISECONDS);
 				tt.setFuture(clientFuture);
-			}
+
+		    }
 		} catch (AssertionError ae) {
 			ChatLogger.error("Caught Assertion: " + ae.toString());
 		} catch (IOException e) {

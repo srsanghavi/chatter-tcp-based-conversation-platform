@@ -148,7 +148,7 @@ public class ChatterTest {
             ClientRunnable clientRunnable1 = new ClientRunnable(networkConnection);
             clientRunnable1.run();
 
-            Message m1= Message.makeBroadcastMessage("srs","sd1");
+            Message m1= Message.makeBroadcastMessage("","sd1");
             client1.socketConnection.print(m1);
             clientRunnable1.run();
 
