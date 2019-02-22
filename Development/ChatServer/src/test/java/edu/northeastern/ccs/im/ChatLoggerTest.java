@@ -1,6 +1,7 @@
 package edu.northeastern.ccs.im;
 
 import edu.northeastern.ccs.im.ChatLogger;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class ChatLoggerTest {
@@ -12,5 +13,12 @@ public class ChatLoggerTest {
     @Test
     public void checkChatLoggerWarning(){
         ChatLogger.warning("Checking Warning log");
+    }
+
+    @Test
+    public void checkChatLoggerMode(){
+        ChatLogger.setMode(ChatLogger.getHandlerType("file"));
+        ChatLogger.setMode(ChatLogger.getHandlerType("console"));
+        ChatLogger.setMode(ChatLogger.getHandlerType("both"));
     }
 }
