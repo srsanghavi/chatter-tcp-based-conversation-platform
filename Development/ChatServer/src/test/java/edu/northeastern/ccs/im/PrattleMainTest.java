@@ -26,6 +26,7 @@ public class PrattleMainTest {
             fail("could not set breakLoopAfter via reflection");
         }
 
+        
         // run the main in one thread, and add clients in another
         try {
             String[] args = new String[1];
