@@ -16,17 +16,6 @@ public class PrattleMainTest {
 
     @Test
     void main() {
-        // use reflection to prevent the main loop from running forever
-        try {
-            Field f = Prattle.class.getDeclaredField("counterForTest");
-            f.setAccessible(true);
-            f.set(null, 10000);
-        }catch(Exception e){
-            e.printStackTrace();
-            fail("could not set breakLoopAfter via reflection");
-        }
-
-
         // run the main in one thread, and add clients in another
         try {
             String[] args = new String[1];
@@ -49,5 +38,8 @@ public class PrattleMainTest {
             fail("main did not work with valid args");
         }
     }
+
+
+
 
 }
