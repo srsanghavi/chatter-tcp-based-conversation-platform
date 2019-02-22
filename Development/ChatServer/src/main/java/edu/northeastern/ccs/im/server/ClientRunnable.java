@@ -100,6 +100,7 @@ public class ClientRunnable implements Runnable {
 		}
 	}
 
+
 	/**
 	 * Check if the message is properly formed. At the moment, this means checking
 	 * that the identifier is set properly.
