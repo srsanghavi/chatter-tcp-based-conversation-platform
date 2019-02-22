@@ -2,8 +2,10 @@ package edu.northeastern.ccs.im;
 
 import edu.northeastern.ccs.im.client.IMConnection;
 import edu.northeastern.ccs.im.server.Prattle;
+import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.runners.MethodSorters;
 
 import java.lang.reflect.Field;
 
@@ -11,7 +13,6 @@ import static junit.framework.TestCase.fail;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PrattleMainTest {
-
 
     @Test
     void checkMain() {
@@ -47,7 +48,6 @@ public class PrattleMainTest {
             t2.start();
             t1.join();
             t2.join();
-
         }catch (Exception e){
             e.printStackTrace();
             fail("main did not work with valid args");
@@ -68,6 +68,7 @@ public class PrattleMainTest {
 
         try {
             String[] args = new String[1];
+            args[0]="2525";
             Thread t1 = new Thread(() -> {
                 try{
                     Prattle.main(args);
@@ -84,12 +85,43 @@ public class PrattleMainTest {
             t2.start();
             t1.join();
             t2.join();
-
         }catch (Exception e){
             e.printStackTrace();
             fail("main did not work with valid args");
         }
     }
+
+    @Test
+    void CtestCounterCanBeUnset() {
+        try {
+            Field f = Prattle.class.getDeclaredField("counterForTest");
+            f.setAccessible(true);
+        }catch(Exception e){
+            e.printStackTrace();
+            fail("could not set counterForTest via reflection");
+        }
+
+        try {
+            String[] args = new String[1];
+            args[0]="3000";
+            Thread t1 = new Thread(() -> {
+                try{
+                    Prattle.main(args);
+                }catch (Exception e){fail();}
+            });
+            t1.start();
+            Thread t2 = new Thread(()->{
+                Prattle.stopServer();
+            });
+            t2.start();
+            t1.interrupt();
+            t2.join();
+        }catch (Exception e){
+            e.printStackTrace();
+            fail("main did not work with valid args");
+        }
+    }
+
 
 
 }

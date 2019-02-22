@@ -100,9 +100,15 @@ public abstract class Prattle {
 	 */
 	public static void main(String[] args) {
 		// Connect to the socket on the appropriate port to which this server connects.
+		int port;
 		try (ServerSocketChannel serverSocket = ServerSocketChannel.open()) {
 			serverSocket.configureBlocking(false);
-			serverSocket.socket().bind(new InetSocketAddress(ServerConstants.PORT));
+			if(args[0]==null){
+				 port =  ServerConstants.PORT;
+			}else {
+				port = Integer.valueOf(args[0]);
+			}
+			serverSocket.socket().bind(new InetSocketAddress(port));
 			// Create the Selector with which our channel is registered.
 			Selector selector = SelectorProvider.provider().openSelector();
 			// Register to receive any incoming connection messages.
