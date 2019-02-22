@@ -14,6 +14,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 
@@ -24,6 +25,7 @@ public class MessageTest {
     public void checkInitialMessageAndGetText(){
         Message m = Message.makeSimpleLoginMessage("srs");
         assertTrue(m.isInitialization());
+        assertFalse(m.isBroadcastMessage());
         assertEquals(null,m.getText());
     }
 
@@ -38,6 +40,15 @@ public class MessageTest {
       Message m = Message.makeHelloMessage("Hello");
       assertEquals("HLO 2 -- 5 Hello",m.toString());
     }
+
+    @Test
+    public void isABroadcastMessage(){
+      Message m = Message.makeBroadcastMessage("Hell","lo");
+      assertTrue(m.isBroadcastMessage());
+      assertFalse(m.isInitialization());
+      assertFalse(m.terminate());
+    }
+
 
 }
 
