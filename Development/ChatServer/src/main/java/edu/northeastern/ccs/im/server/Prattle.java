@@ -36,7 +36,7 @@ import edu.northeastern.ccs.im.NetworkConnection;
 public abstract class Prattle {
 
 	/** Don't do anything unless the server is ready. */
-	public static boolean isReady = false;
+	private static boolean isReady = false;
 
 	/** Collection of threads that are currently being used. */
 	private static ConcurrentLinkedQueue<ClientRunnable> active;
@@ -116,9 +116,7 @@ public abstract class Prattle {
 			while (isReady) {
 				if(counterForTest>0){
 					count++;
-					if(count>counterForTest){
-						break;
-					}
+					isReady = count < counterForTest;
 				}
 				// Check if we have a valid incoming request, but limit the time we may wait.
 				while (selector.select(ServerConstants.DELAY_IN_MS) != 0) {
