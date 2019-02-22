@@ -37,4 +37,12 @@ public class ServerConstants {
 	/** Private constructor to prevent anyone from creating one of these. */
 	private ServerConstants() {/* does nothing. */}
 
+	/**
+	 *
+	 * @return an object of serverConstants()
+	 * NOTE: used only for testing purpose
+	 */
+	protected static ServerConstants getServerConstant() {
+		return new ServerConstants();
+	}
 }

@@ -1,4 +1,4 @@
-package edu.northeastern.ccs.im;
+package edu.northeastern.ccs.im.server;
 
 import edu.northeastern.ccs.im.NetworkConnection;
 import edu.northeastern.ccs.im.client.IMConnection;
@@ -11,6 +11,11 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ChatterTest {
 
@@ -91,11 +96,12 @@ public class ChatterTest {
             socket = serverSocket.accept();
             NetworkConnection networkConnection = new NetworkConnection(socket);
             ClientRunnable clientRunnable1 = new ClientRunnable(networkConnection);
-
+            assertFalse(clientRunnable1.setUserName(null));
+            assertEquals(clientRunnable1.getUserId(),-1);
             client1.sendMessage("hi");
-            clientRunnable1.run();
-            clientRunnable1.run();
-            clientRunnable1.run();
+            for(int i=0;i<10;i++) {
+                clientRunnable1.run();
+            }
 
             client1.disconnect();
         }catch (Exception e){

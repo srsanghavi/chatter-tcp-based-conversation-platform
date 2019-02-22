@@ -14,6 +14,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertTrue;
 
 
@@ -39,5 +40,10 @@ public class MessageTest {
       assertEquals("HLO 2 -- 5 Hello",m.toString());
     }
 
+    @Test
+    public void testMakeMessage(){
+        Message newMsg = Message.makeMessage("",null,null);
+        assertNull(newMsg);
+    }
 }
 
