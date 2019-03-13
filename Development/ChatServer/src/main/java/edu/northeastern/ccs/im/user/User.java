@@ -1,8 +1,5 @@
 package edu.northeastern.ccs.im.user;
 
-import com.sun.tools.corba.se.idl.constExpr.Times;
-
-import java.sql.Time;
 import java.util.UUID;
 import java.util.Date;
 import java.sql.Timestamp;
