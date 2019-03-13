@@ -58,9 +58,10 @@ public class MysqlCon {
 
     public List<Map<String, Object>> sqlGet(String query) throws SQLException {
             Statement stmt = null;
+            ResultSet rs = null;
             try {
                 stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
+                rs = stmt.executeQuery(query);
                 List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
                 Map<String, Object> row = null;
 
@@ -79,6 +80,7 @@ public class MysqlCon {
                 ChatLogger.warning(e.toString());
             } finally {
                 if (stmt != null) { stmt.close(); }
+                if (rs != null){ rs.close();}
             }
         return null;
     }
