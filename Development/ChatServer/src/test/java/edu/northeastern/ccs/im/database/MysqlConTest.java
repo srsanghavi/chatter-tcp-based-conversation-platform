@@ -28,6 +28,7 @@ public class MysqlConTest {
             ResultSet rs = sql.executeQuery("SELECT DATABASE()");
             rs.next();
             dbname = rs.getString(1);
+            System.out.println(dbname.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }
