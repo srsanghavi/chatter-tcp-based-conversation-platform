@@ -42,9 +42,10 @@ public class Message {
 
   /**
    * Getter to return messageID.
+   *
    * @return messageID
    */
-  public String getMessageID(){
+  public String getMessageID() {
     return this.messageID;
   }
 
