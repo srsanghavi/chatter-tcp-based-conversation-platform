@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.Map;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 
@@ -46,6 +49,17 @@ public class MysqlConTest {
         String dbname="";
         if(connection==null){
             assertFalse(connection!=null);
+        }
+    }
+
+    @Test
+    public void TestSqlQuery(){
+        MysqlCon mysqlCon = MysqlCon.getInstance();
+        try {
+            List<Map<String, Object>> rs = mysqlCon.sqlGet("SELECT DATABASE() as db");
+            System.out.println(rs.get(0).get("db"));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
