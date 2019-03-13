@@ -24,11 +24,9 @@ public class MysqlConTest {
         try {
             Statement sql;
             sql = connection.createStatement();
-            System.out.println("Select Database");
             ResultSet rs = sql.executeQuery("SELECT DATABASE()");
             rs.next();
             dbname = rs.getString(1);
-            System.out.println(dbname.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }
