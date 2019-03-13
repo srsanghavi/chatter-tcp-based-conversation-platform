@@ -31,6 +31,10 @@ public class SerializeUser {
             ResultSet rs = psUser.getGeneratedKeys();
             if (rs.next())
                 id = rs.getInt(1);
+            System.out.println(id);
+            rs.close();
+            psUser.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
