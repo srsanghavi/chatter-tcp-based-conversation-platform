@@ -3,11 +3,9 @@ package edu.northeastern.ccs.im.database;
 import edu.northeastern.ccs.im.ChatLogger;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * The type User db.
@@ -16,7 +14,7 @@ public class UserDB{
     /**
      * The Mysql con.
      */
-    MysqlCon mysqlCon;
+    private MysqlCon mysqlCon;
 
     /**
      * Instantiates a new User db.
@@ -71,7 +69,7 @@ public class UserDB{
         try {
             System.out.println(this.mysqlCon.sqlcreate(query));
         } catch (SQLException e) {
-            e.printStackTrace();
+            ChatLogger.error(e.getMessage());
             return -1;
         }
         return 0;
@@ -87,7 +85,7 @@ public class UserDB{
         try {
             return mysqlCon.sqlGet(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
+            ChatLogger.error(e.getMessage());
         }
         return null;
     }
@@ -109,7 +107,7 @@ public class UserDB{
         try {
             return mysqlCon.sqlGet(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
+            ChatLogger.error(e.getMessage());
         }
         return Collections.emptyList();
     }
