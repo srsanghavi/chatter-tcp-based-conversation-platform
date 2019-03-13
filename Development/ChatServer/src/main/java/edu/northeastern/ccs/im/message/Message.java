@@ -19,9 +19,6 @@ public class Message {
 
   private String conversationID;  // ID of conversation to which message belongs
 
-
-
-  //----------Receiver --------//
   /**
    * Constructor to create a message object.
    * @param sender sender of the message
