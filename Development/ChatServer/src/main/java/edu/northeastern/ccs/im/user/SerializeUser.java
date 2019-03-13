@@ -9,8 +9,8 @@ import java.sql.PreparedStatement;
 
 public class SerializeUser {
 
-    static final String WRITE_USER_SQL = "INSERT INTO users(username, first_name, last_name, email, created_on, " +
-            "password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    static final String WRITE_USER_SQL = "INSERT INTO users(id, username, first_name, last_name, email, created_on, " +
+            "password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     public int createUserInDB(User user, String password){
 
@@ -20,12 +20,13 @@ public class SerializeUser {
             MysqlCon mysql = new MysqlCon();
             connection = mysql.getRemoteConnection("admin","shashwat");
             PreparedStatement psUser = connection.prepareStatement(WRITE_USER_SQL);
-            psUser.setString(1, user.getuserName());
-            psUser.setString(2, user.getFirstName());
-            psUser.setString(3, user.getLastName());
-            psUser.setString(4, user.getEmail());
-            psUser.setTimestamp(5, user.getCreatedOn());
-            psUser.setString(6, password);
+            psUser.setInt(1, 1);
+            psUser.setString(2, user.getuserName());
+            psUser.setString(3, user.getFirstName());
+            psUser.setString(4, user.getLastName());
+            psUser.setString(5, user.getEmail());
+            psUser.setTimestamp(6, user.getCreatedOn());
+            psUser.setString(7, password);
 
             psUser.executeUpdate();
 

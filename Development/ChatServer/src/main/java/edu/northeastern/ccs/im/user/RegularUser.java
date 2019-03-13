@@ -13,9 +13,8 @@ public class RegularUser extends User{
      */
     public RegularUser(String uname, String pass){
         super(uname, pass);
-        User user = new RegularUser(uname, pass);
         SerializeUser serializer = new SerializeUser();
-        serializer.createUserInDB(user, pass);
+        serializer.createUserInDB(this, pass);
     }
 
 }
