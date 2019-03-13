@@ -11,7 +11,7 @@ public class Message {
 
   private String messageID;       // ID of the message
   private String messageText;     // Message text
-  private String messageSender;   // Name of the sender
+  private String messageSenderID;   // ID of the sender
 
   private Timestamp creationTS;   // The TS of message creation
 
@@ -20,6 +20,8 @@ public class Message {
   private String conversationID;  // ID of conversation to which message belongs
 
 
+
+  //----------Receiver --------//
   /**
    * Constructor to create a message object.
    * @param sender sender of the message
@@ -31,7 +33,7 @@ public class Message {
 
     messageID = UUID.randomUUID().toString();
     this.messageText = messageText;
-    this.messageSender = sender;
+    this.messageSenderID = sender;
 
     this.creationTS = new Timestamp((new Date()).getTime());
 
@@ -51,10 +53,10 @@ public class Message {
 
   /**
    * Getter to return message sender.
-   * @return messageSender
+   * @return messageSenderID
    */
-  public String getMessageSender(){
-    return this.messageSender;
+  public String getMessageSenderID(){
+    return this.messageSenderID;
   }
 
   /**
