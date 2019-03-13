@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 /**
  * The type User db.
  */
-class UserDB{
+public class UserDB{
     /**
      * The Mysql con.
      */
@@ -21,7 +21,7 @@ class UserDB{
     /**
      * Instantiates a new User db.
      */
-    UserDB(){
+    public UserDB(){
         mysqlCon = MysqlCon.getInstance();
     }
 
@@ -72,6 +72,7 @@ class UserDB{
             System.out.println(this.mysqlCon.sqlcreate(query));
         } catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         }
         return 0;
     }

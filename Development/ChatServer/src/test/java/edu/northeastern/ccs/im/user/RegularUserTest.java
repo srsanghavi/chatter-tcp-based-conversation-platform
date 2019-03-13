@@ -7,7 +7,7 @@ public class RegularUserTest {
     @Test
     public void createUser(){
 
-        User user = new RegularUser("ram", "prakash");
+        User user = new RegularUser("ram", "ram@prattle.com", "prakash", "Ram", "Prakash");
     }
 
 }
