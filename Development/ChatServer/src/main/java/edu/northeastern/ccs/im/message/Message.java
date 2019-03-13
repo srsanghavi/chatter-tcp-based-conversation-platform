@@ -40,6 +40,52 @@ public class Message {
 
   }
 
-  
+  /**
+   * Getter to return messageID.
+   * @return messageID
+   */
+  public String getMessageID(){
+    return this.messageID;
+  }
+
+  /**
+   * Getter to return message sender.
+   * @return messageSender
+   */
+  public String getMessageSender(){
+    return this.messageSender;
+  }
+
+  /**
+   * Getter to return message text.
+   * @return messageText
+   */
+  public String getMessageText(){
+    return this.messageText;
+  }
+
+  /**
+   * Getter to return message creation timestamp.
+   * @return creation timestamp
+   */
+  public Timestamp getCreationTS(){
+    return this.creationTS;
+  }
+
+  /**
+   * Getter to return thread ID.
+   * @return threadID
+   */
+  public String getThreadID(){
+    return this.threadID;
+  }
+
+  /**
+   * Getter to return conversation ID.
+   * @return conversationID
+   */
+  public String getConversationID(){
+    return this.conversationID;
+  }
 
 }
