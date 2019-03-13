@@ -14,10 +14,11 @@ public class SerializeUser {
 
     public int createUserInDB(User user, String password){
 
-        MysqlCon mysql = new MysqlCon();
-        Connection connection = mysql.getRemoteConnection("admin","shashwat");
+        Connection connection = null;
         int id = -1;
         try {
+            MysqlCon mysql = new MysqlCon();
+            connection = mysql.getRemoteConnection("admin","shashwat");
             PreparedStatement psUser = connection.prepareStatement(WRITE_USER_SQL);
             psUser.setString(1, user.getuserName());
             psUser.setString(2, user.getFirstName());
@@ -37,6 +38,7 @@ public class SerializeUser {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return id;
