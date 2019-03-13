@@ -1,7 +1,11 @@
 package edu.northeastern.ccs.im.user;
 
+import com.sun.tools.corba.se.idl.constExpr.Times;
+
+import java.sql.Time;
 import java.util.UUID;
 import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * Abstract User that defines the basic methods all Users have
@@ -9,8 +13,8 @@ import java.util.Date;
 public abstract class User {
 
     private String id; // UUID
-    private long creationTS; // Creation Timestamp
-    private long modifiedTS; // Last Modified Timestamp
+    private Timestamp creationTS; // Creation Timestamp
+    private Timestamp modifiedTS; // Last Modified Timestamp
     private boolean active; // Active status
     private String username;
     private String password;
@@ -19,7 +23,7 @@ public abstract class User {
     private String email;
     private String phone;
     private boolean dnd; // Do Not Disturb Status
-    private long last_activityTS; // Last Activity Timestamp
+    private Timestamp last_activityTS; // Last Activity Timestamp
     private boolean searchable; // Searchable?
 
 
@@ -28,7 +32,7 @@ public abstract class User {
      * @param uname username
      * @param pass password
      */
-    private User(String uname, String pass){
+    public User(String uname, String pass){
         username = uname;
         password = pass;
         dnd = false;
@@ -36,17 +40,12 @@ public abstract class User {
         UUID uid = UUID.randomUUID();
         id = uid.toString();
 
-        creationTS = System.currentTimeMillis()/1000;
-        modifiedTS = System.currentTimeMillis()/1000;
-        last_activityTS = System.currentTimeMillis()/1000;
+        Date date = new Date();
+        creationTS = new Timestamp(date.getTime());
+        modifiedTS = new Timestamp(date.getTime());
+        last_activityTS = new Timestamp(date.getTime());
         searchable = true;
     }
-
-    /**
-     * Creates a new User
-     * @return User
-     */
-    public abstract User createUser();
 
     // Getters
 
@@ -94,6 +93,10 @@ public abstract class User {
             return "";
     }
 
+    public Timestamp getCreatedOn(){
+        return creationTS;
+    }
+
     /**
      * @return dnd
      */
@@ -104,7 +107,7 @@ public abstract class User {
     /**
      * @return last_activityTS
      */
-    public long getLastActivityTS(){
+    public Timestamp getLastActivityTS(){
         return last_activityTS;
     }
 
