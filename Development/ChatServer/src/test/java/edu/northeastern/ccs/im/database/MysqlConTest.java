@@ -18,8 +18,8 @@ public class MysqlConTest {
      */
     @Test
     public void ConnectionSuccessful(){
-        MysqlCon sqlSever = new MysqlCon();
-        Connection connection = sqlSever.getRemoteConnection("admin","shashwat");
+        MysqlCon sqlSever = MysqlCon.getInstance();
+        Connection connection = sqlSever.getRemoteConnection();
         String dbname="";
         try {
             Statement sql;
@@ -41,8 +41,8 @@ public class MysqlConTest {
      */
     @Test
     public void ConnectionUnsuccessful(){
-        MysqlCon sqlSever = new MysqlCon();
-        Connection connection = sqlSever.getRemoteConnection("admin","shashwat1");
+        MysqlCon sqlSever = MysqlCon.getInstance();
+        Connection connection = sqlSever.getRemoteConnection();
         String dbname="";
         if(connection==null){
             assertFalse(connection!=null);
