@@ -1,6 +1,9 @@
 package edu.northeastern.ccs.im;
 
+import edu.northeastern.ccs.im.database.MysqlCon;
+import edu.northeastern.ccs.im.database.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -37,6 +40,9 @@ public class Message {
   private Timestamp creationTS;   // The TS of message creation
   private String threadID;        // ID of thread to which message belongs
 
+  UserDB userDB;
+  ConversationDB conversationDB;
+
   /**
 	 * Create a new message that contains actual IM text. The type of distribution
 	 * is defined by the handle and we must also set the name of the message sender,
@@ -55,8 +61,22 @@ public class Message {
 		msgText = text;
 
     messageID = UUID.randomUUID().toString();
+    this.creationTS = new Timestamp((new Date()).getTime());
 
+    /*Make additions for DB insertion*/
 
+    int senderID;
+    int receiverID;
+    String destinationUser = text.split("::")[0];
+    String message = text.split("::")[1];
+
+    senderID = userDB.getUserID(msgSender);
+    receiverID = userDB.getUserID(destinationUser);
+
+    int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
+    int threadID = conversationDB.createThreadForConversation(conversationID);
+
+    conversationDB.createMessageForThread(threadID,senderID,message);
 
     //this.threadID = threadID;
 
@@ -208,4 +228,50 @@ public class Message {
 		}
 		return result;
 	}
+
+  /**
+   * Getter to return messageID.
+   *
+   * @return messageID
+   */
+  public String getMessageID() {
+    return this.messageID;
+  }
+
+  /**
+   * Getter to return message sender.
+   *
+   * @return messageSenderUsername
+   */
+  public String getMessageSenderUsername() {
+    return this.msgSender;
+  }
+
+  /**
+   * Getter to return message text.
+   *
+   * @return messageText
+   */
+  public String getMessageText() {
+    return this.msgText;
+  }
+
+  /**
+   * Getter to return message creation timestamp.
+   *
+   * @return creation timestamp
+   */
+  public Timestamp getCreationTS() {
+    return this.creationTS;
+  }
+
+  /**
+   * Getter to return thread ID.
+   *
+   * @return threadID
+   */
+  public String getThreadID() {
+    return this.threadID;
+  }
+
 }

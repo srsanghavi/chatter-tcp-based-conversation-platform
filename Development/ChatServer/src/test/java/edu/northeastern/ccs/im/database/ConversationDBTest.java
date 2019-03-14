@@ -29,7 +29,18 @@ public class ConversationDBTest {
         int t = conversationDB.createThreadForConversation(r);
         ChatLogger.info("Conversation ID:"+String.valueOf(r));
         ChatLogger.info("Thread ID:" +String.valueOf(t));
-        assertTrue(conversationDB.createMessageForThread(t,user_id2,"Hello, testcase from junit.")>0);
+        assertTrue(conversationDB.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.")>0);
     }
 
+    @Test
+    public void testMultipleThreadFromUsers(){
+      int user_id1 = 1;
+      int user_id2 = 21;
+      int r = conversationDB.createConversationForUser(user_id1,user_id2);
+      int t = conversationDB.createThreadForConversation(r);
+      System.out.println(String.valueOf(r));
+      System.out.println(String.valueOf(t));
+      int e = conversationDB.createThreadForConversation(r);
+      System.out.println(String.valueOf(e));
+    }
 }
