@@ -64,7 +64,18 @@ public class MysqlCon {
 
             try {
                 stmt = con.createStatement();
-                rs = stmt.executeQuery(query);
+
+                try {
+                    rs = stmt.executeQuery(query);
+                }catch (SQLException e1){
+                    ChatLogger.error(e1.toString());
+                    throw new SQLException(e1);
+
+                }finally {
+                    if (rs != null)
+                        rs.close();
+                }
+
 
                 ResultSetMetaData metaData = rs.getMetaData();
                 int columnCount = metaData.getColumnCount();
