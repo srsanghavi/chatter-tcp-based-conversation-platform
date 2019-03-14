@@ -42,5 +42,13 @@ public class ConversationDBTest {
       System.out.println(String.valueOf(t));
       int e = conversationDB.createThreadForConversation(r);
       System.out.println(String.valueOf(e));
+
+    @Test
+    public void testGetMessagesInAConversation(){
+        int user_id1 = 1;
+        int user_id2 = 21;
+        int r = conversationDB.createConversationForUser(user_id1,user_id2);
+        ChatLogger.info("Conversation ID:"+String.valueOf(r));
+        ChatLogger.info("Messages For Conversation: "+conversationDB.getMessagesForConversation(r));
     }
 }
