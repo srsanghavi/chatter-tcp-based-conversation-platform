@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 
+
 /**
  * The type Mysql con.
  */
@@ -19,8 +20,7 @@ public class MysqlCon {
     private MysqlCon(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(
-                    "jdbc:mysql://msd-project.cgxeszufief9.us-east-1.rds.amazonaws.com/messaging", "admin", "shashwat");
+            con = DriverManager.getConnection(DBConstants.DB_HOST, DBConstants.DB_USERNAME, DBConstants.DB_PASSWORD);
         } catch (Exception e) {
             ChatLogger.error("Could not connect to the database -- "+e.toString());
         }
