@@ -274,6 +274,7 @@ public class ClientRunnable implements Runnable {
                         String destinationUser = rawMessage.split("::")[0];
                         String message = rawMessage.split("::")[1];
                         Message message1 = Message.makeBroadcastMessage(msg.getName(),message);
+                        msg.storeMessageInDb();
 						Prattle.sendMessageToUser(destinationUser,message1);
 					}else {
 						ChatLogger.warning("User already logged in");

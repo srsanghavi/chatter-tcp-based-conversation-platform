@@ -98,21 +98,22 @@ public class Message {
 	 * @return Instance of Message that transmits text to all logged in users.
 	 */
 	public static Message makeBroadcastMessage(String myName, String text) {
-    /*Make additions for DB insertion*/
-    int senderID;
-    int receiverID;
-    String destinationUser = text.split("::")[0];
-    String message = text.split("::")[1];
-
-    senderID = userDB.getUserID(myName);
-    receiverID = userDB.getUserID(destinationUser);
-
-    int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
-    int threadID = conversationDB.createThreadForConversation(conversationID);
-
-    conversationDB.createMessageForThread(threadID,senderID,message);
-
 		return new Message(MessageType.BROADCAST, myName, text);
+	}
+
+	public int storeMessageInDb(){
+		int senderID;
+		int receiverID;
+		String destinationUser = this.getText().split("::")[0];
+		String message = this.getText().split("::")[1];
+
+		senderID = userDB.getUserID(this.getName());
+		receiverID = userDB.getUserID(destinationUser);
+
+		int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
+		int threadID = conversationDB.createThreadForConversation(conversationID);
+
+		return conversationDB.createMessageForThread(threadID,senderID,message);
 	}
 
 	/**
