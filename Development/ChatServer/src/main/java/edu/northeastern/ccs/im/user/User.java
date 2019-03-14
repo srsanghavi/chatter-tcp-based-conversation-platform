@@ -57,5 +57,4 @@ public class User {
         UserDB db = new UserDB();
         return db.getUser(id).get("email").toString();
     }
-
 }

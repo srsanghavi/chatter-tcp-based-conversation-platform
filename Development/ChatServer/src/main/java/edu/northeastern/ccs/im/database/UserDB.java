@@ -129,4 +129,18 @@ public class UserDB{
         return null;
     }
 
+    public int updateUser(int id, String key, String value){
+        String SQL_UPDATE = "";
+        int result = 0;
+        try{
+
+            result = mysqlCon.sqlcreate(SQL_UPDATE);
+
+        } catch(SQLException e){
+            ChatLogger.error(e.getMessage());
+        }
+
+        return result;
+    }
+
 }

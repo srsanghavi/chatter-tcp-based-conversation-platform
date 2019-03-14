@@ -64,18 +64,7 @@ public class MysqlCon {
 
             try {
                 stmt = con.createStatement();
-
-                try {
-                    rs = stmt.executeQuery(query);
-                }catch (SQLException e1){
-                    ChatLogger.error(e1.toString());
-                    throw new SQLException(e1);
-
-                }finally {
-                    if (rs != null)
-                        rs.close();
-                }
-
+                rs = stmt.executeQuery(query);
 
                 ResultSetMetaData metaData = rs.getMetaData();
                 int columnCount = metaData.getColumnCount();
@@ -87,6 +76,7 @@ public class MysqlCon {
                     }
                     resultList.add(row);
                 }
+
             } catch (SQLException e ) {
                 ChatLogger.warning(e.toString());
             } finally {
@@ -109,6 +99,5 @@ public class MysqlCon {
         }
         return 0;
     }
-
 
 }
