@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The type User db.
+ * Database methods for User
  */
 public class UserDB{
     /**
@@ -67,7 +67,7 @@ public class UserDB{
         String query = stringBuilder.toString();
         ChatLogger.info("Executing: " + query);
         try {
-            System.out.println(this.mysqlCon.sqlcreate(query));
+            ChatLogger.info(Integer.toString(this.mysqlCon.sqlcreate(query)));
         } catch (SQLException e) {
             ChatLogger.error(e.getMessage());
             return -1;
@@ -121,26 +121,11 @@ public class UserDB{
         String SQL_USERNAME = "SELECT * from users WHERE id = " + id;
         try{
 
-            Map<String, Object> result = mysqlCon.sqlGet(SQL_USERNAME).get(0);
-            return result;
+            return mysqlCon.sqlGet(SQL_USERNAME).get(0);
         } catch(SQLException e){
             ChatLogger.error(e.getMessage());
         }
         return null;
-    }
-
-    public int updateUser(int id, String key, String value){
-        String SQL_UPDATE = "";
-        int result = 0;
-        try{
-
-            result = mysqlCon.sqlcreate(SQL_UPDATE);
-
-        } catch(SQLException e){
-            ChatLogger.error(e.getMessage());
-        }
-
-        return result;
     }
 
 }

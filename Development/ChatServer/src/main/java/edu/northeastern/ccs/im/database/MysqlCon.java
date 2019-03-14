@@ -92,12 +92,17 @@ public class MysqlCon {
         return resultList;
     }
 
+    /**
+     * Create Sql statement
+     * @param query the SQL query
+     * @return query status
+     * @throws SQLException
+     */
     public int sqlcreate(String query) throws SQLException {
         Statement stmt = null;
         try {
             stmt = con.createStatement();
-            int r = stmt.executeUpdate(query);
-            return r;
+            return stmt.executeUpdate(query);
         } catch (SQLException e ) {
             ChatLogger.warning(e.toString());
         } finally {
