@@ -24,7 +24,6 @@ public class UserTest {
     public void getEmail(){
         String email = user.getEmail(8);
         assertEquals(email, "ram@prattle.com");
-        assertNotSame(email, "ram@prakash.com");
     }
 
     @Test

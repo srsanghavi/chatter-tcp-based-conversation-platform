@@ -39,7 +39,7 @@ public class User {
      */
     public String getFirstName(int id){
         UserDB db = new UserDB();
-        return db.getUser(id).get("firstName").toString();
+        return db.getUser(id).get("first_name").toString();
     }
 
     /**
@@ -47,7 +47,7 @@ public class User {
      */
     public String getLastName(int id){
         UserDB db = new UserDB();
-        return db.getUser(id).get("lastName").toString();
+        return db.getUser(id).get("last_name").toString();
     }
 
     /**

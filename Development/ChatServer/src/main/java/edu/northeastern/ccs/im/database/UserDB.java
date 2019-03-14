@@ -118,9 +118,11 @@ public class UserDB{
      * @return the user
      */
     public Map<String, Object> getUser(int id){
-        String SQL_USERNAME = "SELECT username from users WHERE id = " + id;
+        String SQL_USERNAME = "SELECT * from users WHERE id = " + id;
         try{
-            return mysqlCon.sqlGet(SQL_USERNAME).get(0);
+
+            Map<String, Object> result = mysqlCon.sqlGet(SQL_USERNAME).get(0);
+            return result;
         } catch(SQLException e){
             ChatLogger.error(e.getMessage());
         }
