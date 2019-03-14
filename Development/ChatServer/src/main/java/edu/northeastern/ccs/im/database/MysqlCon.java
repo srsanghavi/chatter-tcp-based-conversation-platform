@@ -65,24 +65,29 @@ public class MysqlCon {
 
             try {
                 stmt = con.createStatement();
-                rs = stmt.executeQuery(query);
+                try {
+                    rs = stmt.executeQuery(query);
 
-                ResultSetMetaData metaData = rs.getMetaData();
-                int columnCount = metaData.getColumnCount();
+                    ResultSetMetaData metaData = rs.getMetaData();
+                    int columnCount = metaData.getColumnCount();
 
-                while (rs.next()) {
-                    row = new HashMap<>();
-                    for (int i = 1; i <= columnCount; i++) {
-                        row.put(metaData.getColumnName(i), rs.getObject(i));
+                    while (rs.next()) {
+                        row = new HashMap<>();
+                        for (int i = 1; i <= columnCount; i++) {
+                            row.put(metaData.getColumnName(i), rs.getObject(i));
+                        }
+                        resultList.add(row);
                     }
-                    resultList.add(row);
+                }
+                finally {
+                    if (rs!= null)
+                        rs.close();
                 }
 
             } catch (SQLException e ) {
                 ChatLogger.warning(e.toString());
             } finally {
                 if (stmt != null) { stmt.close(); }
-                if (rs != null){ rs.close();}
             }
         return resultList;
     }
