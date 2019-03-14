@@ -20,7 +20,8 @@ public class MysqlCon {
     private MysqlCon(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(DBConstants.DB_HOST, DBConstants.DB_USERNAME, DBConstants.DB_PASSWORD);
+            con = DriverManager.getConnection(
+                    "jdbc:mysql://msd-project.cgxeszufief9.us-east-1.rds.amazonaws.com/messaging", "admin", "shashwat");
         } catch (Exception e) {
             ChatLogger.error("Could not connect to the database -- "+e.toString());
         }
