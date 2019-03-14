@@ -38,7 +38,7 @@ public class GroupDB {
    * @return the list of groups with that name
    */
   public List<Map<String, Object>> getGroupsByName(String name){
-    String sql = "SELECT * FROM users where name='"+name+"'";
+    String sql = "SELECT * FROM groups where name='"+name+"'";
     try {
       return mysqlCon.sqlGet(sql);
     } catch (SQLException e) {
@@ -54,7 +54,7 @@ public class GroupDB {
    * @return the list of groups with that id
    */
   public List<Map<String, Object>> getGroupsById(String id){
-    String sql = "SELECT * FROM users where id='"+id+"'";
+    String sql = "SELECT * FROM groups where id='"+id+"'";
     try {
       return mysqlCon.sqlGet(sql);
     } catch (SQLException e) {
