@@ -1,7 +1,6 @@
 package edu.northeastern.ccs.im.server;
 
-import java.util.Iterator;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledFuture;
 
@@ -9,6 +8,7 @@ import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.NetworkConnection;
 import edu.northeastern.ccs.im.database.UserDB;
+import edu.northeastern.ccs.im.user.User;
 
 /**
  * Instances of this class handle all of the incoming communication from a
@@ -100,6 +100,14 @@ public class ClientRunnable implements Runnable {
 				timer.updateAfterInitialization();
 				// Set that the client is initialized.
 				initialized = true;
+                UserDB u = new UserDB();
+                List<Map<String, Object>> r = u.getUsers();
+                List<String> usernames = new ArrayList<>();
+                for(Map<String,Object> user:r){
+                    usernames.add(user.get("username").toString());
+                }
+                Message usernamesMessage = Message.makeBroadcastMessage("ADMIN","Available Users are " + usernames.toString());
+                sendMessage(usernamesMessage);
 			} else {
 			    Message errormsg = Message.makeBroadcastMessage("ADMIN","Incorrect username/password");
 			    sendMessage(errormsg);
