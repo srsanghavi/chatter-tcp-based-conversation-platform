@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 /**
  * The type User db.
  */
-class UserDB{
+public class UserDB{
     /**
      * The Mysql con.
      */
@@ -21,19 +21,19 @@ class UserDB{
     /**
      * Instantiates a new User db.
      */
-    UserDB(){
+    public UserDB(){
         mysqlCon = MysqlCon.getInstance();
     }
 
     /**
      * Is authorized int.
      *
-     * @param email the email
+     * @param username the email
      * @param pass  the pass
      * @return the int (1 if authorized, 0 otherwise)
      */
-    public int isAuthorized(String email,String pass){
-        String sql = "SELECT user_auth('"+email+"','"+pass+"') as authorized;";
+    public int isAuthorized(String username,String pass){
+        String sql = "SELECT user_auth('"+username+"','"+pass+"') as authorized;";
         try {
             List<Map<String, Object>> res = mysqlCon.sqlGet(sql);
             return (int) res.get(0).get("authorized");
@@ -100,7 +100,8 @@ class UserDB{
      * @return the list
      */
     public List<Map<String, Object>> getUsers(String filterBy,String value){
-        if(!filterBy.equals("email") && !filterBy.equals("first_name") && !filterBy.equals("last_name")){
+        if(!filterBy.equals("email") && !filterBy.equals("first_name") && !filterBy.equals("last_name")
+                && !filterBy.equals("username")){
             ChatLogger.error("Illegal filter name passed. Available filter names : email, first_name, last_name");
             return Collections.emptyList();
         }
@@ -112,4 +113,19 @@ class UserDB{
         }
         return Collections.emptyList();
     }
+
+    public int getUserID(String username){
+      int id = 0;
+      String sql = "SELECT * FROM users where username='"+username+"'";
+      List<Map<String, Object>> jsonObj;
+      try {
+        jsonObj = mysqlCon.sqlGet(sql);
+        id = (int)(jsonObj.get(0)).get("id");
+        return id;
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      return 0;
+    }
+
 }

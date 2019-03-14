@@ -52,13 +52,13 @@ public class ChatterTest {
         SocketChannel socket;
         try {
 
-            IMConnection client1 = newClient("Shashwat");
+            IMConnection client1 = newClient("srsanghavi","12345678");
             client1.connect();
             socket = serverSocket.accept();
             NetworkConnection networkConnection = new NetworkConnection(socket);
             ClientRunnable clientRunnable1 = new ClientRunnable(networkConnection);
 
-           IMConnection client2 = newClient("Himanshu");
+           IMConnection client2 = newClient("hsbudhia","123");
             client2.connect();
             socket = serverSocket.accept();
             NetworkConnection networkConnection1 = new NetworkConnection(socket);
@@ -84,8 +84,8 @@ public class ChatterTest {
         }
     }
 
-    private IMConnection newClient(String username){
-        return new IMConnection("127.0.0.1",4345,username);
+    private IMConnection newClient(String username,String password){
+        return new IMConnection("127.0.0.1",4345,username,password);
 
     }
 
@@ -93,7 +93,7 @@ public class ChatterTest {
     public void connectUserWithoutUsername(){
         SocketChannel socket;
         try {
-            IMConnection client1 = newClient(null);
+            IMConnection client1 = newClient(null,null);
             client1.connect();
             socket = serverSocket.accept();
             NetworkConnection networkConnection = new NetworkConnection(socket);
@@ -115,7 +115,7 @@ public class ChatterTest {
     public void connectUserWithoutUsernameAndSendMessage(){
         SocketChannel socket;
         try {
-            IMConnection client1 = newClient(null);
+            IMConnection client1 = newClient(null,null);
             client1.connect();
             socket = serverSocket.accept();
             NetworkConnection networkConnection = new NetworkConnection(socket);
@@ -141,7 +141,7 @@ public class ChatterTest {
     public void connectUserAndFalseMsgValid(){
         SocketChannel socket;
         try {
-            IMConnection client1 = newClient(null);
+            IMConnection client1 = newClient(null,null);
             client1.connect();
             socket = serverSocket.accept();
             NetworkConnection networkConnection = new NetworkConnection(socket);
@@ -164,7 +164,7 @@ public class ChatterTest {
     public void connectUserAndMessageNotBroadCast(){
         SocketChannel socket;
         try {
-            IMConnection client1 = newClient("srs");
+            IMConnection client1 = newClient("sanghavis","12345678");
             client1.connect();
             socket = serverSocket.accept();
             NetworkConnection networkConnection = new NetworkConnection(socket);
@@ -172,7 +172,7 @@ public class ChatterTest {
             clientRunnable1.run();
 
 
-            Message m2= Message.makeLoginMessage("srs");
+            Message m2= Message.makeLoginMessage("hsbudhia","123");
             client1.socketConnection.print(m2);
             clientRunnable1.run();
 

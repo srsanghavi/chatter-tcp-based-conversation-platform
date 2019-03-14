@@ -1,13 +1,14 @@
 package edu.northeastern.ccs.im.server;
 
-import java.util.Iterator;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledFuture;
 
 import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.NetworkConnection;
+import edu.northeastern.ccs.im.database.UserDB;
+import edu.northeastern.ccs.im.user.User;
 
 /**
  * Instances of this class handle all of the incoming communication from a
@@ -15,13 +16,13 @@ import edu.northeastern.ccs.im.NetworkConnection;
  * server. After instantiation, it is executed periodically on one of the
  * threads from the thread pool and will stop being run only when the client
  * signs off.
- * 
+ *
  * This work is licensed under the Creative Commons Attribution-ShareAlike 4.0
  * International License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by-sa/4.0/. It is based on work
  * originally written by Matthew Hertz and has been adapted for use in a class
  * assignment at Northeastern University.
- * 
+ *
  * @version 1.3
  */
 public class ClientRunnable implements Runnable {
@@ -33,6 +34,7 @@ public class ClientRunnable implements Runnable {
 
 	/** Id for the user for whom we use this ClientRunnable to communicate. */
 	private int userId;
+	private Boolean authorized=false;
 
 	/** Name that the client used when connecting to the server. */
 	private String name;
@@ -63,7 +65,7 @@ public class ClientRunnable implements Runnable {
 
 	/**
 	 * Create a new thread with which we will communicate with this single client.
-	 * 
+	 *
 	 * @param network NetworkConnection used by this new client
 	 */
 	public ClientRunnable(NetworkConnection network) {
@@ -89,22 +91,47 @@ public class ClientRunnable implements Runnable {
 		if (messageIter.hasNext()) {
 			// If a message exists, try to use it to initialize the connection
 			Message msg = messageIter.next();
-			if (setUserName(msg.getName())) {
+            String userName = msg.getName();
+            String password = msg.getText();
+            ChatLogger.info(userName+" "+password);
+            ChatLogger.info(checkIsAuthorized(userName,password).toString());
+			if (checkIsAuthorized(userName,password) && setUserName(msg.getName())) {
 				// Update the time until we terminate this client due to inactivity.
 				timer.updateAfterInitialization();
 				// Set that the client is initialized.
 				initialized = true;
+                UserDB u = new UserDB();
+                List<Map<String, Object>> r = u.getUsers();
+                List<String> usernames = new ArrayList<>();
+                for(Map<String,Object> user:r){
+                    usernames.add(user.get("username").toString());
+                }
+                Message usernamesMessage = Message.makeBroadcastMessage("ADMIN","Available Users are " + usernames.toString());
+                sendMessage(usernamesMessage);
 			} else {
-				initialized = false;
+			    Message errormsg = Message.makeBroadcastMessage("ADMIN","Incorrect username/password");
+			    sendMessage(errormsg);
+			    terminateClient();
 			}
 		}
 	}
 
 
+	private Boolean checkIsAuthorized(String username,String password){
+		UserDB userDB = new UserDB();
+		int authorized = userDB.isAuthorized(username, password);
+		if(authorized==1){
+			this.authorized = true;
+		}else {
+			this.authorized = false;
+		}
+		return this.authorized;
+	}
+
 	/**
 	 * Check if the message is properly formed. At the moment, this means checking
 	 * that the identifier is set properly.
-	 * 
+	 *
 	 * @param msg Message to be checked
 	 * @return True if message is correct; false otherwise
 	 */
@@ -116,7 +143,7 @@ public class ClientRunnable implements Runnable {
 	/**
 	 * Immediately send this message to the client. This returns if we were
 	 * successful or not in our attempt to send the message.
-	 * 
+	 *
 	 * @param message Message to be sent immediately.
 	 * @return True if we sent the message successfully; false otherwise.
 	 */
@@ -127,7 +154,7 @@ public class ClientRunnable implements Runnable {
 
 	/**
 	 * Try allowing this user to set his/her user name to the given username.
-	 * 
+	 *
 	 * @param userName The new value to which we will try to set userName.
 	 * @return True if the username is deemed acceptable; false otherwise
 	 */
@@ -150,7 +177,7 @@ public class ClientRunnable implements Runnable {
 	/**
 	 * Add the given message to this client to the queue of message to be sent to
 	 * the client.
-	 * 
+	 *
 	 * @param message Complete message to be sent.
 	 */
 	public void enqueueMessage(Message message) {
@@ -159,7 +186,7 @@ public class ClientRunnable implements Runnable {
 
 	/**
 	 * Get the name of the user for which this ClientRunnable was created.
-	 * 
+	 *
 	 * @return Returns the name of this client.
 	 */
 	public String getName() {
@@ -168,7 +195,7 @@ public class ClientRunnable implements Runnable {
 
 	/**
 	 * Set the name of the user for which this ClientRunnable was created.
-	 * 
+	 *
 	 * @param name The name for which this ClientRunnable.
 	 */
 	public void setName(String name) {
@@ -177,7 +204,7 @@ public class ClientRunnable implements Runnable {
 
 	/**
 	 * Gets the name of the user for which this ClientRunnable was created.
-	 * 
+	 *
 	 * @return Returns the current value of userName.
 	 */
 	public int getUserId() {
@@ -187,7 +214,7 @@ public class ClientRunnable implements Runnable {
 	/**
 	 * Return if this thread has completed the initialization process with its
 	 * client and is read to receive messages.
-	 * 
+	 *
 	 * @return True if this thread's client should be considered; false otherwise.
 	 */
 	public boolean isInitialized() {
@@ -196,12 +223,12 @@ public class ClientRunnable implements Runnable {
 
 	/**
 	 * Perform the periodic actions needed to work with this client.
-	 * 
+	 *
 	 * @see java.lang.Thread#run()
 	 */
 	public void run() {
 		// The client must be initialized before we can do anything else
-		if (!initialized) {
+        if (!initialized) {
 			checkForInitialization();
 		} else {
 			handleIncomingMessages();
@@ -243,7 +270,12 @@ public class ClientRunnable implements Runnable {
 					// Check for our "special messages"
 					if (msg.isBroadcastMessage()) {
 						// Check for our "special messages"
-						Prattle.broadcastMessage(msg);
+                        String rawMessage = msg.getText();
+                        String destinationUser = rawMessage.split("::")[0];
+                        String message = rawMessage.split("::")[1];
+                        Message message1 = Message.makeBroadcastMessage(msg.getName(),message);
+                        msg.storeMessageInDb();
+						Prattle.sendMessageToUser(destinationUser,message1);
 					}else {
 						ChatLogger.warning("User already logged in");
 					}
@@ -256,6 +288,7 @@ public class ClientRunnable implements Runnable {
 			}
 		}
 	}
+
 
 	/**
 	 * Sends the enqueued messages to the printer and makes sure they were sent out.
@@ -282,7 +315,7 @@ public class ClientRunnable implements Runnable {
 	/**
 	 * Store the object used by this client runnable to control when it is scheduled
 	 * for execution in the thread pool.
-	 * 
+	 *
 	 * @param future Instance controlling when the runnable is executed from within
 	 *               the thread pool.
 	 */

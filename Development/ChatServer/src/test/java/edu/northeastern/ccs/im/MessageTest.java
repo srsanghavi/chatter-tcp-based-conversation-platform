@@ -24,15 +24,15 @@ public class MessageTest {
 
     @Test
     public void checkInitialMessageAndGetText(){
-        Message m = Message.makeSimpleLoginMessage("srs");
+        Message m = Message.makeSimpleLoginMessage("srs","123");
         assertTrue(m.isInitialization());
         assertFalse(m.isBroadcastMessage());
-        assertEquals(null,m.getText());
+        assertEquals("123",m.getText());
     }
 
     @Test
     public void checkToStringForNullUser(){
-        Message m = Message.makeSimpleLoginMessage(null);
+        Message m = Message.makeSimpleLoginMessage(null,null);
         assertEquals("HLO 2 -- 2 --",m.toString());
     }
 

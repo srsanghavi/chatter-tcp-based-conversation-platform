@@ -98,4 +98,16 @@ public class MysqlCon {
     }
 
 
+    public int getLastInsertedID() {
+        String query = "SELECT LAST_INSERT_ID() as id;";
+        try {
+            List<Map<String, Object>> r = sqlGet(query);
+            if(!r.isEmpty()){
+                return Integer.valueOf(String.valueOf(r.get(0).get("id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
