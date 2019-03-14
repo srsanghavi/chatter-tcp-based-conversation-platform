@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotSame;
+import static junit.framework.TestCase.assertTrue;
 
 
 public class UserDBTest {
@@ -29,6 +30,16 @@ public class UserDBTest {
     }
 
     @Test
+    public void testGetFilteredUsersByUsername(){
+        System.out.println(userDB.getUsers("username","srsanghavi"));
+    }
+
+    @Test
+    public void testUserIDByUsername(){
+        System.out.println(userDB.getUserID("hsbudhia"));
+    }
+
+    @Test
     public void testGetFilteredUsersReturningEmptyList(){
         System.out.println(userDB.getUsers("email","sanghav.s@husky.neu.edu"));
     }
@@ -47,5 +58,4 @@ public class UserDBTest {
     public void testNotAuthorized(){
         assertNotSame(1,userDB.isAuthorized("sanghavi.s@husky.neu.edu", "1234678"));
     }
-
 }

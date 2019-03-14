@@ -1,5 +1,11 @@
 package edu.northeastern.ccs.im;
 
+import edu.northeastern.ccs.im.database.MysqlCon;
+import edu.northeastern.ccs.im.database.*;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.UUID;
+
 /**
  * Each instance of this class represents a single transmission by our IM
  * clients.
@@ -28,7 +34,16 @@ public class Message {
 	/** The second argument used in the message. */
 	private String msgText;
 
-	/**
+	/* Added attributes for having a consistent database*/
+
+  private String messageID;       // ID of the message
+  private Timestamp creationTS;   // The TS of message creation
+  private String threadID;        // ID of thread to which message belongs
+
+  private static UserDB userDB;
+  private static ConversationDB conversationDB;
+
+  /**
 	 * Create a new message that contains actual IM text. The type of distribution
 	 * is defined by the handle and we must also set the name of the message sender,
 	 * message recipient, and the text to send.
@@ -44,6 +59,12 @@ public class Message {
 		msgSender = srcName;
 		// Save the text of the message.
 		msgText = text;
+
+    messageID = UUID.randomUUID().toString();
+    this.creationTS = new Timestamp((new Date()).getTime());
+
+    userDB = new UserDB();
+    conversationDB = new ConversationDB();
 	}
 
 	/**
@@ -78,6 +99,21 @@ public class Message {
 	 */
 	public static Message makeBroadcastMessage(String myName, String text) {
 		return new Message(MessageType.BROADCAST, myName, text);
+	}
+
+	public int storeMessageInDb(){
+		int senderID;
+		int receiverID;
+		String destinationUser = this.getText().split("::")[0];
+		String message = this.getText().split("::")[1];
+
+		senderID = userDB.getUserID(this.getName());
+		receiverID = userDB.getUserID(destinationUser);
+
+		int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
+		int threadID = conversationDB.createThreadForConversation(conversationID);
+
+		return conversationDB.createMessageForThread(threadID,senderID,message);
 	}
 
 	/**
@@ -191,4 +227,50 @@ public class Message {
 		}
 		return result;
 	}
+
+  /**
+   * Getter to return messageID.
+   *
+   * @return messageID
+   */
+  public String getMessageID() {
+    return this.messageID;
+  }
+
+  /**
+   * Getter to return message sender.
+   *
+   * @return messageSenderUsername
+   */
+  public String getMessageSenderUsername() {
+    return this.msgSender;
+  }
+
+  /**
+   * Getter to return message text.
+   *
+   * @return messageText
+   */
+  public String getMessageText() {
+    return this.msgText;
+  }
+
+  /**
+   * Getter to return message creation timestamp.
+   *
+   * @return creation timestamp
+   */
+  public Timestamp getCreationTS() {
+    return this.creationTS;
+  }
+
+  /**
+   * Getter to return thread ID.
+   *
+   * @return threadID
+   */
+  public String getThreadID() {
+    return this.threadID;
+  }
+
 }
