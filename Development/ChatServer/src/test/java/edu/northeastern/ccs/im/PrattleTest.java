@@ -87,7 +87,7 @@ public class PrattleTest {
 
     void setupClient(int serverPort){
         // the username and password must be in our database for this to work!
-        IMConnection clientTerminal = new IMConnection("127.0.0.1", serverPort, "srs");
+        IMConnection clientTerminal = new IMConnection("127.0.0.1", serverPort, "srsanghavi","12345678");
         clientTerminal.connect();
         clientTerminals.add(clientTerminal);
     }
@@ -118,7 +118,7 @@ public class PrattleTest {
 
     @Test
     void checkBroadcastMessage() {
-        Message testMsg = Message.makeBroadcastMessage("srs", "hi");
+        Message testMsg = Message.makeBroadcastMessage("srsanghavi", "hi");
         Prattle.broadcastMessage(testMsg);
         // ensure all the client sockets received this!
         try {

@@ -17,8 +17,8 @@ public class SerializeUser {
         Connection connection = null;
         int id = -1;
         try {
-            MysqlCon mysql = new MysqlCon();
-            connection = mysql.getRemoteConnection("admin","shashwat");
+            MysqlCon mysql = MysqlCon.getInstance();
+            connection = mysql.getRemoteConnection();
             PreparedStatement psUser = connection.prepareStatement(WRITE_USER_SQL);
             psUser.setInt(1, 1);
             psUser.setString(2, user.getuserName());

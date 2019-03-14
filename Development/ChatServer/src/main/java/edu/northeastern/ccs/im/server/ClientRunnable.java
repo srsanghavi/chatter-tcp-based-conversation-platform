@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledFuture;
 import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.NetworkConnection;
+import edu.northeastern.ccs.im.database.UserDB;
 
 /**
  * Instances of this class handle all of the incoming communication from a
@@ -33,6 +34,7 @@ public class ClientRunnable implements Runnable {
 
 	/** Id for the user for whom we use this ClientRunnable to communicate. */
 	private int userId;
+	private Boolean authorized=false;
 
 	/** Name that the client used when connecting to the server. */
 	private String name;
@@ -89,17 +91,34 @@ public class ClientRunnable implements Runnable {
 		if (messageIter.hasNext()) {
 			// If a message exists, try to use it to initialize the connection
 			Message msg = messageIter.next();
-			if (setUserName(msg.getName())) {
+            String userName = msg.getName();
+            String password = msg.getText();
+            ChatLogger.info(userName+" "+password);
+            ChatLogger.info(checkIsAuthorized(userName,password).toString());
+			if (checkIsAuthorized(userName,password) && setUserName(msg.getName())) {
 				// Update the time until we terminate this client due to inactivity.
 				timer.updateAfterInitialization();
 				// Set that the client is initialized.
 				initialized = true;
 			} else {
-				initialized = false;
+			    Message errormsg = Message.makeBroadcastMessage("ADMIN","Incorrect username/password");
+			    sendMessage(errormsg);
+			    terminateClient();
 			}
 		}
 	}
 
+
+	private Boolean checkIsAuthorized(String username,String password){
+		UserDB userDB = new UserDB();
+		int authorized = userDB.isAuthorized(username, password);
+		if(authorized==1){
+			this.authorized = true;
+		}else {
+			this.authorized = false;
+		}
+		return this.authorized;
+	}
 
 	/**
 	 * Check if the message is properly formed. At the moment, this means checking
@@ -201,7 +220,7 @@ public class ClientRunnable implements Runnable {
 	 */
 	public void run() {
 		// The client must be initialized before we can do anything else
-		if (!initialized) {
+        if (!initialized) {
 			checkForInitialization();
 		} else {
 			handleIncomingMessages();
@@ -243,7 +262,7 @@ public class ClientRunnable implements Runnable {
 					// Check for our "special messages"
 					if (msg.isBroadcastMessage()) {
 						// Check for our "special messages"
-						Prattle.broadcastMessage(msg);
+						ChatLogger.warning("Password: "+msg.getText());
 					}else {
 						ChatLogger.warning("User already logged in");
 					}
@@ -256,6 +275,7 @@ public class ClientRunnable implements Runnable {
 			}
 		}
 	}
+
 
 	/**
 	 * Sends the enqueued messages to the printer and makes sure they were sent out.

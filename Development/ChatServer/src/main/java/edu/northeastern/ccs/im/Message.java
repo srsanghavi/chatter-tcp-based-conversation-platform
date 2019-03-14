@@ -106,7 +106,7 @@ public class Message {
 		if (handle.compareTo(MessageType.QUIT.toString()) == 0) {
 			result = makeQuitMessage(srcName);
 		} else if (handle.compareTo(MessageType.HELLO.toString()) == 0) {
-			result = makeSimpleLoginMessage(srcName);
+			result = makeSimpleLoginMessage(srcName, text);
 		} else if (handle.compareTo(MessageType.BROADCAST.toString()) == 0) {
 			result = makeBroadcastMessage(srcName, text);
 		}
@@ -120,8 +120,8 @@ public class Message {
 	 * @param myName Name of the user who has just logged in.
 	 * @return Instance of Message specifying a new friend has just logged in.
 	 */
-	public static Message makeSimpleLoginMessage(String myName) {
-		return new Message(MessageType.HELLO, myName);
+	public static Message makeSimpleLoginMessage(String myName, String password) {
+		return new Message(MessageType.HELLO, myName, password);
 	}
 
 	/**
