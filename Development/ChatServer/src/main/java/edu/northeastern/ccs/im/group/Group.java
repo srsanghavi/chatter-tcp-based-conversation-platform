@@ -26,7 +26,7 @@ public class Group {
    *
    * @return group ID
    */
-  public int getId() {
+  public String getId() {
     return id;
   }
 
