@@ -28,7 +28,7 @@ public class UserDB{
     /**
      * Is authorized int.
      *
-     * @param email the email
+     * @param username the email
      * @param pass  the pass
      * @return the int (1 if authorized, 0 otherwise)
      */
