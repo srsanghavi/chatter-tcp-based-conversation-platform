@@ -15,7 +15,7 @@ public class UserDBTest {
     }
     @Test
     public void testCreateUser(){
-        userDB.createUser("srsanghavi","sanghavi.s@husky.neu.edu","12345678","Shashwat","Sanghavi");
+        userDB.createUser("hsbudhia","budhia.h@husky.neu.edu","123","Himanshu","Budhia");
     }
 
     @Test
@@ -40,7 +40,7 @@ public class UserDBTest {
 
     @Test
     public void testAuthorized(){
-        assertEquals(1,userDB.isAuthorized("sanghavi.s@husky.neu.edu", "12345678"));
+        assertEquals(1,userDB.isAuthorized("srsanghavi", "12345678"));
     }
 
     @Test

@@ -39,7 +39,7 @@ public class PrattleMainTest {
                 for(int i=0;i<100000;i++){
 
                 }
-                IMConnection clientTerminal = new IMConnection("", 4545, "srs");
+                IMConnection clientTerminal = new IMConnection("", 4545, "srsanghavi","12345678");
                 clientTerminal.connect();
                 clientTerminal.sendMessage("this is a message!");
 
@@ -114,7 +114,7 @@ public class PrattleMainTest {
             t1.start();
             Thread t2 = new Thread(() -> {
                 // set up client thread
-                IMConnection clientTerminal = new IMConnection("", 3000, "srs");
+                IMConnection clientTerminal = new IMConnection("", 3000, "srsanghavi","12345678");
                 clientTerminal.connect();
                 clientTerminal.sendMessage("this is a message!");
                 clientTerminal.disconnect();

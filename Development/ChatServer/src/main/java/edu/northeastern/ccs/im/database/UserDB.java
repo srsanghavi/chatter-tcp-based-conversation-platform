@@ -26,12 +26,12 @@ public class UserDB{
     /**
      * Is authorized int.
      *
-     * @param email the email
+     * @param username the email
      * @param pass  the pass
      * @return the int (1 if authorized, 0 otherwise)
      */
-    public int isAuthorized(String email,String pass){
-        String sql = "SELECT user_auth('"+email+"','"+pass+"') as authorized;";
+    public int isAuthorized(String username,String pass){
+        String sql = "SELECT user_auth('"+username+"','"+pass+"') as authorized;";
         try {
             List<Map<String, Object>> res = mysqlCon.sqlGet(sql);
             return (int) res.get(0).get("authorized");
