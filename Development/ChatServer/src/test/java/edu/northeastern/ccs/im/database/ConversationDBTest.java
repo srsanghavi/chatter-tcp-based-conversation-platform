@@ -25,7 +25,7 @@ public class ConversationDBTest {
     public void testCreateThreadAndMessage(){
         int user_id1 = 1;
         int user_id2 = 21;
-        int r = conversationDB.createConversationForUser(1,21);
+        int r = conversationDB.createConversationForUser(user_id1,user_id2);
         int t = conversationDB.createThreadForConversation(r);
         ChatLogger.info("Conversation ID:"+String.valueOf(r));
         ChatLogger.info("Thread ID:" +String.valueOf(t));
