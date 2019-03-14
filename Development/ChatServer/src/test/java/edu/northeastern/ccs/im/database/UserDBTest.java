@@ -30,6 +30,12 @@ public class UserDBTest {
     }
 
     @Test
+    public void testGetFilteredUsersByUsername(){
+        System.out.println(userDB.getUsers("username","srsanghavi"));
+    }
+
+
+    @Test
     public void testGetFilteredUsersReturningEmptyList(){
         System.out.println(userDB.getUsers("email","sanghav.s@husky.neu.edu"));
     }
