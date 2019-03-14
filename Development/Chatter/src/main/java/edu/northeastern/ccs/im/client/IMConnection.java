@@ -49,6 +49,9 @@ public class IMConnection {
 	/** Name of the user for which this connection was formed. */
 	private String userName;
 
+	/** Password for the user **/
+	private String password;
+
 	/**
 	 * Holds the SwingWorker which is used to read and process all incoming data.
 	 */
@@ -65,13 +68,14 @@ public class IMConnection {
 	 * @param port     The port number to use.
 	 * @param username Name of the user for which this connection is being made.
 	 */
-	public IMConnection(String host, int port, String username) {
+	public IMConnection(String host, int port, String username, String pass) {
 		if ((username == null) || username.trim().equals("")) {
 			username = "TooDumbToEnterRealUsername";
 		}
 		linkListeners = new Vector<LinkListener>();
 		messageListeners = new Vector<MessageListener>();
 		userName = username;
+		password = pass;
 		hostName = host;
 		portNum = port;
 	}
@@ -207,7 +211,7 @@ public class IMConnection {
 	 */
 	private boolean login() {
 		// Now log in using this name.
-		Message loginMessage = Message.makeLoginMessage(userName);
+		Message loginMessage = Message.makeLoginMessage(userName, password);
 		try {
 			socketConnection = new SocketNB(hostName, portNum);
 			socketConnection.startIMConnection();

@@ -87,7 +87,7 @@ public class PrattleTest {
 
     void setupClient(int serverPort){
         // the username and password must be in our database for this to work!
-        IMConnection clientTerminal = new IMConnection("127.0.0.1", serverPort, "srsanghavi","12345678");
+        IMConnection clientTerminal = new IMConnection("127.0.0.1", serverPort, "srsanghavi", "12345678");
         clientTerminal.connect();
         clientTerminals.add(clientTerminal);
     }
