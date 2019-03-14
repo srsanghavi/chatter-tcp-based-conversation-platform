@@ -270,8 +270,10 @@ public class ClientRunnable implements Runnable {
 					// Check for our "special messages"
 					if (msg.isBroadcastMessage()) {
 						// Check for our "special messages"
-						ChatLogger.warning("Password: "+msg.getText());
-						Prattle.broadcastMessage(msg);
+                        String rawMessage = msg.getText();
+                        String destinationUser = rawMessage.split("::")[0];
+                        String message = rawMessage.split("::")[1];
+						Prattle.sendMessageToUser(destinationUser,msg);
 					}else {
 						ChatLogger.warning("User already logged in");
 					}
