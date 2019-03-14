@@ -62,4 +62,20 @@ public class GroupDB {
     }
     return Collections.emptyList();
   }
+
+  /**
+   * retrieves a all users in the group
+   *
+   * @param id the id of the group for which users will be returnd
+   * @return the list of users in the group
+   */
+  public List<Map<String, Object>> getUsersInGroups(String id){
+    String sql = "SELECT * FROM groups_has_users where Groups_id='"+id+"'";
+    try {
+      return mysqlCon.sqlGet(sql);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return Collections.emptyList();
+  }
 }
