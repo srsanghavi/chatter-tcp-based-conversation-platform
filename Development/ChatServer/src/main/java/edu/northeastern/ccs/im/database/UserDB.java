@@ -100,7 +100,8 @@ public class UserDB{
      * @return the list
      */
     public List<Map<String, Object>> getUsers(String filterBy,String value){
-        if(!filterBy.equals("email") && !filterBy.equals("first_name") && !filterBy.equals("last_name")){
+        if(!filterBy.equals("email") && !filterBy.equals("first_name") && !filterBy.equals("last_name")
+                && !filterBy.equals("username")){
             ChatLogger.error("Illegal filter name passed. Available filter names : email, first_name, last_name");
             return Collections.emptyList();
         }
