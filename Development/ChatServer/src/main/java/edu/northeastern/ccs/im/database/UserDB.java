@@ -111,4 +111,20 @@ public class UserDB{
         }
         return Collections.emptyList();
     }
+
+    /**
+     * Returns the user with the unique id
+     * @param id the unique id of the user
+     * @return the user
+     */
+    public Map<String, Object> getUser(int id){
+        String SQL_USERNAME = "SELECT username from users WHERE id = " + id;
+        try{
+            return mysqlCon.sqlGet(SQL_USERNAME).get(0);
+        } catch(SQLException e){
+            ChatLogger.error(e.getMessage());
+        }
+        return null;
+    }
+
 }

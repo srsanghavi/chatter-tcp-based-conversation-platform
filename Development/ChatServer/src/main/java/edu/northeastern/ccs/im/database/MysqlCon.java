@@ -59,30 +59,30 @@ public class MysqlCon {
     public List<Map<String, Object>> sqlGet(String query) throws SQLException {
             Statement stmt = null;
             ResultSet rs = null;
+            List<Map<String, Object>> resultList = new ArrayList<>();
+            Map<String, Object> row = null;
+
             try {
                 stmt = con.createStatement();
                 rs = stmt.executeQuery(query);
-                List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
-                Map<String, Object> row = null;
 
                 ResultSetMetaData metaData = rs.getMetaData();
-                Integer columnCount = metaData.getColumnCount();
+                int columnCount = metaData.getColumnCount();
 
                 while (rs.next()) {
-                    row = new HashMap<String, Object>();
+                    row = new HashMap<>();
                     for (int i = 1; i <= columnCount; i++) {
                         row.put(metaData.getColumnName(i), rs.getObject(i));
                     }
                     resultList.add(row);
                 }
-                return resultList;
             } catch (SQLException e ) {
                 ChatLogger.warning(e.toString());
             } finally {
                 if (stmt != null) { stmt.close(); }
                 if (rs != null){ rs.close();}
             }
-        return null;
+        return resultList;
     }
 
     public int sqlcreate(String query) throws SQLException {

@@ -1,118 +1,61 @@
 package edu.northeastern.ccs.im.user;
 
-import java.util.UUID;
-import java.util.Date;
+import edu.northeastern.ccs.im.ChatLogger;
+import edu.northeastern.ccs.im.database.UserDB;
+
 import java.sql.Timestamp;
 
 /**
  * Abstract User that defines the basic methods all Users have
  */
-public abstract class User {
-
-    private String id; // UUID
-    private Timestamp creationTS; // Creation Timestamp
-    private Timestamp modifiedTS; // Last Modified Timestamp
-    private boolean active; // Active status
-    private String username;
-    private String password;
-    private String first_name;
-    private String last_name;
-    private String email;
-    private String phone;
-    private boolean dnd; // Do Not Disturb Status
-    private Timestamp last_activityTS; // Last Activity Timestamp
-    private boolean searchable; // Searchable?
-
+public class User {
 
     /**
      * Private Constructor to create User
      * @param uname username
      * @param pass password
      */
-    public User(String uname, String pass){
-        username = uname;
-        password = pass;
-        dnd = false;
-
-        UUID uid = UUID.randomUUID();
-        id = uid.toString();
-
-        Date date = new Date();
-        creationTS = new Timestamp(date.getTime());
-        modifiedTS = new Timestamp(date.getTime());
-        last_activityTS = new Timestamp(date.getTime());
-        searchable = true;
+    public void createUser(String uname, String email, String pass, String firstName, String lastName){
+        UserDB userdb = new UserDB();
+        int success = userdb.createUser(uname, email, pass, firstName, lastName);
+        if (success == 0)
+            ChatLogger.info("User " + uname + " successfully created");
+        else
+            ChatLogger.info("User " + uname + " could not be created");
     }
 
     // Getters
 
     /**
-     * @return isActive
-     */
-    public boolean isActive(){
-        return active;
-    }
-
-    /**
      * @return username
      */
-    public String getuserName(){
-        return username;
+    public String getuserName(int id){
+        UserDB db = new UserDB();
+        return db.getUser(id).get("username").toString();
     }
 
     /**
      * @return firstname
      */
-    public String getFirstName(){
-        if (first_name != null)
-            return first_name;
-        else
-            return "";
+    public String getFirstName(int id){
+        UserDB db = new UserDB();
+        return db.getUser(id).get("firstName").toString();
     }
 
     /**
      * @return lastname
      */
-    public String getLastName(){
-        if (last_name != null)
-            return last_name;
-        else
-            return "";
+    public String getLastName(int id){
+        UserDB db = new UserDB();
+        return db.getUser(id).get("lastName").toString();
     }
 
     /**
      * @return email
      */
-    public String getEmail(){
-        if (email != null)
-            return email;
-        else
-            return "";
-    }
-
-    public Timestamp getCreatedOn(){
-        return creationTS;
-    }
-
-    /**
-     * @return dnd
-     */
-    public boolean getDND(){
-        return dnd;
-    }
-
-    /**
-     * @return last_activityTS
-     */
-    public Timestamp getLastActivityTS(){
-        return last_activityTS;
-    }
-
-    /**
-     * @return searchable
-     */
-    public boolean isSearchable(){
-        return searchable;
+    public String getEmail(int id){
+        UserDB db = new UserDB();
+        return db.getUser(id).get("email").toString();
     }
 
 }
