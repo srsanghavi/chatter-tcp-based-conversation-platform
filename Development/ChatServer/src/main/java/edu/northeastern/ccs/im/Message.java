@@ -40,8 +40,8 @@ public class Message {
   private Timestamp creationTS;   // The TS of message creation
   private String threadID;        // ID of thread to which message belongs
 
-  UserDB userDB;
-  ConversationDB conversationDB;
+  private static UserDB userDB;
+  private static ConversationDB conversationDB;
 
   /**
 	 * Create a new message that contains actual IM text. The type of distribution
@@ -63,25 +63,9 @@ public class Message {
     messageID = UUID.randomUUID().toString();
     this.creationTS = new Timestamp((new Date()).getTime());
 
-    /*Make additions for DB insertion*/
-
-    int senderID;
-    int receiverID;
-    String destinationUser = text.split("::")[0];
-    String message = text.split("::")[1];
-
-    senderID = userDB.getUserID(msgSender);
-    receiverID = userDB.getUserID(destinationUser);
-
-    int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
-    int threadID = conversationDB.createThreadForConversation(conversationID);
-
-    conversationDB.createMessageForThread(threadID,senderID,message);
-
-    //this.threadID = threadID;
-
-
-  }
+    userDB = new UserDB();
+    conversationDB = new ConversationDB();
+	}
 
 	/**
 	 * Create a new message that contains a command sent the server that requires a
@@ -114,6 +98,20 @@ public class Message {
 	 * @return Instance of Message that transmits text to all logged in users.
 	 */
 	public static Message makeBroadcastMessage(String myName, String text) {
+    /*Make additions for DB insertion*/
+    int senderID;
+    int receiverID;
+    String destinationUser = text.split("::")[0];
+    String message = text.split("::")[1];
+
+    senderID = userDB.getUserID(myName);
+    receiverID = userDB.getUserID(destinationUser);
+
+    int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
+    int threadID = conversationDB.createThreadForConversation(conversationID);
+
+    conversationDB.createMessageForThread(threadID,senderID,message);
+
 		return new Message(MessageType.BROADCAST, myName, text);
 	}
 
