@@ -1,12 +1,19 @@
 package edu.northeastern.ccs.im.database;
 
 import edu.northeastern.ccs.im.ChatLogger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.io.File;
 
 
 
@@ -16,12 +23,39 @@ import java.util.Map;
 public class MysqlCon {
     private static MysqlCon mySqlCon = null;
     private Connection con;
+    private String hostname;
+    private String username;
+    private String dbpass;
+
+    /**
+     * https://www.tutorialspoint.com/java_xml/java_dom_parse_document.htm
+     * Code loosely based on the code in this page to parse XML
+     *
+     * Reads DB Configuration details from xml
+     */
+    private void setDBConf(){
+        try {
+            File dbFile = new File("src/main/java/edu/northeastern/ccs/im/database/db.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
+            Document dbDoc = dbBuilder.parse(dbFile);
+
+            hostname = dbDoc.getElementsByTagName("host").item(0).getAttributes().getNamedItem("value").getNodeValue();
+            username = dbDoc.getElementsByTagName("user").item(0).getAttributes().getNamedItem("value").getNodeValue();
+            dbpass = dbDoc.getElementsByTagName("pass").item(0).getAttributes().getNamedItem("value").getNodeValue();
+
+        }catch (Exception e){
+            ChatLogger.error(e.getMessage());
+        }
+    }
 
     private MysqlCon(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(
-                    "jdbc:mysql://msd-project.cgxeszufief9.us-east-1.rds.amazonaws.com/messaging", "admin", "shashwat");
+            setDBConf();
+            //con = DriverManager.getConnection(
+            //        "jdbc:mysql://msd-project.cgxeszufief9.us-east-1.rds.amazonaws.com/messaging", "admin", "shashwat");
+            con = DriverManager.getConnection(hostname, username, dbpass);
         } catch (Exception e) {
             ChatLogger.error("Could not connect to the database -- "+e.toString());
         }
