@@ -37,7 +37,7 @@ public class ConversationDB {
    * @param id the id of the conversation(s) being searched for
    * @return the list of conversations with that id
    */
-  public List<Map<String, Object>> getConversationssById(String id){
+  public List<Map<String, Object>> getConversationsById(String id){
     String sql = "SELECT * FROM conversations where id='"+id+"'";
     try {
       return mysqlCon.sqlGet(sql);
@@ -46,4 +46,21 @@ public class ConversationDB {
     }
     return Collections.emptyList();
   }
+
+  /**
+   * retrieves a list threads in the conversation
+   *
+   * @param id the id of the conversation for which threads are being retrieved
+   * @return the list of threads in the conversation
+   */
+  public List<Map<String, Object>> getThreads(String id){
+    String sql = "SELECT * FROM thread where conversations_id='"+id+"'";
+    try {
+      return mysqlCon.sqlGet(sql);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return Collections.emptyList();
+  }
+
 }
