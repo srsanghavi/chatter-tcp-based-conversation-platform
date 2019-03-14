@@ -31,9 +31,12 @@ public class CommandLineMain {
 			System.out.println("What username would you like?");
 
 			String username = in.nextLine();
+			System.out.println("What is your password?");
+			String password = in.nextLine();
+
 
 			// Create a Connection to the IM server.
-			connect = new IMConnection("127.0.0.1", 4545, username);
+			connect = new IMConnection("127.0.0.1", 4545, username, password);
 		} while (!connect.connect());
 
 		// Create the objects needed to read & write IM messages.
