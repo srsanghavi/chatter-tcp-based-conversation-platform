@@ -34,6 +34,10 @@ public class UserDBTest {
         System.out.println(userDB.getUsers("username","srsanghavi"));
     }
 
+    @Test
+    public void testUserIDByUsername(){
+        System.out.println(userDB.getUserID("hsbudhia"));
+    }
 
     @Test
     public void testGetFilteredUsersReturningEmptyList(){

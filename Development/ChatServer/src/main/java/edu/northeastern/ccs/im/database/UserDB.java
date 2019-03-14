@@ -113,4 +113,19 @@ public class UserDB{
         }
         return Collections.emptyList();
     }
+
+    public int getUserID(String username){
+      int id = 0;
+      String sql = "SELECT * FROM users where username='"+username+"'";
+      List<Map<String, Object>> jsonObj;
+      try {
+        jsonObj = mysqlCon.sqlGet(sql);
+        id = (int)(jsonObj.get(0)).get("id");
+        return id;
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      return 0;
+    }
+
 }
