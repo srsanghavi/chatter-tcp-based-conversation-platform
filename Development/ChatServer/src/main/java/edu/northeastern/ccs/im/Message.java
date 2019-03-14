@@ -1,5 +1,8 @@
 package edu.northeastern.ccs.im;
 
+import java.sql.Timestamp;
+import java.util.UUID;
+
 /**
  * Each instance of this class represents a single transmission by our IM
  * clients.
@@ -28,7 +31,13 @@ public class Message {
 	/** The second argument used in the message. */
 	private String msgText;
 
-	/**
+	/* Added attributes for having a consistent database*/
+
+  private String messageID;       // ID of the message
+  private Timestamp creationTS;   // The TS of message creation
+  private String threadID;        // ID of thread to which message belongs
+
+  /**
 	 * Create a new message that contains actual IM text. The type of distribution
 	 * is defined by the handle and we must also set the name of the message sender,
 	 * message recipient, and the text to send.
@@ -44,7 +53,15 @@ public class Message {
 		msgSender = srcName;
 		// Save the text of the message.
 		msgText = text;
-	}
+
+    messageID = UUID.randomUUID().toString();
+
+
+
+    //this.threadID = threadID;
+
+
+  }
 
 	/**
 	 * Create a new message that contains a command sent the server that requires a
