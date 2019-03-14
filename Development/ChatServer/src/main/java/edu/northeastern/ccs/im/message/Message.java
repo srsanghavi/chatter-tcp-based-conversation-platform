@@ -23,9 +23,8 @@ public class Message {
    * @param sender         sender of the message
    * @param messageText    the body of the message
    * @param threadID       the thread to which message belongs
-   * @param conversationID the conversation to which the message belongs
    */
-  public Message(String sender, String messageText, String threadID, String conversationID) {
+  public Message(String sender, String messageText, String threadID) {
 
     messageID = UUID.randomUUID().toString();
     this.messageText = messageText;
