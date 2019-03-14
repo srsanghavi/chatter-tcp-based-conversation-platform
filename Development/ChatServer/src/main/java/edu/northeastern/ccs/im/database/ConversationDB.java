@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Conversation db.
+ */
 public class ConversationDB{
     /**
      * The Mysql con.
@@ -31,6 +34,13 @@ public class ConversationDB{
         return Collections.emptyList();
     }
 
+    /**
+     * Create conversation for user int.
+     *
+     * @param userid1 the userid 1
+     * @param userid2 the userid 2
+     * @return the int (1 if conversation is created, -1 otherwise)
+     */
     public int createConversationForUser(int userid1,int userid2){
         int conversation_id = getUserUserConversation(userid1,userid2);
         if(conversation_id<0){
@@ -38,7 +48,6 @@ public class ConversationDB{
             try {
                 List<Map<String, Object>> r = mysqlCon.sqlGet(createConvQuery);
                 if(!r.isEmpty()){
-                    ChatLogger.info(r.toString());
                     conversation_id = (int) r.get(0).get("conversations_id");
                 }else {
                     conversation_id = -1;
@@ -50,6 +59,12 @@ public class ConversationDB{
         return conversation_id;
     }
 
+    /**
+     *
+     * @param id1
+     * @param id2
+     * @return int id of the conversation
+     */
     private int getUserUserConversation(int id1,int id2) {
         String query = "select conversations_id from users_converses_users where (users_id="+id1+" and users_id1="+id2+") or ( users_id="+id2+" and users_id1="+id1+")";
 
@@ -59,6 +74,67 @@ public class ConversationDB{
                 return (int) rs.get(0).get("Conversations_id");
             }else {
                 return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+    /**
+     * Create thread for conversation int.
+     *
+     * @param conversation_id the conversation id
+     * @return the int (1 if thread is created, -1 o.w.)
+     */
+    public int createThreadForConversation(int conversation_id){
+        String query = "INSERT INTO thread(conversations_id) VALUES ("+conversation_id+")";
+        try {
+            int r = mysqlCon.sqlcreate(query);
+            if(r>0){
+                int id = mysqlCon.getLastInsertedID();
+                return id;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+    /**
+     * Get threads for conversation list.
+     *
+     * @param conversation_id the conversation id
+     * @return the list of threads
+     */
+    public List<Map<String,Object>> getThreadsForConversation(int conversation_id){
+        String query = "SELECT * FROM thread WHERE conversations_id=" + conversation_id;
+        try {
+            return mysqlCon.sqlGet(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+
+    /**
+     * Create message for thread int.
+     *
+     * @param thread_id the thread id
+     * @param sender_id the sender id
+     * @param text      the text
+     * @return the int
+     */
+    public int createMessageForThread(int thread_id, int sender_id, String text){
+        String query = "INSERT INTO message(sender_id,thread_id,text) VALUES ("+sender_id+","+thread_id+",'"+text+"');";
+        try {
+            int r = mysqlCon.sqlcreate(query);
+            if(r>0){
+                int id = mysqlCon.getLastInsertedID();
+                return id;
             }
         } catch (SQLException e) {
             e.printStackTrace();

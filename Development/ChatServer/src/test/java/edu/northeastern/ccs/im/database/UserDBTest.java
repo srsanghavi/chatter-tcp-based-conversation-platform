@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotSame;
+import static junit.framework.TestCase.assertTrue;
 
 
 public class UserDBTest {
@@ -47,4 +48,6 @@ public class UserDBTest {
     public void testNotAuthorized(){
         assertNotSame(1,userDB.isAuthorized("sanghavi.s@husky.neu.edu", "1234678"));
     }
+
+
 }
