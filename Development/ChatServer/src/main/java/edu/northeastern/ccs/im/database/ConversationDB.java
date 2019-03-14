@@ -142,5 +142,20 @@ public class ConversationDB{
         return -1;
     }
 
+    /**
+     * Get messages for conversation list.
+     *
+     * @param conversation_id the conversation id
+     * @return the list of messages inside a conversation
+     */
+    public List<Map<String,Object>> getMessagesForConversation(int conversation_id){
+        String query = "CALL message_in_conversation("+conversation_id+");";
+        try {
+            return mysqlCon.sqlGet(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
 
 }

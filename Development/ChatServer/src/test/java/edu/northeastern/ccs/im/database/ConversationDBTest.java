@@ -32,4 +32,13 @@ public class ConversationDBTest {
         assertTrue(conversationDB.createMessageForThread(t,user_id2,"Hello, testcase from junit.")>0);
     }
 
+
+    @Test
+    public void testGetMessagesInAConversation(){
+        int user_id1 = 1;
+        int user_id2 = 21;
+        int r = conversationDB.createConversationForUser(user_id1,user_id2);
+        ChatLogger.info("Conversation ID:"+String.valueOf(r));
+        ChatLogger.info("Messages For Conversation: "+conversationDB.getMessagesForConversation(r));
+    }
 }
