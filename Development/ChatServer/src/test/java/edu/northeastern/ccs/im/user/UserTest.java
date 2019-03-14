@@ -3,7 +3,7 @@ package edu.northeastern.ccs.im.user;
 import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotSame;j
+import static junit.framework.TestCase.assertNotSame;
 
 public class UserTest {
     User user = new User();
