@@ -46,19 +46,20 @@ public class UserDB{
      * @return the int (1 if created, 0 otherwise)
      */
     public int createUser(String username, String email, String password, String firstName, String lastName){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("INSERT INTO users(username,first_name,last_name, email, password) VALUES (\"");
-        stringBuilder.append(username);
-        stringBuilder.append("\" , \"");
-        stringBuilder.append(firstName);
-        stringBuilder.append("\" , \"");
-        stringBuilder.append(lastName);
-        stringBuilder.append("\" , \"");
-        stringBuilder.append(email);
-        stringBuilder.append("\" , ");
-        stringBuilder.append("MD5('"+password+"')");
-        stringBuilder.append(");");
-        String query = stringBuilder.toString();
+
+        final String sep = "\" , \"";
+
+        String query = "INSERT INTO users(username,first_name,last_name, email, password) VALUES (\"" +
+                username +
+                sep +
+                firstName +
+                sep +
+                lastName +
+                sep +
+                email +
+                "\" , " +
+                "MD5('" + password + "')" +
+                ");";
         ChatLogger.info("Executing: " + query);
         ChatLogger.info(Integer.toString(this.mysqlCon.sqlcreate(query)));
         return 0;
@@ -97,9 +98,9 @@ public class UserDB{
      * @return the user
      */
     public Map<String, Object> getUser(int id){
-        String SQL_USERNAME = "SELECT * from users WHERE id = " + id;
+        String sqlUsername = "SELECT * from users WHERE id = " + id;
 
-        return mysqlCon.sqlGet(SQL_USERNAME).get(0);
+        return mysqlCon.sqlGet(sqlUsername).get(0);
     }
 
     public int getUserID(String username){
