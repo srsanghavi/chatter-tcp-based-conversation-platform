@@ -58,6 +58,4 @@ public class UserDBTest {
     public void testNotAuthorized(){
         assertNotSame(1,userDB.isAuthorized("sanghavi.s@husky.neu.edu", "1234678"));
     }
-
-
 }

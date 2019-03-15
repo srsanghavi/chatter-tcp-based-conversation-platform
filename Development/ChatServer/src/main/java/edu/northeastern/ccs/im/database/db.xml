@@ -1,0 +1,5 @@
+<db>
+    <host value="jdbc:mysql://msd-project.cgxeszufief9.us-east-1.rds.amazonaws.com/messaging" />
+    <user value="admin" />
+    <pass value="shashwat" />
+</db>

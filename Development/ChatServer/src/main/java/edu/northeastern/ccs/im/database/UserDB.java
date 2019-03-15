@@ -3,20 +3,18 @@ package edu.northeastern.ccs.im.database;
 import edu.northeastern.ccs.im.ChatLogger;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
- * The type User db.
+ * Database methods for User
  */
 public class UserDB{
     /**
      * The Mysql con.
      */
-    MysqlCon mysqlCon;
+    private MysqlCon mysqlCon;
 
     /**
      * Instantiates a new User db.
@@ -69,9 +67,10 @@ public class UserDB{
         String query = stringBuilder.toString();
         ChatLogger.info("Executing: " + query);
         try {
-            System.out.println(this.mysqlCon.sqlcreate(query));
+            ChatLogger.info(Integer.toString(this.mysqlCon.sqlcreate(query)));
         } catch (SQLException e) {
-            e.printStackTrace();
+            ChatLogger.error(e.getMessage());
+            return -1;
         }
         return 0;
     }
@@ -86,11 +85,10 @@ public class UserDB{
         try {
             return mysqlCon.sqlGet(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
+            ChatLogger.error(e.getMessage());
         }
         return null;
     }
-
 
     /**
      * Get users list.
@@ -109,9 +107,25 @@ public class UserDB{
         try {
             return mysqlCon.sqlGet(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
+            ChatLogger.error(e.getMessage());
         }
         return Collections.emptyList();
+    }
+
+    /**
+     * Returns the user with the unique id
+     * @param id the unique id of the user
+     * @return the user
+     */
+    public Map<String, Object> getUser(int id){
+        String SQL_USERNAME = "SELECT * from users WHERE id = " + id;
+        try{
+
+            return mysqlCon.sqlGet(SQL_USERNAME).get(0);
+        } catch(SQLException e){
+            ChatLogger.error(e.getMessage());
+        }
+        return null;
     }
 
     public int getUserID(String username){
@@ -127,5 +141,4 @@ public class UserDB{
       }
       return 0;
     }
-
 }
