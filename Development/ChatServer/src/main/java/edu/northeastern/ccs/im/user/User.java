@@ -3,7 +3,6 @@ package edu.northeastern.ccs.im.user;
 import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.database.UserDB;
 
-import java.sql.Timestamp;
 
 /**
  * Abstract User that defines the basic methods all Users have

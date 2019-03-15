@@ -6,9 +6,8 @@ import static org.junit.Assert.assertEquals;
 
 public class ServerConstantsTest {
     
-    @SuppressWarnings("")
     @Test
     public void checkServerConstantInitialization(){
-        assertEquals(ServerConstants.getServerConstant().PORT,4545);
+        assertEquals(4545, ServerConstants.getServerConstant().PORT);
     }
 }
