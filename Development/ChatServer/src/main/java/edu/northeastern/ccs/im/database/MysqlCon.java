@@ -53,7 +53,7 @@ public class MysqlCon {
             setDBConf();
             con = DriverManager.getConnection(hostname, username, dbpass);
         } catch (Exception e) {
-            ChatLogger.error("Could not connect to the database -- "+e.toString());
+            ChatLogger.error("Could not connect to the data base -- "+e.toString());
         }
     }
 
