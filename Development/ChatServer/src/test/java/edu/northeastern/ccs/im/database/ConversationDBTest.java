@@ -33,15 +33,16 @@ public class ConversationDBTest {
     }
 
     @Test
-    public void testMultipleThreadFromUsers(){
-      int user_id1 = 1;
-      int user_id2 = 21;
-      int r = conversationDB.createConversationForUser(user_id1,user_id2);
-      int t = conversationDB.createThreadForConversation(r);
-      System.out.println(String.valueOf(r));
-      System.out.println(String.valueOf(t));
-      int e = conversationDB.createThreadForConversation(r);
-      System.out.println(String.valueOf(e));
+    public void testMultipleThreadFromUsers() {
+        int user_id1 = 1;
+        int user_id2 = 21;
+        int r = conversationDB.createConversationForUser(user_id1, user_id2);
+        int t = conversationDB.createThreadForConversation(r);
+        System.out.println(String.valueOf(r));
+        System.out.println(String.valueOf(t));
+        int e = conversationDB.createThreadForConversation(r);
+        System.out.println(String.valueOf(e));
+    }
 
     @Test
     public void testGetMessagesInAConversation(){
