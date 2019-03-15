@@ -118,12 +118,8 @@ public class ClientRunnable implements Runnable {
 
 	private Boolean checkIsAuthorized(String username,String password){
 		UserDB userDB = new UserDB();
-		int authorized = userDB.isAuthorized(username, password);
-		if(authorized==1){
-			this.authorized = true;
-		}else {
-			this.authorized = false;
-		}
+		int localAuthorized = userDB.isAuthorized(username, password);
+        this.authorized = localAuthorized == 1;
 		return this.authorized;
 	}
 

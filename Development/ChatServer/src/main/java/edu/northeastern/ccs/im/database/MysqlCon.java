@@ -19,6 +19,7 @@ import java.io.File;
  */
 public class MysqlCon {
     private static MysqlCon mySqlCon = null;
+    private static final String VALUE = "value";
     private Connection con;
     private String hostname;
     private String username;
@@ -31,7 +32,6 @@ public class MysqlCon {
      * Reads DB Configuration details from xml
      */
     private void setDBConf(){
-        String VALUE = "value";
         try {
             File dbFile = new File("src/main/java/edu/northeastern/ccs/im/database/db.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

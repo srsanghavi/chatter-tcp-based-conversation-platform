@@ -10,7 +10,7 @@ public class Group {
   private String name; // Name of Group
   private Timestamp createdOn; // Creation Timestamp
   private Timestamp modifiedOn; // Last Modified Timestamp
-  private int conversation_id; // Conversation the group belongs to
+  private int conversationId; // Conversation the group belongs to
 
   public Group(String name) {
     this.name = name;
@@ -58,7 +58,7 @@ public class Group {
    *
    * @return conversation id for the group
    */
-  public int getConversation_id() {
-    return conversation_id;
+  public int getConversationId() {
+    return conversationId;
   }
 }

@@ -1,10 +1,9 @@
 package edu.northeastern.ccs.im.thread;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
 
 /**

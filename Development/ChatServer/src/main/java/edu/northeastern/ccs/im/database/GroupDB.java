@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class GroupDB {
 
-  MysqlCon mysqlCon;
+  private MysqlCon mysqlCon;
 
   GroupDB() {
     mysqlCon = MysqlCon.getInstance();
@@ -59,11 +59,11 @@ public class GroupDB {
      * Create group int.
      *
      * @param name     the name
-     * @param admin_id the admin id
+     * @param adminId the admin id
      * @return the int
      */
-    public int createGroup(String name, int admin_id){
-    String query = "SELECT create_group_with_admin('"+name+"',"+admin_id+") as id;";
+    public int createGroup(String name, int adminId){
+    String query = "SELECT create_group_with_admin('"+name+"',"+adminId+") as id;";
         List<Map<String, Object>> r = mysqlCon.sqlGet(query);
         if(!r.isEmpty()){
             return (int) r.get(0).get("id");
@@ -74,13 +74,13 @@ public class GroupDB {
     /**
      * Add user to group int.
      *
-     * @param group_id the group id
-     * @param user_id  the user id
-     * @param is_admin the is admin
+     * @param groupId the group id
+     * @param userId  the user id
+     * @param isAdmin the is admin
      * @return the int
      */
-  public int addUserToGroup(int group_id,int user_id,int is_admin){
-      String query = "INSERT INTO groups_has_users(Groups_id,Users_id,is_admin) VALUES ("+group_id+", "+user_id+", "+is_admin+")";
+  public int addUserToGroup(int groupId,int userId,int isAdmin){
+      String query = "INSERT INTO groups_has_users(Groups_id,Users_id,is_admin) VALUES ("+groupId+", "+userId+", "+isAdmin+")";
       int r = mysqlCon.sqlcreate(query);
       return r<=0?-1:r;
   }

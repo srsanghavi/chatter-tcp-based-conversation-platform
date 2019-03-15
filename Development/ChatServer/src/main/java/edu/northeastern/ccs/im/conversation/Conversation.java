@@ -8,7 +8,7 @@ import java.util.UUID;
 public class Conversation {
 
   private String id; // UUID
-  private Timestamp created_on; // Creation Timestamp
+  private Timestamp createdOn; // Creation Timestamp
 
 
   public Conversation() {
@@ -16,7 +16,7 @@ public class Conversation {
     id = uid.toString();
 
     Date date = new Date();
-    created_on = new Timestamp(date.getTime());
+    createdOn = new Timestamp(date.getTime());
   }
 
 
@@ -32,7 +32,7 @@ public class Conversation {
    *
    * @return conversation creation timestamp
    */
-  public Timestamp getCreated_on() {
-    return created_on;
+  public Timestamp getCreatedOn() {
+    return createdOn;
   }
 }

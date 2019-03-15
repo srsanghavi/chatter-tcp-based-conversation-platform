@@ -37,7 +37,7 @@ public class Message {
 
   private String messageID;       // ID of the message
   private Timestamp creationTS;   // The TS of message creation
-  private int threadID;        // ID of thread to which message belongs
+  private int threadId;        // ID of thread to which message belongs
 
   private static UserDB userDB;
   private static ConversationDB conversationDB;
@@ -109,9 +109,9 @@ public class Message {
 		receiverID = userDB.getUserID(destinationUser);
 
 		int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
-		int threadID = conversationDB.createThreadForConversation(conversationID);
-    this.threadID = threadID;
-		return conversationDB.createMessageForThread(threadID,senderID,message);
+		int threadId = conversationDB.createThreadForConversation(conversationID);
+    this.threadId = threadId;
+		return conversationDB.createMessageForThread(threadId,senderID,message);
 	}
 
 	/**
@@ -265,10 +265,10 @@ public class Message {
   /**
    * Getter to return thread ID.
    *
-   * @return threadID
+   * @return threadId
    */
-  public int getThreadID() {
-    return this.threadID;
+  public int getThreadId() {
+    return this.threadId;
   }
 
 }
