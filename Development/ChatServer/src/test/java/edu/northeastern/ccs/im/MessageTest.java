@@ -55,4 +55,17 @@ public class MessageTest {
         Message newMsg = Message.makeMessage("",null,null);
         assertNull(newMsg);
     }
+
+    @Test
+  public void testStoreMessageInDB(){
+      Message m = Message.makeBroadcastMessage("hsbudhia","srsanghavi::Hi, testing " +
+              "from JUnit for message store in DB.");
+      m.storeMessageInDb();
+      System.out.println(m.getMessageID());
+      System.out.println(m.getMessageSenderUsername());
+      System.out.println(m.getMessageText());
+      System.out.println(m.getCreationTS());
+      System.out.println(m.getThreadID());
+    }
+
 }

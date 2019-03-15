@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public class Thread {
 
-  private String threadID;        // ID of the thread
+  private int threadID;        // ID of the thread
   private Timestamp creationTS;   // The TS of thread creation
   private Timestamp modifiedTS;   // The TS of thread modification
   private boolean active;         // Active status of the thread
@@ -25,10 +25,10 @@ public class Thread {
    * Constructor to initialize a thread.
    */
   public Thread(String messageID, String conversationID) {
-    this.threadID = UUID.randomUUID().toString();     // Give a new ID for thread
     this.creationTS = new Timestamp((new Date()).getTime());  // Initialize the creation timestamp
     this.modifiedTS = new Timestamp((new Date()).getTime());  // Initialize the modified timestamp
     this.messageID = new ArrayList<>();        // Initialize the message list
+    this.messageID.add(messageID);
     active = true;                        // Initialize the active status of thread
     this.conversationID = conversationID; // Update conversation ID of the thread
   }
@@ -50,7 +50,7 @@ public class Thread {
    *
    * @return threadID
    */
-  public String getThreadID() {
+  public int getThreadID() {
     return this.threadID;
   }
 
