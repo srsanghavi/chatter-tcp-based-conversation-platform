@@ -1,6 +1,5 @@
 package edu.northeastern.ccs.im;
 
-import edu.northeastern.ccs.im.database.MysqlCon;
 import edu.northeastern.ccs.im.database.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -63,22 +62,10 @@ public class Message {
     messageID = UUID.randomUUID().toString();
     this.creationTS = new Timestamp((new Date()).getTime());
 
-    userDB = new UserDB();
-    conversationDB = new ConversationDB();
+    //userDB = new UserDB();
+    //conversationDB = new ConversationDB();
 	}
 
-	/**
-	 * Create a new message that contains a command sent the server that requires a
-	 * single argument. This message contains the given handle and the single
-	 * argument.
-	 * 
-	 * @param handle  Handle for the type of message being created.
-	 * @param srcName Argument for the message; at present this is the name used to
-	 *                log-in to the IM server.
-	 */
-	private Message(MessageType handle, String srcName) {
-		this(handle, srcName, null);
-	}
 
 	/**
 	 * Create a new message to continue the logout process.
@@ -111,9 +98,9 @@ public class Message {
 		receiverID = userDB.getUserID(destinationUser);
 
 		int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
-		int threadID = conversationDB.createThreadForConversation(conversationID);
+		int messageThreadID = conversationDB.createThreadForConversation(conversationID);
 
-		return conversationDB.createMessageForThread(threadID,senderID,message);
+		return conversationDB.createMessageForThread(messageThreadID,senderID,message);
 	}
 
 	/**
