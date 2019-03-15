@@ -54,7 +54,7 @@ public abstract class Prattle {
 	 * 
 	 * @param message Message that the client sent.
 	 */
-	public static void broadcastMessage(Message message) {
+	public static void broadcastMessage( Message message) {
 		// Loop through all of our active threads
 		for (ClientRunnable tt : active) {
 			// Do not send the message to any clients that are not ready to receive it.
@@ -64,6 +64,15 @@ public abstract class Prattle {
 		}
 	}
 
+	public static void sendMessageToUser(String receiver, Message message) {
+		// Loop through all of our active threads
+		for (ClientRunnable tt : active) {
+			// Do not send the message to any clients that are not ready to receive it.
+			if (tt.isInitialized() && tt.getName().equals(receiver)) {
+				tt.enqueueMessage(message);
+			}
+		}
+	}
 	/**
 	 * Remove the given IM client from the list of active threads.
 	 * 
@@ -103,7 +112,7 @@ public abstract class Prattle {
 		int port;
 		try (ServerSocketChannel serverSocket = ServerSocketChannel.open()) {
 			serverSocket.configureBlocking(false);
-			if(args[0]==null){
+			if(args.length==0){
 				 port =  ServerConstants.PORT;
 			}else {
 				port = Integer.valueOf(args[0]);
