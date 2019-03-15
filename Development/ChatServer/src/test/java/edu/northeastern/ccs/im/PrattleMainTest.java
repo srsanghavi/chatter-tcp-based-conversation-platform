@@ -27,6 +27,7 @@ public class PrattleMainTest {
 
         try {
             String[] args = new String[1];
+            args[0]="4545";
             Thread t1 = new Thread(() -> {
                 try{
                     Prattle.main(args);
@@ -41,7 +42,7 @@ public class PrattleMainTest {
                 }
                 IMConnection clientTerminal = new IMConnection("", 4545, "srsanghavi","12345678");
                 clientTerminal.connect();
-                clientTerminal.sendMessage("this is a message!");
+                clientTerminal.sendMessage("hsbudhia::this is a message!");
 
                 clientTerminal.disconnect();
             });
@@ -116,7 +117,7 @@ public class PrattleMainTest {
                 // set up client thread
                 IMConnection clientTerminal = new IMConnection("", 3000, "srsanghavi","12345678");
                 clientTerminal.connect();
-                clientTerminal.sendMessage("this is a message!");
+                clientTerminal.sendMessage("hbudhia::this is a message!");
                 clientTerminal.disconnect();
 //                t1.interrupt();
 

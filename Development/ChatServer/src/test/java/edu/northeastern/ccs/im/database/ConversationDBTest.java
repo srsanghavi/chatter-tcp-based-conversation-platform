@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConversationDBTest {
@@ -67,5 +68,10 @@ public class ConversationDBTest {
     @Test
     public void testGetThreadsForConversation(){
         ChatLogger.info(conversationDB.getThreadsForConversation(21).toString());
+    }
+
+    @Test
+    public void testUserUserCreateConversationForNoRealUser(){
+        assertTrue(conversationDB.createConversationForUser(1,50)<=0);
     }
 }

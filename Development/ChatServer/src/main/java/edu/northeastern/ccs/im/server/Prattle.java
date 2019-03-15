@@ -112,11 +112,11 @@ public abstract class Prattle {
 		int port;
 		try (ServerSocketChannel serverSocket = ServerSocketChannel.open()) {
 			serverSocket.configureBlocking(false);
-//			if(args[0]==null){
+			if(args.length==0){
 				 port =  ServerConstants.PORT;
-//			}else {
-//				port = Integer.valueOf(args[0]);
-//			}
+			}else {
+				port = Integer.valueOf(args[0]);
+			}
 			serverSocket.socket().bind(new InetSocketAddress(port));
 			// Create the Selector with which our channel is registered.
 			Selector selector = SelectorProvider.provider().openSelector();
