@@ -23,12 +23,7 @@ public class GroupDB {
    */
   public List<Map<String, Object>> getGroups(){
     String sql = "SELECT * FROM groups";
-    try {
       return mysqlCon.sqlGet(sql);
-    } catch (SQLException e) {
-        ChatLogger.info(e.toString());
-    }
-    return null;
   }
 
   /**
@@ -39,12 +34,7 @@ public class GroupDB {
    */
   public List<Map<String, Object>> getGroupsByName(String name){
     String sql = "SELECT * FROM groups where name='"+name+"'";
-    try {
       return mysqlCon.sqlGet(sql);
-    } catch (SQLException e) {
-        ChatLogger.info(e.toString());
-    }
-    return Collections.emptyList();
   }
 
   /**
@@ -55,12 +45,7 @@ public class GroupDB {
    */
   public List<Map<String, Object>> getGroupsById(int id){
     String sql = "SELECT * FROM groups where id='"+id+"'";
-    try {
       return mysqlCon.sqlGet(sql);
-    } catch (SQLException e) {
-        ChatLogger.info(e.toString());
-    }
-    return Collections.emptyList();
   }
 
   /**
@@ -71,12 +56,7 @@ public class GroupDB {
    */
   public List<Map<String, Object>> getUsersInGroups(int id){
     String sql = "SELECT * FROM groups_has_users where Groups_id='"+id+"'";
-    try {
       return mysqlCon.sqlGet(sql);
-    } catch (SQLException e) {
-        ChatLogger.info(e.toString());
-    }
-    return Collections.emptyList();
   }
 
     /**
@@ -88,15 +68,11 @@ public class GroupDB {
      */
     public int createGroup(String name, int admin_id){
     String query = "SELECT create_group_with_admin('"+name+"',"+admin_id+") as id;";
-    try {
         List<Map<String, Object>> r = mysqlCon.sqlGet(query);
         if(!r.isEmpty()){
             return (int) r.get(0).get("id");
         }
-    } catch (SQLException e) {
-        ChatLogger.info(e.toString());
-    }
-    return -1;
+        return -1;
   }
 
     /**
@@ -110,12 +86,7 @@ public class GroupDB {
 //TODO: change create function to the DB store procedure
   public int addUserToGroup(int group_id,int user_id,int is_admin){
       String query = "INSERT INTO groups_has_users(Groups_id,Users_id,is_admin) VALUES ("+group_id+", "+user_id+", "+is_admin+")";
-      try {
-          int r = mysqlCon.sqlcreate(query);
-          return r<=0?-1:r;
-      } catch (SQLException e) {
-            ChatLogger.info(e.toString());
-      }
-      return  -1;
+      int r = mysqlCon.sqlcreate(query);
+      return r<=0?-1:r;
   }
 }

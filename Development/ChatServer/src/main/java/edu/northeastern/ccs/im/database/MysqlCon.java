@@ -91,7 +91,7 @@ public class MysqlCon {
      * @return the JDBC ResultTest
      */
 
-    public List<Map<String, Object>> sqlGet(String query) throws SQLException {
+    public List<Map<String, Object>> sqlGet(String query) {
             Statement stmt = null;
             ResultSet rs = null;
             List<Map<String, Object>> resultList = new ArrayList<>();
@@ -121,7 +121,13 @@ public class MysqlCon {
             } catch (SQLException e ) {
                 ChatLogger.warning(e.toString());
             } finally {
-                if (stmt != null) { stmt.close(); }
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException e) {
+                        ChatLogger.error(e.toString());
+                    }
+                }
             }
         return resultList;
     }
@@ -132,7 +138,7 @@ public class MysqlCon {
      * @return query status
      * @throws SQLException
      */
-    public int sqlcreate(String query) throws SQLException {
+    public int sqlcreate(String query) {
         Statement stmt = null;
         try {
             stmt = con.createStatement();
@@ -140,20 +146,22 @@ public class MysqlCon {
         } catch (SQLException e ) {
             ChatLogger.warning(e.toString());
         } finally {
-            if (stmt != null) { stmt.close(); }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    ChatLogger.error(e.toString());
+                }
+            }
         }
         return 0;
     }
 
     public int getLastInsertedID() {
         String query = "SELECT LAST_INSERT_ID() as id;";
-        try {
-            List<Map<String, Object>> r = sqlGet(query);
-            if(!r.isEmpty()){
-                return Integer.valueOf(String.valueOf(r.get(0).get("id")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        List<Map<String, Object>> r = sqlGet(query);
+        if(!r.isEmpty()) {
+            return Integer.valueOf(String.valueOf(r.get(0).get("id")));
         }
         return -1;
     }

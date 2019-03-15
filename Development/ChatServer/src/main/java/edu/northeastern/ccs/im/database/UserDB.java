@@ -32,13 +32,8 @@ public class UserDB{
      */
     public int isAuthorized(String username,String pass){
         String sql = "SELECT user_auth('"+username+"','"+pass+"') as authorized;";
-        try {
-            List<Map<String, Object>> res = mysqlCon.sqlGet(sql);
-            return (int) res.get(0).get("authorized");
-        } catch (SQLException e) {
-            ChatLogger.warning(e.toString());
-        }
-        return 0;
+        List<Map<String, Object>> res = mysqlCon.sqlGet(sql);
+        return (int) res.get(0).get("authorized");
     }
 
     /**
@@ -66,12 +61,7 @@ public class UserDB{
         stringBuilder.append(");");
         String query = stringBuilder.toString();
         ChatLogger.info("Executing: " + query);
-        try {
-            ChatLogger.info(Integer.toString(this.mysqlCon.sqlcreate(query)));
-        } catch (SQLException e) {
-            ChatLogger.error(e.getMessage());
-            return -1;
-        }
+        ChatLogger.info(Integer.toString(this.mysqlCon.sqlcreate(query)));
         return 0;
     }
 
@@ -82,12 +72,7 @@ public class UserDB{
      */
     public List<Map<String, Object>> getUsers(){
         String sql = "SELECT * FROM users";
-        try {
-            return mysqlCon.sqlGet(sql);
-        } catch (SQLException e) {
-            ChatLogger.error(e.getMessage());
-        }
-        return null;
+        return mysqlCon.sqlGet(sql);
     }
 
     /**
@@ -104,12 +89,7 @@ public class UserDB{
             return Collections.emptyList();
         }
         String sql = "SELECT * FROM users where "+filterBy+"='"+value+"'";
-        try {
-            return mysqlCon.sqlGet(sql);
-        } catch (SQLException e) {
-            ChatLogger.error(e.getMessage());
-        }
-        return Collections.emptyList();
+        return mysqlCon.sqlGet(sql);
     }
 
     /**
@@ -119,26 +99,16 @@ public class UserDB{
      */
     public Map<String, Object> getUser(int id){
         String SQL_USERNAME = "SELECT * from users WHERE id = " + id;
-        try{
 
-            return mysqlCon.sqlGet(SQL_USERNAME).get(0);
-        } catch(SQLException e){
-            ChatLogger.error(e.getMessage());
-        }
-        return null;
+        return mysqlCon.sqlGet(SQL_USERNAME).get(0);
     }
 
     public int getUserID(String username){
       int id = 0;
       String sql = "SELECT * FROM users where username='"+username+"'";
       List<Map<String, Object>> jsonObj;
-      try {
         jsonObj = mysqlCon.sqlGet(sql);
         id = (int)(jsonObj.get(0)).get("id");
         return id;
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-      return 0;
     }
 }

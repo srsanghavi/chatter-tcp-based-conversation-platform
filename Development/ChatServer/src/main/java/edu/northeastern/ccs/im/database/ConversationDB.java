@@ -34,15 +34,11 @@ public class ConversationDB{
         int conversation_id = getUserUserConversation(userid1,userid2);
         if(conversation_id<0){
             String createConvQuery = "SELECT user_user_conversation("+userid1+","+userid2+") as conversations_id";
-            try {
-                List<Map<String, Object>> r = mysqlCon.sqlGet(createConvQuery);
-                if(!r.isEmpty()){
-                    conversation_id = (int) r.get(0).get("conversations_id");
-                }else {
-                    conversation_id = -1;
-                }
-            } catch (SQLException e) {
-                ChatLogger.info(e.toString());
+            List<Map<String, Object>> r = mysqlCon.sqlGet(createConvQuery);
+            if(!r.isEmpty()){
+                conversation_id = (int) r.get(0).get("conversations_id");
+            }else {
+                conversation_id = -1;
             }
         }
         return conversation_id;
@@ -57,17 +53,12 @@ public class ConversationDB{
     private int getUserUserConversation(int id1,int id2) {
         String query = "select conversations_id from users_converses_users where (users_id="+id1+" and users_id1="+id2+") or ( users_id="+id2+" and users_id1="+id1+")";
 
-        try {
-            List<Map<String, Object>> rs = mysqlCon.sqlGet(query);
-            if(!rs.isEmpty()){
-                return (int) rs.get(0).get("Conversations_id");
-            }else {
-                return -1;
-            }
-        } catch (SQLException e) {
-            ChatLogger.info(e.toString());
+        List<Map<String, Object>> rs = mysqlCon.sqlGet(query);
+        if(!rs.isEmpty()){
+            return (int) rs.get(0).get("Conversations_id");
+        }else {
+            return -1;
         }
-        return -1;
     }
 
 
@@ -79,14 +70,10 @@ public class ConversationDB{
      */
     public int createThreadForConversation(int conversation_id){
         String query = "INSERT INTO thread(conversations_id) VALUES ("+conversation_id+")";
-        try {
-            int r = mysqlCon.sqlcreate(query);
-            if(r>0){
-                int id = mysqlCon.getLastInsertedID();
-                return id;
-            }
-        } catch (SQLException e) {
-            ChatLogger.info(e.toString());
+        int r = mysqlCon.sqlcreate(query);
+        if(r>0){
+            int id = mysqlCon.getLastInsertedID();
+            return id;
         }
         return -1;
     }
@@ -100,12 +87,7 @@ public class ConversationDB{
      */
     public List<Map<String,Object>> getThreadsForConversation(int conversation_id){
         String query = "SELECT * FROM thread WHERE conversations_id=" + conversation_id;
-        try {
-            return mysqlCon.sqlGet(query);
-        } catch (SQLException e) {
-            ChatLogger.info(e.toString());
-        }
-        return Collections.emptyList();
+        return mysqlCon.sqlGet(query);
     }
 
 
@@ -119,14 +101,10 @@ public class ConversationDB{
      */
     public int createMessageForThread(int thread_id, int sender_id, String text){
         String query = "INSERT INTO message(sender_id,thread_id,text) VALUES ("+sender_id+","+thread_id+",'"+text+"');";
-        try {
-            int r = mysqlCon.sqlcreate(query);
-            if(r>0){
-                int id = mysqlCon.getLastInsertedID();
-                return id;
-            }
-        } catch (SQLException e) {
-            ChatLogger.info(e.toString());
+        int r = mysqlCon.sqlcreate(query);
+        if(r>0){
+            int id = mysqlCon.getLastInsertedID();
+            return id;
         }
         return -1;
     }
@@ -139,12 +117,7 @@ public class ConversationDB{
      */
     public List<Map<String,Object>> getMessagesForConversation(int conversation_id){
         String query = "CALL message_in_conversation("+conversation_id+");";
-        try {
-            return mysqlCon.sqlGet(query);
-        } catch (SQLException e) {
-            ChatLogger.info(e.toString());
-        }
-        return Collections.emptyList();
+        return mysqlCon.sqlGet(query);
     }
 
     /**
@@ -154,12 +127,7 @@ public class ConversationDB{
      */
     public List<Map<String, Object>> getConversations(){
         String sql = "SELECT * FROM conversations";
-        try {
-            return mysqlCon.sqlGet(sql);
-        } catch (SQLException e) {
-            ChatLogger.info(e.toString());
-        }
-        return null;
+        return mysqlCon.sqlGet(sql);
     }
 
     /**
@@ -170,12 +138,7 @@ public class ConversationDB{
      */
     public List<Map<String, Object>> getConversationsById(int id){
         String sql = "SELECT * FROM conversations where id='"+id+"'";
-        try {
-            return mysqlCon.sqlGet(sql);
-        } catch (SQLException e) {
-            ChatLogger.info(e.toString());
-        }
-        return Collections.emptyList();
+        return mysqlCon.sqlGet(sql);
     }
 
 }
