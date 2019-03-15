@@ -26,7 +26,7 @@ public class GroupDB {
     try {
       return mysqlCon.sqlGet(sql);
     } catch (SQLException e) {
-      e.printStackTrace();
+        ChatLogger.info(e.toString());
     }
     return null;
   }
@@ -42,7 +42,7 @@ public class GroupDB {
     try {
       return mysqlCon.sqlGet(sql);
     } catch (SQLException e) {
-      e.printStackTrace();
+        ChatLogger.info(e.toString());
     }
     return Collections.emptyList();
   }
@@ -58,7 +58,7 @@ public class GroupDB {
     try {
       return mysqlCon.sqlGet(sql);
     } catch (SQLException e) {
-      e.printStackTrace();
+        ChatLogger.info(e.toString());
     }
     return Collections.emptyList();
   }
@@ -74,7 +74,7 @@ public class GroupDB {
     try {
       return mysqlCon.sqlGet(sql);
     } catch (SQLException e) {
-      e.printStackTrace();
+        ChatLogger.info(e.toString());
     }
     return Collections.emptyList();
   }
@@ -94,7 +94,7 @@ public class GroupDB {
             return (int) r.get(0).get("id");
         }
     } catch (SQLException e) {
-      e.printStackTrace();
+        ChatLogger.info(e.toString());
     }
     return -1;
   }
@@ -114,7 +114,7 @@ public class GroupDB {
           int r = mysqlCon.sqlcreate(query);
           return r<=0?-1:r;
       } catch (SQLException e) {
-          e.printStackTrace();
+            ChatLogger.info(e.toString());
       }
       return  -1;
   }

@@ -1,6 +1,7 @@
 package edu.northeastern.ccs.im.database;
 
 import edu.northeastern.ccs.im.ChatLogger;
+import edu.northeastern.ccs.im.server.ChatterTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,5 +52,20 @@ public class ConversationDBTest {
         int r = conversationDB.createConversationForUser(user_id1,user_id2);
         ChatLogger.info("Conversation ID:"+String.valueOf(r));
         ChatLogger.info("Messages For Conversation: "+conversationDB.getMessagesForConversation(r));
+    }
+
+    @Test
+    public void testGetConversations(){
+        ChatLogger.info(conversationDB.getConversations().toString());
+    }
+
+    @Test
+    public void testGetConversationsById(){
+        ChatLogger.info(conversationDB.getConversationsById(24).toString());
+    }
+
+    @Test
+    public void testGetThreadsForConversation(){
+        ChatLogger.info(conversationDB.getThreadsForConversation(21).toString());
     }
 }
