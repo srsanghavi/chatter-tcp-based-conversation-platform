@@ -55,4 +55,13 @@ public class MessageTest {
         Message newMsg = Message.makeMessage("",null,null);
         assertNull(newMsg);
     }
+
+    @Test
+  public void testStoreMessageInDB(){
+      Message m = Message.makeBroadcastMessage("hsbudhia","srsanghavi::Hi, testing " +
+              "from JUnit for message store in DB.");
+      m.storeMessageInDb();
+      
+    }
+
 }
