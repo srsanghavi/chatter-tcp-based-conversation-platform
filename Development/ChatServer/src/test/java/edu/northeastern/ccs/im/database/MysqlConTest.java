@@ -53,11 +53,7 @@ public class MysqlConTest {
     @Test
     public void TestSqlQuery(){
         MysqlCon mysqlCon = MysqlCon.getInstance();
-        try {
-            List<Map<String, Object>> rs = mysqlCon.sqlGet("SELECT DATABASE() as db");
-            System.out.println(rs.get(0).get("db"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        List<Map<String, Object>> rs = mysqlCon.sqlGet("SELECT DATABASE() as db");
+        System.out.println(rs.get(0).get("db"));
     }
 }
