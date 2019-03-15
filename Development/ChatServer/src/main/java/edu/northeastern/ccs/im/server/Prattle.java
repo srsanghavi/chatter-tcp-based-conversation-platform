@@ -142,7 +142,7 @@ public abstract class Prattle {
 					while (it.hasNext()) {
 
 						// Get the next key; it had better be from a new incoming connection
-						SelectionKey key = it.next();
+						it.next();
 						it.remove();
 
 						// Assert certain things I really hope is true

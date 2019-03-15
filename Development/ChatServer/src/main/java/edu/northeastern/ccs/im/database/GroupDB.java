@@ -1,12 +1,8 @@
 package edu.northeastern.ccs.im.database;
 
-
-import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import edu.northeastern.ccs.im.ChatLogger;
 
 public class GroupDB {
 
@@ -83,7 +79,6 @@ public class GroupDB {
      * @param is_admin the is admin
      * @return the int
      */
-//TODO: change create function to the DB store procedure
   public int addUserToGroup(int group_id,int user_id,int is_admin){
       String query = "INSERT INTO groups_has_users(Groups_id,Users_id,is_admin) VALUES ("+group_id+", "+user_id+", "+is_admin+")";
       int r = mysqlCon.sqlcreate(query);

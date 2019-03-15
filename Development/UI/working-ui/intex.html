@@ -1,0 +1,154 @@
+<html>
+    <head>
+        <Title>
+            Chatter
+        </Title>
+        <script src="webtcp/lib/client/webtcp-0.0.1.min.js"></script>
+        <script>
+            // function connectToTCP(){
+            //     return connection;
+            // }
+            var isRunning = false;
+            var uname = "";
+            var socket;
+            function connectTcp(){
+                var net = new WebTCP('localhost', 9999);
+                socket = net.createSocket("127.0.0.1", 4545);
+
+                // When the connection is open, send some data to the server
+                socket.on('connect', function(){
+                    isRunning = true;
+                    console.log('connected');
+                    print("<span style='color:red'>"+'Connected'+"</span>");
+                    document.getElementById("send-text").classList.remove("invisible");
+                    document.getElementById("send-text").classList.add("visible");
+                })
+
+                // This gets called every time new data for this socket is received
+                socket.on('data', function(data) {
+                    console.log("received: " + data);
+                    data = data.split(" ");
+                    data = data.slice(4);
+                    data = data.join(" ");
+                    print("<span style='color:green'>Server: </span>"+data);
+                });
+
+                socket.on('end', function(data) {
+                    console.log("socket is closed ");
+                    print("<span style='color:red'>"+'Disconnected'+"</span>");
+                    document.getElementById("send-text").classList.remove("visible");
+                    document.getElementById("send-text").classList.add("invisible");
+                });
+                return socket;
+            }
+
+            function sendTcp(msg){
+                var data = msg.split(" ");
+                data = data.slice(4);
+                data = data.join(" ");
+                print("<span style='color:Blue'>Me: </span>"+data);
+                socket.write(msg);
+            }
+
+            function makeLoginMsg(username,password){
+                return 'HLO '+ username.length + ' ' + username + ' ' + password.length + ' ' + password;
+            }
+
+            function makeTerminateMessage(username){
+                return 'BYE ' + username.length + ' ' + username + ' ' + 0 + ' ' + '';
+            }
+
+            function makeBroadcastMessage(username, text){
+                return 'BCT ' + username.length + ' ' + username + ' ' + text.length + ' ' + text;
+            }
+
+            function onLogin(){
+                var username = document.getElementById('username').value;
+                uname = username;
+                var password = document.getElementById('password').value;
+                var msg = makeLoginMsg(username,password);
+                console.log(msg);
+                // var connection = connectToTCP();
+                var socket = connectTcp();
+                sendTcp(msg);
+                return false;
+            }
+
+            function onTerminate(){
+                if(isRunning && uname!=""){
+                    var msg = makeTerminateMessage(uname);
+                    sendTcp(msg);
+                }else{
+                    console.log("User not logged In");
+                    print("User not logged In");
+                }
+            }
+
+            function onSendMessage(){
+                if(isRunning && uname!=""){
+                    var text = document.getElementById("message-text").value;
+                    var msg = makeBroadcastMessage(uname,text);
+                    sendTcp(msg);
+                }else{
+                    console.log("User not logged In");
+                    print("User not logged In");
+                }
+            }
+
+            function print(s){
+                var d = document.getElementById("log");
+                d.innerHTML+="<br>"+s;
+            }
+
+        </script>
+        <style>
+            #log{
+                border: black solid 1px;
+                height: 50vh;
+                width: 50vw;
+                margin-top: 20px;
+                padding: 15px;
+                font-family:'Lucida Console', monospace;
+                font-size: 12px;
+            }
+            #send-text{
+                width: 50vw;
+                margin-top:10px; 
+                height: 10vh;
+            }
+            #send-text textarea{
+                width: 90%;
+                height: 100%;
+
+            }
+            #send-text button{
+                width: 9%;
+                height: 50%;
+            }
+            .visible{
+                visibility: visible;
+            }
+            .invisible{
+                visibility: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Chatter - login</h1>
+        <form name="login">
+            <input type="text" name="username" id="username" placeholder="user name">
+            <input type="password" name="password" id="password" placeholder="Password">
+        </form>
+        <button type="button" onclick="return onLogin()">Sign In</button>
+        <button type="button" onclick="return onTerminate()">Sign Out</button>
+        
+        <div id="log">
+            <h2 style="margin-top:0px; padding-top:0px;">Server Logs</h3>
+        </div>
+
+        <div id="send-text" class="invisible">
+            <textarea id="message-text" placeholder="Enter message"></textarea>
+            <button onclick="return onSendMessage()">Send</button>
+        </div>
+    </body>
+</html>

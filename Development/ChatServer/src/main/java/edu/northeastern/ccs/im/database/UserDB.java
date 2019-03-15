@@ -2,7 +2,6 @@ package edu.northeastern.ccs.im.database;
 
 import edu.northeastern.ccs.im.ChatLogger;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

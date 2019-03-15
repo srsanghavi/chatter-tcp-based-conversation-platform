@@ -1,6 +1,5 @@
 package edu.northeastern.ccs.im;
 
-import edu.northeastern.ccs.im.database.MysqlCon;
 import edu.northeastern.ccs.im.database.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -38,7 +37,7 @@ public class Message {
 
   private String messageID;       // ID of the message
   private Timestamp creationTS;   // The TS of message creation
-  private String threadID;        // ID of thread to which message belongs
+  private int threadID;        // ID of thread to which message belongs
 
   private static UserDB userDB;
   private static ConversationDB conversationDB;
@@ -79,7 +78,6 @@ public class Message {
 	private Message(MessageType handle, String srcName) {
 		this(handle, srcName, null);
 	}
-
 	/**
 	 * Create a new message to continue the logout process.
 	 * 
@@ -112,7 +110,7 @@ public class Message {
 
 		int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
 		int threadID = conversationDB.createThreadForConversation(conversationID);
-
+    this.threadID = threadID;
 		return conversationDB.createMessageForThread(threadID,senderID,message);
 	}
 
@@ -269,7 +267,7 @@ public class Message {
    *
    * @return threadID
    */
-  public String getThreadID() {
+  public int getThreadID() {
     return this.threadID;
   }
 

@@ -8,7 +8,6 @@ import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.NetworkConnection;
 import edu.northeastern.ccs.im.database.UserDB;
-import edu.northeastern.ccs.im.user.User;
 
 /**
  * Instances of this class handle all of the incoming communication from a

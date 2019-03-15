@@ -31,15 +31,16 @@ public class MysqlCon {
      * Reads DB Configuration details from xml
      */
     private void setDBConf(){
+        String VALUE = "value";
         try {
             File dbFile = new File("src/main/java/edu/northeastern/ccs/im/database/db.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
             Document dbDoc = dbBuilder.parse(dbFile);
 
-            hostname = dbDoc.getElementsByTagName("host").item(0).getAttributes().getNamedItem("value").getNodeValue();
-            username = dbDoc.getElementsByTagName("user").item(0).getAttributes().getNamedItem("value").getNodeValue();
-            dbpass = dbDoc.getElementsByTagName("pass").item(0).getAttributes().getNamedItem("value").getNodeValue();
+            hostname = dbDoc.getElementsByTagName("host").item(0).getAttributes().getNamedItem(VALUE).getNodeValue();
+            username = dbDoc.getElementsByTagName("user").item(0).getAttributes().getNamedItem(VALUE).getNodeValue();
+            dbpass = dbDoc.getElementsByTagName("pass").item(0).getAttributes().getNamedItem(VALUE).getNodeValue();
 
         }catch (Exception e){
             ChatLogger.error(e.getMessage());
@@ -50,11 +51,9 @@ public class MysqlCon {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             setDBConf();
-            //con = DriverManager.getConnection(
-            //        "jdbc:mysql://msd-project.cgxeszufief9.us-east-1.rds.amazonaws.com/messaging", "admin", "shashwat");
             con = DriverManager.getConnection(hostname, username, dbpass);
         } catch (Exception e) {
-            ChatLogger.error("Could not connect to the database -- "+e.toString());
+            ChatLogger.error("Could not connect to the data base -- "+e.toString());
         }
     }
 
