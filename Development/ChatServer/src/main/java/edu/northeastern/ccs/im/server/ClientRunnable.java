@@ -33,7 +33,6 @@ public class ClientRunnable implements Runnable {
 
 	/** Id for the user for whom we use this ClientRunnable to communicate. */
 	private int userId;
-	private Boolean authorized=false;
 
 	/** Name that the client used when connecting to the server. */
 	private String name;
@@ -119,8 +118,7 @@ public class ClientRunnable implements Runnable {
 	private Boolean checkIsAuthorized(String username,String password){
 		UserDB userDB = new UserDB();
 		int localAuthorized = userDB.isAuthorized(username, password);
-        this.authorized = localAuthorized == 1;
-		return this.authorized;
+        return localAuthorized == 1;
 	}
 
 	/**
