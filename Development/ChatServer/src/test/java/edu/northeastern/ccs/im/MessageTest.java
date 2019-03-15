@@ -1,17 +1,6 @@
 package edu.northeastern.ccs.im;
 
-import edu.northeastern.ccs.im.Message;
-import edu.northeastern.ccs.im.NetworkConnection;
-import edu.northeastern.ccs.im.client.IMConnection;
-import edu.northeastern.ccs.im.server.ClientRunnable;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
@@ -65,7 +54,7 @@ public class MessageTest {
       System.out.println(m.getMessageSenderUsername());
       System.out.println(m.getMessageText());
       System.out.println(m.getCreationTS());
-      System.out.println(m.getThreadID());
+      System.out.println(m.getThreadId());
     }
 
 }
