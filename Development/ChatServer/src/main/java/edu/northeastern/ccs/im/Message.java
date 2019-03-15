@@ -62,8 +62,6 @@ public class Message {
     messageID = UUID.randomUUID().toString();
     this.creationTS = new Timestamp((new Date()).getTime());
 
-    //userDB = new UserDB();
-    //conversationDB = new ConversationDB();
 	}
 
 

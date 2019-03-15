@@ -3,6 +3,7 @@ package edu.northeastern.ccs.im.thread;
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -84,7 +85,7 @@ public class Thread {
   /**
    * Getter to return the list of messages in the thread.
    */
-  public ArrayList<String> getMessageID() {
+  public List<String> getMessageID() {
     return this.messageID;
   }
 

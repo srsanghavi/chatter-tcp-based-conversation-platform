@@ -8,6 +8,7 @@ public class ServerConstantsTest {
     
     @Test
     public void checkServerConstantInitialization(){
-        assertEquals(4545, ServerConstants.getServerConstant().PORT);
+        int FORTYFIVE_FORTYFIVE = 4545;
+        assertEquals(FORTYFIVE_FORTYFIVE, ServerConstants.getServerConstant().PORT);
     }
 }

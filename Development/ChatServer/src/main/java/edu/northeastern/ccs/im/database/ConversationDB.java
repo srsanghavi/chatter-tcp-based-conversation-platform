@@ -1,9 +1,5 @@
 package edu.northeastern.ccs.im.database;
 
-import edu.northeastern.ccs.im.ChatLogger;
-
-import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -72,8 +68,7 @@ public class ConversationDB{
         String query = "INSERT INTO thread(conversations_id) VALUES ("+conversation_id+")";
         int r = mysqlCon.sqlcreate(query);
         if(r>0){
-            int id = mysqlCon.getLastInsertedID();
-            return id;
+            return mysqlCon.getLastInsertedID();
         }
         return -1;
     }
@@ -103,8 +98,7 @@ public class ConversationDB{
         String query = "INSERT INTO message(sender_id,thread_id,text) VALUES ("+sender_id+","+thread_id+",'"+text+"');";
         int r = mysqlCon.sqlcreate(query);
         if(r>0){
-            int id = mysqlCon.getLastInsertedID();
-            return id;
+            return mysqlCon.getLastInsertedID();
         }
         return -1;
     }
