@@ -72,7 +72,11 @@ public class UserDB{
      */
     public List<Map<String, Object>> getUsers(){
         String sql = "SELECT * FROM users";
-        return mysqlCon.sqlGet(sql);
+        List<Map<String, Object>> r = mysqlCon.sqlGet(sql);
+        for(Map<String, Object> user: r){
+            user.remove("password");
+        }
+        return r;
     }
 
     /**
@@ -110,5 +114,12 @@ public class UserDB{
         jsonObj = mysqlCon.sqlGet(sql);
         id = (int)(jsonObj.get(0)).get("id");
         return id;
+    }
+
+    public List<Map<String,Object>> getGroups(int user_id) {
+        String sql = "SELECT *\n" +
+                "FROM groups as g JOIN groups_has_users as gu on g.id = gu.Groups_id\n" +
+                "where users_id="+user_id;
+        return mysqlCon.sqlGet(sql);
     }
 }

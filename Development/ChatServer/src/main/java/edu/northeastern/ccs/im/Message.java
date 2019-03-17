@@ -131,6 +131,8 @@ public class Message {
 			result = makeSimpleLoginMessage(srcName, text);
 		} else if (handle.compareTo(MessageType.BROADCAST.toString()) == 0) {
 			result = makeBroadcastMessage(srcName, text);
+		} else if (handle.compareTo(MessageType.API.toString())==0){
+			result = makeApiMessage(srcName,text);
 		}
 		return result;
 	}
@@ -144,6 +146,17 @@ public class Message {
 	 */
 	public static Message makeSimpleLoginMessage(String myName, String password) {
 		return new Message(MessageType.HELLO, myName, password);
+	}
+
+	/**
+	 * Create a new message for the api response
+	 *
+	 * @param myName the my name
+	 * @param text   the text
+	 * @return Instance of Message
+	 */
+	public static Message makeApiMessage(String myName, String text){
+		return new Message(MessageType.API,myName,text);
 	}
 
 	/**
@@ -171,6 +184,10 @@ public class Message {
 	 */
 	public boolean isBroadcastMessage() {
 		return (msgType == MessageType.BROADCAST);
+	}
+
+	public boolean isApiMessage() {
+		return (msgType == MessageType.API);
 	}
 
 	/**

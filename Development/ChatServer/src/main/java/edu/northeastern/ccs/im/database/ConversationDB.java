@@ -1,5 +1,7 @@
 package edu.northeastern.ccs.im.database;
 
+import edu.northeastern.ccs.im.ChatLogger;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ public class ConversationDB{
     /**
      * The Mysql con.
      */
-    MysqlCon mysqlCon;
+    static MysqlCon  mysqlCon;
 
     /**
      * Instantiates a new Conversation db.
@@ -26,7 +28,7 @@ public class ConversationDB{
      * @param userid2 the userid 2
      * @return the int (1 if conversation is created, -1 otherwise)
      */
-    public int createConversationForUser(int userid1,int userid2){
+    public static int createConversationForUser(int userid1,int userid2){
         int conversationId = getUserUserConversation(userid1,userid2);
         if(conversationId<0){
             String createConvQuery = "SELECT user_user_conversation("+userid1+","+userid2+") as conversations_id";
@@ -46,7 +48,7 @@ public class ConversationDB{
      * @param id2
      * @return int id of the conversation
      */
-    private int getUserUserConversation(int id1,int id2) {
+    private static int getUserUserConversation(int id1,int id2) {
         String query = "select conversations_id from users_converses_users where (users_id="+id1+" and users_id1="+id2+") or ( users_id="+id2+" and users_id1="+id1+")";
 
         List<Map<String, Object>> rs = mysqlCon.sqlGet(query);
@@ -64,7 +66,7 @@ public class ConversationDB{
      * @param conversationId the conversation id
      * @return the int (1 if thread is created, -1 o.w.)
      */
-    public int createThreadForConversation(int conversationId){
+    public static int createThreadForConversation(int conversationId){
         String query = "INSERT INTO thread(conversations_id) VALUES ("+conversationId+")";
         int r = mysqlCon.sqlcreate(query);
         if(r>0){
@@ -80,7 +82,7 @@ public class ConversationDB{
      * @param conversationId the conversation id
      * @return the list of threads
      */
-    public List<Map<String,Object>> getThreadsForConversation(int conversationId){
+    public static List<Map<String,Object>> getThreadsForConversation(int conversationId){
         String query = "SELECT * FROM thread WHERE conversations_id=" + conversationId;
         return mysqlCon.sqlGet(query);
     }
@@ -94,7 +96,7 @@ public class ConversationDB{
      * @param text      the text
      * @return the int
      */
-    public int createMessageForThread(int threadId, int senderId, String text){
+    public static int createMessageForThread(int threadId, int senderId, String text){
         String query = "INSERT INTO message(sender_id,thread_id,text) VALUES ("+senderId+","+threadId+",'"+text+"');";
         int r = mysqlCon.sqlcreate(query);
         if(r>0){
@@ -109,7 +111,7 @@ public class ConversationDB{
      * @param conversationId the conversation id
      * @return the list of messages inside a conversation
      */
-    public List<Map<String,Object>> getMessagesForConversation(int conversationId){
+    public static List<Map<String,Object>> getMessagesForConversation(int conversationId){
         String query = "CALL message_in_conversation("+conversationId+");";
         return mysqlCon.sqlGet(query);
     }
@@ -119,7 +121,7 @@ public class ConversationDB{
      *
      * @return the list of conversations
      */
-    public List<Map<String, Object>> getConversations(){
+    public static List<Map<String, Object>> getConversations(){
         String sql = "SELECT * FROM conversations";
         return mysqlCon.sqlGet(sql);
     }
@@ -130,9 +132,14 @@ public class ConversationDB{
      * @param id the id of the conversation(s) being searched for
      * @return the list of conversations with that id
      */
-    public List<Map<String, Object>> getConversationsById(int id){
+    public static List<Map<String, Object>> getConversationsById(int id){
         String sql = "SELECT * FROM conversations where id='"+id+"'";
         return mysqlCon.sqlGet(sql);
     }
 
+    public static List<Map<String, Object>> getConversations(int userId){
+        String sql = "SELECT * FROM conversations as c JOIN users_converses_users as uu on c.id = uu.Conversations_id WHERE uu.users_id=" +userId+" OR uu.users_id1="+userId;
+        ChatLogger.info(sql);
+        return mysqlCon.sqlGet(sql);
+    }
 }

@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledFuture;
 import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.NetworkConnection;
+import edu.northeastern.ccs.im.api.Route;
 import edu.northeastern.ccs.im.database.UserDB;
 
 /**
@@ -260,7 +261,6 @@ public class ClientRunnable implements Runnable {
 			} else {
 				// Check if the message is legal formatted
 				if (messageChecks(msg)) {
-					// Check for our "special messages"
 					if (msg.isBroadcastMessage()) {
 						// Check for our "special messages"
                         String rawMessage = msg.getText();
@@ -269,6 +269,28 @@ public class ClientRunnable implements Runnable {
                         Message message1 = Message.makeBroadcastMessage(msg.getName(),message);
                         msg.storeMessageInDb();
 						Prattle.sendMessageToUser(destinationUser,message1);
+					}else if(msg.isApiMessage()){
+					    // handle api messages
+                        // once the user is logged in, all the messages should come here
+
+                        // raw message should be formatted as below
+                        //  <API_Endpoint>::<Method>::{<data>}
+                        //  Example: getUsers::GET::{}
+
+						String rawMessage = msg.getText();
+						String route = rawMessage.split("::")[0];   // route
+						String method = rawMessage.split("::")[1];  // method
+						String data = rawMessage.split("::")[2];    // data
+
+						if(method.equals("GET")){
+							String response = Route.getResponseGet(route,data);
+							Message message = Message.makeBroadcastMessage(msg.getName(),response);
+							Prattle.sendMessageToUser(msg.getName(),message);
+						}else if(method.equals("POST")){
+							String response = Route.getResponsePost(route,data);
+							Message message = Message.makeBroadcastMessage(msg.getName(),response);
+							Prattle.sendMessageToUser(msg.getName(),message);
+						}
 					}else {
 						ChatLogger.warning("User already logged in");
 					}
