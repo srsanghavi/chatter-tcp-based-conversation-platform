@@ -13,7 +13,7 @@ public class UserDB{
     /**
      * The Mysql con.
      */
-    private MysqlCon mysqlCon;
+    private static MysqlCon mysqlCon;
 
     /**
      * Instantiates a new User db.
@@ -114,6 +114,12 @@ public class UserDB{
         jsonObj = mysqlCon.sqlGet(sql);
         id = (int)(jsonObj.get(0)).get("id");
         return id;
+    }
+
+    public static List<Map<String, Object>> getUserByUserName(String username){
+        int id = 0;
+        String sql = "SELECT * FROM users where username='"+username+"'";
+        return mysqlCon.sqlGet(sql);
     }
 
     public List<Map<String,Object>> getGroups(int user_id) {

@@ -142,4 +142,5 @@ public class ConversationDB{
         ChatLogger.info(sql);
         return mysqlCon.sqlGet(sql);
     }
+
 }

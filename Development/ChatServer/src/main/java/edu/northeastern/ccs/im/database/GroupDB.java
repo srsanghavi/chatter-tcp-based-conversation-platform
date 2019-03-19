@@ -6,13 +6,15 @@ import java.util.Map;
 
 public class GroupDB {
 
-  private MysqlCon mysqlCon;
+  private static MysqlCon mysqlCon;
 
   GroupDB() {
     mysqlCon = MysqlCon.getInstance();
   }
 
-  /**
+
+
+    /**
    * Get groups list
    *
    * @return the list of groups
@@ -83,5 +85,17 @@ public class GroupDB {
       String query = "INSERT INTO groups_has_users(Groups_id,Users_id,is_admin) VALUES ("+groupId+", "+userId+", "+isAdmin+")";
       int r = mysqlCon.sqlcreate(query);
       return r<=0?-1:r;
+  }
+
+    /**
+     * Gets users.
+     *
+     * @param group_id the value of
+     * @return the users
+     */
+    public static List<Map<String, Object>> getUsers(Integer group_id) {
+        String query = "SELECT * FROM users WHERE id in (SELECT users_id FROM groups_has_users WHERE groups_id="+group_id;
+        List<Map<String, Object>> r = mysqlCon.sqlGet(query);
+        return r;
   }
 }

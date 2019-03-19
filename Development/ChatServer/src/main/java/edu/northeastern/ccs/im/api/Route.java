@@ -9,7 +9,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
+import edu.northeastern.ccs.im.conversation.Conversation;
 import edu.northeastern.ccs.im.database.ConversationDB;
+import edu.northeastern.ccs.im.database.GroupDB;
 import edu.northeastern.ccs.im.database.UserDB;
 import edu.northeastern.ccs.im.server.Prattle;
 
@@ -38,6 +40,7 @@ public class Route {
                 ChatLogger.info("getUsers:");
                 response = userDB.getUsers().toString();
                 break;
+
             // get all conversations associated with the user which is supplied in the JSON as user_id
             // requires params: {user_id: "<user_id>"}
             case "getConversations/":
@@ -45,6 +48,7 @@ public class Route {
                 String userId = (String) json.getOrDefault("user_id",0);
                 response = ConversationDB.getConversations(Integer.valueOf(userId)).toString();
                 break;
+
             // get all conversations associated with the user which is supplied in the JSON as user_id
             // requires params: {user_id: "<user_id>"}
             case "getGroups/":
@@ -53,12 +57,23 @@ public class Route {
                 response = userDB.getGroups(Integer.valueOf(id)).toString();
                 break;
 
-//                TODO: following
-//            case "getGroupUsers/":
-//            case "getUsersForConversation/":
-//            case "getThreadsInConversation/":
-//            case "getUserByUsername/":
-//            case "getGroupUsers/":
+            case "getGroupUsers/":
+                ChatLogger.info("getGroupUsers:");
+                String group_id = (String) json.getOrDefault("group_id",0);
+                response = GroupDB.getUsers(Integer.valueOf(group_id)).toString();
+                break;
+
+            case "getThreadsInConversation/":
+                ChatLogger.info("getThreadsInConversation:");
+                String conversation_id = (String) json.getOrDefault("conversation_id",0);
+                response = ConversationDB.getThreadsForConversation(Integer.valueOf(conversation_id)).toString();
+                break;
+            case "getUserByUsername/":
+                ChatLogger.info("getUserByUsername:");
+                String username = (String) json.getOrDefault("username",0);
+                response = UserDB.getUserByUserName(username).toString();
+                break;
+
             default:
                 response = "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
         }
