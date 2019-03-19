@@ -52,6 +52,13 @@ public class Route {
                 String id = (String) json.getOrDefault("user_id",0);
                 response = userDB.getGroups(Integer.valueOf(id)).toString();
                 break;
+
+//                TODO: following
+//            case "getGroupUsers/":
+//            case "getUsersForConversation/":
+//            case "getThreadsInConversation/":
+//            case "getUserByUsername/":
+//            case "getGroupUsers/":
             default:
                 response = "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
         }
@@ -87,6 +94,11 @@ public class Route {
                     response = "{result: error, resultCode: 500, resultMessage: 'could not create message'}";
                 }
                 break;
+
+//                TODO: following
+
+//            case "createGroup/":
+//            case "addToGroup/":
             default:
                 response = "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
         }
