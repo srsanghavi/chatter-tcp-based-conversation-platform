@@ -24,6 +24,46 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <script src="js/webtcp-0.0.1.min.js"></script>
+    <script>
+      // function connectToTCP(){
+      //     return connection;
+      // }
+      var isRunning = false;
+      var uname = "";
+      var socket;
+      window.newResponse = false;
+        window.apiResponse = {};
+      function connectTcp(){
+          var net = new WebTCP('localhost', 9999);
+          window.socket = net.createSocket("localhost", 4545);
+
+          // When the connection is open, send some data to the server
+          window.socket.on('connect', function(){
+              isRunning = true;
+              console.log('connected');
+          })
+
+          // This gets called every time new data for this socket is received
+          window.socket.on('data', function(data) {
+              data = data.split(" ");
+              data = data.slice(4);
+              data = data.join(" ");
+              window.newResponse = true;
+              window.apiResponse = data;
+          });
+
+          window.socket.on('end', function(data) {
+              console.log("socket is closed ");
+              
+          });
+          return window.socket;
+      }
+
+      window.onload = function() {
+        connectTcp();
+      };
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

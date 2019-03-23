@@ -1,0 +1,5 @@
+export default {
+    ACCOUNT_SIGN_IN:  'ACCOUNT_SIGN_IN',
+    ACCOUNT_SIGN_OUT: 'ACCOUNT_SIGN_OUT',
+    USER_CREATED:     'USER_CREATED',
+}
