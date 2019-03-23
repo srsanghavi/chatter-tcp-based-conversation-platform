@@ -74,4 +74,9 @@ public class ConversationDBTest {
     public void testUserUserCreateConversationForNoRealUser(){
         assertTrue(conversationDB.createConversationForUser(1,50)<=0);
     }
+
+    @Test
+    public void  testGetConversationsForUser(){
+        System.out.println(ConversationDB.getConversations(1));
+    }
 }

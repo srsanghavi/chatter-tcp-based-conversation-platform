@@ -3,6 +3,8 @@ import DataService from './Data'
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
+import ConversationStore from '../Store/ConversationStore';
+import ConversationActions from '../Actions/ConversationActions';
 
 class Login extends Component {
     constructor(props) {
@@ -17,20 +19,30 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.api = new Api();
         this._onChange = this._onChange.bind(this);
+        this._onConversationsChanged = this._onConversationsChanged.bind(this);
     }
 
     componentWillMount(){
         UserStore.addChangeListener(this._onChange);
+        ConversationStore.addChangeListener(this._onConversationsChanged);
     }
 
     componentWillUnmount(){
         UserStore.removeChangeListener(this._onChange);
+        ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
+    _onConversationsChanged(){
+        var conv = ConversationStore.getConversations();
+        console.log(conv);
+        
+    }
 
     _onChange(){
         console.log("logged In");
-        UserActions.getUsers('srsanghavi');
+        // UserActions.getUsers('srsanghavi');
+        // setTimeout(function(){}, 3000);
+        ConversationActions.getConversations('srsanghavi','1');
     }
 
     onUsernameChange(event) {
