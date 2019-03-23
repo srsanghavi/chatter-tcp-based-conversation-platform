@@ -11,6 +11,7 @@ public class Group {
   private Timestamp createdOn; // Creation Timestamp
   private Timestamp modifiedOn; // Last Modified Timestamp
   private int conversationId; // Conversation the group belongs to
+  private boolean searchable; // Group being private/public with default public
 
   public Group(String name) {
     this.name = name;
@@ -20,6 +21,7 @@ public class Group {
     Date date = new Date();
     createdOn = new Timestamp(date.getTime());
     modifiedOn = new Timestamp(date.getTime());
+    searchable = true;
   }
 
   /**
@@ -60,5 +62,20 @@ public class Group {
    */
   public int getConversationId() {
     return conversationId;
+  }
+
+  /**
+   * Make group private.
+   */
+  public void makeGroupPrivate(){
+    this.searchable = false;
+  }
+
+  /**
+   *
+   * @return searchable criteria for group
+   */
+  public boolean getSearchable(){
+    return this.searchable;
   }
 }
