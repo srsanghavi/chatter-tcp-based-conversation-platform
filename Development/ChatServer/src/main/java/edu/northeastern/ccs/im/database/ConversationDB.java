@@ -126,6 +126,13 @@ public class ConversationDB{
         return mysqlCon.sqlGet(sql);
     }
 
+    public static List<Map<String, Object>> getUsersInConversation(int conversationID){
+      String sql = "SELECT * FROM users as u JOIN users_converses_users as " +
+              "JOIN conversations as c uu on u.id = uu.Users_id or u.id = Users_id1 and c.id = " +
+              "uu.Conversations_id WHERE c.id ="+conversationID +" group by u.id";
+      return mysqlCon.sqlGet(sql);
+    }
+
     /**
      * retrieves a list of conversations with the given id
      *
@@ -138,7 +145,8 @@ public class ConversationDB{
     }
 
     public static List<Map<String, Object>> getConversations(int userId){
-        String sql = "SELECT * FROM conversations as c JOIN users_converses_users as uu on c.id = uu.Conversations_id WHERE uu.users_id=" +userId+" OR uu.users_id1="+userId;
+        String sql = "SELECT * FROM conversations as c JOIN users_converses_users as uu on " +
+                "c.id = uu.Conversations_id WHERE uu.users_id=" +userId+" OR uu.users_id1="+userId;
         ChatLogger.info(sql);
         return mysqlCon.sqlGet(sql);
     }
