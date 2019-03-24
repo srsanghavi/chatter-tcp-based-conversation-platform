@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
 import Header from './Header'
+import Footer from './Footer'
 import DataService from "./Data";
 import ConversationContainer from "./ConversationContainer";
 
@@ -37,6 +38,11 @@ class HomePage extends Component {
                 {this.state.user.id === null ? null :
                     <ConversationContainer conversations={this.state.conversations}
                                            search={this.state.search}/>}
+                <div className={css({
+                    paddingTop: '5em'
+                })}>
+                    <Footer/>
+                </div>
             </div>
         )
     }

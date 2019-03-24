@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
 import ConversationHeader from "./ConversationHeader";
-import Footer from "./Footer";
+import ConversationFooter from "./ConversationFooter";
 import ThreadContainer from "./ThreadContainer";
 import DataService from "./Data";
 
@@ -66,9 +66,9 @@ class Conversation extends Component {
                 <ConversationHeader/>
                 <ThreadContainer threads={this.state.threads}/>
                 <div className={css({paddingBottom: '5em'})}></div>
-                <Footer onChange={this.onMessageChange}
-                        onClick={this.sendMessage}
-                        value={this.state.newMessageText}/>
+                <ConversationFooter onChange={this.onMessageChange}
+                                    onClick={this.sendMessage}
+                                    value={this.state.newMessageText}/>
             </div>
         );
     }
