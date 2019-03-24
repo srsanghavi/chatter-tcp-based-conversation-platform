@@ -4,10 +4,15 @@ import Header from './Header'
 import Footer from './Footer'
 import DataService from "./Data";
 import ConversationContainer from "./ConversationContainer";
+import Api from '../Services/Api';
+import UserStore from '../Store/UserStore';
+import UserActions from '../Actions/UserActions';
+import ConversationActions from "../Actions/ConversationActions";
+import ConversationStore from "../Store/ConversationStore";
 
 class HomePage extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             conversations: [],
             user: {
@@ -17,14 +22,54 @@ class HomePage extends Component {
             search: false
         };
 
+        this.api = new Api();
+        this._onChange = this._onChange.bind(this);
+        this._onConversationsChanged = this._onConversationsChanged.bind(this);
+
     }
 
-    componentDidMount() {
-        DataService.getConversationsForUser(this.state.user.id)
-            .then(response => {
-                    this.setState({ conversations: response })
-                });
+    componentWillMount(){
+        UserStore.addChangeListener(this._onChange);
+        ConversationStore.addChangeListener(this._onConversationsChanged);
     }
+
+    componentWillUnmount(){
+        UserStore.removeChangeListener(this._onChange);
+        ConversationStore.removeChangeListener(this._onConversationsChanged);
+    }
+
+    // componentDidMount() {
+    //     DataService.getConversationsForUser(this.state.user.id)
+    //         .then(response => {
+    //                 this.setState({ conversations: response })
+    //             });
+    // }
+
+    componentDidMount() {
+        //UserActions.signin('srsanghavi','12345678');
+        //let user = UserActions.getUserById(localStorage.getItem('id'))
+        //console.log('test')
+        //console.log(user)
+        //UserActions.signin(this.state.username,this.state.password);
+        ConversationActions.getConversations('srsanghavi','1');
+    }
+
+    _onChange() {
+        console.log('test')
+    }
+
+    _onConversationsChanged(){
+        var conv = ConversationStore.getConversations();
+
+    }
+
+    handle() {
+        console.log(localStorage.getItem('id'))
+        console.log(localStorage.getItem('username'))
+        //UserActions.signin('srsanghavi','12345678');
+        //UserActions.getUserById('srsanghavi', localStorage.getItem('id'))
+    }
+
 
 
     render() {
@@ -41,6 +86,7 @@ class HomePage extends Component {
                 <div className={css({
                     paddingTop: '5em'
                 })}>
+                    <button onClick={this.handle}>test</button>
                     <Footer/>
                 </div>
             </div>

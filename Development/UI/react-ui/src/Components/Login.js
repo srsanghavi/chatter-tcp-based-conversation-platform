@@ -5,6 +5,7 @@ import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
 import ConversationStore from '../Store/ConversationStore';
 import ConversationActions from '../Actions/ConversationActions';
+import {NavLink} from 'react-router-dom';
 
 class Login extends Component {
     constructor(props) {
@@ -32,6 +33,10 @@ class Login extends Component {
         ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
+    componentDidMount() {
+        console.log(window.socket)
+    }
+
     _onConversationsChanged(){
         var conv = ConversationStore.getConversations();
 
@@ -39,7 +44,7 @@ class Login extends Component {
 
     _onChange(){
         console.log("logged In");
-        UserActions.getUsers('srsanghavi');
+        // UserActions.getUsers('srsanghavi');
         // setTimeout(function(){}, 3000);
         // UserActions.getUserByUsername('srsanghavi');
         // ConversationActions.getConversations('srsanghavi','1');
@@ -78,7 +83,12 @@ class Login extends Component {
 
     handleSubmit(){
         UserActions.signin(this.state.username,this.state.password);
-
+        if(window.socket !== undefined) {
+            if(!window.socket.closed) {
+                localStorage.setItem('loggedIn', 'true')
+            }
+        }
+        console.log(localStorage.getItem('loggedIn'))
     }
 
     render() {
@@ -99,11 +109,12 @@ class Login extends Component {
                             value={this.state.password}
                             onChange={this.onPasswordChange}
                             required/>
-                        <button className="btn btn-block btn-outline-primary"
-                                onClick={this.handleSubmit}
-                        >
-                            Log In
-                        </button>
+                        <NavLink to={'./'}>
+                            <button className="btn btn-block btn-outline-primary"
+                                    onClick={this.handleSubmit}>
+                                Log In
+                            </button>
+                        </NavLink>
                     </div>
                 </div>
                 <h3 className="signin-text">Don't have an account?

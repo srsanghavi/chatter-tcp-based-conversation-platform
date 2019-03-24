@@ -30,8 +30,13 @@ class UserStore extends EventEmitter {
     _setUser(user){
         console.log(user);
 
+        if(user !== null) {
+            localStorage.setItem('username', user.username)
+            localStorage.setItem('id', user.id)
+        }
+
         _user=user;
-        var self = this;
+        let self = this;
         setTimeout(() => { // Run after dispatcher has finished
             self.emit(CHANGE);
         }, 0);

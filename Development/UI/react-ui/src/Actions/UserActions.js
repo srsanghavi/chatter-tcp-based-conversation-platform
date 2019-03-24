@@ -31,6 +31,16 @@ class UserActions {
         });
     }
 
+    getUserById(id){
+        api.getUserByUsername(id).then(value => {
+            console.log(value)
+            Dispatcher.dispatch({
+                actionType: ActionTypes.GET_USER_BY_ID,
+                payload:    value,
+            })
+        });
+    }
+
 }
 
 export default new UserActions();

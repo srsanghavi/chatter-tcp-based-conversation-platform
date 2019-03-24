@@ -9,15 +9,19 @@ import Login from "./Components/Login";
 import ConversationPreview from './Components/ConversationPreview';
 import HomePage from "./Components/HomePage";
 import ThreadContainer from "./Components/ThreadContainer";
+import Authentication from './Components/Authentication'
+import LoginProcessing from "./Components/LoginProcessing";
 
 class App extends Component {
+
+
   render() {
       return (
           <div>
               <BrowserRouter>
                   <Switch>
-                      <Route path="/home">
-                          {() => <HomePage/>}
+                      <Route path="/authentication">
+                          {() => <LoginProcessing/>}
                       </Route>
                       <Route path="/login">
                           {() => <Login/>}
@@ -27,14 +31,15 @@ class App extends Component {
                           {/*{() => <Conversation/>}*/}
                       </Route>
                       <Route path="/">
-                          {() => {
-                              if(localStorage.getItem('id') == null) {
-                                  return <Login/>
-                              } else {
-                                  return <HomePage/>
-                              }
-                            }
-                          }
+                          {/*{() => {*/}
+                              {/*if(localStorage.getItem('id') == null) {*/}
+                                  {/*return <Login/>*/}
+                              {/*} else {*/}
+                                  {/*return <HomePage/>*/}
+                              {/*}*/}
+                            {/*}*/}
+                          {/*}*/}
+                          <Authentication page={<HomePage/>}/>
                       </Route>
                   </Switch>
               </BrowserRouter>
