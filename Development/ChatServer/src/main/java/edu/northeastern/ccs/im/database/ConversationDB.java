@@ -138,6 +138,17 @@ public class ConversationDB{
       return mysqlCon.sqlGet(sql);
     }
 
+
+  /**
+   * Get messages in a thread.
+   * @param threadID the thread id
+   * @return list of messages in the thread
+   */
+  public static List<Map<String, Object>> getMessagesInThread(int threadID){
+    String sql = "select * from message where thread_id = "+threadID;
+    return mysqlCon.sqlGet(sql);
+  }
+
     /**
      * retrieves a list of conversations with the given id
      *
