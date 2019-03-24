@@ -10,8 +10,8 @@ class UserActions {
           Dispatcher.dispatch({
               actionType: ActionTypes.ACCOUNT_SIGN_IN,
               payload:    value,
-          })
-        });         
+          });
+        });
     }
 
     getUsers(username){

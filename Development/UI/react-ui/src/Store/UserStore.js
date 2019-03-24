@@ -30,17 +30,17 @@ class UserStore extends EventEmitter {
     _setUser(user){
         console.log(user);
 
-        if(user !== null) {
-            localStorage.setItem('username', user.username)
-            localStorage.setItem('id', user.id)
-        }
-
         _user=user;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
             self.emit(CHANGE);
         }, 0);
     }
+
+    _getUser() {
+        return _user
+    }
+
 
     // Hooks a React component's callback to the CHANGED event.
     addChangeListener(callback) {
@@ -51,6 +51,7 @@ class UserStore extends EventEmitter {
      removeChangeListener(callback) {
         this.removeListener(CHANGE, callback);
     }
+
 }
 
 export default new UserStore();

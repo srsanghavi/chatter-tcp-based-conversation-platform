@@ -34,7 +34,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        console.log(window.socket)
+        console.log(localStorage.getItem('loggedIn'));
     }
 
     _onConversationsChanged(){
@@ -83,13 +83,8 @@ class Login extends Component {
 
     handleSubmit(){
         UserActions.signin(this.state.username,this.state.password);
-        if(window.socket !== undefined) {
-            if(!window.socket.closed) {
-                localStorage.setItem('loggedIn', 'true')
-            }
-        }
-        console.log(localStorage.getItem('loggedIn'))
     }
+
 
     render() {
         return(
@@ -109,7 +104,7 @@ class Login extends Component {
                             value={this.state.password}
                             onChange={this.onPasswordChange}
                             required/>
-                        <NavLink to={'./'}>
+                        <NavLink to={'./authentication'}>
                             <button className="btn btn-block btn-outline-primary"
                                     onClick={this.handleSubmit}>
                                 Log In

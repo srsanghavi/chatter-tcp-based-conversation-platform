@@ -63,13 +63,6 @@ class HomePage extends Component {
 
     }
 
-    handle() {
-        console.log(localStorage.getItem('id'))
-        console.log(localStorage.getItem('username'))
-        //UserActions.signin('srsanghavi','12345678');
-        //UserActions.getUserById('srsanghavi', localStorage.getItem('id'))
-    }
-
 
 
     render() {
@@ -86,7 +79,6 @@ class HomePage extends Component {
                 <div className={css({
                     paddingTop: '5em'
                 })}>
-                    <button onClick={this.handle}>test</button>
                     <Footer/>
                 </div>
             </div>
