@@ -32,7 +32,7 @@ class UserStore extends EventEmitter {
 
         _user=user;
         var self = this;
-        setTimeout(function() { // Run after dispatcher has finished
+        setTimeout(() => { // Run after dispatcher has finished
             self.emit(CHANGE);
         }, 0);
     }

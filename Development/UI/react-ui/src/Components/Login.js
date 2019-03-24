@@ -39,9 +39,9 @@ class Login extends Component {
 
     _onChange(){
         console.log("logged In");
-        // UserActions.getUsers('srsanghavi');
+        UserActions.getUsers('srsanghavi');
         // setTimeout(function(){}, 3000);
-        UserActions.getUserByUsername('srsanghavi');
+        // UserActions.getUserByUsername('srsanghavi');
         // ConversationActions.getConversations('srsanghavi','1');
     }
 

@@ -7,7 +7,7 @@ const api = new Api();
 class ConversationActions {
 
     getConversations(username,userId){
-        api.getConversations(username,userId).then(function(value){
+        api.getConversations(username,userId).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.USER_CONVERSATIONS,
                 payload:    value, 
@@ -17,7 +17,7 @@ class ConversationActions {
 
     signin(username,password){
         console.log("signup");
-        api.signin(username,password).then(function(value) {
+        api.signin(username,password).then(value => {
           Dispatcher.dispatch({
               actionType: ActionTypes.ACCOUNT_SIGN_IN,
               payload:    value,
@@ -27,7 +27,7 @@ class ConversationActions {
 
     getUsers(username){
       console.log("getUsers/");
-      api.getUsers(username).then(function(value) {
+      api.getUsers(username).then(value => {
         console.log(value);
       });
     }

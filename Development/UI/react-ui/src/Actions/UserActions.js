@@ -6,8 +6,7 @@ const api = new Api();
 
 class UserActions {
     signin(username,password){
-        console.log("signup");
-        api.signin(username,password).then(function(value) {
+        api.signin(username,password).then(value => {
           Dispatcher.dispatch({
               actionType: ActionTypes.ACCOUNT_SIGN_IN,
               payload:    value,
@@ -17,7 +16,7 @@ class UserActions {
 
     getUsers(username){
       console.log("getUsers/");
-      api.getUsers(username).then(function(value) {
+      api.getUsers(username).then(value => {
         console.log(value);
       });
     }
