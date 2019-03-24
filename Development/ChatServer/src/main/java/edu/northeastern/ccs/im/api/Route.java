@@ -31,6 +31,7 @@ public class Route {
         String response=null;
         Map<String, Object> json = decodeJSON(params);
         UserDB userDB = new UserDB();
+        ConversationDB conversationDB = new ConversationDB();
         ChatLogger.info(route);
         ChatLogger.info(params);
         ChatLogger.info(json.toString());
@@ -45,8 +46,8 @@ public class Route {
             // requires params: {user_id: "<user_id>"}
             case "getConversations/":
                 ChatLogger.info("getConversations:");
-                String userId = (String) json.getOrDefault("user_id",0);
-                response = ConversationDB.getConversations(Integer.valueOf(userId)).toString();
+                int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
+                response = conversationDB.getConversations(userId).toString();
                 break;
 
             // get all conversations associated with the user which is supplied in the JSON as user_id

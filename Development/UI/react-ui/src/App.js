@@ -4,11 +4,11 @@ import {css} from 'emotion';
 import 'font-awesome/css/font-awesome.min.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import Conversation from './Conversation';
-import Login from "./Login";
-import ConversationPreview from './ConversationPreview';
-import HomePage from "./HomePage";
-import ThreadContainer from "./ThreadContainer";
+import Conversation from './Components/Conversation';
+import Login from "./Components/Login";
+import ConversationPreview from './Components/ConversationPreview';
+import HomePage from "./Components/HomePage";
+import ThreadContainer from "./Components/ThreadContainer";
 
 class App extends Component {
   render() {
