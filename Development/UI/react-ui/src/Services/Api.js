@@ -40,6 +40,19 @@ export default class Api {
           return promise;
     }
 
+    getUserByUsername(username){
+        var msg = this.messageType.makeApiMessage(username,"getUserByUsername/::GET::{username:"+username+"}");
+        gateway.sendTcp(msg);
+
+        var promise = new Promise(function(resolve, reject) {
+            setTimeout(function() {
+                resolve(gateway.getResult());
+            }, 1000);
+        });
+
+        return promise;
+    }
+
     getConversations(username,userId){
       var msg = this.messageType.makeApiMessage(username,"getConversations/::GET::{user_id:"+userId+"}");
       gateway.sendTcp(msg);

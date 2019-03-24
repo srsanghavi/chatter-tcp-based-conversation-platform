@@ -34,15 +34,15 @@ class Login extends Component {
 
     _onConversationsChanged(){
         var conv = ConversationStore.getConversations();
-        console.log(conv);
-        
+
     }
 
     _onChange(){
         console.log("logged In");
         // UserActions.getUsers('srsanghavi');
         // setTimeout(function(){}, 3000);
-        ConversationActions.getConversations('srsanghavi','1');
+        UserActions.getUserByUsername('srsanghavi');
+        // ConversationActions.getConversations('srsanghavi','1');
     }
 
     onUsernameChange(event) {
