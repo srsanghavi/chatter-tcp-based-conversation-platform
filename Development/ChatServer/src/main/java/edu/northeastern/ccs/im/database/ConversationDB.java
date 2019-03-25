@@ -115,6 +115,15 @@ public class ConversationDB{
         return -1;
     }
 
+    public static int addMessageToThread(int messageID, int threadId){
+      String query = "UPDATE message SET thread_id = "+threadId+" WHERE id="+messageID+";";
+      int r = mysqlCon.sqlcreate(query);
+      if(r>0){
+        return mysqlCon.getLastInsertedID();
+      }
+      return -1;
+    }
+
     /**
      * Get messages for conversation list.
      *
