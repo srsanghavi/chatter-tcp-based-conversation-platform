@@ -1,5 +1,6 @@
 import React from 'react';
 import {css} from 'emotion';
+import { NavLink } from 'react-router-dom';
 
 const Header = props => {
     return (
@@ -21,11 +22,17 @@ const Header = props => {
                 width: '100%',
                 padding: '0 0.75em'
             })}>
-                <i className="fa fa-bars fa-2x"
-                   onClick={() => {
-                       localStorage.clear();
-                       window.location.reload();
-                   }}></i>
+                <NavLink to={'./profile'}
+                         className={css({
+                             color: props.tab === 'profile' ? '#45AAEB' : 'white',
+                             textDecoration: 'none',
+                             '&:hover': {
+                                 color: props.tab === 'profile' ? '#45AAEB' : 'white'
+                             }
+                         })}>
+                    <i className="fa fa-user-circle-o fa-2x"
+                       onClick={props.profileOnClick}></i>
+                </NavLink>
                 <i className="fa fa-search fa-2x"></i>
             </div>
         </div>

@@ -22,6 +22,10 @@ class UserStore extends EventEmitter {
                 console.log(action);
                 this._setUser(action.payload);
                 break;
+            case ActionTypes.GET_USER_BY_USERNAME:
+                console.log(action);
+                this._setUser(action.payload);
+                break;
             default:
             break;
         }

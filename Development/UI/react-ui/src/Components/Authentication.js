@@ -5,7 +5,8 @@ const Authentication = props => {
     if (localStorage.getItem('loggedIn') === 'true') {
         return props.page
     } else {
-        return <Redirect to='/login'  />
+        // return <Redirect to='/login'/>
+        return props.page
     }
 };
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import UserStore from "../Store/UserStore";
 import {NavLink} from 'react-router-dom';
 import {css} from 'emotion';
+import UserActions from "../Actions/UserActions";
 
 class LoginProcessing extends Component {
     constructor() {

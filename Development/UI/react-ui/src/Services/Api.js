@@ -21,7 +21,7 @@ export default class Api {
     signin(username,password){
         let msg = this.messageType.makeLoginMsg(username,password);
         gateway.sendTcp(msg);
-          return this.promise();
+        return this.promise();
     }
 
     signout(){

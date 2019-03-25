@@ -9,22 +9,27 @@ import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
 import ConversationActions from "../Actions/ConversationActions";
 import ConversationStore from "../Store/ConversationStore";
+import Conversation from "./Conversation";
+import {Route, Switch, BrowserRouter} from 'react-router-dom';
+import Settings from './Settings';
+import Conversations from './Conversations';
+import UserSearch from './UserSearch';
+import Profile from './Profile';
 
 class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            conversations: [],
-            user: {
-                id: localStorage.getItem('id'),
-                username: localStorage.getItem('username')
-            },
-            search: false
+            tab: 'conversations'
         };
 
         this.api = new Api();
         this._onChange = this._onChange.bind(this);
         this._onConversationsChanged = this._onConversationsChanged.bind(this);
+        this.conversationTabSelected = this.conversationTabSelected.bind(this);
+        this.searchTabSelected = this.searchTabSelected.bind(this);
+        this.settingsTabSelected = this.settingsTabSelected.bind(this);
+        this.profileTabSelected = this.profileTabSelected.bind(this);
 
     }
 
@@ -51,7 +56,9 @@ class HomePage extends Component {
         //console.log('test')
         //console.log(user)
         //UserActions.signin(this.state.username,this.state.password);
-        ConversationActions.getConversations('srsanghavi','1');
+        //ConversationActions.getConversations('srsanghavi','1');
+        console.log(localStorage.getItem('username'));
+        console.log(UserStore._getUser())
     }
 
     _onChange() {
@@ -60,7 +67,30 @@ class HomePage extends Component {
 
     _onConversationsChanged(){
         var conv = ConversationStore.getConversations();
+    }
 
+    conversationTabSelected() {
+        this.setState({
+            tab: 'conversations'
+        })
+    }
+
+    searchTabSelected() {
+        this.setState({
+            tab: 'search'
+        })
+    }
+
+    settingsTabSelected() {
+        this.setState({
+            tab: 'settings'
+        })
+    }
+
+    profileTabSelected() {
+        this.setState({
+            tab: 'profile'
+        })
     }
 
 
@@ -71,15 +101,30 @@ class HomePage extends Component {
                 <div className={css({
                     paddingBottom: '5em'
                 })}>
-                    <Header/>
+                    <Header tab={this.state.tab}
+                            profileOnClick={this.profileTabSelected}/>
                 </div>
-                {this.state.user.id === null ? null :
-                    <ConversationContainer conversations={this.state.conversations}
-                                           search={this.state.search}/>}
+                    <Switch>
+                        <Route path="/profile">
+                            {() => <Profile/>}
+                        </Route>
+                        <Route path="/settings">
+                            {() => <Settings/>}
+                        </Route>
+                        <Route path="/conversations">
+                            {() => <Conversations/>}
+                        </Route>
+                        <Route path="/search">
+                            {() => <UserSearch/>}
+                        </Route>
+                    </Switch>
                 <div className={css({
                     paddingTop: '5em'
                 })}>
-                    <Footer/>
+                    <Footer tab={this.state.tab}
+                            conversationsOnClick={this.conversationTabSelected}
+                            searchOnClick={this.searchTabSelected}
+                            settingsOnClick={this.settingsTabSelected}/>
                 </div>
             </div>
         )

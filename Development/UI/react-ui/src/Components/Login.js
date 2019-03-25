@@ -6,6 +6,7 @@ import UserActions from '../Actions/UserActions';
 import ConversationStore from '../Store/ConversationStore';
 import ConversationActions from '../Actions/ConversationActions';
 import {NavLink} from 'react-router-dom';
+import {css} from 'emotion';
 
 class Login extends Component {
     constructor(props) {
@@ -82,6 +83,7 @@ class Login extends Component {
     // }
 
     handleSubmit(){
+        localStorage.setItem('username', this.state.username);
         UserActions.signin(this.state.username,this.state.password);
     }
 
