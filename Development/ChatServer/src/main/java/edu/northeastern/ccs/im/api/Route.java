@@ -12,8 +12,10 @@ import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.conversation.Conversation;
 import edu.northeastern.ccs.im.database.ConversationDB;
 import edu.northeastern.ccs.im.database.GroupDB;
+import edu.northeastern.ccs.im.database.MysqlCon;
 import edu.northeastern.ccs.im.database.UserDB;
 import edu.northeastern.ccs.im.server.Prattle;
+import edu.northeastern.ccs.im.user.User;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -107,8 +109,30 @@ public class Route {
      */
     public static String getResponsePost(String route,String data){
         String response = null;
+        UserDB userDB = new UserDB();
         Map<String, Object> json = decodeJSON(data);
         switch (route){
+            case "registerUser/":
+            {
+                String firstName = (String) json.get("first_name");
+                String lastName = (String) json.get("last_name");
+
+                String username = (String) json.get("username");
+                String email = (String) json.get("email");
+                String password = (String) json.get("password");
+
+                int r = userDB.createUser(username, email, password, firstName, lastName);
+                if(r>0){
+                    json.put("result_code",201);
+                    json.put("result","OK");
+                    response = json.toString();
+                }else {
+                    json.put("result_code",500);
+                    json.put("result","error");
+//                    response = json.toString();
+                }
+                break;
+            }
             case "sendMessage/":
                 String senderId = (String) json.get("sende_idr");
                 String senderName = (String) json.get("sender_name");
@@ -122,9 +146,9 @@ public class Route {
                     Prattle.sendMessageToUser(destinationName,msg);
                     json.put("result_code",201);
                     json.put("result","OK");
-                    response = json.toString();
+//                    response = json.toString();
                 }else {
-                    response = "{result: error, resultCode: 500, resultMessage: 'could not create message'}";
+                    return  "{result: error, resultCode: 500, resultMessage: 'could not create message'}";
                 }
                 break;
 
@@ -133,9 +157,9 @@ public class Route {
 //            case "createGroup/":
 //            case "addToGroup/":
             default:
-                response = "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
+                return  "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
         }
-        return response;
+        return new JSONObject(json).toString();
     }
 
     private static Map<String,Object> decodeJSON(String jsonString){

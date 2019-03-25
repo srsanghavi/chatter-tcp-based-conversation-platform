@@ -285,11 +285,11 @@ public class ClientRunnable implements Runnable {
 						if(method.equals("GET")){
 							String response = Route.getResponseGet(route,data);
 							Message message = Message.makeBroadcastMessage(msg.getName(),response);
-							Prattle.sendMessageToUser(msg.getName(),message);
+							this.sendMessage(message);
 						}else if(method.equals("POST")){
 							String response = Route.getResponsePost(route,data);
 							Message message = Message.makeBroadcastMessage(msg.getName(),response);
-							Prattle.sendMessageToUser(msg.getName(),message);
+							this.sendMessage(message);
 						}
 					}else {
 						ChatLogger.warning("User already logged in");
