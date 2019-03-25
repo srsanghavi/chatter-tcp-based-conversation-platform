@@ -76,6 +76,16 @@ public class ConversationDB{
     }
 
 
+  public static int createThreadForConversationByThreadID(int threadId, int conversationId){
+    String query = "INSERT INTO thread(threadId,conversations_id) VALUES ("+threadId+","+conversationId+")";
+    int r = mysqlCon.sqlcreate(query);
+    if(r>0){
+      return mysqlCon.getLastInsertedID();
+    }
+    return -1;
+  }
+
+
     /**
      * Get threads for conversation list.
      *
