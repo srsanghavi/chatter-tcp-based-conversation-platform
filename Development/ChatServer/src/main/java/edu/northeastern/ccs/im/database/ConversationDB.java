@@ -161,8 +161,7 @@ public class ConversationDB{
     }
 
     public static List<Map<String, Object>> getConversations(int userId){
-        String sql = "SELECT * FROM conversations as c JOIN users_converses_users as uu on " +
-                "c.id = uu.Conversations_id WHERE uu.users_id=" +userId+" OR uu.users_id1="+userId;
+        String sql = "SELECT * FROM conversations as c JOIN users_converses_users as uu on c.id = uu.Conversations_id WHERE uu.users_id=" +userId+" OR uu.users_id1="+userId+";";
         ChatLogger.info(sql);
         return mysqlCon.sqlGet(sql);
     }

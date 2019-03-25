@@ -13,7 +13,7 @@
             var socket;
             function connectTcp(){
                 var net = new WebTCP('localhost', 9999);
-                socket = net.createSocket("127.0.0.1", 4545);
+                socket = net.createSocket("ec2-54-89-62-84.compute-1.amazonaws.com", 4545);
 
                 // When the connection is open, send some data to the server
                 socket.on('connect', function(){
@@ -22,6 +22,8 @@
                     print("<span style='color:red'>"+'Connected'+"</span>");
                     document.getElementById("send-text").classList.remove("invisible");
                     document.getElementById("send-text").classList.add("visible");
+                    document.getElementById("send-api-text").classList.remove("invisible");
+                    document.getElementById("send-api-text").classList.add("visible");
                 })
 
                 // This gets called every time new data for this socket is received
@@ -38,6 +40,8 @@
                     print("<span style='color:red'>"+'Disconnected'+"</span>");
                     document.getElementById("send-text").classList.remove("visible");
                     document.getElementById("send-text").classList.add("invisible");
+                     document.getElementById("send-api-text").classList.remove("visible");
+                    document.getElementById("send-api-text").classList.add("invisible");
                 });
                 return socket;
             }
@@ -60,6 +64,10 @@
 
             function makeBroadcastMessage(username, text){
                 return 'BCT ' + username.length + ' ' + username + ' ' + text.length + ' ' + text;
+            }
+
+            function makeApiMessage(username, text){
+                return 'API ' + username.length + ' ' + username + ' ' + text.length + ' ' + text;
             }
 
             function onLogin(){
@@ -95,6 +103,17 @@
                 }
             }
 
+            function onSendApiMessage(){
+                if(isRunning && uname!=""){
+                    var text = document.getElementById("message-api-text").value;
+                    var msg = makeApiMessage(uname,text);
+                    sendTcp(msg);
+                }else{
+                    console.log("User not logged In");
+                    print("User not logged In");
+                }
+            }
+
             function print(s){
                 var d = document.getElementById("log");
                 d.innerHTML+="<br>"+s;
@@ -105,14 +124,15 @@
             #log{
                 border: black solid 1px;
                 height: 50vh;
-                width: 50vw;
+                width: 90vw;
                 margin-top: 20px;
                 padding: 15px;
                 font-family:'Lucida Console', monospace;
                 font-size: 12px;
+                overflow: scroll;
             }
             #send-text{
-                width: 50vw;
+                width: 60vw;
                 margin-top:10px; 
                 height: 10vh;
             }
@@ -149,6 +169,11 @@
         <div id="send-text" class="invisible">
             <textarea id="message-text" placeholder="Enter message"></textarea>
             <button onclick="return onSendMessage()">Send</button>
+        </div>
+
+        <div id="send-api-text" class="invisible">
+            <textarea id="message-api-text" placeholder="Enter api message"></textarea>
+            <button onclick="return onSendApiMessage()">Send</button>
         </div>
     </body>
 </html>

@@ -11,7 +11,7 @@ public class UserTest {
     @Test
     public void createUser(){
 
-        user.createUser("ram", "ram@prattle.com", "prakash", "Ram", "Prakash");
+        user.createUser("john", "john@prattle.com", "123", "John", "G");
     }
 
     @Test
