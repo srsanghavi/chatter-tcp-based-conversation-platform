@@ -64,24 +64,6 @@ class Login extends Component {
     }
 
 
-    // handleSubmit() {
-    //     DataService.getUserByUsernameAndPassword(this.state.username, this.state.password)
-    //         .then(user => {
-    //             if (user === undefined) {
-    //                 alert('The credentials you entered were incorrect');
-    //                 this.setState({
-    //                     email: '',
-    //                     password: ''
-    //                 })
-    //             } else {
-    //                 localStorage.setItem('id', user.id);
-    //                 localStorage.setItem('username', user.username);
-    //                 window.location = "/"
-    //             }
-    //         }
-    //     )
-    // }
-
     handleSubmit(){
         localStorage.setItem('username', this.state.username);
         UserActions.signin(this.state.username,this.state.password);

@@ -13,7 +13,8 @@ const Header = props => {
             padding: '0 0.75em',
             backgroundColor: '#342E37',
             boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
-            zIndex: 10
+            zIndex: 10,
+            border: '0.05em solid black',
         })}>
             <div className={css({
                 display: 'flex',
@@ -33,7 +34,13 @@ const Header = props => {
                     <i className="fa fa-user-circle-o fa-2x"
                        onClick={props.profileOnClick}></i>
                 </NavLink>
-                <i className="fa fa-search fa-2x" onClick={props.test}></i>
+                {props.tab === 'settings' || props.tab === 'profile' ? null :
+                    <i className="fa fa-search fa-2x"
+                       onClick={props.searchClick}
+                       style={{
+                           float: 'left',
+                           color: props.search ? '#45AAEB' : 'white',
+                       }}></i>}
             </div>
         </div>
     );

@@ -15,7 +15,8 @@ const Footer = props => {
             padding: '0 0.75em',
             backgroundColor: '#342E37',
             boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
-            zIndex: 10
+            zIndex: 10,
+            border: '0.05em solid black',
         })}>
             <div className={css({
                 display: 'flex',

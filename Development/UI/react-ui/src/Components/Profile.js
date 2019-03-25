@@ -11,29 +11,32 @@ class Profile extends Component {
             firstName: '',
             lastName: '',
             email: '',
-            private: false
+            isSearchable: true,
+            createdDate: ''
         };
 
         this.privateChange = this.privateChange.bind(this)
     }
 
     componentDidMount() {
-        // this.setState({
-        //     username: this.props.user.username,
-        //     firstName: this.props.user.first_name,
-        //     lastName: this.props.user.last_name,
-        //     email: this.props.user.email
-        // });
+        this.setState({
+            username: this.props.user.username,
+            firstName: this.props.user.first_name,
+            lastName: this.props.user.last_name,
+            email: this.props.user.email,
+            isSearchable: this.props.user.isSearchable,
+            createdDate: this.props.user.created_on
+        });
         console.log(this.props.user)
     }
 
     componentDidUpdate() {
-        console.log(this.state.private)
+        console.log(this.state.isSearchable)
     }
 
     privateChange() {
         this.setState({
-            private: !this.state.private
+            isSearchable: !this.state.isSearchable
         });
     }
 
@@ -105,10 +108,14 @@ class Profile extends Component {
                                value={this.state.email}/>
                     </p>
                     <p>
+                        <label>Date Joined:</label>
+                        <h6>{this.state.createdDate}</h6>
+                    </p>
+                    <p>
                         <label>Private:</label>
                         <label className="switch">
                             <input type="checkbox"
-                                   checked={this.state.private}
+                                   checked={!this.state.isSearchable}
                                    onChange={this.privateChange}/>
                             <span className="slider round"></span>
                         </label>

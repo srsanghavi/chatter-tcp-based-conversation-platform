@@ -101,10 +101,18 @@ class LoginProcessing extends Component {
                     })}>
                         <h4 className={css({
                             fontFamily: 'Titillium Web',
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            paddingBottom: '1em',
+                            color: '#342E37'
                         })}>
                             Loading Profile...
                         </h4>
+                        <div className="lds-ring">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
                     </div>
                 )
             } else {
@@ -115,10 +123,18 @@ class LoginProcessing extends Component {
                     })}>
                         <h4 className={css({
                             fontFamily: 'Titillium Web',
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            paddingBottom: '1em',
+                            color: '#342E37'
                         })}>
                             Authenticating...
                         </h4>
+                        <div className="lds-ring">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
                     </div>
                 )
             }
@@ -132,7 +148,8 @@ class LoginProcessing extends Component {
                         <h4 className={css({
                             fontFamily: 'Titillium Web',
                             fontWeight: 'bold',
-                            paddingBottom: '1em'
+                            paddingBottom: '1em',
+                            color: '#342E37'
                         })}>
                             Could not load profile</h4>
                         <button className="btn btn-outline-primary"
@@ -150,7 +167,8 @@ class LoginProcessing extends Component {
                         <h4 className={css({
                             fontFamily: 'Titillium Web',
                             fontWeight: 'bold',
-                            paddingBottom: '1em'
+                            paddingBottom: '1em',
+                            color: '#342E37'
                         })}>
                             Login Unsuccessful</h4>
                         <button className="btn btn-outline-primary"
@@ -170,7 +188,8 @@ class LoginProcessing extends Component {
                         <h4 className={css({
                             fontFamily: 'Titillium Web',
                             fontWeight: 'bold',
-                            paddingBottom: '1em'
+                            paddingBottom: '1em',
+                            color: '#342E37'
                         })}>
                             Login Successful!
                         </h4>
@@ -185,7 +204,8 @@ class LoginProcessing extends Component {
                         <h4 className={css({
                             fontFamily: 'Titillium Web',
                             fontWeight: 'bold',
-                            paddingBottom: '1em'
+                            paddingBottom: '1em',
+                            color: '#342E37'
                         })}>
                             Login Successful!</h4>
                         <NavLink to={'./'}>
@@ -205,7 +225,8 @@ class LoginProcessing extends Component {
                     <h4 className={css({
                         fontFamily: 'Titillium Web',
                         fontWeight: 'bold',
-                        paddingBottom: '1em'
+                        paddingBottom: '1em',
+                        color: '#342E37'
                     })}>
                         Login Unsuccessful</h4>
                     <button className="btn btn-outline-primary"

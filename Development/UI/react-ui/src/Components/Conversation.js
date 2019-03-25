@@ -4,6 +4,7 @@ import ConversationHeader from "./ConversationHeader";
 import ConversationFooter from "./ConversationFooter";
 import ThreadContainer from "./ThreadContainer";
 import DataService from "./Data";
+import SearchBar from "./SearchBar";
 
 class Conversation extends Component {
     constructor(props) {
@@ -11,10 +12,12 @@ class Conversation extends Component {
         this.state = {
             conversation: this.props.match.params.id,
             newMessageText: '',
-            threads: []
+            threads: [],
+            search: false
         };
         this.sendMessage = this.sendMessage.bind(this);
         this.onMessageChange = this.onMessageChange.bind(this);
+        this.toggleSearch = this.toggleSearch.bind(this);
 
         console.log(this.props.match.params.id);
         this.getThreads(this.props.match.params.id);
@@ -54,6 +57,20 @@ class Conversation extends Component {
 
     }
 
+    toggleSearch() {
+        this.setState({
+            search: !this.state.search
+        })
+    }
+
+    renderSearchBar() {
+        if(this.state.search) {
+            return(
+                <div className={css({paddingTop: '5em'})}><SearchBar/></div>
+            )
+        }
+    }
+
     render() {
         return(
             <div className={css({
@@ -63,7 +80,9 @@ class Conversation extends Component {
                 width: '100%',
                 overflowX: 'hidden'
             })}>
-                <ConversationHeader/>
+                <ConversationHeader search={this.state.search}
+                                    searchClick={this.toggleSearch}/>
+                {this.renderSearchBar()}
                 <ThreadContainer threads={this.state.threads}/>
                 <div className={css({paddingBottom: '5em'})}></div>
                 <ConversationFooter onChange={this.onMessageChange}

@@ -16,24 +16,37 @@ const ConversationFooter = props => {
             color: 'white',
             backgroundColor: '#342E37',
             boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
+            border: '0.05em solid black',
         })}>
-            <input
-                type='text'
-                placeholder='Send message...'
-                value={props.value}
-                onChange={props.onChange}
-                className={css({
-                    height: '1.5em',
-                    width: '70%',
-                    fontSize: '1.25em'
-                })}/>
-            <i className='fa fa-paper-plane'
-               style={{
-                      fontSize: '1.5em',
-                      marginLeft: 10,
-                      color: 'white'
-                  }}
-               onClick={props.onClick}/>
+            <span className={css({width: '15%'})}></span>
+            <span className={css({
+                width: '70%'
+            })}>
+                <input
+                    type='text'
+                    placeholder='Send message...'
+                    value={props.value}
+                    onChange={props.onChange}
+                    className="input-group-text"
+                    style={{
+                        width: '100%',
+                        textAlign: 'left',
+                        color: 'black',
+                        border: '0.05em solid gray'
+                    }}
+                />
+            </span>
+            <span className={css({
+                    width: '15%'
+            })}>
+                <i className='fa fa-paper-plane'
+                   style={{
+                          fontSize: '1.5em',
+                          marginLeft: 10,
+                          color: 'white'
+                      }}
+                   onClick={props.onClick}/>
+            </span>
         </div>
     );
 };
