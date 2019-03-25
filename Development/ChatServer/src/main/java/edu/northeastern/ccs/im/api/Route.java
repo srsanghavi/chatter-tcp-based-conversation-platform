@@ -100,6 +100,7 @@ public class Route {
      * @return the string with POST response
      */
     public static String getResponsePost(String route,String data){
+        GroupDB groupDB = new GroupDB();
         String response = null;
         Map<String, Object> json = decodeJSON(data);
         switch (route){
@@ -121,6 +122,18 @@ public class Route {
                     response = "{result: error, resultCode: 500, resultMessage: 'could not create message'}";
                 }
                 break;
+
+          case "addUserToGroup/":
+            String userId = (String) json.get("user_id");
+            String groupId = (String) json.get("group_id");
+            if(groupDB.addUserToGroup(Integer.valueOf(groupId),Integer.valueOf(userId),0)>0){
+              json.put("result_code",201);
+              json.put("result","OK");
+              response = json.toString();
+            }else {
+              response = "{result: error, resultCode: 500, resultMessage: 'could not add user to group'}";
+            }
+            break;
 
 //                TODO: following
 
