@@ -135,6 +135,19 @@ public class Route {
             }
             break;
 
+          case "addThreadToConversation/":
+            threadId = (String) json.get("thread_id");
+            groupId = (String) json.get("group_id");
+            if(ConversationDB.createThreadForConversationByThreadID(Integer.valueOf(threadId),Integer.valueOf(groupId))>0){
+              json.put("result_code",201);
+              json.put("result","OK");
+              response = json.toString();
+            }else {
+              response = "{result: error, resultCode: 500, resultMessage: 'could not add thread to group'}";
+            }
+            break;
+
+
 //                TODO: following
 
 //            case "createGroup/":
