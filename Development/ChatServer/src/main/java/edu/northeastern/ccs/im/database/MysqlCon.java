@@ -147,6 +147,7 @@ public class MysqlCon {
                     stmt.close();
                 } catch (SQLException e) {
                     ChatLogger.error(e.toString());
+                    return 0;
                 }
             }
         }
