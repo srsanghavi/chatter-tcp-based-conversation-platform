@@ -46,7 +46,8 @@ class HomePage extends Component {
     componentDidMount() {
         this.setState({
             user: JSON.parse(UserStore._getUser()).result[0]
-        })
+        });
+
     }
 
     componentWillUnmount() {
@@ -66,7 +67,8 @@ class HomePage extends Component {
     }
 
     componentDidUpdate() {
-        //console.log(this.state.user.username)
+        // UserActions.getUsers(this.state.user.username)
+        //ConversationActions.getConversations(this.state.user.username, this.state.user.id)
     }
 
     _onChange() {

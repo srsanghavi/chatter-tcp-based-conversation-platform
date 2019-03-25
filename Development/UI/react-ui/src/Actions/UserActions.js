@@ -15,7 +15,7 @@ class UserActions {
     }
 
     getUsers(username){
-      console.log("getUsers/");
+      console.log(username);
       api.getUsers(username).then(value => {
         console.log(value);
       });

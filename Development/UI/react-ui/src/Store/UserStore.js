@@ -6,6 +6,7 @@ const CHANGE = 'CHANGE';
 
 let _user;
 let _signin;
+let _users;
 class UserStore extends EventEmitter {
     constructor() {
         super();
@@ -22,6 +23,10 @@ class UserStore extends EventEmitter {
             case ActionTypes.ACCOUNT_SIGN_IN:
                 console.log(action);
                 this._setSignin(action.payload);
+                break;
+            case ActionTypes.GET_USERS:
+                console.log(action);
+                this._setUsers(action.payload);
                 break;
             case ActionTypes.GET_USER_BY_USERNAME:
                 console.log(action);
@@ -42,6 +47,33 @@ class UserStore extends EventEmitter {
         }, 0);
     }
 
+    _getUser() {
+        return _user
+    }
+
+    _clearUser() {
+        _user = undefined
+    }
+
+
+    _setUsers(users){
+        console.log(users);
+        _users=users;
+        let self = this;
+        setTimeout(() => { // Run after dispatcher has finished
+            self.emit(CHANGE);
+        }, 0);
+    }
+
+    _getUsers() {
+        return _users
+    }
+
+    _clearUsers() {
+        _users = undefined
+    }
+
+
     _setSignin(payload){
         console.log(payload);
         _signin=payload;
@@ -53,14 +85,6 @@ class UserStore extends EventEmitter {
 
     _getSignIn() {
         return _signin
-    }
-
-    _getUser() {
-        return _user
-    }
-
-    _clearUser() {
-        _user = undefined
     }
 
     _clearSignin() {
