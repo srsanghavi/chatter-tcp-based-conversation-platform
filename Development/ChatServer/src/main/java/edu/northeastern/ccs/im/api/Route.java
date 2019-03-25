@@ -79,6 +79,13 @@ public class Route {
                 conversation_id = (String) json.getOrDefault("conversation_id",0);
                 response = ConversationDB.getUsersInConversation(Integer.valueOf(conversation_id)).toString();
                 break;
+            case "createUser/":
+                ChatLogger.info("createUser");
+                String uname = (String) json.getOrDefault("username",0);
+                String pass = (String) json.getOrDefault("password",0);
+                userDB.createUser(uname, pass);
+                response = "{result: success, resultCode: 201, resultMessage = 'user created'";
+                break;
           case "messageInThread/":
             ChatLogger.info("messageInThread:");
             String thread_id = (String) json.getOrDefault("thread_id",0);

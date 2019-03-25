@@ -65,6 +65,21 @@ public class UserDB{
         return 0;
     }
 
+    public int createUser(String username, String password){
+
+        final String sep = "\" , \"";
+
+        String query = "INSERT INTO users(username, password) VALUES (\"" +
+                username +
+                sep +
+                "\" , " +
+                "MD5('" + password + "')" +
+                ");";
+        ChatLogger.info("Executing: " + query);
+        ChatLogger.info(Integer.toString(this.mysqlCon.sqlcreate(query)));
+        return 0;
+    }
+
     /**
      * Get users list.
      *
