@@ -14,6 +14,7 @@ import edu.northeastern.ccs.im.database.ConversationDB;
 import edu.northeastern.ccs.im.database.GroupDB;
 import edu.northeastern.ccs.im.database.UserDB;
 import edu.northeastern.ccs.im.server.Prattle;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -89,7 +90,7 @@ public class Route {
             default:
                 response = "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
         }
-        return response;
+        return new JSONObject(response).toString();
     }
 
     /**
