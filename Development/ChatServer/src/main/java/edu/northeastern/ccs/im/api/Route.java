@@ -147,6 +147,18 @@ public class Route {
             }
             break;
 
+          case "addMessageToThread/":
+            threadId = (String) json.get("thread_id");
+            String messageId = (String) json.get("message_id");
+            if(ConversationDB.addMessageToThread(Integer.valueOf(messageId),Integer.valueOf(threadId))>0){
+              json.put("result_code",201);
+              json.put("result","OK");
+              response = json.toString();
+            }else {
+              response = "{result: error, resultCode: 500, resultMessage: 'could not add message to thread'}";
+            }
+            break;
+
 
 //                TODO: following
 
