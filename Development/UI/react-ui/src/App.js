@@ -11,6 +11,7 @@ import HomePage from "./Components/HomePage";
 import ThreadContainer from "./Components/ThreadContainer";
 import Authentication from './Components/Authentication'
 import LoginProcessing from "./Components/LoginProcessing";
+import Register from "./Components/Register";
 
 class App extends Component {
 
@@ -26,19 +27,14 @@ class App extends Component {
                       <Route path="/login">
                           {() => <Login/>}
                       </Route>
-                      <Route path="/conversation/:id"
-                             component={Conversation}>
-                          {/*{() => <Conversation/>}*/}
+                      <Route path="/register">
+                          {() => <Register/>}
                       </Route>
+                      {/*<Route path="/conversation/:id"*/}
+                             {/*component={Conversation}>*/}
+                          {/*/!*{() => <Conversation/>}*!/*/}
+                      {/*</Route>*/}
                       <Route path="/">
-                          {/*{() => {*/}
-                              {/*if(localStorage.getItem('id') == null) {*/}
-                                  {/*return <Login/>*/}
-                              {/*} else {*/}
-                                  {/*return <HomePage/>*/}
-                              {/*}*/}
-                            {/*}*/}
-                          {/*}*/}
                           <Authentication page={<HomePage/>}/>
                       </Route>
                   </Switch>

@@ -5,6 +5,7 @@ import ActionTypes from '../AppConstants';
 const CHANGE = 'CHANGE';
 
 let _user;
+let _signin;
 class UserStore extends EventEmitter {
     constructor() {
         super();
@@ -20,7 +21,7 @@ class UserStore extends EventEmitter {
             
             case ActionTypes.ACCOUNT_SIGN_IN:
                 console.log(action);
-                this._setUser(action.payload);
+                this._setSignin(action.payload);
                 break;
             case ActionTypes.GET_USER_BY_USERNAME:
                 console.log(action);
@@ -31,9 +32,9 @@ class UserStore extends EventEmitter {
         }
     }
 
+
     _setUser(user){
         console.log(user);
-
         _user=user;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
@@ -41,8 +42,29 @@ class UserStore extends EventEmitter {
         }, 0);
     }
 
+    _setSignin(payload){
+        console.log(payload);
+        _signin=payload;
+        let self = this;
+        setTimeout(() => { // Run after dispatcher has finished
+            self.emit(CHANGE);
+        }, 0);
+    }
+
+    _getSignIn() {
+        return _signin
+    }
+
     _getUser() {
         return _user
+    }
+
+    _clearUser() {
+        _user = undefined
+    }
+
+    _clearSignin() {
+        _signin = undefined
     }
 
 

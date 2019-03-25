@@ -33,7 +33,7 @@ const Header = props => {
                     <i className="fa fa-user-circle-o fa-2x"
                        onClick={props.profileOnClick}></i>
                 </NavLink>
-                <i className="fa fa-search fa-2x"></i>
+                <i className="fa fa-search fa-2x" onClick={props.test}></i>
             </div>
         </div>
     );

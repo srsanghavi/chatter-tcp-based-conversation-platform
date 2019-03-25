@@ -20,7 +20,8 @@ class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tab: 'conversations'
+            tab: 'conversations',
+            user: null
         };
 
         this.api = new Api();
@@ -30,6 +31,7 @@ class HomePage extends Component {
         this.searchTabSelected = this.searchTabSelected.bind(this);
         this.settingsTabSelected = this.settingsTabSelected.bind(this);
         this.profileTabSelected = this.profileTabSelected.bind(this);
+        this.test = this.test.bind(this)
 
     }
 
@@ -38,31 +40,37 @@ class HomePage extends Component {
         ConversationStore.addChangeListener(this._onConversationsChanged);
     }
 
-    componentWillUnmount(){
+
+    componentDidMount() {
+        // UserStore._clearUser();
+        // UserActions.getUserByUsername(localStorage.getItem('username'));
+        // ConversationActions.getConversations(localStorage.getItem('username'), '1');
+        // this.interval = setInterval(() => this.loadUser(), 500);
+        this.setState({
+            user: UserStore._getUser()
+        })
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
         UserStore.removeChangeListener(this._onChange);
         ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
-    // componentDidMount() {
-    //     DataService.getConversationsForUser(this.state.user.id)
-    //         .then(response => {
-    //                 this.setState({ conversations: response })
-    //             });
-    // }
+    loadUser() {
+        if(UserStore._getUser() !== null) {
+            this.setState({
+                user: UserStore._getUser()
+            });
+            clearInterval(this.interval);
+        }
+    }
 
-    componentDidMount() {
-        //UserActions.signin('srsanghavi','12345678');
-        //let user = UserActions.getUserById(localStorage.getItem('id'))
-        //console.log('test')
-        //console.log(user)
-        //UserActions.signin(this.state.username,this.state.password);
-        //ConversationActions.getConversations('srsanghavi','1');
-        console.log(localStorage.getItem('username'));
-        console.log(UserStore._getUser())
+    componentDidUpdate() {
+        console.log(this.state.user[0].username)
     }
 
     _onChange() {
-        console.log('test')
     }
 
     _onConversationsChanged(){
@@ -93,20 +101,40 @@ class HomePage extends Component {
         })
     }
 
+    test() {
+        console.log(this.state.user)
+        console.log(this.state.user[0])
+    }
 
 
     render() {
-        return(
-            <div>
-                <div className={css({
-                    paddingBottom: '5em'
-                })}>
-                    <Header tab={this.state.tab}
-                            profileOnClick={this.profileTabSelected}/>
-                </div>
+        // if (this.state.user === null) {
+        //     return (
+        //         <div className={css({
+        //             textAlign: 'center',
+        //             paddingTop: '7em'
+        //         })}>
+        //             <h4 className={css({
+        //                 fontFamily: 'Titillium Web',
+        //                 fontWeight: 'bold'
+        //             })}>
+        //                 Loading...
+        //             </h4>
+        //         </div>
+        //     )
+        // } else {
+            return (
+                <div>
+                    <div className={css({
+                        paddingBottom: '5em'
+                    })}>
+                        <Header tab={this.state.tab}
+                                profileOnClick={this.profileTabSelected}
+                                test={this.test}/>
+                    </div>
                     <Switch>
                         <Route path="/profile">
-                            {() => <Profile/>}
+                            {() => <Profile user={this.state.user}/>}
                         </Route>
                         <Route path="/settings">
                             {() => <Settings/>}
@@ -118,17 +146,18 @@ class HomePage extends Component {
                             {() => <UserSearch/>}
                         </Route>
                     </Switch>
-                <div className={css({
-                    paddingTop: '5em'
-                })}>
-                    <Footer tab={this.state.tab}
-                            conversationsOnClick={this.conversationTabSelected}
-                            searchOnClick={this.searchTabSelected}
-                            settingsOnClick={this.settingsTabSelected}/>
+                    <div className={css({
+                        paddingTop: '5em'
+                    })}>
+                        <Footer tab={this.state.tab}
+                                conversationsOnClick={this.conversationTabSelected}
+                                searchOnClick={this.searchTabSelected}
+                                settingsOnClick={this.settingsTabSelected}/>
+                    </div>
                 </div>
-            </div>
-        )
-    }
+            )
+        }
+
 
 }
 

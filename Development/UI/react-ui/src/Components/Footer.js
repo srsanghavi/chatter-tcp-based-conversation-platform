@@ -43,7 +43,7 @@ const Footer = props => {
                              textDecoration: 'none',
                              '&:hover': {
                                  color: props.tab === 'search' ? '#45AAEB' : 'white'
-                             }
+                             },
                          })}>
                     <i className="fa fa-group fa-2x"
                        onClick={props.searchOnClick}></i>

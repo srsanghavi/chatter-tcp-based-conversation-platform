@@ -4,21 +4,27 @@ import UserStore from "../Store/UserStore";
 import {css} from "emotion";
 
 class Profile extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            private: true
+            username: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            private: false
         };
 
         this.privateChange = this.privateChange.bind(this)
     }
 
     componentDidMount() {
-        console.log(this.state.private)
-        //UserActions.getUserByUsername(localStorage.getItem('username'))
         // this.setState({
-        //     user: UserStore._getUser()
-        // })
+        //     username: this.props.user.username,
+        //     firstName: this.props.user.first_name,
+        //     lastName: this.props.user.last_name,
+        //     email: this.props.user.email
+        // });
+        console.log(this.props.user)
     }
 
     componentDidUpdate() {
@@ -31,6 +37,8 @@ class Profile extends Component {
         });
     }
 
+
+
     render() {
         return(
             <div className={css({
@@ -38,6 +46,8 @@ class Profile extends Component {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
+                paddingTop: '1em',
+                paddingBottom: '1em',
             })}>
                 <div className={css({
                     padding: '1em',
@@ -67,28 +77,32 @@ class Profile extends Component {
                         fontWeight: 'bold'
                     },
                     "& p": {
-                        margin: '0.25em !important'
+                        margin: '0.3em !important'
                     }
                 })}>
                     <p>
                         <label>Username:</label>
                         <input type="text"
-                               className="input-group-text"/>
+                               className="input-group-text"
+                               value={this.state.username}/>
                     </p>
                     <p>
                         <label>First Name:</label>
                         <input type="text"
-                               className="input-group-text"/>
+                               className="input-group-text"
+                               value={this.state.firstName}/>
                     </p>
                     <p>
                         <label>Last Name:</label>
                         <input type="text"
-                               className="input-group-text"/>
+                               className="input-group-text"
+                               value={this.state.lastName}/>
                     </p>
                     <p>
                         <label>Email:</label>
                         <input type="email"
-                               className="input-group-text"/>
+                               className="input-group-text"
+                               value={this.state.email}/>
                     </p>
                     <p>
                         <label>Private:</label>
@@ -100,7 +114,6 @@ class Profile extends Component {
                         </label>
                     </p>
                 </div>
-
             </div>
         )
     }
