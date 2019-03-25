@@ -126,6 +126,29 @@ public class ConversationDB{
         return mysqlCon.sqlGet(sql);
     }
 
+  /**
+   * Get users in a conversation.
+   * @param conversationID the conversation id
+   * @return list of users in the conversation
+   */
+    public static List<Map<String, Object>> getUsersInConversation(int conversationID){
+      String sql = "SELECT * FROM users as u JOIN users_converses_users as " +
+              "JOIN conversations as c uu on u.id = uu.Users_id or u.id = Users_id1 and c.id = " +
+              "uu.Conversations_id WHERE c.id ="+conversationID +" group by u.id";
+      return mysqlCon.sqlGet(sql);
+    }
+
+
+  /**
+   * Get messages in a thread.
+   * @param threadID the thread id
+   * @return list of messages in the thread
+   */
+  public static List<Map<String, Object>> getMessagesInThread(int threadID){
+    String sql = "select * from message where thread_id = "+threadID;
+    return mysqlCon.sqlGet(sql);
+  }
+
     /**
      * retrieves a list of conversations with the given id
      *

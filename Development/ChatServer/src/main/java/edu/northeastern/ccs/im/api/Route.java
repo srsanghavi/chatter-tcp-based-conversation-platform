@@ -74,6 +74,17 @@ public class Route {
                 String username = (String) json.getOrDefault("username",0);
                 response = UserDB.getUserByUserName(username).toString();
                 break;
+            case "getUsersInConversation/":
+                ChatLogger.info("getUsersInConversation:");
+                conversation_id = (String) json.getOrDefault("conversation_id",0);
+                response = ConversationDB.getUsersInConversation(Integer.valueOf(conversation_id)).toString();
+                break;
+          case "messageInThread/":
+            ChatLogger.info("messageInThread:");
+            String thread_id = (String) json.getOrDefault("thread_id",0);
+            response = ConversationDB.getUsersInConversation(Integer.valueOf(thread_id)).toString();
+            break;
+
 
             default:
                 response = "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
