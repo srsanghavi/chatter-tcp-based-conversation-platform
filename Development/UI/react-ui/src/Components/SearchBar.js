@@ -29,6 +29,7 @@ const SearchBar = props => {
                            textAlign: 'left',
                            width: '70%',
                            color: 'black',
+                           border: '0.05em solid gray'
                        }}/>
             </div>
         </div>

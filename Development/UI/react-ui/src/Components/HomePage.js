@@ -15,7 +15,8 @@ import Settings from './Settings';
 import Conversations from './Conversations';
 import UserSearch from './UserSearch';
 import Profile from './Profile';
-import SearchBar from "./SearchBar";
+import SearchBar from './SearchBar';
+import Broadcast from './Broadcast'
 
 class HomePage extends Component {
     constructor(props) {
@@ -23,6 +24,7 @@ class HomePage extends Component {
         this.state = {
             tab: 'conversations',
             search: false,
+            broadcast: false,
             user: null
         };
 
@@ -34,6 +36,7 @@ class HomePage extends Component {
         this.settingsTabSelected = this.settingsTabSelected.bind(this);
         this.profileTabSelected = this.profileTabSelected.bind(this);
         this.toggleSearch = this.toggleSearch.bind(this)
+        this.toggleBroadcast = this.toggleBroadcast.bind(this)
 
     }
 
@@ -81,42 +84,66 @@ class HomePage extends Component {
     conversationTabSelected() {
         this.setState({
             tab: 'conversations',
-            search: false
+            search: false,
+            broadcast: false
         })
     }
 
     searchTabSelected() {
         this.setState({
             tab: 'search',
-            search: false
+            search: false,
+            broadcast: false
         })
     }
 
     settingsTabSelected() {
         this.setState({
             tab: 'settings',
-            search: false
+            search: false,
+            broadcast: false
         })
     }
 
     profileTabSelected() {
         this.setState({
             tab: 'profile',
-            search: false
+            search: false,
+            broadcast: false
         })
     }
 
 
     toggleSearch() {
         this.setState({
+            broadcast: this.state.search ? this.state.broadcast : false,
             search: !this.state.search
+        })
+    }
+
+    toggleBroadcast() {
+        this.setState({
+            search: this.state.broadcast ? this.state.search : false,
+            broadcast: !this.state.broadcast
         })
     }
 
     renderSearchBar() {
         if(this.state.search) {
             return(
-                <div className={css({paddingTop: '5em'})}><SearchBar/></div>
+                <div className={css({paddingTop: '5em'})}>
+                    <SearchBar/>
+                </div>
+            )
+        }
+    }
+
+    renderBroadcast() {
+        if(this.state.broadcast) {
+            return(
+                <div className={css({paddingTop: '5em'})}>
+                    <Broadcast/>
+                </div>
             )
         }
     }
@@ -131,7 +158,10 @@ class HomePage extends Component {
                     <Header tab={this.state.tab}
                             profileOnClick={this.profileTabSelected}
                             search={this.state.search}
-                            searchClick={this.toggleSearch}/>
+                            searchClick={this.toggleSearch}
+                            broadcast={this.state.broadcast}
+                            broadcastClick={this.toggleBroadcast}/>
+                    {this.renderBroadcast()}
                     {this.renderSearchBar()}
                 </div>
                 <Switch>

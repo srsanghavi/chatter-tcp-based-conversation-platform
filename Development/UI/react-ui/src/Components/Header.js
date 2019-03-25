@@ -34,6 +34,12 @@ const Header = props => {
                     <i className="fa fa-user-circle-o fa-2x"
                        onClick={props.profileOnClick}></i>
                 </NavLink>
+                {props.tab === 'conversations' ?
+                    <i className="fa fa-bullhorn fa-2x"
+                       onClick={props.broadcastClick}
+                       style={{
+                            color: props.broadcast ? '#45AAEB' : 'white',
+                       }}></i> : null }
                 {props.tab === 'settings' || props.tab === 'profile' ? null :
                     <i className="fa fa-search fa-2x"
                        onClick={props.searchClick}
