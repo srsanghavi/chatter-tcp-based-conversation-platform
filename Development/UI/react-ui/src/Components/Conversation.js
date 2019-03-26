@@ -10,10 +10,15 @@ class Conversation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            //conversation: this.props.match.params.id,
+            searchBar: false,
+            search: '',
             newMessageText: '',
             threads: [],
         };
+
+        this.toggleSearch = this.toggleSearch.bind(this);
+        this.onSearchChange = this.onSearchChange.bind(this);
+
         // this.sendMessage = this.sendMessage.bind(this);
         // this.onMessageChange = this.onMessageChange.bind(this);
         // this.toggleSearch = this.toggleSearch.bind(this);
@@ -56,19 +61,27 @@ class Conversation extends Component {
     //
     // }
     //
-    // toggleSearch() {
-    //     this.setState({
-    //         search: !this.state.search
-    //     })
-    // }
-    //
-    // renderSearchBar() {
-    //     if(this.state.search) {
-    //         return(
-    //             <div className={css({paddingTop: '5em'})}><SearchBar/></div>
-    //         )
-    //     }
-    // }
+
+    toggleSearch() {
+        this.setState({
+            searchBar: !this.state.searchBar
+        })
+    }
+
+    onSearchChange(event) {
+        this.setState({search: event.target.value});
+    }
+
+    renderSearchBar() {
+        if(this.state.searchBar) {
+            return(
+                <div className={css({paddingTop: '5em'})}>
+                    <SearchBar search={this.state.search}
+                               onChange={this.onSearchChange}/>
+                </div>
+            )
+        }
+    }
 
     render() {
         return(
@@ -79,8 +92,9 @@ class Conversation extends Component {
                 width: '100%',
                 overflowX: 'hidden'
             })}>
-                <ConversationHeader/>
-                <h1>test</h1>
+                <ConversationHeader search={this.state.searchBar}
+                                    searchClick={this.toggleSearch}/>
+                {this.renderSearchBar()}
                 <ConversationFooter/>
                 {/*{this.renderSearchBar()}*/}
                 {/*<ThreadContainer threads={this.state.threads}/>*/}
