@@ -173,7 +173,7 @@ class HomePage extends Component {
                         {() => <Conversations conversations={JSON.parse(ConversationStore._getConversations()).result}/>}
                     </Route>
                     <Route path="/search">
-                        {() => <UserSearch/>}
+                        {() => <UserSearch users={this.state.users}/>}
                     </Route>
                 </Switch>
                 <div className={css({
