@@ -6,6 +6,7 @@ import ThreadContainer from "./ThreadContainer";
 import DataService from "./Data";
 import SearchBar from "./SearchBar";
 import  { Redirect } from 'react-router-dom'
+import ThreadActions from "../Actions/ThreadActions";
 
 class Conversation extends Component {
     constructor(props) {
@@ -31,6 +32,8 @@ class Conversation extends Component {
 
     componentDidMount() {
         console.log(this.props.match.params.id)
+        console.log(localStorage.getItem('username'))
+        ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id)
     }
 
     // sendMessage() {

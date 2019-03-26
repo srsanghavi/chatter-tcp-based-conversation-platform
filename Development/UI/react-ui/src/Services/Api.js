@@ -46,5 +46,12 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
+
+    getThreadsInConversation(username,conversationId) {
+        let msg = this.messageType.makeApiMessage(username,"getThreadsInConversation/::GET::{conversation_id:"+conversationId+"}");
+        gateway.sendTcp(msg);
+        console.log(msg);
+        return this.promise();
+    }
 }
 
