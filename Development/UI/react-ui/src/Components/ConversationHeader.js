@@ -6,7 +6,6 @@ const ConversationHeader = props => {
     return (
         <div className={css({
             display: 'flex',
-            flex: '0 0 5em',
             position: 'fixed',
             width: '100%',
             height: '5em',

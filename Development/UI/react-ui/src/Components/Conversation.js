@@ -5,11 +5,13 @@ import ConversationFooter from "./ConversationFooter";
 import ThreadContainer from "./ThreadContainer";
 import DataService from "./Data";
 import SearchBar from "./SearchBar";
+import  { Redirect } from 'react-router-dom'
 
 class Conversation extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            //id: this.props.match.params.id,
             searchBar: false,
             search: '',
             newMessageText: '',
@@ -25,6 +27,10 @@ class Conversation extends Component {
         //
         // console.log(this.props.match.params.id);
         // this.getThreads(this.props.match.params.id);
+    }
+
+    componentDidMount() {
+        console.log(this.props.match.params.id)
     }
 
     // sendMessage() {
@@ -75,7 +81,7 @@ class Conversation extends Component {
     renderSearchBar() {
         if(this.state.searchBar) {
             return(
-                <div className={css({paddingTop: '5em'})}>
+                <div className={css({paddingBottom: '3em'})}>
                     <SearchBar search={this.state.search}
                                onChange={this.onSearchChange}/>
                 </div>
@@ -84,27 +90,35 @@ class Conversation extends Component {
     }
 
     render() {
-        return(
-            <div className={css({
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                width: '100%',
-                overflowX: 'hidden'
-            })}>
-                <ConversationHeader search={this.state.searchBar}
-                                    searchClick={this.toggleSearch}/>
-                {this.renderSearchBar()}
-                <ConversationFooter/>
-                {/*{this.renderSearchBar()}*/}
-                {/*<ThreadContainer threads={this.state.threads}/>*/}
-                {/*<div className={css({paddingBottom: '5em'})}></div>*/}
-                {/*<ConversationFooter onChange={this.onMessageChange}*/}
-                                    {/*onClick={this.sendMessage}*/}
-                                    {/*value={this.state.newMessageText}/>*/}
-                {/*<h1 className={css({padding: '3em'})}>{this.state.conversation}</h1>*/}
-            </div>
-        );
+        if (!(localStorage.getItem('loggedIn') === 'true')) {
+            return <Redirect to='/login'/>
+        } else {
+            return (
+                <div className={css({
+                    // display: 'flex',
+                    // flexDirection: 'column',
+                    // height: '100%',
+                    // width: '100%',
+                    // overflowX: 'hidden',
+                })}>
+                    <div className={css({
+                        paddingBottom: '5em'
+                    })}>
+                        <ConversationHeader search={this.state.searchBar}
+                                            searchClick={this.toggleSearch}/>
+                    </div>
+                    {this.renderSearchBar()}
+                    <ConversationFooter/>
+                    {/*{this.renderSearchBar()}*/}
+                    {/*<ThreadContainer threads={this.state.threads}/>*/}
+                    {/*<div className={css({paddingBottom: '5em'})}></div>*/}
+                    {/*<ConversationFooter onChange={this.onMessageChange}*/}
+                    {/*onClick={this.sendMessage}*/}
+                    {/*value={this.state.newMessageText}/>*/}
+                    {/*<h1 className={css({padding: '3em'})}>{this.state.conversation}</h1>*/}
+                </div>
+            );
+        }
     }
 
 }

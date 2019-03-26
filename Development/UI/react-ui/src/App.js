@@ -30,7 +30,8 @@ class App extends Component {
                       <Route path="/register">
                           {() => <Register/>}
                       </Route>
-                      <Route path="/conversations/:id">
+                      <Route path="/conversations/:id"
+                             component={Conversation}>
                           <Authentication page={<Conversation/>}/>
                       </Route>
                       <Route path="/">
