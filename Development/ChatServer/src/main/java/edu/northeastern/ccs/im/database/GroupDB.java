@@ -87,6 +87,12 @@ public class GroupDB {
       return r<=0?-1:r;
   }
 
+  public int updateGroupName(int groupId, String name){
+      String query = "UPDATE groups SET name ='" + name  + "' WHERE id='" + groupId + "';";
+      int r = mysqlCon.sqlcreate(query);
+      return r<=0?-1:r;
+  }
+
     /**
      * Gets users.
      *

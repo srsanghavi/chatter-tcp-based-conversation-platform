@@ -84,13 +84,6 @@ public class Route {
                 conversation_id = (String) json.getOrDefault("conversation_id",0);
                 response = ConversationDB.getUsersInConversation(Integer.valueOf(conversation_id));
                 break;
-            case "createUser/":
-                ChatLogger.info("createUser");
-                String uname = (String) json.getOrDefault("username",0);
-                String pass = (String) json.getOrDefault("password",0);
-                userDB.createUser(uname, pass);
-                response = "{result: success, resultCode: 201, resultMessage = 'user created'";
-                break;
           case "messageInThread/":
             ChatLogger.info("messageInThread:");
             String thread_id = (String) json.getOrDefault("thread_id",0);
@@ -195,6 +188,18 @@ public class Route {
               response = "{result: error, resultCode: 500, resultMessage: 'could not add message to thread'}";
             }
             break;
+
+            case "updateGroupName/":
+                groupId = (String) json.get("group_id");
+                String name = (String) json.get("group_name");
+                if(groupDB.updateGroupName(Integer.valueOf(groupId), name) > 0){
+                    json.put("result_code",201);
+                    json.put("result","OK");
+                    response = json.toString();
+                }
+                else
+                    response = "{result: error, resultCode: 500, resultMessage: 'could not add message to thread'}";
+                break;
 
 
 //                TODO: following

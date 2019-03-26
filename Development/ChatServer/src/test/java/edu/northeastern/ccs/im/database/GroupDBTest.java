@@ -41,4 +41,9 @@ public class GroupDBTest {
     public void testGetGroupByName(){
         ChatLogger.info(groupDB.getGroupsByName("GroupByJunit").toString());
     }
+
+    @Test
+    public void testUpdateGroupName(){
+        ChatLogger.info(Integer.toString(groupDB.updateGroupName(101, "UpdatedGroupName")));
+    }
 }
