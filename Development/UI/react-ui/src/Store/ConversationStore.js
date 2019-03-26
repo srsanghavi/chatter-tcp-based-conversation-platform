@@ -28,14 +28,18 @@ class ConversationStore extends EventEmitter {
 
     _setConversations(conversations){
         _conversations = conversations;
-        var self = this;
+        let self = this;
         setTimeout(() => { // Run after dispatcher has finished
             self.emit(CONV_CHANGED);
         }, 0);
     }
 
-    getConversations(){
+    _getConversations() {
         return _conversations;
+    }
+
+    _clearConversations() {
+        _conversations = undefined;
     }
 
     // Hooks a React component's callback to the CHANGED event.

@@ -15,15 +15,16 @@ class UserActions {
     }
 
     getUsers(username){
-      console.log(username);
       api.getUsers(username).then(value => {
-        console.log(value);
+          Dispatcher.dispatch({
+              actionType: ActionTypes.GET_USERS,
+              payload:    value,
+          })
       });
     }
 
     getUserByUsername(username){
         api.getUserByUsername(username).then(value => {
-            console.log(value)
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_USER_BY_USERNAME,
                 payload:    value,

@@ -1,25 +1,41 @@
 import React, { Component } from 'react'
 import UserStore from "../Store/UserStore";
-import {NavLink, Link} from 'react-router-dom';
-import {css} from 'emotion';
+import { NavLink } from 'react-router-dom';
+import { css } from 'emotion';
 import UserActions from "../Actions/UserActions";
+import ConversationStore from "../Store/ConversationStore";
+import ConversationActions from "../Actions/ConversationActions";
 
+
+const status = {
+    PENDING: 'pending',
+    FAILURE: 'failure',
+    SUCCESS: 'success'
+};
+
+// component updates every interval (in ms)
+const INTERVAL = 500;
+
+// count of intervals after which log in will fail. interval count is reset at each step
+const TIMEOUT = 15;
 
 class LoginProcessing extends Component {
     constructor() {
         super();
         this.state = {
-            status: 'pending',
             interval: 0,
-            user: null,
-            loggedIn: false
+            status: status.PENDING,
+            loggedIn: false,
+            userLoaded: false,
+            usersLoaded: false,
+            conversationsLoaded: false,
+            finishedLoading: false,
         }
     }
 
     componentDidMount() {
-        UserStore._clearSignin();
-        UserStore._getUser();
-        this.interval = setInterval(() => this.update(), 500);
+        UserStore._clearAll();
+        this.interval = setInterval(() => this.update(), INTERVAL);
     }
 
     componentWillUnmount() {
@@ -27,196 +43,120 @@ class LoginProcessing extends Component {
     }
 
     update() {
-        if(!this.state.loggedIn) {
-            this.authenticate()
+        console.log(this.state);
+        if(!this.state.finishedLoading) {
+            if (!this.state.loggedIn) {
+                this.authenticate()
+            } else if (!this.state.userLoaded) {
+                this.loadUser()
+            } else if (!this.state.usersLoaded) {
+                this.loadUsers()
+            } else if (!this.state.conversationsLoaded) {
+                this.loadConversations()
+            }
         } else {
-            this.loadProfile()
+            this.setState({
+                status: status.SUCCESS
+            })
+            clearInterval(this.interval);
         }
     }
 
     authenticate() {
         if(UserStore._getSignIn() === undefined){
-            if(this.state.interval < 10) {
-                this.setState({
-                    interval: this.state.interval + 1
-                });
+            if(this.state.interval < TIMEOUT) {
+                this.setState({ interval: this.state.interval + 1});
             } else {
-                this.setState({
-                    status: 'failure'
-                });
+                this.setState({ status: status.FAILURE });
                 clearInterval(this.interval);
             }
-        }
-        else {
-            if (UserStore._getSignIn() === 'Incorrect username/password') {
-                this.setState({
-                    status: 'failure'
-                });
-                clearInterval(this.interval);
-            } else {
-                localStorage.setItem('loggedIn', 'true');
-                this.setState({
-                    status: 'success'
-                });
-                this.setState({
-                    status: 'pending',
-                    loggedIn: true,
-                    interval: 0,
-                });
-                UserStore._clearUser();
-                UserActions.getUserByUsername(localStorage.getItem('username'))
-            }
+        } else if (UserStore._getSignIn() === 'Incorrect username/password') {
+            this.setState({ status: status.FAILURE });
+            clearInterval(this.interval);
+        } else {
+            localStorage.setItem('loggedIn', 'true');
+            this.setState({
+                status: status.PENDING,
+                interval: 0,
+                loggedIn: true,
+                finishedLoading: this.state.userLoaded &&
+                                 this.state.usersLoaded &&
+                                 this.state.conversationsLoaded
+            });
+            UserStore._clearUser();
+            UserActions.getUserByUsername(localStorage.getItem('username'))
         }
     }
 
-    loadProfile() {
+    loadUser() {
         if(UserStore._getUser() === undefined){
-            if(this.state.interval < 10) {
-                this.setState({
-                    interval: this.state.interval + 1
-                });
+            if(this.state.interval < TIMEOUT) {
+                this.setState({ interval: this.state.interval + 1 });
             } else {
-                this.setState({
-                    status: 'failure'
-                });
+                this.setState({ status: status.FAILURE });
                 clearInterval(this.interval);
             }
         } else {
-            console.log(UserStore._getUser());
             this.setState({
-                user: UserStore._getUser(),
-                status: 'success'
+                status: status.PENDING,
+                interval: 0,
+                userLoaded: true,
+                finishedLoading: this.state.loggedIn &&
+                                 this.state.usersLoaded &&
+                                 this.state.conversationsLoaded
             });
-            clearInterval(this.interval);
+            let id = JSON.parse(UserStore._getUser()).result[0].id;
+            localStorage.setItem('id', id);
+            UserStore._clearUsers();
+            UserActions.getUsers(localStorage.getItem('username'))
+        }
+    }
+
+    loadUsers() {
+        if(UserStore._getUsers() === undefined){
+            if(this.state.interval < TIMEOUT) {
+                this.setState({ interval: this.state.interval + 1 });
+            } else {
+                this.setState({ status: status.FAILURE });
+                clearInterval(this.interval);
+            }
+        } else {
+            this.setState({
+                status: status.PENDING,
+                interval: 0,
+                usersLoaded: true,
+                finishedLoading: this.state.loggedIn &&
+                                 this.state.userLoaded &&
+                                 this.state.conversationsLoaded
+            });
+            ConversationStore._clearConversations();
+            ConversationActions.getConversations(localStorage.getItem('username'), localStorage.getItem('id'))
+        }
+    }
+
+    loadConversations() {
+        console.log('here')
+        if(UserStore._getUsers() === undefined){
+            if(this.state.interval < 100000) {
+                this.setState({ interval: this.state.interval + 1 });
+            } else {
+                this.setState({ status: status.FAILURE });
+                clearInterval(this.interval);
+            }
+        } else {
+            this.setState({
+                status: status.PENDING,
+                interval: 0,
+                conversationsLoaded: true,
+                finishedLoading: this.state.loggedIn &&
+                                 this.state.userLoaded &&
+                                 this.state.usersLoaded
+            });
         }
     }
 
     render() {
-        if(this.state.status == 'pending') {
-            if(this.state.loggedIn) {
-                return (
-                    <div className={css({
-                        textAlign: 'center',
-                        paddingTop: '7em'
-                    })}>
-                        <h4 className={css({
-                            fontFamily: 'Titillium Web',
-                            fontWeight: 'bold',
-                            paddingBottom: '1em',
-                            color: '#342E37'
-                        })}>
-                            Loading Profile...
-                        </h4>
-                        <div className="lds-ring">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                )
-            } else {
-                return (
-                    <div className={css({
-                        textAlign: 'center',
-                        paddingTop: '7em'
-                    })}>
-                        <h4 className={css({
-                            fontFamily: 'Titillium Web',
-                            fontWeight: 'bold',
-                            paddingBottom: '1em',
-                            color: '#342E37'
-                        })}>
-                            Authenticating...
-                        </h4>
-                        <div className="lds-ring">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                )
-            }
-        } else if(this.state.status == 'failure') {
-            if(this.state.loggedIn) {
-                return (
-                    <div className={css({
-                        textAlign: 'center',
-                        paddingTop: '7em'
-                    })}>
-                        <h4 className={css({
-                            fontFamily: 'Titillium Web',
-                            fontWeight: 'bold',
-                            paddingBottom: '1em',
-                            color: '#342E37'
-                        })}>
-                            Could not load profile</h4>
-                        <button className="btn btn-outline-primary"
-                                onClick={() => window.location = './login'}>
-                            Return to Login
-                        </button>
-                    </div>
-                )
-            } else {
-                return (
-                    <div className={css({
-                        textAlign: 'center',
-                        paddingTop: '7em'
-                    })}>
-                        <h4 className={css({
-                            fontFamily: 'Titillium Web',
-                            fontWeight: 'bold',
-                            paddingBottom: '1em',
-                            color: '#342E37'
-                        })}>
-                            Login Unsuccessful</h4>
-                        <button className="btn btn-outline-primary"
-                                onClick={() => window.location = './login'}>
-                            Return to Login
-                        </button>
-                    </div>
-                )
-            }
-        } else if(this.state.status == 'success') {
-            if(!this.state.loggedIn) {
-                return (
-                    <div className={css({
-                        textAlign: 'center',
-                        paddingTop: '7em'
-                    })}>
-                        <h4 className={css({
-                            fontFamily: 'Titillium Web',
-                            fontWeight: 'bold',
-                            paddingBottom: '1em',
-                            color: '#342E37'
-                        })}>
-                            Login Successful!
-                        </h4>
-                    </div>
-                )
-            } else {
-                return (
-                    <div className={css({
-                        textAlign: 'center',
-                        paddingTop: '7em'
-                    })}>
-                        <h4 className={css({
-                            fontFamily: 'Titillium Web',
-                            fontWeight: 'bold',
-                            paddingBottom: '1em',
-                            color: '#342E37'
-                        })}>
-                            Login Successful!</h4>
-                        <NavLink to={'./'}>
-                            <button className="btn btn-outline-primary">
-                                Continue
-                            </button>
-                        </NavLink>
-                    </div>
-                )
-            }
-        } else {
+        if(this.state.finishedLoading) {
             return (
                 <div className={css({
                     textAlign: 'center',
@@ -228,11 +168,54 @@ class LoginProcessing extends Component {
                         paddingBottom: '1em',
                         color: '#342E37'
                     })}>
-                        Login Unsuccessful</h4>
+                        Login Successful!</h4>
+                    <NavLink to={'./'}>
+                        <button className="btn btn-outline-primary">
+                            Continue
+                        </button>
+                    </NavLink>
+                </div>
+            )
+        } else if(this.state.status === status.FAILURE) {
+            return (
+                <div className={css({
+                    textAlign: 'center',
+                    paddingTop: '7em'
+                })}>
+                    <h4 className={css({
+                        fontFamily: 'Titillium Web',
+                        fontWeight: 'bold',
+                        paddingBottom: '1em',
+                        color: '#342E37'
+                    })}>
+                        {this.state.loggedIn ? 'Failed to load data' : 'Login Failed' }
+                    </h4>
                     <button className="btn btn-outline-primary"
                             onClick={() => window.location = './login'}>
                         Return to Login
                     </button>
+                </div>
+            )
+        } else if(this.state.status === status.PENDING) {
+            return (
+                <div className={css({
+                    textAlign: 'center',
+                    paddingTop: '7em'
+                })}>
+                    <h4 className={css({
+                        fontFamily: 'Titillium Web',
+                        fontWeight: 'bold',
+                        paddingBottom: '1em',
+                        color: '#342E37'
+                    })}>
+                        {this.state.loggedIn ? 'Loading your information...' : 'Authenticating...' }
+                    </h4>
+                    <div className="lds-ring">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
             )
         }

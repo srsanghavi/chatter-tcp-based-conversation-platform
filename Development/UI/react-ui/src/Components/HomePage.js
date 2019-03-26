@@ -18,6 +18,10 @@ import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
 
+const tab = {
+    // TO-DO : make enum for tab values
+};
+
 class HomePage extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +29,9 @@ class HomePage extends Component {
             tab: 'conversations',
             search: false,
             broadcast: false,
-            user: null
+            user: null,
+            users: null,
+            conversations: null
         };
 
         this.api = new Api();

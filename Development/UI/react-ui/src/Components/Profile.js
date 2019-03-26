@@ -107,10 +107,10 @@ class Profile extends Component {
                                className="input-group-text"
                                value={this.state.email}/>
                     </p>
-                    <p>
-                        <label>Date Joined:</label>
-                        <h6>{this.state.createdDate}</h6>
-                    </p>
+                    {/*<p>*/}
+                        {/*<label>Date Joined:</label>*/}
+                        {/*<h6>{this.state.createdDate}</h6>*/}
+                    {/*</p>*/}
                     <p>
                         <label>Private:</label>
                         <label className="switch">
@@ -124,6 +124,6 @@ class Profile extends Component {
             </div>
         )
     }
-};
+}
 
 export default Profile;
