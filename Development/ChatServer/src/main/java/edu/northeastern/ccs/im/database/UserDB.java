@@ -128,4 +128,8 @@ public class UserDB{
                 "where users_id="+user_id;
         return mysqlCon.sqlGet(sql);
     }
+
+    /*public int updateUserSearchability(int user_id){
+
+    }*/
 }
