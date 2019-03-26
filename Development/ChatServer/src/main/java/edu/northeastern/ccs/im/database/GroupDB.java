@@ -104,4 +104,9 @@ public class GroupDB {
         List<Map<String, Object>> r = mysqlCon.sqlGet(query);
         return r;
   }
+
+  public int deleteGroup(int id){
+      String sql = "UPDATE groups SET deleted=true WHERE id='" + id + "';";
+      return mysqlCon.sqlcreate(sql);
+  }
 }

@@ -10,10 +10,7 @@ import com.google.gson.reflect.TypeToken;
 import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.conversation.Conversation;
-import edu.northeastern.ccs.im.database.ConversationDB;
-import edu.northeastern.ccs.im.database.GroupDB;
-import edu.northeastern.ccs.im.database.MysqlCon;
-import edu.northeastern.ccs.im.database.UserDB;
+import edu.northeastern.ccs.im.database.*;
 import edu.northeastern.ccs.im.server.Prattle;
 import edu.northeastern.ccs.im.user.User;
 import org.json.JSONObject;
@@ -111,6 +108,7 @@ public class Route {
         GroupDB groupDB = new GroupDB();
         String response = null;
         UserDB userDB = new UserDB();
+        MessageDB messageDB = new MessageDB();
         Map<String, Object> json = decodeJSON(data);
         switch (route){
             case "registerUser/":
@@ -198,9 +196,41 @@ public class Route {
                     response = json.toString();
                 }
                 else
-                    response = "{result: error, resultCode: 500, resultMessage: 'could not add message to thread'}";
+                    response = "{result: error, resultCode: 500, resultMessage: 'Could not update group name'}";
                 break;
 
+            case "deleteUser/":
+                userId = (String) json.get("user_id");
+                if(userDB.deleteUser(Integer.valueOf(userId)) > 0){
+                    json.put("result_code",201);
+                    json.put("result","OK");
+                    response = json.toString();
+                }
+                else
+                    response = "{result: error, resultCode: 500, resultMessage: 'could not delete user'}";
+                break;
+
+            case "deleteGroup/":
+                userId = (String) json.get("group_id");
+                if(groupDB.deleteGroup(Integer.valueOf(userId)) > 0){
+                    json.put("result_code",201);
+                    json.put("result","OK");
+                    response = json.toString();
+                }
+                else
+                    response = "{result: error, resultCode: 500, resultMessage: 'could not delete group'}";
+                break;
+
+            case "deleteMessage/":
+                messageId = (String) json.get("message_id");
+                if(messageDB.deleteMessage(Integer.valueOf(messageId)) > 0){
+                    json.put("result_code",201);
+                    json.put("result","OK");
+                    response = json.toString();
+                }
+                else
+                    response = "{result: error, resultCode: 500, resultMessage: 'could not delete message'}";
+                break;
 
 //                TODO: following
 

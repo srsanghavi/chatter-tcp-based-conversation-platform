@@ -143,6 +143,11 @@ public class UserDB{
         return mysqlCon.sqlGet(sql);
     }
 
+    public int deleteUser(int id){
+        String sql = "UPDATE users SET deleted=true WHERE id='" + id + "';";
+        return mysqlCon.sqlcreate(sql);
+    }
+
     /*public int updateUserSearchability(int user_id){
 
     }*/

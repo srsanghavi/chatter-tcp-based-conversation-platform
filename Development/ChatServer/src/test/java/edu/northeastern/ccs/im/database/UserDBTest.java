@@ -58,4 +58,9 @@ public class UserDBTest {
     public void testNotAuthorized(){
         assertNotSame(1,userDB.isAuthorized("sanghavi.s@husky.neu.edu", "1234678"));
     }
+
+    @Test
+    public void testDeleteUser(){
+        assertEquals(1, userDB.deleteUser(353));
+    }
 }

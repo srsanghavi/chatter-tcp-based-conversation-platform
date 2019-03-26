@@ -3,6 +3,7 @@ package edu.northeastern.ccs.im.database;
 import edu.northeastern.ccs.im.ChatLogger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static junit.framework.TestCase.assertEquals;
 
 public class GroupDBTest {
     GroupDB groupDB;
@@ -45,5 +46,10 @@ public class GroupDBTest {
     @Test
     public void testUpdateGroupName(){
         ChatLogger.info(Integer.toString(groupDB.updateGroupName(101, "UpdatedGroupName")));
+    }
+
+    @Test
+    public void testDeleteUser(){
+        assertEquals(1, groupDB.deleteGroup(100));
     }
 }
