@@ -30,3 +30,5 @@ hs_err_pid*
 
 # UML Files
 *.plantuml
+Development/ChatServer/ChatServer.iml
+Development/ChatServer/ChatServer.iml

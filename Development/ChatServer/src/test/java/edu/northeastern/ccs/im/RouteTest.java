@@ -9,4 +9,9 @@ public class RouteTest {
     public void testGetConversations(){
         System.out.println(Route.getResponseGet("getConversations/", "{user_id:1}"));
     }
+
+    @Test
+    public void testCreateUserDuplicateUser(){
+        System.out.println(Route.getResponsePost("registerUser/","{first_name:test;last_name:user;username:testUser;email:test@prattle.com;password:'12345678'}"));
+    }
 }

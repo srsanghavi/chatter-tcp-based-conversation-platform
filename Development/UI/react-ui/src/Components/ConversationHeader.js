@@ -13,30 +13,53 @@ const ConversationHeader = props => {
             color: 'white',
             backgroundColor: '#342E37',
             boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
-            zIndex: 10
+            zIndex: 10,
+            border: '0.05em solid black',
+
         })}>
             <div className={css({
                 display: 'flex',
-                justifyContent: 'space-between',
                 alignItems: 'center',
                 width: '100%',
-                padding: '0 0.75em'
+                padding: '0 0.75em',
             })}>
-            <NavLink to='/'
-                     className={css({
-                         color: 'white',
-                         textDecoration: 'none',
-                         '&:hover': {
-                             color: '#CEDAE5'
-                         }
-                     })}>
-                <i className="fa fa-arrow-left fa-2x"></i>
-            </NavLink>
-            <img src="./images/image.png" height="60" width="60"
-                 className={css({
-                    borderRadius: 50
-            })}/>
-            <i className="fa fa-cog fa-2x"></i>
+                <span className={css({
+                    width: '20%'
+                })}>
+                    <NavLink to='/'
+                             className={css({
+                                 color: 'white',
+                                 textDecoration: 'none',
+                                 '&:hover': {
+                                     color: '#CEDAE5'
+                                 }
+                             })}>
+                        <i className="fa fa-arrow-left fa-2x"></i>
+                    </NavLink>
+                </span>
+                <span className={css({
+                    width: '60%',
+                })}>
+                    <img src="../images/image.png" height="60" width="60"
+                         className={css({
+                             display: 'block',
+                             marginLeft: 'auto',
+                             marginRight: 'auto',
+                             borderRadius: 50,
+                    })}/>
+                </span>
+                <span className={css({
+                    width: '20%'
+                })}>
+                    <i className="fa fa-search fa-2x"
+                       onClick={props.searchClick}
+                        style={{
+                            float: 'left',
+                            color: props.search ? '#45AAEB' : 'white',
+                        }}></i>
+                    <i className="fa fa-cog fa-2x"
+                       style={{float: 'right'}}></i>
+                </span>
             </div>
         </div>
     );
