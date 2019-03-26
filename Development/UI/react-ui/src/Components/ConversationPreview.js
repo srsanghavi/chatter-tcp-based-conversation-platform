@@ -3,7 +3,7 @@ import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
 
 const ConversationPreview = props => {
-    return(
+    return (
         <div className={css({
             display: 'flex',
             flexDirection: 'row',
@@ -11,49 +11,48 @@ const ConversationPreview = props => {
             alignItems: 'center',
             width: '100%',
             borderBottom: '0.05em solid gray',
-            padding: '0.5em 0.5em'
+            padding: '0.5em 0.5em',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
         })}>
             <div className={css({
                 display: 'flex',
-                flexDirection: 'row',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                //padding: '0 0.5em 0 0.5em',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                padding: '0 0.75em'
             })}>
-                <img src="./images/image.png" height="60" width="60"
-                     className={css({
-                         borderRadius: 50,
-                     })}/>
                 <span className={css({
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                    padding: '0 0.5em 0 0.5em',
+                    width: '25%',
                 })}>
-                    <h4>{props.conversation.id}</h4>
-                    <span className={css({
-                        opacity: '0.6',
-                        fontStyle: 'italic',
-                    })}>
-                        {props.conversation.created_on}
-                    </span>
-                </span>
-            </div>
-            <div className={css({
-                padding: '0 1em'
-            })}>
-                <NavLink to={`/conversations`}
+                    <img src="./images/image.png" height="60" width="60"
                          className={css({
-                             color: '#342E37',
+                             borderRadius: 50,
+                         })}/>
+                </span>
+                <span className={css({
+                    width: '50%'
+                })}>
+                    <h5>{props.conversation.id}</h5>
+                    <h6 className={css({opacity: '0.5'})}>{props.conversation.created_on}</h6>
+                </span>
+                <span className={css({
+                    width: '25%',
+                })}>
+                <NavLink to={`./conversations/${props.conversation.id}`}
+                         className={css({
+                             color: 'black',
                              textDecoration: 'none',
                              '&:hover': {
-                                 color: 'gray'
+                                 color: '#45AAEB'
                              }
                          })}>
-                    <i className="fa fa-arrow-right fa-2x"></i>
+                    <i className="fa fa-angle-right fa-2x"
+                       style={{float: 'right'}}></i>
                 </NavLink>
+            </span>
             </div>
         </div>
-    )
+    );
 };
 export default ConversationPreview;

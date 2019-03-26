@@ -2,8 +2,8 @@ import React from 'react';
 import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
 
-const ConversationPreview = props => {
-    return(
+const UserPreviews = props => {
+    return (
         <div className={css({
             display: 'flex',
             flexDirection: 'row',
@@ -15,41 +15,44 @@ const ConversationPreview = props => {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
         })}>
-            <span className={css({
-                width: '25%'
-            })}>
-                <img src="./images/image.png" height="60" width="60"
-                     className={css({
-                         borderRadius: 50,
-                     })}/>
-            </span>
-            <span className={css({
-                width: '50%',
-                textAlign: 'left',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-                padding: '0 0.5em 0 0.5em',
-            })}>
-                <p>{props.user.username}</p>
-            </span>
             <div className={css({
-                padding: '0 1em',
-                width: '25%',
-                float: 'right'
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                padding: '0 0.75em'
             })}>
-                <NavLink to={`/conversations`}
+                <span className={css({
+                    width: '25%',
+                })}>
+                    <img src="./images/image.png" height="60" width="60"
                          className={css({
-                             color: '#342E37',
+                             borderRadius: 50,
+                         })}/>
+                </span>
+                <span className={css({
+                    width: '50%'
+                })}>
+                    <h5>{props.user.first_name + ' ' + props.user.last_name}</h5>
+                    <h6 className={css({opacity: '0.5'})}>{props.user.username}</h6>
+                </span>
+                <span className={css({
+                    width: '25%',
+                })}>
+                <NavLink to={`./profile/${props.user.id}`}
+                         className={css({
+                             color: 'black',
                              textDecoration: 'none',
                              '&:hover': {
-                                 color: 'gray'
+                                 color: '#45AAEB'
                              }
                          })}>
-                    <i className="fa fa-arrow-right fa-2x"></i>
+                    <i className="fa fa-angle-right fa-2x"
+                       style={{float: 'right'}}></i>
                 </NavLink>
+            </span>
             </div>
         </div>
-    )
+    );
 };
-export default ConversationPreview;
+export default UserPreviews;

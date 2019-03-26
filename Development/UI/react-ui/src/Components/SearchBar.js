@@ -25,12 +25,14 @@ const SearchBar = props => {
             })}>
                 <input className="input-group-text"
                        placeholder='Search...'
+                       value={props.search}
                        style={{
                            textAlign: 'left',
                            width: '70%',
                            color: 'black',
                            border: '0.05em solid gray'
-                       }}/>
+                       }}
+                       onChange={props.onChange}/>
             </div>
         </div>
     );

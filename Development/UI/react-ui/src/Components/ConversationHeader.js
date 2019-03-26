@@ -26,7 +26,7 @@ const ConversationHeader = props => {
                 <span className={css({
                     width: '20%'
                 })}>
-                    <NavLink to='/'
+                    <NavLink to='../conversations'
                              className={css({
                                  color: 'white',
                                  textDecoration: 'none',

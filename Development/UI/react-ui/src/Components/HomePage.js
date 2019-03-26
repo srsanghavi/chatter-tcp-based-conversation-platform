@@ -14,12 +14,15 @@ import {Route, Switch, BrowserRouter} from 'react-router-dom';
 import Settings from './Settings';
 import Conversations from './Conversations';
 import UserSearch from './UserSearch';
+import ProfileEdit from './ProfileEdit';
 import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
 
 const tab = {
-    // TO-DO : make enum for tab values
+    CONVERSATIONS: 'conversations',
+    SETTINGS: 'settings',
+    PROFILE: 'profile'
 };
 
 class HomePage extends Component {
@@ -27,11 +30,13 @@ class HomePage extends Component {
         super(props);
         this.state = {
             tab: 'conversations',
-            search: false,
-            broadcast: false,
-            user: null,
-            users: null,
-            conversations: null
+            searchBar: false,
+            search: '',
+            broadcastBar: false,
+            broadcast: '',
+            user: {},
+            users: [],
+            conversations: []
         };
 
         this.api = new Api();
@@ -41,8 +46,9 @@ class HomePage extends Component {
         this.searchTabSelected = this.searchTabSelected.bind(this);
         this.settingsTabSelected = this.settingsTabSelected.bind(this);
         this.profileTabSelected = this.profileTabSelected.bind(this);
-        this.toggleSearch = this.toggleSearch.bind(this)
-        this.toggleBroadcast = this.toggleBroadcast.bind(this)
+        this.toggleSearch = this.toggleSearch.bind(this);
+        this.toggleBroadcast = this.toggleBroadcast.bind(this);
+        this.onSearchChange = this.onSearchChange.bind(this);
 
     }
 
@@ -82,16 +88,18 @@ class HomePage extends Component {
     conversationTabSelected() {
         this.setState({
             tab: 'conversations',
-            search: false,
-            broadcast: false
+            searchBar: false,
+            search: '',
+            broadcastBar: false
         })
     }
 
     searchTabSelected() {
         this.setState({
             tab: 'search',
-            search: false,
-            broadcast: false
+            searchBar: false,
+            search: '',
+            broadcastBar: false
         })
     }
 
@@ -99,45 +107,55 @@ class HomePage extends Component {
         this.setState({
             tab: 'settings',
             search: false,
-            broadcast: false
+            search: '',
+            broadcastBar: false
         })
     }
 
     profileTabSelected() {
         this.setState({
             tab: 'profile',
-            search: false,
-            broadcast: false
+            searchBar: false,
+            search: '',
+            broadcastBar: false
         })
     }
 
 
     toggleSearch() {
         this.setState({
-            broadcast: this.state.search ? this.state.broadcast : false,
-            search: !this.state.search
+            broadcastBar: this.state.searchBar ? this.state.broadcastBar : false,
+            searchBar: !this.state.searchBar,
+            search: ''
         })
     }
 
     toggleBroadcast() {
         this.setState({
-            search: this.state.broadcast ? this.state.search : false,
-            broadcast: !this.state.broadcast
+            searchBar: this.state.broadcastBar ? this.state.searchBar : false,
+            broadcastBar: !this.state.broadcastBar,
+            broadcast: ''
         })
     }
 
+    onSearchChange(event) {
+        this.setState({search: event.target.value});
+    }
+
+
     renderSearchBar() {
-        if(this.state.search) {
+        if(this.state.searchBar) {
             return(
                 <div className={css({paddingBottom: '3em'})}>
-                    <SearchBar/>
+                    <SearchBar search={this.state.search}
+                               onChange={this.onSearchChange}/>
                 </div>
             )
         }
     }
 
     renderBroadcast() {
-        if(this.state.broadcast) {
+        if(this.state.broadcastBar) {
             return(
                 <div className={css({paddingBottom: '3em'})}>
                     <Broadcast/>
@@ -148,6 +166,14 @@ class HomePage extends Component {
 
 
     render() {
+        const filteredUsers = this.state.users.filter(user => {
+            return (
+                user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
+                user.last_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
+                user.username.toUpperCase().includes(this.state.search.toUpperCase())
+            )
+        });
+
         return (
             <div>
                 <div className={css({
@@ -155,16 +181,16 @@ class HomePage extends Component {
                 })}>
                     <Header tab={this.state.tab}
                             profileOnClick={this.profileTabSelected}
-                            search={this.state.search}
+                            search={this.state.searchBar}
                             searchClick={this.toggleSearch}
-                            broadcast={this.state.broadcast}
+                            broadcast={this.state.broadcastBar}
                             broadcastClick={this.toggleBroadcast}/>
                 </div>
                 {this.renderBroadcast()}
                 {this.renderSearchBar()}
                 <Switch>
                     <Route path="/profile">
-                        {() => <Profile user={this.state.user}/>}
+                        {() => <ProfileEdit user={this.state.user}/>}
                     </Route>
                     <Route path="/settings">
                         {() => <Settings/>}
@@ -172,8 +198,11 @@ class HomePage extends Component {
                     <Route path="/conversations">
                         {() => <Conversations conversations={JSON.parse(ConversationStore._getConversations()).result}/>}
                     </Route>
+                    <Route path="/conversations/:id">
+                        {() => <Conversation/>}
+                    </Route>
                     <Route path="/search">
-                        {() => <UserSearch users={this.state.users}/>}
+                        {() => <UserSearch users={filteredUsers}/>}
                     </Route>
                 </Switch>
                 <div className={css({
@@ -187,8 +216,6 @@ class HomePage extends Component {
             </div>
         )
     }
-
-
 }
 
 export default HomePage;

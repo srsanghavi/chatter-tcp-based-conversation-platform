@@ -30,10 +30,13 @@ class App extends Component {
                       <Route path="/register">
                           {() => <Register/>}
                       </Route>
-                      <Route path="/conversation/:id"
-                             component={Conversation}>
-                          {/*{() => <Conversation/>}*/}
+                      <Route path="/conversations/:id">
+                          {() => <Conversation/>}
                       </Route>
+                      {/*<Route path="/conversation/:id"*/}
+                             {/*component={Conversation}>*/}
+                          {/*/!*{() => <Conversation/>}*!/*/}
+                      {/*</Route>*/}
                       <Route path="/">
                           <Authentication page={<HomePage/>}/>
                       </Route>

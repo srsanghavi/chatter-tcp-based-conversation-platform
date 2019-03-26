@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import UserStore from "../Store/UserStore";
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { css } from 'emotion';
 import UserActions from "../Actions/UserActions";
 import ConversationStore from "../Store/ConversationStore";
@@ -157,6 +157,9 @@ class LoginProcessing extends Component {
 
     render() {
         if(this.state.finishedLoading) {
+            // return(
+            //     <Redirect to={'./conversations'}/>
+            // )
             return (
                 <div className={css({
                     textAlign: 'center',
@@ -175,6 +178,7 @@ class LoginProcessing extends Component {
                         </button>
                     </NavLink>
                 </div>
+
             )
         } else if(this.state.status === status.FAILURE) {
             return (
