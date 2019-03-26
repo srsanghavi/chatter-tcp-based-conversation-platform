@@ -8,7 +8,7 @@ public class GroupDB {
 
   private static MysqlCon mysqlCon;
 
-  GroupDB() {
+  public GroupDB() {
     mysqlCon = MysqlCon.getInstance();
   }
 

@@ -5,6 +5,8 @@ import ActionTypes from '../AppConstants';
 const CHANGE = 'CHANGE';
 
 let _user;
+let _signin;
+let _users;
 class UserStore extends EventEmitter {
     constructor() {
         super();
@@ -20,6 +22,14 @@ class UserStore extends EventEmitter {
             
             case ActionTypes.ACCOUNT_SIGN_IN:
                 console.log(action);
+                this._setSignin(action.payload);
+                break;
+            case ActionTypes.GET_USERS:
+                console.log(action);
+                this._setUsers(action.payload);
+                break;
+            case ActionTypes.GET_USER_BY_USERNAME:
+                console.log(action);
                 this._setUser(action.payload);
                 break;
             default:
@@ -27,15 +37,60 @@ class UserStore extends EventEmitter {
         }
     }
 
+
     _setUser(user){
         console.log(user);
-
         _user=user;
-        var self = this;
-        setTimeout(function() { // Run after dispatcher has finished
+        let self = this;
+        setTimeout(() => { // Run after dispatcher has finished
             self.emit(CHANGE);
         }, 0);
     }
+
+    _getUser() {
+        return _user
+    }
+
+    _clearUser() {
+        _user = undefined
+    }
+
+
+    _setUsers(users){
+        console.log(users);
+        _users=users;
+        let self = this;
+        setTimeout(() => { // Run after dispatcher has finished
+            self.emit(CHANGE);
+        }, 0);
+    }
+
+    _getUsers() {
+        return _users
+    }
+
+    _clearUsers() {
+        _users = undefined
+    }
+
+
+    _setSignin(payload){
+        console.log(payload);
+        _signin=payload;
+        let self = this;
+        setTimeout(() => { // Run after dispatcher has finished
+            self.emit(CHANGE);
+        }, 0);
+    }
+
+    _getSignIn() {
+        return _signin
+    }
+
+    _clearSignin() {
+        _signin = undefined
+    }
+
 
     // Hooks a React component's callback to the CHANGED event.
     addChangeListener(callback) {
@@ -46,6 +101,7 @@ class UserStore extends EventEmitter {
      removeChangeListener(callback) {
         this.removeListener(CHANGE, callback);
     }
+
 }
 
 export default new UserStore();
