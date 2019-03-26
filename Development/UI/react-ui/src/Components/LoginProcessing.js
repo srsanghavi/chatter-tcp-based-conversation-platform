@@ -169,7 +169,7 @@ class LoginProcessing extends Component {
                         color: '#342E37'
                     })}>
                         Login Successful!</h4>
-                    <NavLink to={'./'}>
+                    <NavLink to={'./conversations'}>
                         <button className="btn btn-outline-primary">
                             Continue
                         </button>

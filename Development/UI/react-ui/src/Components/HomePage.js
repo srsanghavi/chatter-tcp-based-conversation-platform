@@ -54,9 +54,10 @@ class HomePage extends Component {
 
     componentDidMount() {
         this.setState({
-            user: JSON.parse(UserStore._getUser()).result[0]
+            user: JSON.parse(UserStore._getUser()).result[0],
+            users: JSON.parse(UserStore._getUsers()).result,
+            conversations: JSON.parse(ConversationStore._getConversations()).result
         });
-
     }
 
     componentWillUnmount() {
@@ -65,19 +66,10 @@ class HomePage extends Component {
         ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
-    loadUser() {
-        if(UserStore._getUser() !== null) {
-
-            // this.setState({
-            //     user: JSON.parse(UserStore._getUser()).result[0]
-            // });
-            clearInterval(this.interval);
-        }
-    }
-
     componentDidUpdate() {
         // UserActions.getUsers(this.state.user.username)
         //ConversationActions.getConversations(this.state.user.username, this.state.user.id)
+        //console.log(ConversationStore._getConversations())
     }
 
     _onChange() {
@@ -137,7 +129,7 @@ class HomePage extends Component {
     renderSearchBar() {
         if(this.state.search) {
             return(
-                <div className={css({paddingTop: '5em'})}>
+                <div className={css({paddingBottom: '3em'})}>
                     <SearchBar/>
                 </div>
             )
@@ -147,7 +139,7 @@ class HomePage extends Component {
     renderBroadcast() {
         if(this.state.broadcast) {
             return(
-                <div className={css({paddingTop: '5em'})}>
+                <div className={css({paddingBottom: '3em'})}>
                     <Broadcast/>
                 </div>
             )
@@ -167,9 +159,9 @@ class HomePage extends Component {
                             searchClick={this.toggleSearch}
                             broadcast={this.state.broadcast}
                             broadcastClick={this.toggleBroadcast}/>
-                    {this.renderBroadcast()}
-                    {this.renderSearchBar()}
                 </div>
+                {this.renderBroadcast()}
+                {this.renderSearchBar()}
                 <Switch>
                     <Route path="/profile">
                         {() => <Profile user={this.state.user}/>}
@@ -178,7 +170,7 @@ class HomePage extends Component {
                         {() => <Settings/>}
                     </Route>
                     <Route path="/conversations">
-                        {() => <Conversations/>}
+                        {() => <Conversations conversations={JSON.parse(ConversationStore._getConversations()).result}/>}
                     </Route>
                     <Route path="/search">
                         {() => <UserSearch/>}

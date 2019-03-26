@@ -6,7 +6,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import Conversation from './Components/Conversation';
 import Login from "./Components/Login";
-import ConversationPreview from './Components/ConversationPreview';
+import ConversationPreviewOld from './Components/ConversationPreviewOld';
 import HomePage from "./Components/HomePage";
 import ThreadContainer from "./Components/ThreadContainer";
 import Authentication from './Components/Authentication'

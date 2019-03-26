@@ -1,6 +1,6 @@
 import React from 'react';
 import {css} from 'emotion';
-import ConversationPreview from './ConversationPreview'
+import ConversationPreviewOld from './ConversationPreviewOld'
 
 
 const ConversationContainer = props => {
@@ -15,7 +15,7 @@ const ConversationContainer = props => {
         })}>
             {props.conversations.map(conversation => {
                 return(
-                    <ConversationPreview conversation={conversation}/>
+                    <ConversationPreviewOld conversation={conversation}/>
                 )
             })}
         </div>

@@ -14,7 +14,7 @@ const SearchBar = props => {
             border: '0.05em solid gray',
             backgroundColor: 'white',
             boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
-            zIndex: 10
+            zIndex: 5
         })}>
             <div className={css({
                 display: 'flex',

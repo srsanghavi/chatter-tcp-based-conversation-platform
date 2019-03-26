@@ -14,7 +14,7 @@ const SearchBar = props => {
             border: '0.05em solid gray',
             backgroundColor: 'white',
             boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
-            zIndex: 10
+            zIndex: 5
         })}>
             <div className={css({
                 display: 'flex',
@@ -44,7 +44,7 @@ const SearchBar = props => {
                 <span className={css({
                     width: '15%'
                 })}>
-                <i className='fa fa-paper-plane'
+                <i className='fa fa-paper-plane' id='broadcastIcon'
                    style={{
                        fontSize: '1.5em',
                        marginLeft: 10,
