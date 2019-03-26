@@ -3,12 +3,10 @@ import DataService from './Data'
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
-import ConversationStore from '../Store/ConversationStore';
-import ConversationActions from '../Actions/ConversationActions';
 import {NavLink} from 'react-router-dom';
 import {css} from 'emotion';
 
-class Login extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,30 +19,21 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.api = new Api();
         this._onChange = this._onChange.bind(this);
-        this._onConversationsChanged = this._onConversationsChanged.bind(this);
     }
 
     componentWillMount(){
         UserStore.addChangeListener(this._onChange);
-        ConversationStore.addChangeListener(this._onConversationsChanged);
     }
 
     componentWillUnmount(){
         UserStore.removeChangeListener(this._onChange);
-        ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
     componentDidMount() {
-        //console.log(localStorage.getItem('loggedIn'));
-    }
-
-    _onConversationsChanged(){
-        var conv = ConversationStore.getConversations();
-
     }
 
     _onChange(){
-        console.log("logged In");
+        //console.log("logged In");
         // UserActions.getUsers('srsanghavi');
         // setTimeout(function(){}, 3000);
         // UserActions.getUserByUsername('srsanghavi');
@@ -63,10 +52,8 @@ class Login extends Component {
         })
     }
 
-
     handleSubmit(){
-        localStorage.setItem('username', this.state.username);
-        UserActions.signin(this.state.username,this.state.password);
+        console.log(this.state)
     }
 
 
@@ -89,24 +76,24 @@ class Login extends Component {
                             onChange={this.onPasswordChange}
                             required/>
                         <NavLink to={'./authentication'}
-                                className={css({
-                                    textDecoration: 'none !important'
-                                })}>
+                                 className={css({
+                                     textDecoration: 'none !important'
+                                 })}>
                             <button className="btn btn-block btn-outline-primary"
                                     onClick={this.handleSubmit}>
-                                Log In
+                                Register
                             </button>
                         </NavLink>
                     </div>
                 </div>
-                <h3 className="signin-text">Don't have an account?
-                    <NavLink to={'./register'}
-                             className={css({
-                                 "&:hover": {
-                                     textDecoration: 'underline #6F4F67 !important'
-                                 }
-                             })}>
-                        <p style={{color: '#6F4F67'}}> Register here</p>
+                <h3 className="signin-text">Already Registered?
+                    <NavLink to={'./login'}
+                            className={css({
+                                "&:hover": {
+                                    textDecoration: 'underline #6F4F67 !important'
+                                }
+                            })}>
+                        <p style={{color: '#6F4F67'}}> Log in here</p>
                     </NavLink>
                 </h3>
             </div>
@@ -115,4 +102,4 @@ class Login extends Component {
     }
 }
 
-export default Login
+export default Register;

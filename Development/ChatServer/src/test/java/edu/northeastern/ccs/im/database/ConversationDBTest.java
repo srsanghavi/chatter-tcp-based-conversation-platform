@@ -79,4 +79,9 @@ public class ConversationDBTest {
     public void  testGetConversationsForUser(){
         System.out.println(ConversationDB.getConversations(1));
     }
+
+    @Test
+    public void testAddMessageToThread(){
+      System.out.println(ConversationDB.addMessageToThread(311,519));
+    }
 }

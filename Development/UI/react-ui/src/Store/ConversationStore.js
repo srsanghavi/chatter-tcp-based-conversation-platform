@@ -29,7 +29,7 @@ class ConversationStore extends EventEmitter {
     _setConversations(conversations){
         _conversations = conversations;
         var self = this;
-        setTimeout(function() { // Run after dispatcher has finished
+        setTimeout(() => { // Run after dispatcher has finished
             self.emit(CONV_CHANGED);
         }, 0);
     }
