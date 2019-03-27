@@ -71,6 +71,12 @@ public class Route {
                 String conversation_id = (String) json.getOrDefault("conversation_id",0);
                 response = ConversationDB.getThreadsForConversation(Integer.valueOf(conversation_id));
                 break;
+            case "getMessagesInConversation/":
+                ChatLogger.info("getMessagesInConversation:");
+                String conversationId = (String) json.getOrDefault("conversation_id",0);
+                response = ConversationDB.getMessagesForConversation(Integer.valueOf(conversationId));
+                break;
+
             case "getUserByUsername/":
                 ChatLogger.info("getUserByUsername:");
                 String username = (String) json.getOrDefault("username",0);
