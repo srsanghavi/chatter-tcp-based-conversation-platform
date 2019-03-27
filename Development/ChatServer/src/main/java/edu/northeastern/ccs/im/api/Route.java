@@ -90,7 +90,7 @@ public class Route {
           case "messageInThread/":
             ChatLogger.info("messageInThread:");
             String thread_id = (String) json.getOrDefault("thread_id",0);
-            response = ConversationDB.getUsersInConversation(Integer.valueOf(thread_id));
+            response = ConversationDB.getMessagesInThread(Integer.valueOf(thread_id));
             break;
 
 

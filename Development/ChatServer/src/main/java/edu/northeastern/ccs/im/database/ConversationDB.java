@@ -97,7 +97,6 @@ public class ConversationDB{
         return mysqlCon.sqlGet(query);
     }
 
-
     /**
      * Create message for thread int.
      *
@@ -164,7 +163,7 @@ public class ConversationDB{
    * @return list of messages in the thread
    */
   public static List<Map<String, Object>> getMessagesInThread(int threadID){
-    String sql = "select * from message where thread_id = "+threadID;
+    String sql = "select * from message where thread_id = '"+threadID + "';";
     return mysqlCon.sqlGet(sql);
   }
 
