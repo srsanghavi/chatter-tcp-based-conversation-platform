@@ -4,13 +4,13 @@ import Api from '../Services/Api';
 
 const api = new Api();
 
-class ThreadActions {
+class GroupActions {
 
-    getThreadsInConversation(username,conversationId) {
-        api.getThreadsInConversation(username,conversationId).then(value => {
+    getGroups(username,userId) {
+        api.getGroups(username,userId).then(value => {
             console.log(value);
             Dispatcher.dispatch({
-                actionType: ActionTypes.GET_THREADS_IN_CONVERSATION,
+                actionType: ActionTypes.GET_GROUPS,
                 payload: value,
             })
         });
@@ -18,4 +18,4 @@ class ThreadActions {
 
 }
 
-export default new ThreadActions();
+export default new GroupActions();

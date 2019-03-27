@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import DataService from './Data'
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
@@ -33,11 +32,9 @@ class Register extends Component {
     }
 
     _onChange(){
-        //console.log("logged In");
         // UserActions.getUsers('srsanghavi');
         // setTimeout(function(){}, 3000);
         // UserActions.getUserByUsername('srsanghavi');
-        // ConversationActions.getConversations('srsanghavi','1');
     }
 
     onUsernameChange(event) {

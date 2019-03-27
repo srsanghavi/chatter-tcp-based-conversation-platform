@@ -58,7 +58,7 @@ class LoginProcessing extends Component {
         } else {
             this.setState({
                 status: status.SUCCESS
-            })
+            });
             clearInterval(this.interval);
         }
     }

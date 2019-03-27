@@ -52,7 +52,14 @@ const Header = props => {
                        style={{
                             color: props.broadcast ? '#45AAEB' : 'white',
                        }}></i> : null }
-                {props.tab === 'settings' || props.tab === 'profile' ? null :
+                {props.tab === 'settings' ? null :
+                    props.tab === 'profile' && props.previousTab === 'search' ? null :
+                    props.tab === 'profile' ?
+                    <i className="fa fa-edit fa-2x"
+                       style={{
+                           float: 'left',
+                           color: props.search ? '#45AAEB' : 'white',
+                       }}></i> :
                     <i className="fa fa-search fa-2x"
                        onClick={props.searchClick}
                        style={{

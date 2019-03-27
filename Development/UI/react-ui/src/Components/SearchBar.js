@@ -1,6 +1,5 @@
 import React from 'react';
 import {css} from 'emotion';
-import { NavLink } from 'react-router-dom';
 
 const SearchBar = props => {
     return (

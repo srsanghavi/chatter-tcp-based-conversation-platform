@@ -3,7 +3,6 @@ import {css} from 'emotion';
 import Header from './Header'
 import Footer from './Footer'
 import DataService from "./Data";
-import ConversationContainer from "./ConversationContainer";
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
@@ -19,6 +18,7 @@ import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
 import GroupOrUserBar from "./GroupOrUserBar";
+import GroupActions from "../Actions/GroupActions";
 
 const tab = {
     CONVERSATIONS: 'conversations',
@@ -68,6 +68,7 @@ class HomePage extends Component {
             users: JSON.parse(UserStore._getUsers()).result,
             conversations: JSON.parse(ConversationStore._getConversations()).result
         });
+        GroupActions.getGroups(localStorage.getItem('username'),localStorage.getItem('id'))
     }
 
     componentWillUnmount() {
@@ -77,7 +78,7 @@ class HomePage extends Component {
     }
 
     componentDidUpdate() {
-        // UserActions.getUsers(this.state.user.username)
+        //UserActions.getUsers(this.state.user.username)
         //ConversationActions.getConversations(this.state.user.username, this.state.user.id)
         //console.log(ConversationStore._getConversations())
     }

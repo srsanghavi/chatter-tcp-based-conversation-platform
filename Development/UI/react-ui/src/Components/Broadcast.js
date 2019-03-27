@@ -1,8 +1,7 @@
 import React from 'react';
 import {css} from 'emotion';
-import { NavLink } from 'react-router-dom';
 
-const SearchBar = props => {
+const Broadcast = props => {
     return (
         <div className={css({
             display: 'flex',
@@ -65,4 +64,4 @@ const SearchBar = props => {
     );
 };
 
-export default SearchBar;
+export default Broadcast;
