@@ -133,7 +133,7 @@ public class Route {
                 break;
             }
             case "sendMessage/":
-                String senderId = (String) json.get("sende_idr");
+                String senderId = (String) json.get("sender_id");
                 String senderName = (String) json.get("sender_name");
                 String conversationId = (String) json.get("conversation_id");
                 String threadId = (String) json.get("thread_id");
@@ -150,6 +150,14 @@ public class Route {
                     return  "{result: error, resultCode: 500, resultMessage: 'could not create message'}";
                 }
                 break;
+
+//          case "broadcastMessage/":
+//                String text = (String) json.get("message");
+//                String sender = (String) json.get("sender_id");
+//                List<Map<String, Object>> conversations = ConversationDB.getConversations(Integer.parseInt(sender));
+//
+
+
 
           case "addUserToGroup/":
             String userId = (String) json.get("user_id");

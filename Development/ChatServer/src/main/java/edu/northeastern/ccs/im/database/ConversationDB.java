@@ -93,7 +93,7 @@ public class ConversationDB{
      * @return the list of threads
      */
     public static List<Map<String,Object>> getThreadsForConversation(int conversationId){
-        String query = "SELECT * FROM thread WHERE conversations_id=" + conversationId;
+        String query = "SELECT * FROM thread WHERE conversations_id='" + conversationId + "';";
         return mysqlCon.sqlGet(query);
     }
 
