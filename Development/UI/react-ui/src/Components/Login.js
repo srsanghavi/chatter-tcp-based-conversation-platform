@@ -23,12 +23,10 @@ class Login extends Component {
 
     componentWillMount(){
         UserStore.addChangeListener(this._onChange);
-        ConversationStore.addChangeListener(this._onConversationsChanged);
     }
 
     componentWillUnmount(){
         UserStore.removeChangeListener(this._onChange);
-        ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
     componentDidMount() {
