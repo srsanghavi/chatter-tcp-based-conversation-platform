@@ -18,6 +18,7 @@ import ProfileEdit from './ProfileEdit';
 import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
+import GroupOrUserBar from "./GroupOrUserBar";
 
 const tab = {
     CONVERSATIONS: 'conversations',
@@ -37,7 +38,8 @@ class HomePage extends Component {
             broadcast: '',
             user: {},
             users: [],
-            conversations: []
+            conversations: [],
+            userButtonSelected: true
         };
 
         this.api = new Api();
@@ -50,6 +52,7 @@ class HomePage extends Component {
         this.toggleSearch = this.toggleSearch.bind(this);
         this.toggleBroadcast = this.toggleBroadcast.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
+        this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this)
 
     }
 
@@ -147,6 +150,12 @@ class HomePage extends Component {
         this.setState({search: event.target.value});
     }
 
+    groupOrUserBarButtonChange() {
+        this.setState({
+            userButtonSelected: !this.state.userButtonSelected
+        })
+    }
+
 
     renderSearchBar() {
         if(this.state.searchBar) {
@@ -164,6 +173,17 @@ class HomePage extends Component {
             return(
                 <div className={css({paddingBottom: '3em'})}>
                     <Broadcast/>
+                </div>
+            )
+        }
+    }
+
+    renderGroupOrUserBar() {
+        if(this.state.tab === 'search') {
+            return(
+                <div className={css({paddingBottom: '3em'})}>
+                    <GroupOrUserBar userButtonSelected={this.state.userButtonSelected}
+                                    onButtonClick={this.groupOrUserBarButtonChange}/>
                 </div>
             )
         }
@@ -199,6 +219,7 @@ class HomePage extends Component {
                 </div>
                 {this.renderBroadcast()}
                 {this.renderSearchBar()}
+                {this.renderGroupOrUserBar()}
                 <Switch>
                     <Route path="/profile/:id"
                            component={Profile}>

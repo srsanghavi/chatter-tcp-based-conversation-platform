@@ -15,7 +15,7 @@ const Footer = props => {
             color: 'white',
             padding: '0 0.75em',
             backgroundColor: '#342E37',
-            boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
+            boxShadow: '25px 0px 25px 0px rgba(0,0,0,0.75)',
             zIndex: 10,
             border: '0.05em solid black',
         })}>
