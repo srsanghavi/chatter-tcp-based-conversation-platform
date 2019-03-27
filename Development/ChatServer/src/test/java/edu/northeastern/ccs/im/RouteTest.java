@@ -14,4 +14,9 @@ public class RouteTest {
     public void testCreateUserDuplicateUser(){
         System.out.println(Route.getResponsePost("registerUser/","{first_name:test;last_name:user;username:testUser;email:test@prattle.com;password:'12345678'}"));
     }
+
+    @Test
+    public void testGetUserGroups(){
+        System.out.println(Route.getResponseGet("getGroups/","{user_id:1}"));
+    }
 }
