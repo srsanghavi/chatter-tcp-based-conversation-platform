@@ -109,6 +109,7 @@ public class Route {
         String response = null;
         UserDB userDB = new UserDB();
         MessageDB messageDB = new MessageDB();
+        ConversationDB conversationDB = new ConversationDB();
         Map<String, Object> json = decodeJSON(data);
         switch (route){
             case "registerUser/":
@@ -151,12 +152,21 @@ public class Route {
                 }
                 break;
 
-//          case "broadcastMessage/":
-//                String text = (String) json.get("message");
-//                String sender = (String) json.get("sender_id");
-//                List<Map<String, Object>> conversations = ConversationDB.getConversations(Integer.parseInt(sender));
-//
-
+            case "broadcastMessage/":
+                String text = (String) json.get("message");
+                int sender = Math.toIntExact(Math.round((double) json.get("sender_id")));
+                List<Map<String, Object>> conversations = ConversationDB.getConversations(sender);
+                System.out.println(conversations);
+                int conversation_id = -1;
+                int thread_id = -1;
+                int message_id = -1;
+                for (Map<String, Object> conversation : conversations){
+                    conversation_id = (Integer) conversation.get("id");
+                    thread_id = conversationDB.createThreadForConversation(conversation_id);
+                    message_id = conversationDB.createMessageForThread(thread_id, sender, text);
+                    conversationDB.addMessageToThread(message_id, thread_id);
+                }
+                break;
 
 
           case "addUserToGroup/":
