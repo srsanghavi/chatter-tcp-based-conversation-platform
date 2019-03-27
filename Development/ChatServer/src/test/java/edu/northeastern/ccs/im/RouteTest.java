@@ -19,4 +19,9 @@ public class RouteTest {
     public void testGetUserGroups(){
         System.out.println(Route.getResponseGet("getGroups/","{user_id:1}"));
     }
+
+    @Test
+    public void testBroadcastMessage(){
+        ChatLogger.info(Route.getResponsePost("broadcastMessage/", "{message:'hello world';sender_id:8}"));
+    }
 }
