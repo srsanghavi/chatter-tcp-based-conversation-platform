@@ -29,7 +29,7 @@ public class UserDB{
      * @param pass  the pass
      * @return the int (1 if authorized, 0 otherwise)
      */
-    public int isAuthorized(String username,String pass){
+    public static int isAuthorized(String username,String pass){
         String sql = "SELECT user_auth('"+username+"','"+pass+"') as authorized;";
         List<Map<String, Object>> res = mysqlCon.sqlGet(sql);
         return (int) res.get(0).get("authorized");
@@ -45,7 +45,7 @@ public class UserDB{
      * @param lastName  the last name
      * @return the int (1 if created, 0 otherwise)
      */
-    public int createUser(String username, String email, String password, String firstName, String lastName){
+    public static int createUser(String username, String email, String password, String firstName, String lastName){
 
         final String sep = "\" , \"";
 
@@ -57,6 +57,20 @@ public class UserDB{
                 lastName +
                 sep +
                 email +
+                "\" , " +
+                "MD5('" + password + "')" +
+                ");";
+        ChatLogger.info("Executing: " + query);
+        return mysqlCon.sqlcreate(query);
+    }
+
+    public int createUser(String username, String password){
+
+        final String sep = "\" , \"";
+
+        String query = "INSERT INTO users(username, password) VALUES (\"" +
+                username +
+                sep +
                 "\" , " +
                 "MD5('" + password + "')" +
                 ");";
@@ -128,4 +142,13 @@ public class UserDB{
                 "where users_id="+user_id;
         return mysqlCon.sqlGet(sql);
     }
+
+    public int deleteUser(int id){
+        String sql = "UPDATE users SET deleted=true WHERE id='" + id + "';";
+        return mysqlCon.sqlcreate(sql);
+    }
+
+    /*public int updateUserSearchability(int user_id){
+
+    }*/
 }

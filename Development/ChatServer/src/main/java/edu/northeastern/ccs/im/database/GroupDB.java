@@ -8,7 +8,7 @@ public class GroupDB {
 
   private static MysqlCon mysqlCon;
 
-  GroupDB() {
+  public GroupDB() {
     mysqlCon = MysqlCon.getInstance();
   }
 
@@ -87,6 +87,12 @@ public class GroupDB {
       return r<=0?-1:r;
   }
 
+  public int updateGroupName(int groupId, String name){
+      String query = "UPDATE groups SET name ='" + name  + "' WHERE id='" + groupId + "';";
+      int r = mysqlCon.sqlcreate(query);
+      return r<=0?-1:r;
+  }
+
     /**
      * Gets users.
      *
@@ -97,5 +103,10 @@ public class GroupDB {
         String query = "SELECT * FROM users WHERE id in (SELECT users_id FROM groups_has_users WHERE groups_id="+group_id;
         List<Map<String, Object>> r = mysqlCon.sqlGet(query);
         return r;
+  }
+
+  public int deleteGroup(int id){
+      String sql = "UPDATE groups SET deleted=true WHERE id='" + id + "';";
+      return mysqlCon.sqlcreate(sql);
   }
 }

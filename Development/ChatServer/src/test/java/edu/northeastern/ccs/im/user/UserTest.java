@@ -1,5 +1,6 @@
 package edu.northeastern.ccs.im.user;
 
+import edu.northeastern.ccs.im.database.UserDB;
 import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -12,6 +13,8 @@ public class UserTest {
     public void createUser(){
 
         user.createUser("john", "john@prattle.com", "123", "John", "G");
+        UserDB userdb = new UserDB();
+        userdb.createUser("john", "G");
     }
 
     @Test

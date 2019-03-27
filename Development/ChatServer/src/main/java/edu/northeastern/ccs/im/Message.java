@@ -22,6 +22,8 @@ public class Message {
 	/** The string sent when a field is null. */
 	private static final String NULL_OUTPUT = "--";
 
+	private static MysqlCon mysqlCon;
+
 	/** The handle of the message. */
 	private MessageType msgType;
 
@@ -275,5 +277,6 @@ public class Message {
   public int getThreadId() {
     return this.threadId;
   }
+
 
 }
