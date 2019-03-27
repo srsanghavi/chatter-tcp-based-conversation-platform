@@ -66,27 +66,32 @@ public class Route {
                 response = GroupDB.getUsers(Integer.valueOf(group_id));
                 break;
 
-            case "getThreadsInConversation/": {
+            case "getThreadsInConversation/": 
                 ChatLogger.info("getThreadsInConversation:");
                 int conversation_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
                 response = ConversationDB.getThreadsForConversation(Integer.valueOf(conversation_id));
                 break;
-            }
+            
+            case "getMessagesInConversation/":
+                ChatLogger.info("getMessagesInConversation:");
+                String conversationId = (String) json.getOrDefault("conversation_id",0);
+                response = ConversationDB.getMessagesForConversation(Integer.valueOf(conversationId));
+                break;
+
             case "getUserByUsername/":
                 ChatLogger.info("getUserByUsername:");
                 String username = (String) json.getOrDefault("username",0);
                 response = UserDB.getUserByUserName(username);
                 break;
-            case "getUsersInConversation/": {
+            case "getUsersInConversation/": 
                 ChatLogger.info("getUsersInConversation:");
-                int conversation_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
-                response = ConversationDB.getUsersInConversation(Integer.valueOf(conversation_id));
-            }
+                int conv_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
+                response = ConversationDB.getUsersInConversation(Integer.valueOf(conv_id));
                 break;
-          case "messageInThread/":
-            ChatLogger.info("messageInThread:");
+          case "getMessagesInThread/":
+            ChatLogger.info("getMessagesInThread:");
             String thread_id = (String) json.getOrDefault("thread_id",0);
-            response = ConversationDB.getUsersInConversation(Integer.valueOf(thread_id));
+            response = ConversationDB.getMessagesInThread(Integer.valueOf(thread_id));
             break;
 
 

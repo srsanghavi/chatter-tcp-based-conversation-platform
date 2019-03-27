@@ -24,4 +24,15 @@ public class RouteTest {
     public void testBroadcastMessage(){
         ChatLogger.info(Route.getResponsePost("broadcastMessage/", "{message:'hello world';sender_id:8}"));
     }
+
+    @Test
+    public void testGetMessagesinConversation(){
+        ChatLogger.info(Route.getResponseGet("getMessagesInConversation/", "{conversation_id:'205'}"));
+    }
+
+    @Test
+    public void testGetMessagesinThread(){
+        ChatLogger.info(Route.getResponseGet("getMessagesInThread/", "{thread_id:'562'}"));
+    }
+
 }
