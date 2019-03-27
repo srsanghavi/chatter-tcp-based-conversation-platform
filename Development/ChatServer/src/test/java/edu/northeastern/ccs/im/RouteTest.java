@@ -24,4 +24,10 @@ public class RouteTest {
     public void testGetMessagesinConversation(){
         ChatLogger.info(Route.getResponseGet("getMessagesInConversation/", "{conversation_id:'205'}"));
     }
+
+    @Test
+    public void testGetMessagesinThread(){
+        ChatLogger.info(Route.getResponseGet("getMessagesInThread/", "{thread_id:'562'}"));
+    }
+
 }
