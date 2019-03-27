@@ -56,30 +56,32 @@ public class Route {
             // requires params: {user_id: "<user_id>"}
             case "getGroups/":
                 ChatLogger.info("getGroups:");
-                String id = (String) json.getOrDefault("user_id",0);
+                int id = Math.toIntExact(Math.round((double) json.getOrDefault("user_id", 0)));
                 response = userDB.getGroups(Integer.valueOf(id));
                 break;
 
             case "getGroupUsers/":
                 ChatLogger.info("getGroupUsers:");
-                String group_id = (String) json.getOrDefault("group_id",0);
+                int group_id = Math.toIntExact(Math.round((double) json.getOrDefault("group_id", 0)));
                 response = GroupDB.getUsers(Integer.valueOf(group_id));
                 break;
 
-            case "getThreadsInConversation/":
+            case "getThreadsInConversation/": {
                 ChatLogger.info("getThreadsInConversation:");
-                String conversation_id = (String) json.getOrDefault("conversation_id",0);
+                int conversation_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
                 response = ConversationDB.getThreadsForConversation(Integer.valueOf(conversation_id));
                 break;
+            }
             case "getUserByUsername/":
                 ChatLogger.info("getUserByUsername:");
                 String username = (String) json.getOrDefault("username",0);
                 response = UserDB.getUserByUserName(username);
                 break;
-            case "getUsersInConversation/":
+            case "getUsersInConversation/": {
                 ChatLogger.info("getUsersInConversation:");
-                conversation_id = (String) json.getOrDefault("conversation_id",0);
+                int conversation_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
                 response = ConversationDB.getUsersInConversation(Integer.valueOf(conversation_id));
+            }
                 break;
           case "messageInThread/":
             ChatLogger.info("messageInThread:");
