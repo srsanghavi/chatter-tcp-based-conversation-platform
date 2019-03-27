@@ -48,7 +48,8 @@ const UserPreviews = props => {
                              }
                          })}>
                     <i className="fa fa-angle-right fa-2x"
-                       style={{float: 'right'}}></i>
+                       style={{float: 'right'}}
+                       onClick={props.profileOnClick}></i>
                 </NavLink>
             </span>
             </div>

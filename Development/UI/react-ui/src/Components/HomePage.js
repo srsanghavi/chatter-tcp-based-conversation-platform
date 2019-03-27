@@ -30,6 +30,7 @@ class HomePage extends Component {
         super(props);
         this.state = {
             tab: 'conversations',
+            previousTab: '',
             searchBar: false,
             search: '',
             broadcastBar: false,
@@ -87,6 +88,7 @@ class HomePage extends Component {
 
     conversationTabSelected() {
         this.setState({
+            previousTab: this.state.tab,
             tab: 'conversations',
             searchBar: false,
             search: '',
@@ -96,6 +98,7 @@ class HomePage extends Component {
 
     searchTabSelected() {
         this.setState({
+            previousTab: this.state.tab,
             tab: 'search',
             searchBar: false,
             search: '',
@@ -105,8 +108,9 @@ class HomePage extends Component {
 
     settingsTabSelected() {
         this.setState({
+            previousTab: this.state.tab,
             tab: 'settings',
-            search: false,
+            searchBar: false,
             search: '',
             broadcastBar: false
         })
@@ -114,6 +118,7 @@ class HomePage extends Component {
 
     profileTabSelected() {
         this.setState({
+            previousTab: this.state.tab,
             tab: 'profile',
             searchBar: false,
             search: '',
@@ -180,7 +185,11 @@ class HomePage extends Component {
                     paddingBottom: '5em'
                 })}>
                     <Header tab={this.state.tab}
+                            previousTab={this.state.previousTab}
+                            user={this.state.user}
                             profileOnClick={this.profileTabSelected}
+                            searchOnClick={this.searchTabSelected}
+                            conversationsOnClick={this.conversationTabSelected}
                             search={this.state.searchBar}
                             searchClick={this.toggleSearch}
                             broadcast={this.state.broadcastBar}
@@ -189,8 +198,8 @@ class HomePage extends Component {
                 {this.renderBroadcast()}
                 {this.renderSearchBar()}
                 <Switch>
-                    <Route path="/profile">
-                        {() => <ProfileEdit user={this.state.user}/>}
+                    <Route path="/profile/:id"
+                           component={Profile}>
                     </Route>
                     <Route path="/settings">
                         {() => <Settings/>}
@@ -202,7 +211,8 @@ class HomePage extends Component {
                         {() => <Conversation/>}
                     </Route>
                     <Route path="/search">
-                        {() => <UserSearch users={filteredUsers}/>}
+                        {() => <UserSearch users={filteredUsers}
+                                           profileOnClick={this.profileTabSelected}/>}
                     </Route>
                 </Switch>
                 <div className={css({

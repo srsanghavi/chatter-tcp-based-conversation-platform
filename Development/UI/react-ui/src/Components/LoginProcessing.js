@@ -44,6 +44,7 @@ class LoginProcessing extends Component {
 
     update() {
         console.log(this.state);
+        console.log(ConversationStore._getConversations());
         if(!this.state.finishedLoading) {
             if (!this.state.loggedIn) {
                 this.authenticate()
@@ -135,7 +136,6 @@ class LoginProcessing extends Component {
     }
 
     loadConversations() {
-        console.log('here')
         if(UserStore._getUsers() === undefined){
             if(this.state.interval < 100000) {
                 this.setState({ interval: this.state.interval + 1 });

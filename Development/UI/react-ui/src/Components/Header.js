@@ -23,7 +23,19 @@ const Header = props => {
                 width: '100%',
                 padding: '0 0.75em'
             })}>
-                <NavLink to={'./profile'}
+                {props.tab === 'profile' ?
+                <NavLink to={props.previousTab === 'search' ? '../search' : '../conversations'}
+                         className={css({
+                             color: 'white',
+                             textDecoration: 'none',
+                             '&:hover': {
+                                 color: '#45AAEB'
+                             }
+                         })}>
+                    <i className="fa fa-arrow-left fa-2x"
+                       onClick={props.previousTab === 'search' ? props.searchOnClick : props.conversationsOnClick}></i>
+                </NavLink> :
+                <NavLink to={`./profile/${props.user.id}`}
                          className={css({
                              color: props.tab === 'profile' ? '#45AAEB' : 'white',
                              textDecoration: 'none',
@@ -33,7 +45,7 @@ const Header = props => {
                          })}>
                     <i className="fa fa-user-circle-o fa-2x"
                        onClick={props.profileOnClick}></i>
-                </NavLink>
+                </NavLink>}
                 {props.tab === 'conversations' ?
                     <i className="fa fa-bullhorn fa-2x"
                        onClick={props.broadcastClick}

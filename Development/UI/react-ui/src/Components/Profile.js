@@ -6,7 +6,7 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: this.props.id,
+            id: this.props.match.params.id,
             username: '',
             firstName: '',
             lastName: '',
@@ -15,10 +15,15 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state.id)
-        console.log(JSON.parse(UserStore._getUsers()).result.filter(user => {
-            return user.id == this.state.id
-        }))
+        let user = JSON.parse(UserStore._getUsers()).result.filter(user => {
+            return user.id == this.props.match.params.id
+        });
+        this.setState({
+            username: user[0].username,
+            firstName: user[0].first_name,
+            lastName: user[0].last_name,
+            email: user[0].email
+        })
     }
 
     render() {
@@ -35,7 +40,7 @@ class Profile extends Component {
                     padding: '1em',
                     alignSelf: 'center'
                 })}>
-                    <img src="./images/image.png" height="75" width="75"
+                    <img src="../images/image.png" height="75" width="75"
                          className={css({
                              borderRadius: 50
                          })}/>
@@ -94,7 +99,6 @@ class Profile extends Component {
             </div>
         )
     }
-
-};
+}
 
 export default Profile;

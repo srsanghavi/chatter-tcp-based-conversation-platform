@@ -13,7 +13,8 @@ const UserSearch = props => {
         })}>
             {props.users.map(user => {
                 return(
-                    <UserPreviews user={user}/>
+                    <UserPreviews user={user}
+                                  profileOnClick={props.profileOnClick}/>
                 )
             })}
         </div>
