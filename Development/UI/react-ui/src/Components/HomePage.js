@@ -173,9 +173,11 @@ class HomePage extends Component {
     render() {
         const filteredUsers = this.state.users.filter(user => {
             return (
-                user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
+                user.id != this.state.user.id &&
+                user.isSearchable &&
+                (user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
                 user.last_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
-                user.username.toUpperCase().includes(this.state.search.toUpperCase())
+                user.username.toUpperCase().includes(this.state.search.toUpperCase()))
             )
         });
 
