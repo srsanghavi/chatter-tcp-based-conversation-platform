@@ -19,7 +19,7 @@ public final class ApiMessageType {
     final static String GET_GROUP_CONVERSATION = "";
     final static String DELETE_GROUP =           "deleteGroup/";
 
-    final static String CREATE_USER_USER_CONV =  "";
+    final static String CREATE_USER_USER_CONV =  "addUserUserConversation/";
     final static String CREATE_GROUP_CONV =      "";
     final static String GET_THREAD_CONV =        "getThreadsInConversation/";
     final static String ADD_MESSAGE_THREAD =     "addMessageToThread/";
