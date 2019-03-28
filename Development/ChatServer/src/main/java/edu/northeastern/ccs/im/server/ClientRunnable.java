@@ -283,11 +283,11 @@ public class ClientRunnable implements Runnable {
 						String data = rawMessage.split("::")[2];    // data
 
 						if(method.equals("GET")){
-							String response = Route.getResponseGet(route,data);
+							String response = Route.getResponseGet(this.name,route,data);
 							Message message = Message.makeBroadcastMessage(msg.getName(),response);
 							this.sendMessage(message);
 						}else if(method.equals("POST")){
-							String response = Route.getResponsePost(route,data);
+							String response = Route.getResponsePost(this.name,route,data);
 							Message message = Message.makeBroadcastMessage(msg.getName(),response);
 							this.sendMessage(message);
 						}

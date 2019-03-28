@@ -23,7 +23,7 @@ public class Route {
      * @param params the params JSON string with all elements as strings
      * @return the string
      */
-    public static String getResponseGet(String route, String params){
+    public static String getResponseGet(String username, String route, String params){
         List<Map<String, Object>> response;
         Map<String, Object> json = decodeJSON(params);
 
@@ -58,19 +58,19 @@ public class Route {
                 case ApiMessageType.GET_GROUP_USERS:
                     response = ControllerFactory
                             .getGroupController()
-                            .getGroupUsers(json);
+                            .getGroupUsers(username,json);
                     break;
 
                 case ApiMessageType.GET_THREAD_CONV:
                     response = ControllerFactory
                             .getConversationController()
-                            .getThreadsInConversation(json);
+                            .getThreadsInConversation(username,json);
                     break;
 
                 case ApiMessageType.GET_MSG_CONV:
                     response = ControllerFactory
                             .getConversationController()
-                            .getMessagesInConversation(json);
+                            .getMessagesInConversation(username,json);
                     break;
 
                 case ApiMessageType.GET_USER_BY_USERNAME:
@@ -82,13 +82,13 @@ public class Route {
                 case ApiMessageType.GET_CONV_USER:
                     response = ControllerFactory
                             .getConversationController()
-                            .getUsersInConversation(json);
+                            .getUsersInConversation(username,json);
                     break;
 
                 case ApiMessageType.GET_MESSAGE_THREAD:
                     response = ControllerFactory
                             .getConversationController()
-                            .getMessagesInThread(json);
+                            .getMessagesInThread(username,json);
                     break;
 
 
@@ -111,7 +111,7 @@ public class Route {
      * @param data  the data JSON
      * @return the string with POST response
      */
-    public static String getResponsePost(String route,String data){
+    public static String getResponsePost(String username, String route,String data){
         Map<String, Object> json = decodeJSON(data);
 
         switch (route){
@@ -137,7 +137,7 @@ public class Route {
             case ApiMessageType.ADD_USER_GROUP:
                 json = ControllerFactory
                         .getGroupController()
-                        .addUserToGroup(json);
+                        .addUserToGroup(username, json);
                 break;
 
             case ApiMessageType.CREATE_THREAD_CONV:
@@ -149,7 +149,7 @@ public class Route {
             case ApiMessageType.MODIFY_GROUP_NAME:
                 json = ControllerFactory
                         .getGroupController()
-                        .modifyGroupName(json);
+                        .modifyGroupName(username, json);
                 break;
 
             case ApiMessageType.DELETE_USER:
@@ -161,7 +161,7 @@ public class Route {
             case ApiMessageType.DELETE_GROUP:
                 json = ControllerFactory
                         .getGroupController()
-                        .deleteGroup(json);
+                        .deleteGroup(username,json);
                 break;
 
             case ApiMessageType.DELETE_MESSAGE:
@@ -174,7 +174,13 @@ public class Route {
             case ApiMessageType.ADD_GROUP_GROUP:
                 json = ControllerFactory
                         .getGroupController()
-                        .addGroupToGroup(json);
+                        .addGroupToGroup(username,json);
+                break;
+
+          case ApiMessageType.CREATE_USER_USER_CONV:
+                json = ControllerFactory
+                        .getConversationController()
+                        .createUserUserConversation(json);
                 break;
 
             default:
