@@ -124,4 +124,15 @@ public class GroupDB {
       String sql = "UPDATE groups SET deleted=true WHERE id='" + id + "';";
       return mysqlCon.sqlcreate(sql);
   }
+
+
+  /**
+   * Function to retrieve all public groups.
+   * @return list of public groups
+   */
+  public static List<Map<String,Object>> getNonPrivateGroups(){
+    String sql = "SELECT * from groups WHERE isSearchable='1';";
+    return mysqlCon.sqlGet(sql);
+  }
+
 }
