@@ -13,7 +13,7 @@
             var socket;
             function connectTcp(){
                 var net = new WebTCP('localhost', 9999);
-                socket = net.createSocket("ec2-54-89-62-84.compute-1.amazonaws.com", 4545);
+                socket = net.createSocket("localhost", 4545);
 
                 // When the connection is open, send some data to the server
                 socket.on('connect', function(){

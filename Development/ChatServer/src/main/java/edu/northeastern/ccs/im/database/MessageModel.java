@@ -1,15 +1,15 @@
 package edu.northeastern.ccs.im.database;
 
-public class MessageDB {
+public class MessageModel {
     /**
      * The Mysql con.
      */
     private static MysqlCon mysqlCon;
 
     /**
-     * Instantiates a new User db.
+     * Instantiates a new UserModel db.
      */
-    public MessageDB(){
+    public MessageModel(){
         mysqlCon = MysqlCon.getInstance();
     }
 

@@ -41,8 +41,8 @@ public class Message {
   private Timestamp creationTS;   // The TS of message creation
   private int threadId;        // ID of thread to which message belongs
 
-  private static UserDB userDB;
-  private static ConversationDB conversationDB;
+  private static UserModel userModel;
+  private static ConversationModel conversationModel;
 
   /**
 	 * Create a new message that contains actual IM text. The type of distribution
@@ -55,7 +55,7 @@ public class Message {
 	 */
 	public Message(MessageType handle, String srcName, String text) {
 		msgType = handle;
-		// Save the properly formatted identifier for the user sending the
+		// Save the properly formatted identifier for the userModel sending the
 		// message.
 		msgSender = srcName;
 		// Save the text of the message.
@@ -64,8 +64,8 @@ public class Message {
     messageID = UUID.randomUUID().toString();
     this.creationTS = new Timestamp((new Date()).getTime());
 
-    userDB = new UserDB();
-    conversationDB = new ConversationDB();
+    userModel = new UserModel();
+    conversationModel = new ConversationModel();
 	}
 
 	/**
@@ -95,20 +95,20 @@ public class Message {
 		String destinationUser = this.getText().split("::")[0];
 		String message = this.getText().split("::")[1];
 
-		senderID = userDB.getUserID(this.getName());
-		receiverID = userDB.getUserID(destinationUser);
+		senderID = userModel.getUserID(this.getName());
+		receiverID = userModel.getUserID(destinationUser);
 
-		int conversationID = conversationDB.createConversationForUser(senderID,receiverID);
-		int messageThreadId = conversationDB.createThreadForConversation(conversationID);
+		int conversationID = conversationModel.createConversationForUser(senderID,receiverID);
+		int messageThreadId = conversationModel.createThreadForConversation(conversationID);
     this.threadId = messageThreadId;
-		return conversationDB.createMessageForThread(messageThreadId,senderID,message);
+		return conversationModel.createMessageForThread(messageThreadId,senderID,message);
 	}
 
 	/**
-	 * Create a new message stating the name with which the user would like to
+	 * Create a new message stating the name with which the userModel would like to
 	 * login.
 	 * 
-	 * @param text Name the user wishes to use as their screen name.
+	 * @param text Name the userModel wishes to use as their screen name.
 	 * @return Instance of Message that can be sent to the server to try and login.
 	 */
 	protected static Message makeHelloMessage(String text) {
@@ -135,15 +135,17 @@ public class Message {
 			result = makeBroadcastMessage(srcName, text);
 		} else if (handle.compareTo(MessageType.API.toString())==0){
 			result = makeApiMessage(srcName,text);
+		} else if (handle.compareTo(MessageType.NOTIFICATION.toString())==0){
+			result = makeNotificationMessage(srcName,text);
 		}
 		return result;
 	}
 
 	/**
-	 * Create a new message for the early stages when the user logs in without all
+	 * Create a new message for the early stages when the userModel logs in without all
 	 * the special stuff.
 	 * 
-	 * @param myName Name of the user who has just logged in.
+	 * @param myName Name of the userModel who has just logged in.
 	 * @return Instance of Message specifying a new friend has just logged in.
 	 */
 	public static Message makeSimpleLoginMessage(String myName, String password) {
@@ -161,6 +163,7 @@ public class Message {
 		return new Message(MessageType.API,myName,text);
 	}
 
+	public static Message makeNotificationMessage(String myName, String text) { return  new Message(MessageType.NOTIFICATION,myName,text);}
 	/**
 	 * Return the name of the sender of this message.
 	 * 

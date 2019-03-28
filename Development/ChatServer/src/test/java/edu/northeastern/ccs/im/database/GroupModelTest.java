@@ -5,12 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static junit.framework.TestCase.assertEquals;
 
-public class GroupDBTest {
-    GroupDB groupDB;
+public class GroupModelTest {
+    GroupModel groupDB;
 
     @BeforeEach
     void setup(){
-        groupDB = new GroupDB();
+        groupDB = new GroupModel();
     }
 
     @Test

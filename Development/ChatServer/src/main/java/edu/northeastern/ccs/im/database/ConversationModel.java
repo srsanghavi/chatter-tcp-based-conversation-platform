@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 
-public class ConversationDB{
+public class ConversationModel {
     /**
      * The Mysql con.
      */
@@ -17,7 +17,7 @@ public class ConversationDB{
     /**
      * Instantiates a new Conversation db.
      */
-    public ConversationDB(){
+    public ConversationModel(){
         mysqlCon = MysqlCon.getInstance();
     }
 

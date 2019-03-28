@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Database methods for User
+ * Database methods for UserModel
  */
-public class UserDB{
+public class UserModel {
     /**
      * The Mysql con.
      */
     private static MysqlCon mysqlCon;
 
     /**
-     * Instantiates a new User db.
+     * Instantiates a new UserModel db.
      */
-    public UserDB(){
+    public UserModel(){
         mysqlCon = MysqlCon.getInstance();
     }
 
@@ -148,7 +148,24 @@ public class UserDB{
         return mysqlCon.sqlcreate(sql);
     }
 
-    /*public int updateUserSearchability(int user_id){
+    /**
+     * Make a user private.
+     * @param user_id id for user
+     * @return success/failure value
+     */
+    public int updateUserToPrivate(int user_id){
+        String query = "UPDATE users SET isSearchable='0' where id='"+user_id+"';";
+        int r = mysqlCon.sqlcreate(query);
+        return r<=0?-1:r;
+    }
 
-    }*/
+  /**
+   * Function to retrieve all public users.
+   * @return list of public users
+   */
+    public static List<Map<String,Object>> getNonPrivateUsers(){
+      String sql = "SELECT * from users WHERE isSearchable='1';";
+      return mysqlCon.sqlGet(sql);
+    }
+
 }

@@ -35,7 +35,11 @@
       window.apiResponse = {};
       function connectTcp(){
           var net = new WebTCP('localhost', 9999);
+<<<<<<< HEAD
           // window.socket = net.createSocket("18.218.165.28", 4545);
+=======
+          // window.socket = net.createSocket("ec2-18-218-165-28.us-east-2.compute.amazonaws.com", 4545);
+>>>>>>> 6a156160980eb7652e6b850c434da7959d9bd9b4
           window.socket = net.createSocket("localhost",4545);
           // When the connection is open, send some data to the server
           window.socket.on('connect', function(){
@@ -44,11 +48,24 @@
           })
           // This gets called every time new data for this socket is received
           window.socket.on('data', function(data) {
+            if(isNotificationMessage(data)){
+              data = data.split(" ");
+              data = data.slice(4);
+              data = data.join(" ");
+              data = JSON.parse(data);
+              console.log(data);
+              const name = data['sender_name'];
+              const message = data['message_text'];
+              var notification = new Notification("New message from "+name,{body:message});
+              return;
+            }
+
               data = data.split(" ");
               data = data.slice(4);
               data = data.join(" ");
               window.newResponse = true;
               window.apiResponse = data;
+
           });
           window.socket.on('end', function(data) {
               console.log("socket is closed ");
@@ -58,7 +75,13 @@
       }
       window.onload = function() {
           connectTcp();
+          Notification.requestPermission();
       };
+
+      function isNotificationMessage(msg){
+          msg = msg.split(" ");
+          return (msg[0]=="NOTI");
+      }
   </script>
 </head>
 <body>

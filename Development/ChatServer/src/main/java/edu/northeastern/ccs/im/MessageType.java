@@ -19,7 +19,8 @@ public enum MessageType {
 	/** Message whose contents is broadcast to all connected users. */
 	BROADCAST("BCT"),
 	/** Message for API */
-	API("API");
+	API("API"),
+	NOTIFICATION("NOTI");
 
 	/** Store the short name of this message type. */
 	private String abbreviation;

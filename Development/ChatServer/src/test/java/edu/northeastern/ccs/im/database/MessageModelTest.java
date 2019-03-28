@@ -5,17 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class MessageDBTest {
-    MessageDB messageDB;
+public class MessageModelTest {
+    MessageModel messageModel;
 
     @BeforeEach
     void setup(){
-        messageDB = new MessageDB();
+        messageModel = new MessageModel();
     }
 
     @Test
     void testDeleteMessage(){
-        assertEquals(1, messageDB.deleteMessage(312));
+        assertEquals(1, messageModel.deleteMessage(312));
     }
 }
 
