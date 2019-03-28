@@ -148,7 +148,14 @@ public class UserDB{
         return mysqlCon.sqlcreate(sql);
     }
 
-    /*public int updateUserSearchability(int user_id){
-
-    }*/
+    /**
+     * Make a user private.
+     * @param user_id id for user
+     * @return success/failure value
+     */
+    public int updateUserToPrivate(int user_id){
+        String query = "UPDATE users SET isSearchable='0' where id='"+user_id+"';";
+        int r = mysqlCon.sqlcreate(query);
+        return r<=0?-1:r;
+    }
 }
