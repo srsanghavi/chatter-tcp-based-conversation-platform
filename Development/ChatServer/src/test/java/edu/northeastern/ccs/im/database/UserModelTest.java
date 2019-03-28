@@ -8,59 +8,59 @@ import static junit.framework.TestCase.assertNotSame;
 import static junit.framework.TestCase.assertTrue;
 
 
-public class UserDBTest {
-    UserDB userDB;
+public class UserModelTest {
+    UserModel userModel;
     @BeforeEach
     public void setup(){
-        userDB = new UserDB();
+        userModel = new UserModel();
     }
     @Test
     public void testCreateUser(){
-        userDB.createUser("hsbudhia","budhia.h@husky.neu.edu","123","Himanshu","Budhia");
+        userModel.createUser("hsbudhia","budhia.h@husky.neu.edu","123","Himanshu","Budhia");
     }
 
     @Test
     public void testGetAllUsers(){
-        System.out.println(userDB.getUsers());
+        System.out.println(userModel.getUsers());
     }
 
     @Test
     public void testGetFilteredUsers(){
-        System.out.println(userDB.getUsers("email","sanghavi.s@husky.neu.edu"));
+        System.out.println(userModel.getUsers("email","sanghavi.s@husky.neu.edu"));
     }
 
     @Test
     public void testGetFilteredUsersByUsername(){
-        System.out.println(userDB.getUsers("username","srsanghavi"));
+        System.out.println(userModel.getUsers("username","srsanghavi"));
     }
 
     @Test
     public void testUserIDByUsername(){
-        System.out.println(userDB.getUserID("hsbudhia"));
+        System.out.println(userModel.getUserID("hsbudhia"));
     }
 
     @Test
     public void testGetFilteredUsersReturningEmptyList(){
-        System.out.println(userDB.getUsers("email","sanghav.s@husky.neu.edu"));
+        System.out.println(userModel.getUsers("email","sanghav.s@husky.neu.edu"));
     }
 
     @Test
     public void testGetFilteredUsersIllegalFilterParam(){
-        System.out.println(userDB.getUsers("emailsd","sanghav.s@husky.neu.edu"));
+        System.out.println(userModel.getUsers("emailsd","sanghav.s@husky.neu.edu"));
     }
 
     @Test
     public void testAuthorized(){
-        assertEquals(1,userDB.isAuthorized("srsanghavi", "12345678"));
+        assertEquals(1,userModel.isAuthorized("srsanghavi", "12345678"));
     }
 
     @Test
     public void testNotAuthorized(){
-        assertNotSame(1,userDB.isAuthorized("sanghavi.s@husky.neu.edu", "1234678"));
+        assertNotSame(1,userModel.isAuthorized("sanghavi.s@husky.neu.edu", "1234678"));
     }
 
     @Test
     public void testDeleteUser(){
-        assertEquals(1, userDB.deleteUser(353));
+        assertEquals(1, userModel.deleteUser(353));
     }
 }

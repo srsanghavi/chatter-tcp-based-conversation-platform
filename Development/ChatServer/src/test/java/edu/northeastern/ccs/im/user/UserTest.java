@@ -1,19 +1,19 @@
 package edu.northeastern.ccs.im.user;
 
-import edu.northeastern.ccs.im.database.UserDB;
+import edu.northeastern.ccs.im.database.UserModel;
 import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotSame;
 
 public class UserTest {
-    User user = new User();
+    edu.northeastern.ccs.im.user.User user = new edu.northeastern.ccs.im.user.User();
 
     @Test
     public void createUser(){
 
         user.createUser("john", "john@prattle.com", "123", "John", "G");
-        UserDB userdb = new UserDB();
+        UserModel userdb = new UserModel();
         userdb.createUser("john", "G");
     }
 

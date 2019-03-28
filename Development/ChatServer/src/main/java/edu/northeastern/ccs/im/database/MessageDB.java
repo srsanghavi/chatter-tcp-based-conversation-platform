@@ -7,7 +7,7 @@ public class MessageDB {
     private static MysqlCon mysqlCon;
 
     /**
-     * Instantiates a new User db.
+     * Instantiates a new UserModel db.
      */
     public MessageDB(){
         mysqlCon = MysqlCon.getInstance();
