@@ -51,4 +51,9 @@ public class RouteTest {
         ChatLogger.info(Route.getResponsePost("srsanghavi", "deleteUser/","{user_id:1}"));
     }
 
+    @Test
+  public void testGetUserFromGroup(){
+      ChatLogger.info(Route.getResponseGet("hsbudhia","getGroupUsers/","{group_id:199}"));
+    }
+
 }
