@@ -94,9 +94,9 @@ public class ConversationController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String,Object>> getMessagesInThread(Map<String,Object> json) throws NoSuchFieldException {
-        String threadId;
+        int threadId;
         if(json.containsKey("thread_id")) {
-            threadId = (String) json.getOrDefault("thread_id", 0);
+            threadId = Math.toIntExact(Math.round((double) json.getOrDefault("thread_id", 0)));
         }else {
             throw new NoSuchFieldException();
         }
