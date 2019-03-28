@@ -2,10 +2,11 @@ import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher';
 import ActionTypes from '../AppConstants';
 
-const THREAD_CHANGED = 'THREAD_CHANGED';
+const MESSAGES_CHANGED = 'MESSAGES_CHANGED';
 
-let _threads;
-class ThreadStore extends EventEmitter {
+let _messages;
+
+class MessageStore extends EventEmitter {
     constructor() {
         super();
 
@@ -18,39 +19,39 @@ class ThreadStore extends EventEmitter {
 
         switch(action.actionType) {
 
-            case ActionTypes.GET_THREADS_IN_CONVERSATION:
-                this._setThreads(action.payload);
+            case ActionTypes.GET_MESSAGES_IN_CONVERSATION:
+                this._setMessages(action.payload);
                 break;
             default:
                 break;
         }
     }
 
-    _setThreads(threads){
-        _threads = threads;
+    _setMessages(messages){
+        _messages = messages;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
-            self.emit(THREAD_CHANGED);
+            self.emit(MESSAGES_CHANGED);
         }, 0);
     }
 
-    _getThreads() {
-        return _threads;
+    _getMessages() {
+        return _messages;
     }
 
-    _clearThreads() {
-        _threads = undefined;
+    _clearMessages() {
+        _messages = undefined;
     }
 
     // Hooks a React component's callback to the CHANGED event.
     addChangeListener(callback) {
-        this.on(THREAD_CHANGED, callback);
+        this.on(MESSAGES_CHANGED, callback);
     }
 
     // Removes the listener from the CHANGED event.
     removeChangeListener(callback) {
-        this.removeListener(THREAD_CHANGED, callback);
+        this.removeListener(MESSAGES_CHANGED, callback);
     }
 }
 
-export default new ThreadStore();
+export default new MessageStore();

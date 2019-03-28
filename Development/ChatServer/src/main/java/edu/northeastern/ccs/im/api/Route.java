@@ -79,7 +79,7 @@ public class Route {
             
             case "getMessagesInConversation/":
                 ChatLogger.info("getMessagesInConversation:");
-                String conversationId = (String) json.getOrDefault("conversation_id",0);
+                int conversationId = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
                 response = ConversationDB.getMessagesForConversation(Integer.valueOf(conversationId));
                 break;
 

@@ -29,13 +29,13 @@ export default class Api {
         gateway.sendTcp(msg);
     }
 
-    registerUser(username, password) {
-        let msg = this.messageType.makeApiMessage(username,"registerUser/::POST::{username:"+username+",password:"+password+"}");
-        gateway.sendTcp(msg);
-        console.log(msg)
-        console.log(this.promise)
-        return this.promise();
-    }
+    // registerUser(username, password) {
+    //     let msg = this.messageType.makeApiMessage(username,"registerUser/::POST::{username:"+username+",password:"+password+"}");
+    //     gateway.sendTcp(msg);
+    //     console.log(msg)
+    //     console.log(this.promise)
+    //     return this.promise();
+    // }
 
     getUsers(username){
         let msg = this.messageType.makeApiMessage(username,"getUsers/::GET::{}");
@@ -58,7 +58,12 @@ export default class Api {
     getThreadsInConversation(username,conversationId) {
         let msg = this.messageType.makeApiMessage(username,"getThreadsInConversation/::GET::{conversation_id:"+conversationId+"}");
         gateway.sendTcp(msg);
-        console.log(msg);
+        return this.promise();
+    }
+
+    getMessagesInConversation(username,conversationId) {
+        let msg = this.messageType.makeApiMessage(username,"getMessagesInConversation/::GET::{conversation_id:"+conversationId+"}");
+        gateway.sendTcp(msg);
         return this.promise();
     }
 

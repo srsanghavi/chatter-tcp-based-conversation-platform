@@ -9,10 +9,12 @@ import  { Redirect } from 'react-router-dom'
 import ThreadActions from "../Actions/ThreadActions";
 import UserStore from "../Store/UserStore";
 import ThreadStore from "../Store/ThreadStore";
+import MessageActions from "../Actions/MessageActions";
+import MessageStore from "../Store/MessageStore";
 
 
 // component updates every interval (in ms)
-const INTERVAL = 500;
+const INTERVAL = 5000;
 
 class Conversation extends Component {
     constructor(props) {
@@ -25,7 +27,6 @@ class Conversation extends Component {
             threads: [],
             messages: [],
         };
-        ThreadStore._clearThreads();
 
         this.toggleSearch = this.toggleSearch.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
@@ -48,13 +49,24 @@ class Conversation extends Component {
     // }
 
     componentDidMount() {
-        // this.interval = setInterval(() => this.update(), INTERVAL);
-        // ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id);
-        // this.setState({
-        //     threads: ThreadStore._getThreads()
-        // })
+        this.interval = setInterval(() => this.update(), INTERVAL);
     }
 
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    update() {
+        console.log(this.props.match.params.id);
+        MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
+        ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id);
+        this.setState({
+            threads:  ThreadStore._getThreads(),
+            messages: MessageStore._getMessages()
+        });
+        console.log(ThreadStore._getThreads())
+        console.log(MessageStore._getMessages())
+    }
 
     // sendMessage() {
     //     const message = {

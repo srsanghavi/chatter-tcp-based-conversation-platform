@@ -73,8 +73,6 @@ class HomePage extends Component {
             groups: JSON.parse(GroupStore._getAllGroups()).result,
             conversations: JSON.parse(ConversationStore._getConversations()).result
         });
-        console.log(JSON.parse(GroupStore._getGroups()).result)
-        console.log(JSON.parse(GroupStore._getAllGroups()).result)
     }
 
     componentWillUnmount() {
