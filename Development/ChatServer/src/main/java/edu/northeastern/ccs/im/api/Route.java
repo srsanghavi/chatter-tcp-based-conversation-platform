@@ -240,6 +240,19 @@ public class Route {
                     response = "{result: error, resultCode: 500, resultMessage: 'could not delete message'}";
                 break;
 
+
+          case "addGroupToGroup/":
+            String group_id1 = (String) json.get("group_id1");
+            String group_id2 = (String) json.get("group_id2");
+            if(groupDB.addGroupToGroup(Integer.valueOf(group_id1),Integer.valueOf(group_id2)) > 0){
+              json.put("result_code",201);
+              json.put("result","OK");
+              response = json.toString();
+            }
+            else
+              response = "{result: error, resultCode: 500, resultMessage: 'could not add group to group'}";
+            break;
+
 //                TODO: following
 
 //            case "createGroup/":
