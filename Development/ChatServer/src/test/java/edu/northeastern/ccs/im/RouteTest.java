@@ -60,4 +60,10 @@ public class RouteTest {
   public void testGetThreadInConversation(){
       ChatLogger.info(Route.getResponseGet("hsbudhia","getThreadsInConversation/","{conversation_id:407}"));
     }
+
+    @Test
+  public void testCreateAUser(){
+      ChatLogger.info(Route.getResponsePost("waynerooney","registerUser/",
+              "{first_name:Wayne,last_name:Rooney,username:waynerooney,email:wrooney@utd.com,password:wayne}"));
+    }
 }
