@@ -136,7 +136,7 @@ public class Route {
             case ApiMessageType.ADD_USER_GROUP:
                 json = ControllerFactory
                         .getGroupController()
-                        .addUserToGroup(json);
+                        .addUserToGroup(username, json);
                 break;
 
             case ApiMessageType.CREATE_THREAD_CONV:
@@ -148,7 +148,7 @@ public class Route {
             case ApiMessageType.MODIFY_GROUP_NAME:
                 json = ControllerFactory
                         .getGroupController()
-                        .modifyGroupName(json);
+                        .modifyGroupName(username, json);
                 break;
 
             case ApiMessageType.DELETE_USER:
@@ -160,7 +160,7 @@ public class Route {
             case ApiMessageType.DELETE_GROUP:
                 json = ControllerFactory
                         .getGroupController()
-                        .deleteGroup(json);
+                        .deleteGroup(username,json);
                 break;
 
             case ApiMessageType.DELETE_MESSAGE:
@@ -173,7 +173,13 @@ public class Route {
             case ApiMessageType.ADD_GROUP_GROUP:
                 json = ControllerFactory
                         .getGroupController()
-                        .addGroupToGroup(json);
+                        .addGroupToGroup(username,json);
+                break;
+
+          case ApiMessageType.CREATE_USER_USER_CONV:
+                json = ControllerFactory
+                        .getConversationController()
+                        .createUserUserConversation(json);
                 break;
 
             default:
