@@ -56,7 +56,7 @@ class ProfileEdit extends Component {
                     padding: '1em',
                     alignSelf: 'center'
                 })}>
-                    <img src="./images/image.png" height="75" width="75"
+                    <img src="../images/image.png" height="75" width="75"
                           className={css({
                               borderRadius: 50
                           })}/>
@@ -120,6 +120,9 @@ class ProfileEdit extends Component {
                             <span className="slider round"></span>
                         </label>
                     </p>
+                    <button onClick={() => console.log(this.state)}>
+                        Save
+                    </button>
                 </div>
             </div>
         )
