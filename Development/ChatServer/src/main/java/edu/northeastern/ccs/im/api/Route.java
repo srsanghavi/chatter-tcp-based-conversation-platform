@@ -7,6 +7,7 @@ package edu.northeastern.ccs.im.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Controller.ControllerFactory;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.database.ConversationModel;
@@ -117,6 +118,7 @@ public class Route {
      * @return the string with POST response
      */
     public static String getResponsePost(String route,String data){
+
         GroupModel groupDB = new GroupModel();
         String response = null;
         UserModel userModel = new UserModel();
@@ -124,6 +126,7 @@ public class Route {
 
         ConversationModel conversationModel = new ConversationModel();
         Map<String, Object> json = decodeJSON(data);
+
         switch (route){
             case ApiMessageType.CREATE_USER:
             {
@@ -146,6 +149,7 @@ public class Route {
                 break;
             }
             case ApiMessageType.CREATE_MESSAGE:
+                ChatLogger.info("sending message");
                 String senderId = (String) json.get("sender_id");
                 String senderName = (String) json.get("sender_name");
                 String conversationId = (String) json.get("conversation_id");
@@ -153,8 +157,9 @@ public class Route {
                 String destinatonId = (String) json.get("destinationId");
                 String destinationName = (String) json.get("destination_name");
                 String message = (String) json.get("message");
+                data = new JSONObject(data).toString();
                 if(ConversationModel.createMessageForThread(Integer.valueOf(threadId),Integer.valueOf(senderId),message)>0){
-                    Message msg = Message.makeBroadcastMessage(senderName,data);
+                    Message msg = Message.makeNotificationMessage(senderName,data);
                     Prattle.sendMessageToUser(destinationName,msg);
                     json.put("result_code",201);
                     json.put("result","OK");
@@ -277,8 +282,14 @@ public class Route {
     }
 
     private static Map<String,Object> decodeJSON(String jsonString){
-        return new Gson().fromJson(
-                jsonString, new TypeToken<HashMap<String, Object>>() {}.getType()
-        );
+        try {
+            return new Gson().fromJson(
+                    jsonString, new TypeToken<HashMap<String, Object>>() {}.getType()
+            );
+        }catch (Exception e){
+            System.out.println(e);
+            return null;
+        }
+
     }
 }

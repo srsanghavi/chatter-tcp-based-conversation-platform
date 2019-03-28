@@ -135,6 +135,8 @@ public class Message {
 			result = makeBroadcastMessage(srcName, text);
 		} else if (handle.compareTo(MessageType.API.toString())==0){
 			result = makeApiMessage(srcName,text);
+		} else if (handle.compareTo(MessageType.NOTIFICATION.toString())==0){
+			result = makeNotificationMessage(srcName,text);
 		}
 		return result;
 	}
@@ -161,6 +163,7 @@ public class Message {
 		return new Message(MessageType.API,myName,text);
 	}
 
+	public static Message makeNotificationMessage(String myName, String text) { return  new Message(MessageType.NOTIFICATION,myName,text);}
 	/**
 	 * Return the name of the sender of this message.
 	 * 
