@@ -68,14 +68,20 @@ public class ConversationController {
      * @return the messages in conversation
      * @throws NoSuchFieldException the no such field exception
      */
-
-    public List<Map<String,Object>> getMessagesInConversation(Map<String,Object> json) throws NoSuchFieldException {
-        if(!json.containsKey("conversation_id")) {
+    public List<Map<String,Object>> getMessagesInConversation(String username,Map<String,Object> json) throws NoSuchFieldException {
+        if(json.containsKey("conversation_id")) {
             throw new NoSuchFieldException();
         }
-        int conversationId = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
-        return ConversationModel.getMessagesForConversation(Integer.valueOf(conversationId));
+        int conversationId;
+        conversationId = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
+
+        if(!isConversationParticipant(username,conversationId)){
+            return error401();
+        }
+
+        return conversationModel.getMessagesForConversation(Integer.valueOf(conversationId));
     }
+
 
     /**
      * Gets users in conversation.
@@ -104,16 +110,12 @@ public class ConversationController {
      * @throws NoSuchFieldException the no such field exception
      */
 
-    public List<Map<String,Object>> getMessagesInThread(Map<String,Object> json) throws NoSuchFieldException {
-        int threadId;
-        if(json.containsKey("thread_id")) {
-            threadId = Math.toIntExact(Math.round((double) json.getOrDefault("thread_id", 0)));
-        }else {
-
+    public List<Map<String,Object>> getMessagesInThread(String username,Map<String,Object> json) throws NoSuchFieldException {
+        if(!json.containsKey("thread_id")) {
             throw new NoSuchFieldException();
         }
 
-        int threadId;
+        int threadId = Math.toIntExact(Math.round((double) json.getOrDefault("thread_id", 0)));
         threadId = Math.toIntExact(Math.round((double) json.getOrDefault("thread_id", 0)));
         List<Map<String, Object>> thread = conversationModel.getThread(threadId);
         if(thread.get(0).isEmpty() || !thread.get(0).containsKey("conversations_id")){
