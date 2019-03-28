@@ -128,6 +128,33 @@ public class ConversationController {
         return conversationModel.getMessagesInThread(Integer.valueOf(threadId));
     }
 
+  /**
+   * Create a conversation between User and User.
+   * @param json the json
+   * @return the json object
+   */
+    public Map<String, Object> createUserUserConversation(Map<String,Object> json){
+      if(!json.containsKey("user_id1") ||
+              !json.containsKey("user_id2")){
+        json.put("result_code",400);
+        json.put("result","error");
+        json.put("error_message","Missing parameter");
+        return json;
+      }
+
+      String user1 = (String) json.get("user_id1");
+      String user2 = (String) json.get("user_id2");
+
+      int r = ConversationModel.createConversationForUser(Integer.valueOf(user1),Integer.valueOf(user2));
+      if(r>0){
+        json.put("result_code",201);
+        json.put("result","OK");
+        return json;
+      }else {
+        return error500(json);
+      }
+    }
+
     /**
      * Create message map.
      *

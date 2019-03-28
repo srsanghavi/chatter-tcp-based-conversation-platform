@@ -176,6 +176,12 @@ public class Route {
                         .addGroupToGroup(username,json);
                 break;
 
+          case ApiMessageType.CREATE_USER_USER_CONV:
+                json = ControllerFactory
+                        .getConversationController()
+                        .createUserUserConversation(json);
+                break;
+
             default:
                 return  "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
         }
