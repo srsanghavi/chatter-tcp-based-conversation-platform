@@ -29,13 +29,20 @@ export default class Api {
         gateway.sendTcp(msg);
     }
 
-    // registerUser(username, password) {
-    //     let msg = this.messageType.makeApiMessage(username,"registerUser/::POST::{username:"+username+",password:"+password+"}");
-    //     gateway.sendTcp(msg);
-    //     console.log(msg)
-    //     console.log(this.promise)
-    //     return this.promise();
-    // }
+    registerUser(username, password, first_name, last_name, email) {
+        let msg = this.messageType.makeApiMessage(username,"registerUser/::POST::{username:"+username+"," +
+            "password:"+password+",first_name:"+first_name+",last_name:"+last_name+",email:"+email+"}");
+        gateway.sendTcp(msg);
+        console.log(msg);
+        console.log(this.promise);
+        return this.promise();
+    }
+
+    deleteUser(username, userId) {
+        let msg = this.messageType.makeApiMessage(username,"deleteUser/::POST::{user_id:"+userId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
 
     getUsers(username){
         let msg = this.messageType.makeApiMessage(username,"getUsers/::GET::{}");

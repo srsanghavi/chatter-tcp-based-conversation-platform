@@ -32,7 +32,7 @@ class UserActions {
         });
     }
 
-    getUserById(id){
+    getUserById(id) {
         api.getUserByUsername(id).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_USER_BY_ID,
@@ -41,8 +41,14 @@ class UserActions {
         });
     }
 
-    registerUser(username, password) {
-        api.registerUser(username, password).then(value => {
+    registerUser(username, password, firstName, lastName, email) {
+        api.registerUser(username, password, firstName, lastName, email).then(value => {
+            console.log(value)
+        })
+    }
+
+    deleteUser(username, userId) {
+        api.deleteUser(username, userId).then(value => {
             console.log(value)
         })
     }

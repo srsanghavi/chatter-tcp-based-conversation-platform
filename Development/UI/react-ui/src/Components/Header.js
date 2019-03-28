@@ -55,11 +55,13 @@ const Header = props => {
                 {props.tab === 'settings' ? null :
                     props.tab === 'profile' && props.previousTab === 'search' ? null :
                     props.tab === 'profile' ?
-                    <i className="fa fa-edit fa-2x"
-                       style={{
-                           float: 'left',
-                           color: props.search ? '#45AAEB' : 'white',
-                       }}></i> :
+                    <NavLink to={`../edit-profile/${props.user.id}`}>
+                        <i className="fa fa-edit fa-2x"
+                           style={{
+                               float: 'left',
+                               color: window.location.pathname ===  '/edit-profile' ? '#45AAEB' : 'white',
+                           }}></i>
+                    </NavLink> :
                     <i className="fa fa-search fa-2x"
                        onClick={props.searchClick}
                        style={{

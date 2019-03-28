@@ -200,6 +200,7 @@ class HomePage extends Component {
             return (
                 user.id != this.state.user.id &&
                 user.isSearchable &&
+                !user.deleted &&
                 (user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
                 user.last_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
                 user.username.toUpperCase().includes(this.state.search.toUpperCase()))
@@ -234,6 +235,9 @@ class HomePage extends Component {
                 <Switch>
                     <Route path="/profile/:id"
                            component={Profile}>
+                    </Route>
+                    <Route path="/edit-profile/:id"
+                           component={ProfileEdit}>
                     </Route>
                     <Route path="/settings">
                         {() => <Settings/>}

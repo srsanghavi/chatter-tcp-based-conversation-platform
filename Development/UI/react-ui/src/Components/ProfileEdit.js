@@ -11,23 +11,23 @@ class ProfileEdit extends Component {
             firstName: '',
             lastName: '',
             email: '',
-            isSearchable: true,
-            createdDate: ''
+            isSearchable: true
         };
 
         this.privateChange = this.privateChange.bind(this)
     }
 
     componentDidMount() {
-        this.setState({
-            username: this.props.user.username,
-            firstName: this.props.user.first_name,
-            lastName: this.props.user.last_name,
-            email: this.props.user.email,
-            isSearchable: this.props.user.isSearchable,
-            createdDate: this.props.user.created_on
+        let user = JSON.parse(UserStore._getUsers()).result.filter(user => {
+            return user.id == this.props.match.params.id
         });
-        console.log(this.props.user)
+        this.setState({
+            username: user[0].username,
+            firstName: user[0].first_name,
+            lastName: user[0].last_name,
+            email: user[0].email,
+            isSearchable: user[0].isSearchable
+        })
     }
 
     componentDidUpdate() {
