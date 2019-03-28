@@ -51,12 +51,12 @@ public class UserModelTest {
 
     @Test
     public void testAuthorized(){
-        assertEquals(1, userModel.isAuthorized("srsanghavi", "12345678"));
+        assertEquals(1,userModel.isAuthorized("srsanghavi", "12345678"));
     }
 
     @Test
     public void testNotAuthorized(){
-        assertNotSame(1, userModel.isAuthorized("sanghavi.s@husky.neu.edu", "1234678"));
+        assertNotSame(1,userModel.isAuthorized("sanghavi.s@husky.neu.edu", "1234678"));
     }
 
     @Test
