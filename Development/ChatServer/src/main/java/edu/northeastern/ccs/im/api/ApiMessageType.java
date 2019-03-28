@@ -15,6 +15,7 @@ public final class ApiMessageType {
     final static String ADD_ADMIN_GROUP =        "";
     final static String MODIFY_GROUP_NAME =      "updateGroupName/";
     final static String ADD_USER_GROUP  =        "addUserToGroup/";
+    final static String ADD_GROUP_GROUP =        "addGroupToGroup/";
     final static String GET_GROUP_CONVERSATION = "";
     final static String DELETE_GROUP =           "deleteGroup/";
 
@@ -30,4 +31,5 @@ public final class ApiMessageType {
     final static String GET_MSG_CONV =           "getMessagesInConversation/";
 
     final static String CREATE_MESSAGE =        "sendMessage/";
+    final static String BROADCAST_MESSAGE =     "broadcastMessage/";
 }
