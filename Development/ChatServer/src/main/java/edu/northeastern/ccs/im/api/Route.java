@@ -66,27 +66,32 @@ public class Route {
                 response = GroupDB.getUsers(Integer.valueOf(group_id));
                 break;
 
-            case "getThreadsInConversation/": {
+            case "getThreadsInConversation/": 
                 ChatLogger.info("getThreadsInConversation:");
                 int conversation_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
                 response = ConversationDB.getThreadsForConversation(Integer.valueOf(conversation_id));
                 break;
-            }
+            
+            case "getMessagesInConversation/":
+                ChatLogger.info("getMessagesInConversation:");
+                String conversationId = (String) json.getOrDefault("conversation_id",0);
+                response = ConversationDB.getMessagesForConversation(Integer.valueOf(conversationId));
+                break;
+
             case "getUserByUsername/":
                 ChatLogger.info("getUserByUsername:");
                 String username = (String) json.getOrDefault("username",0);
                 response = UserDB.getUserByUserName(username);
                 break;
-            case "getUsersInConversation/": {
+            case "getUsersInConversation/": 
                 ChatLogger.info("getUsersInConversation:");
-                int conversation_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
-                response = ConversationDB.getUsersInConversation(Integer.valueOf(conversation_id));
-            }
+                int conv_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
+                response = ConversationDB.getUsersInConversation(Integer.valueOf(conv_id));
                 break;
-          case "messageInThread/":
-            ChatLogger.info("messageInThread:");
+          case "getMessagesInThread/":
+            ChatLogger.info("getMessagesInThread:");
             String thread_id = (String) json.getOrDefault("thread_id",0);
-            response = ConversationDB.getUsersInConversation(Integer.valueOf(thread_id));
+            response = ConversationDB.getMessagesInThread(Integer.valueOf(thread_id));
             break;
 
 
@@ -111,6 +116,7 @@ public class Route {
         String response = null;
         UserDB userDB = new UserDB();
         MessageDB messageDB = new MessageDB();
+        ConversationDB conversationDB = new ConversationDB();
         Map<String, Object> json = decodeJSON(data);
         switch (route){
             case "registerUser/":
@@ -153,12 +159,21 @@ public class Route {
                 }
                 break;
 
-//          case "broadcastMessage/":
-//                String text = (String) json.get("message");
-//                String sender = (String) json.get("sender_id");
-//                List<Map<String, Object>> conversations = ConversationDB.getConversations(Integer.parseInt(sender));
-//
-
+            case "broadcastMessage/":
+                String text = (String) json.get("message");
+                int sender = Math.toIntExact(Math.round((double) json.get("sender_id")));
+                List<Map<String, Object>> conversations = ConversationDB.getConversations(sender);
+                System.out.println(conversations);
+                int conversation_id = -1;
+                int thread_id = -1;
+                int message_id = -1;
+                for (Map<String, Object> conversation : conversations){
+                    conversation_id = (Integer) conversation.get("id");
+                    thread_id = conversationDB.createThreadForConversation(conversation_id);
+                    message_id = conversationDB.createMessageForThread(thread_id, sender, text);
+                    conversationDB.addMessageToThread(message_id, thread_id);
+                }
+                break;
 
 
           case "addUserToGroup/":
