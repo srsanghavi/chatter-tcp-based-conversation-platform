@@ -105,6 +105,20 @@ public class GroupModel {
         return r;
   }
 
+  /**
+   * Function for adding group to a group.
+   * @param id1 new parent group
+   * @param id2 the group to add
+   * @return success value
+   */
+  // Changing group id from id2 to id1 for all users where it is applicable.
+  // Essentially group 2 does not exist.
+  // The admin status of group 2 is passed in group 1.
+  public int addGroupToGroup(int id1, int id2){
+      String query = "UPDATE groups_has_users SET Groups_id='"+id1+"' where Groups_id='"+id2+"';";
+      int r = mysqlCon.sqlcreate(query);
+      return r<=0?-1:r;
+  }
   public static List<Map<String, Object>> getAllGroups(){
         String query = "SELECT * from groups;";
         return mysqlCon.sqlGet(query);
@@ -114,4 +128,15 @@ public class GroupModel {
       String sql = "UPDATE groups SET deleted=true WHERE id='" + id + "';";
       return mysqlCon.sqlcreate(sql);
   }
+
+
+  /**
+   * Function to retrieve all public groups.
+   * @return list of public groups
+   */
+  public static List<Map<String,Object>> getNonPrivateGroups(){
+    String sql = "SELECT * from groups WHERE isSearchable='1';";
+    return mysqlCon.sqlGet(sql);
+  }
+
 }
