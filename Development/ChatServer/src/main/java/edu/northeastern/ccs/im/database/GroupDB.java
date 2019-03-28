@@ -105,6 +105,11 @@ public class GroupDB {
         return r;
   }
 
+  public static List<Map<String, Object>> getAllGroups(){
+        String query = "SELECT * from groups;";
+        return mysqlCon.sqlGet(query);
+  }
+
   public int deleteGroup(int id){
       String sql = "UPDATE groups SET deleted=true WHERE id='" + id + "';";
       return mysqlCon.sqlcreate(sql);
