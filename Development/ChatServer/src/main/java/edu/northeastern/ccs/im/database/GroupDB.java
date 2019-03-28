@@ -105,6 +105,18 @@ public class GroupDB {
         return r;
   }
 
+  /**
+   * Function for adding group to a group.
+   * @param id1 new parent group
+   * @param id2 the group to add
+   * @return success value
+   */
+  public int addGroupToGroup(int id1, int id2){
+      String query = "UPDATE groups_has_users SET Groups_id='"+id1+"' where Groups_id='"+id2+"';";
+      int r = mysqlCon.sqlcreate(query);
+      return r<=0?-1:r;
+  }
+
   public int deleteGroup(int id){
       String sql = "UPDATE groups SET deleted=true WHERE id='" + id + "';";
       return mysqlCon.sqlcreate(sql);

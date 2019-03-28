@@ -1,7 +1,7 @@
 package edu.northeastern.ccs.im.user;
 
 import edu.northeastern.ccs.im.ChatLogger;
-import edu.northeastern.ccs.im.database.UserDB;
+import edu.northeastern.ccs.im.database.*;
 
 
 /**
