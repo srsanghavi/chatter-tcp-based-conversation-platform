@@ -145,7 +145,7 @@ public class ConversationController {
       String user1 = (String) json.get("user_id1");
       String user2 = (String) json.get("user_id2");
 
-      int r = ConversationModel.createConversationForUser(Integer.valueOf(user1),Integer.valueOf(user2));
+      int r = ModelFactory.getConversationModel().createConversationForUser(Integer.valueOf(user1),Integer.valueOf(user2));
       if(r>0){
         json.put("result_code",201);
         json.put("result","OK");
