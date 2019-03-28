@@ -83,4 +83,9 @@ public class ConversationModelTest {
     public void testAddMessageToThread(){
       System.out.println(ConversationModel.addMessageToThread(311,519));
     }
+
+    @Test
+    public void testAddMessageToThread(){
+      System.out.println(ConversationDB.addMessageToThread(311,519));
+    }
 }
