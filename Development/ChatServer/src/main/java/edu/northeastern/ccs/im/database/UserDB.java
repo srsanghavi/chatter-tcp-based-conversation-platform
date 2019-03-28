@@ -158,4 +158,14 @@ public class UserDB{
         int r = mysqlCon.sqlcreate(query);
         return r<=0?-1:r;
     }
+
+  /**
+   * Function to retrieve all public users.
+   * @return list of public users
+   */
+    public static List<Map<String,Object>> getNonPrivateUsers(){
+      String sql = "SELECT * from users WHERE isSearchable='1';";
+      return mysqlCon.sqlGet(sql);
+    }
+
 }
