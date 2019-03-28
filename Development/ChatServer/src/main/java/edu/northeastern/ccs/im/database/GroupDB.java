@@ -111,6 +111,9 @@ public class GroupDB {
    * @param id2 the group to add
    * @return success value
    */
+  // Changing group id from id2 to id1 for all users where it is applicable.
+  // Essentially group 2 does not exist.
+  // The admin status of group 2 is passed in group 1.
   public int addGroupToGroup(int id1, int id2){
       String query = "UPDATE groups_has_users SET Groups_id='"+id1+"' where Groups_id='"+id2+"';";
       int r = mysqlCon.sqlcreate(query);
