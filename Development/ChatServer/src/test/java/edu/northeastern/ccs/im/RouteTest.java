@@ -30,4 +30,9 @@ public class RouteTest {
         ChatLogger.info(Route.getResponseGet("getMessagesInThread/", "{thread_id:'562'}"));
     }
 
+    @Test
+    public void testGetAllGroups(){
+        ChatLogger.info(Route.getResponseGet("getAllGroups/", "{user_id:'8'}"));
+    }
+
 }

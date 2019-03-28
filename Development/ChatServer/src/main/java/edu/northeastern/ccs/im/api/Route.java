@@ -33,6 +33,7 @@ public class Route {
         List<Map<String, Object>> response=new ArrayList<>();
         Map<String, Object> json = decodeJSON(params);
         UserDB userDB = new UserDB();
+        GroupDB groupDB = new GroupDB();
         ConversationDB conversationDB = new ConversationDB();
         ChatLogger.info(route);
         ChatLogger.info(params);
@@ -58,6 +59,10 @@ public class Route {
                 ChatLogger.info("getGroups:");
                 String id = (String) json.getOrDefault("user_id",0);
                 response = userDB.getGroups(Integer.valueOf(id));
+                break;
+            case "getAllGroups/":
+                ChatLogger.info("getGroups:");
+                response = groupDB.getAllGroups();
                 break;
 
             case "getGroupUsers/":
