@@ -3,6 +3,8 @@ package edu.northeastern.ccs.im.Controller;
 import edu.northeastern.ccs.im.database.GroupModel;
 import edu.northeastern.ccs.im.database.ModelFactory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,12 +48,24 @@ public class GroupController {
      * @return the group users
      * @throws NoSuchFieldException the no such field exception
      */
-    public List<Map<String, Object>> getGroupUsers(Map<String,Object> json) throws NoSuchFieldException {
+    public List<Map<String, Object>> getGroupUsers(String username, Map<String,Object> json) throws NoSuchFieldException {
         if(!json.containsKey("group_id")){
             throw new NoSuchFieldException();
         }
         int groupId = Math.toIntExact(Math.round((double) json.getOrDefault("group_id", 0)));
-        return groupModel.getUsers(Integer.valueOf(groupId));
+
+        int userId = ModelFactory.getUserModel().getUserID(username);
+
+
+        List<Map<String, Object>> groupUsers = groupModel.getUsers(Integer.valueOf(groupId));
+
+        for(Map<String,Object> user:groupUsers){
+            if((int)user.get("user_id")==userId){
+                return groupUsers;
+            }
+        }
+
+        return error401();
     }
 
     /**
@@ -157,5 +171,16 @@ public class GroupController {
         json.put("result","error");
         json.put("result_message","Could not create a message");
         return json;
+    }
+
+    private List<Map<String, Object>> error401(){
+        Map<String,Object> json = new HashMap<>();
+        json.put("result_code",401);
+        json.put("result","error");
+        json.put("result_message","User not authorized");
+
+        List<Map<String,Object>> jsonList = new ArrayList<>();
+        jsonList.add(json);
+        return jsonList;
     }
 }
