@@ -5,12 +5,13 @@ public class MessageModel {
      * The Mysql con.
      */
     private static MysqlCon mysqlCon;
+    private static DataCon conn;
 
     /**
      * Instantiates a new UserModel db.
      */
-    public MessageModel(){
-        mysqlCon = MysqlCon.getInstance();
+    public MessageModel(DataCon connection){
+        conn = connection.getInstance();
     }
 
     public int deleteMessage(int id){

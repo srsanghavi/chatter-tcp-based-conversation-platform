@@ -12,13 +12,13 @@ public class ConversationModel {
     /**
      * The Mysql con.
      */
-    static MysqlCon  mysqlCon;
+    DataCon conn;
 
     /**
      * Instantiates a new Conversation db.
      */
-    public ConversationModel(){
-        mysqlCon = MysqlCon.getInstance();
+    public ConversationModel(DataCon dataConnection){
+        conn = dataConnection.getInstance();
     }
 
     /**
@@ -32,7 +32,7 @@ public class ConversationModel {
         int conversationId = getUserUserConversation(userid1,userid2);
         if(conversationId<0){
             String createConvQuery = "SELECT user_user_conversation("+userid1+","+userid2+") as conversations_id";
-            List<Map<String, Object>> r = mysqlCon.sqlGet(createConvQuery);
+            List<Map<String, Object>> r = conn.sqlGet(createConvQuery);
             if(!r.isEmpty()){
                 conversationId = (int) r.get(0).get("conversations_id");
             }else {
@@ -51,7 +51,7 @@ public class ConversationModel {
     private int getUserUserConversation(int id1,int id2) {
         String query = "select conversations_id from users_converses_users where (users_id="+id1+" and users_id1="+id2+") or ( users_id="+id2+" and users_id1="+id1+")";
 
-        List<Map<String, Object>> rs = mysqlCon.sqlGet(query);
+        List<Map<String, Object>> rs = conn.sqlGet(query);
         if(!rs.isEmpty()){
             return (int) rs.get(0).get("Conversations_id");
         }else {
@@ -68,9 +68,9 @@ public class ConversationModel {
      */
     public int createThreadForConversation(int conversationId){
         String query = "INSERT INTO thread(conversations_id) VALUES ("+conversationId+")";
-        int r = mysqlCon.sqlcreate(query);
+        int r = conn.sqlcreate(query);
         if(r>0){
-            return mysqlCon.getLastInsertedID();
+            return conn.getLastInsertedID();
         }
         return -1;
     }
@@ -78,9 +78,9 @@ public class ConversationModel {
 
   public int createThreadForConversationByThreadID(int threadId, int conversationId){
     String query = "INSERT INTO thread(threadId,conversations_id) VALUES ("+threadId+","+conversationId+")";
-    int r = mysqlCon.sqlcreate(query);
+    int r = conn.sqlcreate(query);
     if(r>0){
-      return mysqlCon.getLastInsertedID();
+      return conn.getLastInsertedID();
     }
     return -1;
   }
@@ -94,7 +94,7 @@ public class ConversationModel {
      */
     public List<Map<String,Object>> getThreadsForConversation(int conversationId){
         String query = "SELECT * FROM thread WHERE conversations_id='" + conversationId + "';";
-        return mysqlCon.sqlGet(query);
+        return conn.sqlGet(query);
     }
 
     /**
@@ -107,18 +107,18 @@ public class ConversationModel {
      */
     public int createMessageForThread(int threadId, int senderId, String text){
         String query = "INSERT INTO message(sender_id,thread_id,text) VALUES ("+senderId+","+threadId+",'"+text+"');";
-        int r = mysqlCon.sqlcreate(query);
+        int r = conn.sqlcreate(query);
         if(r>0){
-            return mysqlCon.getLastInsertedID();
+            return conn.getLastInsertedID();
         }
         return -1;
     }
 
     public int addMessageToThread(int messageID, int threadId){
       String query = "UPDATE message SET thread_id = "+threadId+" WHERE id="+messageID+";";
-      int r = mysqlCon.sqlcreate(query);
+      int r = conn.sqlcreate(query);
       if(r>0){
-        return mysqlCon.getLastInsertedID();
+        return conn.getLastInsertedID();
       }
       return -1;
     }
@@ -131,7 +131,7 @@ public class ConversationModel {
      */
     public List<Map<String,Object>> getMessagesForConversation(int conversationId){
         String query = "CALL message_in_conversation("+conversationId+");";
-        return mysqlCon.sqlGet(query);
+        return conn.sqlGet(query);
     }
 
     /**
@@ -141,7 +141,7 @@ public class ConversationModel {
      */
     public List<Map<String, Object>> getConversations(){
         String sql = "SELECT * FROM conversations";
-        return mysqlCon.sqlGet(sql);
+        return conn.sqlGet(sql);
     }
 
   /**
@@ -153,7 +153,7 @@ public class ConversationModel {
       String sql = "SELECT * FROM users as u JOIN users_converses_users as " +
               "JOIN conversations as c uu on u.id = uu.Users_id or u.id = Users_id1 and c.id = " +
               "uu.Conversations_id WHERE c.id ="+conversationID +" group by u.id";
-      return mysqlCon.sqlGet(sql);
+      return conn.sqlGet(sql);
     }
 
 
@@ -164,7 +164,7 @@ public class ConversationModel {
    */
   public List<Map<String, Object>> getMessagesInThread(int threadID){
     String sql = "select * from message where thread_id = '"+threadID + "';";
-    return mysqlCon.sqlGet(sql);
+    return conn.sqlGet(sql);
   }
 
     /**
@@ -175,19 +175,19 @@ public class ConversationModel {
      */
     public List<Map<String, Object>> getConversationsById(int id){
         String sql = "SELECT * FROM conversations where id='"+id+"'";
-        return mysqlCon.sqlGet(sql);
+        return conn.sqlGet(sql);
     }
 
     public List<Map<String, Object>> getConversations(int userId){
         String sql = "SELECT * FROM conversations as c JOIN users_converses_users as uu on c.id = uu.Conversations_id WHERE uu.users_id=" +userId+" OR uu.users_id1="+userId+";";
         ChatLogger.info(sql);
-        return mysqlCon.sqlGet(sql);
+        return conn.sqlGet(sql);
     }
 
     public List<Map<String,Object>> getThread(int threadId){
         String sql = "SELECT * FROM thread WHERE if=" +threadId+";";
         ChatLogger.info(sql);
-        return mysqlCon.sqlGet(sql);
+        return conn.sqlGet(sql);
     }
 
 }

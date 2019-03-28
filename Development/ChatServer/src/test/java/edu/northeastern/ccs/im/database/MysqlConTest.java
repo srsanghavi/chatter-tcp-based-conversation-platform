@@ -2,6 +2,7 @@ package edu.northeastern.ccs.im.database;
 
 import org.junit.jupiter.api.Test;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,14 +16,16 @@ import static junit.framework.TestCase.assertFalse;
 
 public class MysqlConTest {
 
+    private static MysqlCon mysqlCon;
+    private static DataCon conn = mysqlCon.getInstance();
     /**
      * Test db connection
      * dbname is checked on the successful connection
      */
     @Test
     public void ConnectionSuccessful(){
-        MysqlCon sqlSever = MysqlCon.getInstance();
-        Connection connection = sqlSever.getRemoteConnection();
+
+        Connection connection = conn.getRemoteConnection();
         String dbname="";
         try {
             Statement sql;
@@ -42,8 +45,7 @@ public class MysqlConTest {
      */
     @Test
     public void ConnectionUnsuccessful(){
-        MysqlCon sqlSever = MysqlCon.getInstance();
-        Connection connection = sqlSever.getRemoteConnection();
+        Connection connection = conn.getRemoteConnection();
         String dbname="";
         if(connection==null){
             assertFalse(connection!=null);
@@ -52,8 +54,7 @@ public class MysqlConTest {
 
     @Test
     public void TestSqlQuery(){
-        MysqlCon mysqlCon = MysqlCon.getInstance();
-        List<Map<String, Object>> rs = mysqlCon.sqlGet("SELECT DATABASE() as db");
+        List<Map<String, Object>> rs = conn.sqlGet("SELECT DATABASE() as db");
         System.out.println(rs.get(0).get("db"));
     }
 }

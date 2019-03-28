@@ -14,7 +14,7 @@ public class ConversationModelTest {
 
     @BeforeEach
     void setup(){
-        conversationModel =new ConversationModel();
+        conversationModel = ModelFactory.getConversationModel();
     }
     @Test
     public void createConversation(){
@@ -76,11 +76,11 @@ public class ConversationModelTest {
 
     @Test
     public void  testGetConversationsForUser(){
-        System.out.println(ConversationModel.getConversations(1));
+        System.out.println(conversationModel.getConversations(1));
     }
 
     @Test
     public void testAddMessageToThread(){
-      System.out.println(ConversationModel.addMessageToThread(311,519));
+      System.out.println(conversationModel.addMessageToThread(311,519));
     }
 }

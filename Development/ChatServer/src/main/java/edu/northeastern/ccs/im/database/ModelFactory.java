@@ -8,13 +8,16 @@ import edu.northeastern.ccs.im.group.Group;
  */
 public class ModelFactory {
 
+    private static MysqlCon mysqlCon;
+    private static DataCon conn = mysqlCon.getInstance();
+
     /**
      * Get user model user model.
      *
      * @return the user model
      */
     public static UserModel getUserModel(){
-        return new UserModel();
+        return new UserModel(conn);
     }
 
     /**
@@ -23,7 +26,7 @@ public class ModelFactory {
      * @return the conversation model
      */
     public static ConversationModel getConversationModel(){
-        return new ConversationModel();
+        return new ConversationModel(conn);
     }
 
     /**
@@ -32,7 +35,7 @@ public class ModelFactory {
      * @return the group model
      */
     public static GroupModel getGroupModel(){
-        return new GroupModel();
+        return new GroupModel(conn);
     }
 
     /**
@@ -41,6 +44,6 @@ public class ModelFactory {
      * @return the message model
      */
     public static MessageModel getMessageModel(){
-        return new MessageModel();
+        return new MessageModel(conn);
     }
 }

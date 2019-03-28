@@ -10,7 +10,7 @@ public class GroupModelTest {
 
     @BeforeEach
     void setup(){
-        groupDB = new GroupModel();
+        groupDB = ModelFactory.getGroupModel();
     }
 
     @Test

@@ -3,6 +3,8 @@ package edu.northeastern.ccs.im.database;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.jws.WebParam;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotSame;
 import static junit.framework.TestCase.assertTrue;
@@ -12,7 +14,7 @@ public class UserModelTest {
     UserModel userModel;
     @BeforeEach
     public void setup(){
-        userModel = new UserModel();
+        userModel = ModelFactory.getUserModel();
     }
     @Test
     public void testCreateUser(){

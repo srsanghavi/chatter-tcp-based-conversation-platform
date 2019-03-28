@@ -10,7 +10,7 @@ public class MessageModelTest {
 
     @BeforeEach
     void setup(){
-        messageModel = new MessageModel();
+        messageModel = ModelFactory.getMessageModel();
     }
 
     @Test

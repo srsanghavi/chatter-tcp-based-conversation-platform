@@ -11,15 +11,15 @@ import java.util.Map;
  */
 public class UserModel {
     /**
-     * The Mysql con.
+     * The connection
      */
-    private static MysqlCon mysqlCon;
+    private static DataCon conn;
 
     /**
      * Instantiates a new UserModel db.
      */
-    public UserModel(){
-        mysqlCon = MysqlCon.getInstance();
+    public UserModel(DataCon connection){
+        conn = connection.getInstance();
     }
 
     /**
@@ -31,7 +31,7 @@ public class UserModel {
      */
     public static int isAuthorized(String username,String pass){
         String sql = "SELECT user_auth('"+username+"','"+pass+"') as authorized;";
-        List<Map<String, Object>> res = mysqlCon.sqlGet(sql);
+        List<Map<String, Object>> res = conn.sqlGet(sql);
         return (int) res.get(0).get("authorized");
     }
 
@@ -61,7 +61,7 @@ public class UserModel {
                 "MD5('" + password + "')" +
                 ");";
         ChatLogger.info("Executing: " + query);
-        return mysqlCon.sqlcreate(query);
+        return conn.sqlcreate(query);
     }
 
     public int createUser(String username, String password){
@@ -75,7 +75,7 @@ public class UserModel {
                 "MD5('" + password + "')" +
                 ");";
         ChatLogger.info("Executing: " + query);
-        ChatLogger.info(Integer.toString(this.mysqlCon.sqlcreate(query)));
+        ChatLogger.info(Integer.toString(this.conn.sqlcreate(query)));
         return 0;
     }
 
@@ -86,7 +86,7 @@ public class UserModel {
      */
     public List<Map<String, Object>> getUsers(){
         String sql = "SELECT * FROM users";
-        List<Map<String, Object>> r = mysqlCon.sqlGet(sql);
+        List<Map<String, Object>> r = conn.sqlGet(sql);
         for(Map<String, Object> user: r){
             user.remove("password");
         }
@@ -107,7 +107,7 @@ public class UserModel {
             return Collections.emptyList();
         }
         String sql = "SELECT * FROM users where "+filterBy+"='"+value+"'";
-        return mysqlCon.sqlGet(sql);
+        return conn.sqlGet(sql);
     }
 
     /**
@@ -118,14 +118,14 @@ public class UserModel {
     public Map<String, Object> getUser(int id){
         String sqlUsername = "SELECT * from users WHERE id = " + id;
 
-        return mysqlCon.sqlGet(sqlUsername).get(0);
+        return conn.sqlGet(sqlUsername).get(0);
     }
 
     public int getUserID(String username){
       int id = 0;
       String sql = "SELECT * FROM users where username='"+username+"'";
       List<Map<String, Object>> jsonObj;
-        jsonObj = mysqlCon.sqlGet(sql);
+        jsonObj = conn.sqlGet(sql);
         id = (int)(jsonObj.get(0)).get("id");
         return id;
     }
@@ -133,19 +133,19 @@ public class UserModel {
     public static List<Map<String, Object>> getUserByUserName(String username){
         int id = 0;
         String sql = "SELECT * FROM users where username='"+username+"'";
-        return mysqlCon.sqlGet(sql);
+        return conn.sqlGet(sql);
     }
 
     public List<Map<String,Object>> getGroups(int user_id) {
         String sql = "SELECT *\n" +
                 "FROM groups as g JOIN groups_has_users as gu on g.id = gu.Groups_id\n" +
                 "where users_id="+user_id;
-        return mysqlCon.sqlGet(sql);
+        return conn.sqlGet(sql);
     }
 
     public int deleteUser(int id){
         String sql = "UPDATE users SET deleted=true WHERE id='" + id + "';";
-        return mysqlCon.sqlcreate(sql);
+        return conn.sqlcreate(sql);
     }
 
     /**
@@ -155,7 +155,7 @@ public class UserModel {
      */
     public int updateUserToPrivate(int user_id){
         String query = "UPDATE users SET isSearchable='0' where id='"+user_id+"';";
-        int r = mysqlCon.sqlcreate(query);
+        int r = conn.sqlcreate(query);
         return r<=0?-1:r;
     }
 
@@ -165,7 +165,7 @@ public class UserModel {
    */
     public static List<Map<String,Object>> getNonPrivateUsers(){
       String sql = "SELECT * from users WHERE isSearchable='1';";
-      return mysqlCon.sqlGet(sql);
+      return conn.sqlGet(sql);
     }
 
 }

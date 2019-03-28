@@ -6,10 +6,10 @@ import java.util.Map;
 
 public class GroupModel {
 
-  private static MysqlCon mysqlCon;
+  private static DataCon conn;
 
-  public GroupModel() {
-    mysqlCon = MysqlCon.getInstance();
+  public GroupModel(DataCon connection) {
+      conn = connection.getInstance();
   }
 
 
@@ -21,7 +21,7 @@ public class GroupModel {
    */
   public List<Map<String, Object>> getGroups(){
     String sql = "SELECT * FROM groups";
-      return mysqlCon.sqlGet(sql);
+      return conn.sqlGet(sql);
   }
 
   /**
@@ -32,7 +32,7 @@ public class GroupModel {
    */
   public List<Map<String, Object>> getGroupsByName(String name){
     String sql = "SELECT * FROM groups where name='"+name+"'";
-      return mysqlCon.sqlGet(sql);
+      return conn.sqlGet(sql);
   }
 
   /**
@@ -43,7 +43,7 @@ public class GroupModel {
    */
   public List<Map<String, Object>> getGroupsById(int id){
     String sql = "SELECT * FROM groups where id='"+id+"'";
-      return mysqlCon.sqlGet(sql);
+      return conn.sqlGet(sql);
   }
 
   /**
@@ -54,7 +54,7 @@ public class GroupModel {
    */
   public List<Map<String, Object>> getUsersInGroups(int id){
     String sql = "SELECT * FROM groups_has_users where Groups_id='"+id+"'";
-      return mysqlCon.sqlGet(sql);
+      return conn.sqlGet(sql);
   }
 
     /**
@@ -66,7 +66,7 @@ public class GroupModel {
      */
     public int createGroup(String name, int adminId){
     String query = "SELECT create_group_with_admin('"+name+"',"+adminId+") as id;";
-        List<Map<String, Object>> r = mysqlCon.sqlGet(query);
+        List<Map<String, Object>> r = conn.sqlGet(query);
         if(!r.isEmpty()){
             return (int) r.get(0).get("id");
         }
@@ -83,13 +83,13 @@ public class GroupModel {
      */
   public int addUserToGroup(int groupId,int userId,int isAdmin){
       String query = "INSERT INTO groups_has_users(Groups_id,Users_id,is_admin) VALUES ("+groupId+", "+userId+", "+isAdmin+")";
-      int r = mysqlCon.sqlcreate(query);
+      int r = conn.sqlcreate(query);
       return r<=0?-1:r;
   }
 
   public int updateGroupName(int groupId, String name){
       String query = "UPDATE groups SET name ='" + name  + "' WHERE id='" + groupId + "';";
-      int r = mysqlCon.sqlcreate(query);
+      int r = conn.sqlcreate(query);
       return r<=0?-1:r;
   }
 
@@ -101,7 +101,7 @@ public class GroupModel {
      */
     public static List<Map<String, Object>> getUsers(Integer group_id) {
         String query = "SELECT * FROM users WHERE id in (SELECT users_id FROM groups_has_users WHERE groups_id="+group_id;
-        List<Map<String, Object>> r = mysqlCon.sqlGet(query);
+        List<Map<String, Object>> r = conn.sqlGet(query);
         return r;
   }
 
@@ -116,17 +116,17 @@ public class GroupModel {
   // The admin status of group 2 is passed in group 1.
   public int addGroupToGroup(int id1, int id2){
       String query = "UPDATE groups_has_users SET Groups_id='"+id1+"' where Groups_id='"+id2+"';";
-      int r = mysqlCon.sqlcreate(query);
+      int r = conn.sqlcreate(query);
       return r<=0?-1:r;
   }
   public static List<Map<String, Object>> getAllGroups(){
         String query = "SELECT * from groups;";
-        return mysqlCon.sqlGet(query);
+        return conn.sqlGet(query);
   }
 
   public int deleteGroup(int id){
       String sql = "UPDATE groups SET deleted=true WHERE id='" + id + "';";
-      return mysqlCon.sqlcreate(sql);
+      return conn.sqlcreate(sql);
   }
 
 
@@ -136,7 +136,7 @@ public class GroupModel {
    */
   public static List<Map<String,Object>> getNonPrivateGroups(){
     String sql = "SELECT * from groups WHERE isSearchable='1';";
-    return mysqlCon.sqlGet(sql);
+    return conn.sqlGet(sql);
   }
 
 }

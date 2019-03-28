@@ -22,8 +22,6 @@ public class Message {
 	/** The string sent when a field is null. */
 	private static final String NULL_OUTPUT = "--";
 
-	private static MysqlCon mysqlCon;
-
 	/** The handle of the message. */
 	private MessageType msgType;
 
@@ -64,8 +62,8 @@ public class Message {
     messageID = UUID.randomUUID().toString();
     this.creationTS = new Timestamp((new Date()).getTime());
 
-    userModel = new UserModel();
-    conversationModel = new ConversationModel();
+    userModel = ModelFactory.getUserModel();
+    conversationModel = ModelFactory.getConversationModel();
 	}
 
 	/**

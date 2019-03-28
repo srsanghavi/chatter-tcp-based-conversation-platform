@@ -8,6 +8,7 @@ import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.NetworkConnection;
 import edu.northeastern.ccs.im.api.Route;
+import edu.northeastern.ccs.im.database.ModelFactory;
 import edu.northeastern.ccs.im.database.UserModel;
 
 /**
@@ -99,7 +100,7 @@ public class ClientRunnable implements Runnable {
 				timer.updateAfterInitialization();
 				// Set that the client is initialized.
 				initialized = true;
-                UserModel u = new UserModel();
+                UserModel u = ModelFactory.getUserModel();
                 List<Map<String, Object>> r = u.getUsers();
                 List<String> usernames = new ArrayList<>();
                 for(Map<String,Object> user:r){
@@ -117,7 +118,7 @@ public class ClientRunnable implements Runnable {
 
 
 	private Boolean checkIsAuthorized(String username,String password){
-		UserModel userModel = new UserModel();
+		UserModel userModel = ModelFactory.getUserModel();
 		int localAuthorized = userModel.isAuthorized(username, password);
         return localAuthorized == 1;
 	}

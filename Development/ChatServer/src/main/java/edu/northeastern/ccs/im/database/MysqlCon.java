@@ -17,7 +17,7 @@ import java.io.File;
 /**
  * The type Mysql con.
  */
-public class MysqlCon {
+public class MysqlCon implements DataCon{
     private static MysqlCon mySqlCon = null;
     private static final String VALUE = "value";
     private Connection con;
@@ -65,12 +65,13 @@ public class MysqlCon {
      *
      * @return the mysql con
      */
-    public static MysqlCon getInstance(){
+    public DataCon getInstance(){
         if(mySqlCon==null){
             mySqlCon = new MysqlCon();
         }
         return mySqlCon;
     }
+
 
     /**
      * Gets remote connection.
