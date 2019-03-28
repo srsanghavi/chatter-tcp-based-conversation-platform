@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 
-
-
+/**
+ * The type Conversation model.
+ */
 public class ConversationModel {
     /**
      * The Mysql con.
@@ -76,7 +77,14 @@ public class ConversationModel {
     }
 
 
-  public int createThreadForConversationByThreadID(int threadId, int conversationId){
+    /**
+     * Create thread for conversation by thread id int.
+     *
+     * @param threadId       the thread id
+     * @param conversationId the conversation id
+     * @return the int
+     */
+    public int createThreadForConversationByThreadID(int threadId, int conversationId){
     String query = "INSERT INTO thread(threadId,conversations_id) VALUES ("+threadId+","+conversationId+")";
     int r = mysqlCon.sqlcreate(query);
     if(r>0){
@@ -102,7 +110,7 @@ public class ConversationModel {
      *
      * @param threadId the thread id
      * @param senderId the sender id
-     * @param text      the text
+     * @param text     the text
      * @return the int
      */
     public int createMessageForThread(int threadId, int senderId, String text){
@@ -114,6 +122,13 @@ public class ConversationModel {
         return -1;
     }
 
+    /**
+     * Add message to thread int.
+     *
+     * @param messageID the message id
+     * @param threadId  the thread id
+     * @return the int
+     */
     public int addMessageToThread(int messageID, int threadId){
       String query = "UPDATE message SET thread_id = "+threadId+" WHERE id="+messageID+";";
       int r = mysqlCon.sqlcreate(query);
@@ -144,11 +159,12 @@ public class ConversationModel {
         return mysqlCon.sqlGet(sql);
     }
 
-  /**
-   * Get users in a conversation.
-   * @param conversationID the conversation id
-   * @return list of users in the conversation
-   */
+    /**
+     * Get users in a conversation.
+     *
+     * @param conversationID the conversation id
+     * @return list of users in the conversation
+     */
     public List<Map<String, Object>> getUsersInConversation(int conversationID){
       String sql = "SELECT * FROM users as u JOIN users_converses_users as " +
               "JOIN conversations as c uu on u.id = uu.Users_id or u.id = Users_id1 and c.id = " +
@@ -157,12 +173,13 @@ public class ConversationModel {
     }
 
 
-  /**
-   * Get messages in a thread.
-   * @param threadID the thread id
-   * @return list of messages in the thread
-   */
-  public List<Map<String, Object>> getMessagesInThread(int threadID){
+    /**
+     * Get messages in a thread.
+     *
+     * @param threadID the thread id
+     * @return list of messages in the thread
+     */
+    public List<Map<String, Object>> getMessagesInThread(int threadID){
     String sql = "select * from message where thread_id = '"+threadID + "';";
     return mysqlCon.sqlGet(sql);
   }
@@ -178,12 +195,24 @@ public class ConversationModel {
         return mysqlCon.sqlGet(sql);
     }
 
+    /**
+     * Get conversations list.
+     *
+     * @param userId the user id
+     * @return the list
+     */
     public List<Map<String, Object>> getConversations(int userId){
         String sql = "SELECT * FROM conversations as c JOIN users_converses_users as uu on c.id = uu.Conversations_id WHERE uu.users_id=" +userId+" OR uu.users_id1="+userId+";";
         ChatLogger.info(sql);
         return mysqlCon.sqlGet(sql);
     }
 
+    /**
+     * Get thread list.
+     *
+     * @param threadId the thread id
+     * @return the list
+     */
     public List<Map<String,Object>> getThread(int threadId){
         String sql = "SELECT * FROM thread WHERE if=" +threadId+";";
         ChatLogger.info(sql);
