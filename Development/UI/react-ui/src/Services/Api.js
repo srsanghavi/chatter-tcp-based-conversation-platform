@@ -68,7 +68,7 @@ export default class Api {
     }
 
     getMessagesInThread(username,threadId) {
-        let msg = this.messageType.makeApiMessage(username,"getMessagesInThread/::GET::{thread_id:"+threadId+"}");
+        let msg = this.messageType.makeApiMessage(username,"messageInThread/::GET::{thread_id:"+threadId+"}");
         gateway.sendTcp(msg);
         return this.promise();
     }
