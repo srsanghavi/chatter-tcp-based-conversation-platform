@@ -1,5 +1,6 @@
 package edu.northeastern.ccs.im.Controller;
 
+import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.database.ConversationModel;
 import edu.northeastern.ccs.im.database.ModelFactory;
@@ -69,7 +70,7 @@ public class ConversationController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String,Object>> getMessagesInConversation(String username,Map<String,Object> json) throws NoSuchFieldException {
-        if(json.containsKey("conversation_id")) {
+        if(!json.containsKey("conversation_id")) {
             throw new NoSuchFieldException();
         }
         int conversationId;
