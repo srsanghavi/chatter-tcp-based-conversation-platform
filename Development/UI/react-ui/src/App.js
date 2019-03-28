@@ -12,6 +12,7 @@ import ThreadContainer from "./Components/ThreadContainer";
 import Authentication from './Components/Authentication'
 import LoginProcessing from "./Components/LoginProcessing";
 import Register from "./Components/Register";
+import LoadingMessages from "./Components/LoadingMessages";
 
 class App extends Component {
 

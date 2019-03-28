@@ -11,6 +11,7 @@ import UserStore from "../Store/UserStore";
 import ThreadStore from "../Store/ThreadStore";
 import MessageActions from "../Actions/MessageActions";
 import MessageStore from "../Store/MessageStore";
+import LoadingMessages from "./LoadingMessages";
 
 
 // component updates every interval (in ms)
@@ -20,6 +21,10 @@ class Conversation extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            interval: 0,
+            threadsLoaded: false,
+            messagesLoaded: false,
+            finishedLoading: false,
             id: this.props.match.params.id,
             searchBar: false,
             search: '',
@@ -57,15 +62,31 @@ class Conversation extends Component {
     }
 
     update() {
-        console.log(this.props.match.params.id);
-        MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
+        if(ThreadStore._getThreads() != undefined) {
+            this.setState({
+                threads: JSON.parse(ThreadStore._getThreads()).result
+            })
+        }
+        if(MessageStore._getMessages() != undefined) {
+            this.setState({
+                messages: JSON.parse(MessageStore._getMessages()).result
+            })
+        }
+        // console.log(this.props.match.params.id);
+        // MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
+        // setTimeout(function(){}, 3000);
         ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id);
-        this.setState({
-            threads:  ThreadStore._getThreads(),
-            messages: MessageStore._getMessages()
-        });
-        console.log(ThreadStore._getThreads())
-        console.log(MessageStore._getMessages())
+        // this.setState({
+        //     threads:  JSON.parse(ThreadStore._getThreads()).result,
+        //     messages: JSON.parse(MessageStore._getMessages()).result
+        // });
+        // console.log(JSON.parse(ThreadStore._getThreads()).result);
+        // console.log(JSON.parse(MessageStore._getMessages()).result);
+        //console.log(ThreadStore._getThreads())
+    }
+
+    updateMessages() {
+
     }
 
     // sendMessage() {
@@ -143,6 +164,9 @@ class Conversation extends Component {
                                             searchClick={this.toggleSearch}/>
                     </div>
                     {this.renderSearchBar()}
+                    <LoadingMessages  id={this.props.match.params.id}/>
+                    <ThreadContainer threads={this.state.threads}
+                                     messages={this.state.messages}/>
                     <ConversationFooter/>
                     {/*{this.renderSearchBar()}*/}
                     {/*<ThreadContainer threads={this.state.threads}/>*/}

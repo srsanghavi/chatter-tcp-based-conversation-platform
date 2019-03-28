@@ -3,7 +3,7 @@ import {css} from 'emotion';
 import Thread from "./Thread";
 
 const ThreadContainer = props => {
-    if(props.threads == null) {
+    if(props.threads == null || props.threads == undefined || props.threads == []) {
         return null
     } else {
         return (
@@ -17,8 +17,11 @@ const ThreadContainer = props => {
             })}>
                 <div className={css({paddingTop: '5em'})}></div>
                 {props.threads.map(thread => {
+                    let threadMessages = props.messages.filter(message => {
+                        return message.thread_id == thread.id
+                    });
                     return (
-                        <Thread thread={thread}/>
+                        <Thread threadMessages={threadMessages}/>
                     )
                 })}
             </div>

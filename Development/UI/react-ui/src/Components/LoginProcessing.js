@@ -47,8 +47,6 @@ class LoginProcessing extends Component {
     }
 
     update() {
-        console.log(this.state);
-        console.log(ConversationStore._getConversations());
         if(!this.state.finishedLoading) {
             if (!this.state.loggedIn) {
                 this.authenticate()
@@ -216,39 +214,45 @@ class LoginProcessing extends Component {
                                  this.state.allGroupsLoaded &&
                                  this.state.usersLoaded
             });
+            setTimeout(function(){}, 5000);
         }
     }
 
     render() {
         if(this.state.finishedLoading) {
-            // return(
-            //     <Redirect to={'./conversations'}/>
+            return(
+                <Redirect to={'./conversations'}/>
+            );
+            // return (
+            //     <div className={css({
+            //         textAlign: 'center',
+            //         position: 'absolute',
+            //         left: '50%',
+            //         top: '50%',
+            //         transform: 'translateY(-50%) translateX(-50%)',
+            //     })}>
+            //         <h4 className={css({
+            //             fontFamily: 'Titillium Web',
+            //             fontWeight: 'bold',
+            //             paddingBottom: '1em',
+            //             color: '#342E37'
+            //         })}>
+            //             Login Successful!</h4>
+            //         <NavLink to={'./conversations'}>
+            //             <button className="btn btn-outline-primary">
+            //                 Continue
+            //             </button>
+            //         </NavLink>
+            //     </div>
             // )
-            return (
-                <div className={css({
-                    textAlign: 'center',
-                    paddingTop: '7em'
-                })}>
-                    <h4 className={css({
-                        fontFamily: 'Titillium Web',
-                        fontWeight: 'bold',
-                        paddingBottom: '1em',
-                        color: '#342E37'
-                    })}>
-                        Login Successful!</h4>
-                    <NavLink to={'./conversations'}>
-                        <button className="btn btn-outline-primary">
-                            Continue
-                        </button>
-                    </NavLink>
-                </div>
-
-            )
         } else if(this.state.status === status.FAILURE) {
             return (
                 <div className={css({
                     textAlign: 'center',
-                    paddingTop: '7em'
+                    position: 'absolute',
+                    left: '50%',
+                    top: '40%',
+                    transform: 'translateY(-50%) translateX(-50%)',
                 })}>
                     <h4 className={css({
                         fontFamily: 'Titillium Web',
@@ -268,7 +272,10 @@ class LoginProcessing extends Component {
             return (
                 <div className={css({
                     textAlign: 'center',
-                    paddingTop: '7em'
+                    position: 'absolute',
+                    left: '50%',
+                    top: '40%',
+                    transform: 'translateY(-50%) translateX(-50%)',
                 })}>
                     <h4 className={css({
                         fontFamily: 'Titillium Web',

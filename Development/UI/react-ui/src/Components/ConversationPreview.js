@@ -1,6 +1,8 @@
 import React from 'react';
 import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
+import ThreadStore from "../Store/ThreadStore";
+import MessageStore from "../Store/MessageStore";
 
 const ConversationPreview = props => {
     return (
@@ -46,7 +48,11 @@ const ConversationPreview = props => {
                              '&:hover': {
                                  color: '#45AAEB'
                              }
-                         })}>
+                         })}
+                         onClick={() => {
+                             ThreadStore._clearThreads();
+                             MessageStore._clearMessages();
+                         }}>
                     <i className="fa fa-angle-right fa-2x"
                        style={{float: 'right'}}></i>
                 </NavLink>
