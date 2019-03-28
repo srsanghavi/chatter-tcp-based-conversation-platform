@@ -67,5 +67,11 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
+
+    getAllGroups(username) {
+        let msg = this.messageType.makeApiMessage(username,"getAllGroups/::GET::{}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
 }
 

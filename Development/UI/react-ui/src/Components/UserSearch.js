@@ -18,7 +18,7 @@ const UserSearch = props => {
                                           profileOnClick={props.profileOnClick}/>)
                 }) :
                 props.groups.map(group => {
-                    return( <GroupPreviews/>)
+                    return( <GroupPreviews group={group}/>)
                 })
             }
         </div>

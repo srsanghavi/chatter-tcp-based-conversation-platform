@@ -39,6 +39,8 @@ class HomePage extends Component {
             broadcast: '',
             user: {},
             users: [],
+            myGroups: [],
+            groups: [],
             conversations: [],
             userButtonSelected: true
         };
@@ -67,10 +69,12 @@ class HomePage extends Component {
         this.setState({
             user: JSON.parse(UserStore._getUser()).result[0],
             users: JSON.parse(UserStore._getUsers()).result,
-            groups: JSON.parse(GroupStore._getGroups()).result,
+            myGroups: JSON.parse(GroupStore._getGroups()).result,
+            groups: JSON.parse(GroupStore._getAllGroups()).result,
             conversations: JSON.parse(ConversationStore._getConversations()).result
         });
         console.log(JSON.parse(GroupStore._getGroups()).result)
+        console.log(JSON.parse(GroupStore._getAllGroups()).result)
     }
 
     componentWillUnmount() {
@@ -204,6 +208,12 @@ class HomePage extends Component {
             )
         });
 
+        const filteredGroups = this.state.groups.filter(group => {
+            return (
+                group.isSearchable && group.name.toUpperCase().includes(this.state.search.toUpperCase())
+            )
+        });
+
         return (
             <div>
                 <div className={css({
@@ -238,6 +248,7 @@ class HomePage extends Component {
                     </Route>
                     <Route path="/search">
                         {() => <UserSearch users={filteredUsers}
+                                           groups={filteredGroups}
                                            userButtonSelected={this.state.userButtonSelected}
                                            profileOnClick={this.profileTabSelected}/>}
                     </Route>

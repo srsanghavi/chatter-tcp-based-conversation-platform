@@ -16,10 +16,10 @@ const status = {
 };
 
 // component updates every interval (in ms)
-const INTERVAL = 500;
+const INTERVAL = 100;
 
 // count of intervals after which log in will fail. interval count is reset at each step
-const TIMEOUT = 15;
+const TIMEOUT = 100;
 
 class LoginProcessing extends Component {
     constructor() {
@@ -31,6 +31,7 @@ class LoginProcessing extends Component {
             userLoaded: false,
             usersLoaded: false,
             groupsLoaded: false,
+            allGroupsLoaded: false,
             conversationsLoaded: false,
             finishedLoading: false,
         }
@@ -57,6 +58,8 @@ class LoginProcessing extends Component {
                 this.loadUsers()
             } else if (!this.state.groupsLoaded) {
                 this.loadGroups()
+            } else if (!this.state.allGroupsLoaded) {
+                this.loadAllGroups()
             } else if (!this.state.conversationsLoaded) {
                 this.loadConversations()
             }
@@ -88,6 +91,7 @@ class LoginProcessing extends Component {
                 finishedLoading: this.state.userLoaded &&
                                  this.state.usersLoaded &&
                                  this.state.groupsLoaded &&
+                                 this.state.allGroupsLoaded &&
                                  this.state.conversationsLoaded
             });
             UserStore._clearUser();
@@ -111,6 +115,7 @@ class LoginProcessing extends Component {
                 finishedLoading: this.state.loggedIn &&
                                  this.state.usersLoaded &&
                                  this.state.groupsLoaded &&
+                                 this.state.allGroupsLoaded &&
                                  this.state.conversationsLoaded
             });
             let id = JSON.parse(UserStore._getUser()).result[0].id;
@@ -136,6 +141,7 @@ class LoginProcessing extends Component {
                 finishedLoading: this.state.loggedIn &&
                                  this.state.userLoaded &&
                                  this.state.groupsLoaded &&
+                                 this.state.allGroupsLoaded &&
                                  this.state.conversationsLoaded
             });
             GroupStore._clearGroups();
@@ -159,6 +165,31 @@ class LoginProcessing extends Component {
                 finishedLoading: this.state.loggedIn &&
                                  this.state.userLoaded &&
                                  this.state.usersLoaded &&
+                                 this.state.allGroupsLoaded &&
+                                 this.state.conversationsLoaded
+            });
+            GroupStore._clearAllGroups();
+            GroupActions.getAllGroups(localStorage.getItem('username'))
+        }
+    }
+
+    loadAllGroups() {
+        if(GroupStore._getAllGroups() === undefined){
+            if(this.state.interval < TIMEOUT) {
+                this.setState({ interval: this.state.interval + 1 });
+            } else {
+                this.setState({ status: status.FAILURE });
+                clearInterval(this.interval);
+            }
+        } else {
+            this.setState({
+                status: status.PENDING,
+                interval: 0,
+                allGroupsLoaded: true,
+                finishedLoading: this.state.loggedIn &&
+                                 this.state.userLoaded &&
+                                 this.state.usersLoaded &&
+                                 this.state.groupsLoaded &&
                                  this.state.conversationsLoaded
             });
             ConversationStore._clearConversations();
@@ -167,7 +198,7 @@ class LoginProcessing extends Component {
     }
 
     loadConversations() {
-        if(UserStore._getUsers() === undefined){
+        if(ConversationStore._getConversations() === undefined){
             if(this.state.interval < 100000) {
                 this.setState({ interval: this.state.interval + 1 });
             } else {
@@ -182,6 +213,7 @@ class LoginProcessing extends Component {
                 finishedLoading: this.state.loggedIn &&
                                  this.state.userLoaded &&
                                  this.state.groupsLoaded &&
+                                 this.state.allGroupsLoaded &&
                                  this.state.usersLoaded
             });
         }

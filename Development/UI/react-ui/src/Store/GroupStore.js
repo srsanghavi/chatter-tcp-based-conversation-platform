@@ -4,7 +4,9 @@ import ActionTypes from '../AppConstants';
 
 const GROUP_CHANGED = 'GROUP_CHANGED';
 
-let _groups;
+let _userGroups;
+let _allGroups;
+
 class GroupStore extends EventEmitter {
     constructor() {
         super();
@@ -21,13 +23,16 @@ class GroupStore extends EventEmitter {
             case ActionTypes.GET_GROUPS:
                 this._setGroups(action.payload);
                 break;
+            case ActionTypes.GET_ALL_GROUPS:
+                this._setAllGroups(action.payload);
+                break;
             default:
                 break;
         }
     }
 
-    _setGroups(threads){
-        _groups = threads;
+    _setGroups(groups){
+        _userGroups = groups;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
             self.emit(GROUP_CHANGED);
@@ -35,12 +40,31 @@ class GroupStore extends EventEmitter {
     }
 
     _getGroups() {
-        return _groups;
+        return _userGroups;
     }
 
     _clearGroups() {
-        _groups = undefined;
+        _userGroups = undefined;
     }
+
+
+    _setAllGroups(groups){
+        _allGroups = groups;
+        let self = this;
+        setTimeout(() => { // Run after dispatcher has finished
+            self.emit(GROUP_CHANGED);
+        }, 0);
+    }
+
+    _getAllGroups() {
+        return _allGroups;
+    }
+
+    _clearAllGroups() {
+        _allGroups = undefined;
+    }
+
+
 
     // Hooks a React component's callback to the CHANGED event.
     addChangeListener(callback) {

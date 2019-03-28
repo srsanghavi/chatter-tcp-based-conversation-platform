@@ -16,6 +16,16 @@ class GroupActions {
         });
     }
 
+    getAllGroups(username) {
+        api.getAllGroups(username).then(value => {
+            console.log(value);
+            Dispatcher.dispatch({
+                actionType: ActionTypes.GET_ALL_GROUPS,
+                payload: value,
+            })
+        });
+    }
+
 }
 
 export default new GroupActions();
