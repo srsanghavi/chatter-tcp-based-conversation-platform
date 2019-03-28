@@ -36,11 +36,16 @@
       function connectTcp(){
           var net = new WebTCP('localhost', 9999);
 <<<<<<< HEAD
+<<<<<<< HEAD
           // window.socket = net.createSocket("18.218.165.28", 4545);
 =======
           // window.socket = net.createSocket("ec2-18-218-165-28.us-east-2.compute.amazonaws.com", 4545);
 >>>>>>> 6a156160980eb7652e6b850c434da7959d9bd9b4
           window.socket = net.createSocket("localhost",4545);
+=======
+
+          window.socket = net.createSocket("ec2-18-218-165-28.us-east-2.compute.amazonaws.com", 4545);
+>>>>>>> efdb256e7a311203ed6300207300703364deb6c9
           // When the connection is open, send some data to the server
           window.socket.on('connect', function(){
               isRunning = true;

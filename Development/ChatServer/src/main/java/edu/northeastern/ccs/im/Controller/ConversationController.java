@@ -60,12 +60,10 @@ public class ConversationController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String,Object>> getMessagesInConversation(Map<String,Object> json) throws NoSuchFieldException {
-        String conversationId;
-        if(json.containsKey("conversation_id")) {
-            conversationId = (String) json.getOrDefault("conversation_id", 0);
-        }else {
+        if(!json.containsKey("conversation_id")) {
             throw new NoSuchFieldException();
         }
+        int conversationId = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
         return ConversationModel.getMessagesForConversation(Integer.valueOf(conversationId));
     }
 
