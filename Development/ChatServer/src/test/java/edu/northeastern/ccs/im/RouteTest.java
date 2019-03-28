@@ -56,4 +56,8 @@ public class RouteTest {
       ChatLogger.info(Route.getResponseGet("hsbudhia","getGroupUsers/","{group_id:199}"));
     }
 
+    @Test
+  public void testGetThreadInConversation(){
+      ChatLogger.info(Route.getResponseGet("hsbudhia","getThreadsInConversation/","{conversation_id:407}"));
+    }
 }
