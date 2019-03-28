@@ -42,14 +42,14 @@ public class Route {
         ChatLogger.info(json.toString());
         switch (route){
             // get all users
-            case "getUsers/":
+            case ApiMessageType.GET_USERS:
                 ChatLogger.info("getUsers:");
                 response = userDB.getUsers();
                 break;
 
             // get all conversations associated with the user which is supplied in the JSON as user_id
             // requires params: {user_id: "<user_id>"}
-            case "getConversations/":
+            case ApiMessageType.GET_USER_CONVERSATION:
                 ChatLogger.info("getConversations:");
                 int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
                 response = conversationDB.getConversations(userId);
@@ -57,36 +57,36 @@ public class Route {
 
             // get all conversations associated with the user which is supplied in the JSON as user_id
             // requires params: {user_id: "<user_id>"}
-            case "getGroups/":
+            case ApiMessageType.GET_USER_GROUP:
                 ChatLogger.info("getGroups:");
                 int id = Math.toIntExact(Math.round((double) json.getOrDefault("user_id", 0)));
                 response = userDB.getGroups(Integer.valueOf(id));
                 break;
 
-            case "getGroupUsers/":
+            case ApiMessageType.GET_GROUP_USERS:
                 ChatLogger.info("getGroupUsers:");
                 int group_id = Math.toIntExact(Math.round((double) json.getOrDefault("group_id", 0)));
                 response = GroupDB.getUsers(Integer.valueOf(group_id));
                 break;
 
-            case "getThreadsInConversation/": {
+            case ApiMessageType.GET_THREAD_CONV: {
                 ChatLogger.info("getThreadsInConversation:");
                 int conversation_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
                 response = ConversationDB.getThreadsForConversation(Integer.valueOf(conversation_id));
                 break;
             }
-            case "getUserByUsername/":
+            case ApiMessageType.GET_USER_BY_USERNAME:
                 ChatLogger.info("getUserByUsername:");
                 String username = (String) json.getOrDefault("username",0);
                 response = UserDB.getUserByUserName(username);
                 break;
-            case "getUsersInConversation/": {
+            case ApiMessageType.GET_CONV_USER: {
                 ChatLogger.info("getUsersInConversation:");
                 int conversation_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
                 response = ConversationDB.getUsersInConversation(Integer.valueOf(conversation_id));
             }
                 break;
-          case "messageInThread/":
+          case ApiMessageType.GET_MESSAGE_THREAD:
             ChatLogger.info("messageInThread:");
             String thread_id = (String) json.getOrDefault("thread_id",0);
             response = ConversationDB.getUsersInConversation(Integer.valueOf(thread_id));
@@ -112,9 +112,11 @@ public class Route {
     public static String getResponsePost(String route,String data){
         String response = null;
         UserDB userDB = new UserDB();
+        GroupDB groupDB = new GroupDB();
+        ConversationDB conversationDB = new ConversationDB();
         Map<String, Object> json = decodeJSON(data);
         switch (route){
-            case "registerUser/":
+            case ApiMessageType.CREATE_USER:
             {
                 String firstName = (String) json.get("first_name");
                 String lastName = (String) json.get("last_name");
@@ -131,12 +133,12 @@ public class Route {
                 }else {
                     json.put("result_code",500);
                     json.put("result","error");
-//                    response = json.toString();
                 }
                 break;
             }
-            case "sendMessage/":
-                String senderId = (String) json.get("sende_idr");
+
+            case ApiMessageType.CREATE_MESSAGE:
+                String senderId = (String) json.get("sender_id");
                 String senderName = (String) json.get("sender_name");
                 String conversationId = (String) json.get("conversation_id");
                 String threadId = (String) json.get("thread_id");
@@ -148,10 +150,98 @@ public class Route {
                     Prattle.sendMessageToUser(destinationName,msg);
                     json.put("result_code",201);
                     json.put("result","OK");
-//                    response = json.toString();
                 }else {
                     return  "{result: error, resultCode: 500, resultMessage: 'could not create message'}";
                 }
+                break;
+
+//          case "broadcastMessage/":
+//                String text = (String) json.get("message");
+//                String sender = (String) json.get("sender_id");
+//                List<Map<String, Object>> conversations = ConversationDB.getConversations(Integer.parseInt(sender));
+//
+
+
+
+          case ApiMessageType.ADD_USER_GROUP:
+            String userId = (String) json.get("user_id");
+            String groupId = (String) json.get("group_id");
+            if(groupDB.addUserToGroup(Integer.valueOf(groupId),Integer.valueOf(userId),0)>0){
+              json.put("result_code",201);
+              json.put("result","OK");
+              response = json.toString();
+            }else {
+              response = "{result: error, resultCode: 500, resultMessage: 'could not add user to group'}";
+            }
+            break;
+
+          case ApiMessageType.CREATE_THREAD_CONV:
+            threadId = (String) json.get("thread_id");
+            groupId = (String) json.get("group_id");
+            if(ConversationDB.createThreadForConversationByThreadID(Integer.valueOf(threadId),Integer.valueOf(groupId))>0){
+              json.put("result_code",201);
+              json.put("result","OK");
+              response = json.toString();
+            }else {
+              response = "{result: error, resultCode: 500, resultMessage: 'could not add thread to group'}";
+            }
+            break;
+
+          case ApiMessageType.ADD_MESSAGE_THREAD:
+            threadId = (String) json.get("thread_id");
+            String messageId = (String) json.get("message_id");
+            if(ConversationDB.addMessageToThread(Integer.valueOf(messageId),Integer.valueOf(threadId))>0){
+              json.put("result_code",201);
+              json.put("result","OK");
+              response = json.toString();
+            }else {
+              response = "{result: error, resultCode: 500, resultMessage: 'could not add message to thread'}";
+            }
+            break;
+
+            case ApiMessageType.MODIFY_GROUP_NAME:
+                groupId = (String) json.get("group_id");
+                String name = (String) json.get("group_name");
+                if(groupDB.updateGroupName(Integer.valueOf(groupId), name) > 0){
+                    json.put("result_code",201);
+                    json.put("result","OK");
+                    response = json.toString();
+                }
+                else
+                    response = "{result: error, resultCode: 500, resultMessage: 'Could not update group name'}";
+                break;
+
+            case ApiMessageType.DELETE_USER:
+                userId = (String) json.get("user_id");
+                if(userDB.deleteUser(Integer.valueOf(userId)) > 0){
+                    json.put("result_code",201);
+                    json.put("result","OK");
+                    response = json.toString();
+                }
+                else
+                    response = "{result: error, resultCode: 500, resultMessage: 'could not delete user'}";
+                break;
+
+            case ApiMessageType.DELETE_GROUP:
+                userId = (String) json.get("group_id");
+                if(groupDB.deleteGroup(Integer.valueOf(userId)) > 0){
+                    json.put("result_code",201);
+                    json.put("result","OK");
+                    response = json.toString();
+                }
+                else
+                    response = "{result: error, resultCode: 500, resultMessage: 'could not delete group'}";
+                break;
+
+            case ApiMessageType.DELETE_MESSAGE:
+                messageId = (String) json.get("message_id");
+                if(messageDB.deleteMessage(Integer.valueOf(messageId)) > 0){
+                    json.put("result_code",201);
+                    json.put("result","OK");
+                    response = json.toString();
+                }
+                else
+                    response = "{result: error, resultCode: 500, resultMessage: 'could not delete message'}";
                 break;
 
 //                TODO: following
