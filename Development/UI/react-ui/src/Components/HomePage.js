@@ -9,7 +9,7 @@ import UserActions from '../Actions/UserActions';
 import ConversationActions from "../Actions/ConversationActions";
 import ConversationStore from "../Store/ConversationStore";
 import Conversation from "./Conversation";
-import {Route, Switch, BrowserRouter} from 'react-router-dom';
+import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
 import Settings from './Settings';
 import Conversations from './Conversations';
 import UserSearch from './UserSearch';
@@ -237,6 +237,9 @@ class HomePage extends Component {
                     </Route>
                     <Route path="/settings">
                         {() => <Settings/>}
+                    </Route>
+                    <Route path="/conv-redirect">
+                        {() => <Redirect to={'./conversations'}/>}
                     </Route>
                     <Route path="/conversations">
                         {() => <Conversations conversations={JSON.parse(ConversationStore._getConversations()).result}/>}

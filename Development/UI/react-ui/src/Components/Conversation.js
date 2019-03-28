@@ -15,7 +15,7 @@ import LoadingMessages from "./LoadingMessages";
 
 
 // component updates every interval (in ms)
-const INTERVAL = 2000;
+const INTERVAL = 5000;
 
 class Conversation extends Component {
     constructor(props) {
@@ -48,7 +48,25 @@ class Conversation extends Component {
 
     componentDidMount() {
         this.interval = setInterval(() => this.update(), INTERVAL);
-        MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
+        if(MessageStore._getMessages() != undefined &&
+            JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
+            this.updateThreads();
+            window.scrollTo(0, document.body.scrollHeight);
+        } else {
+            if(ThreadStore._getThreads() != undefined) {
+                this.setState({
+                    threads: JSON.parse(ThreadStore._getThreads()).result
+                })
+            }
+            if(MessageStore._getMessages() != undefined) {
+                this.setState({
+                    messages: JSON.parse(MessageStore._getMessages()).result
+                })
+            }
+            MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
+        }
+
+        //MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
     }
 
     componentWillUnmount() {
@@ -136,7 +154,8 @@ class Conversation extends Component {
     }
 
     renderThreads() {
-        if(ThreadStore._getThreads() == undefined || MessageStore._getMessages() == undefined) {
+        if((ThreadStore._getThreads() == undefined || MessageStore._getMessages() == undefined)
+                && this.state.threads.length === 0) {
             return(
                 <div className={css({
                     textAlign: 'center',
@@ -155,8 +174,12 @@ class Conversation extends Component {
             )
         } else {
             return(
-                <ThreadContainer threads={this.state.threads}
-                                 messages={this.state.messages}/>
+                <div>
+                    <ThreadContainer threads={this.state.threads}
+                                     messages={this.state.messages}/>
+                    <ConversationFooter onChange={this.onMessageChange}
+                                        onClick={this.sendMessage}/>
+                </div>
             )
         }
     }
@@ -177,12 +200,13 @@ class Conversation extends Component {
                         paddingBottom: '5em'
                     })}>
                         <ConversationHeader search={this.state.searchBar}
-                                            searchClick={this.toggleSearch}/>
+                                            searchClick={this.toggleSearch}
+                                            inThread={false}/>
                     </div>
                     {this.renderSearchBar()}
                     {this.renderThreads()}
-                    <ConversationFooter onChange={this.onMessageChange}
-                                        onClick={this.sendMessage}/>
+                    {/*<ConversationFooter onChange={this.onMessageChange}*/}
+                                        {/*onClick={this.sendMessage}/>*/}
                     {/*{this.renderSearchBar()}*/}
                     {/*<ThreadContainer threads={this.state.threads}/>*/}
                     {/*<div className={css({paddingBottom: '5em'})}></div>*/}

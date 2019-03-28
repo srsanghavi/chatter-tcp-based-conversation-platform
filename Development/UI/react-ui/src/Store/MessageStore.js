@@ -5,6 +5,7 @@ import ActionTypes from '../AppConstants';
 const MESSAGES_CHANGED = 'MESSAGES_CHANGED';
 
 let _messages;
+let _threadMessages;
 
 class MessageStore extends EventEmitter {
     constructor() {
@@ -21,6 +22,9 @@ class MessageStore extends EventEmitter {
 
             case ActionTypes.GET_MESSAGES_IN_CONVERSATION:
                 this._setMessages(action.payload);
+                break;
+            case ActionTypes.GET_MESSAGES_IN_THREAD:
+                this._setThreadMessages(action.payload);
                 break;
             default:
                 break;
@@ -41,6 +45,23 @@ class MessageStore extends EventEmitter {
 
     _clearMessages() {
         _messages = undefined;
+    }
+
+
+    _setThreadMessages(messages){
+        _threadMessages = messages;
+        let self = this;
+        setTimeout(() => { // Run after dispatcher has finished
+            self.emit(MESSAGES_CHANGED);
+        }, 0);
+    }
+
+    _getThreadMessages() {
+        return _threadMessages;
+    }
+
+    _clearThreadMessages() {
+        _threadMessages = undefined;
     }
 
     // Hooks a React component's callback to the CHANGED event.

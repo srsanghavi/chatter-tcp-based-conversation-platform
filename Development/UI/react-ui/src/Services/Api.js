@@ -67,6 +67,12 @@ export default class Api {
         return this.promise();
     }
 
+    getMessagesInThread(username,threadId) {
+        let msg = this.messageType.makeApiMessage(username,"getMessagesInThread/::GET::{thread_id:"+threadId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
     getGroups(username,userId) {
         let msg = this.messageType.makeApiMessage(username,"getGroups/::GET::{user_id:"+userId+"}");
         gateway.sendTcp(msg);

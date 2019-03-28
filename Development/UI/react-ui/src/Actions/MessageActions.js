@@ -15,6 +15,15 @@ class MessageActions {
         });
     }
 
+    getMessagesInThread(username,threadId) {
+        api.getMessagesInThread(username,threadId).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.GET_MESSAGES_IN_THREAD,
+                payload: value,
+            })
+        });
+    }
+
 }
 
 export default new MessageActions();

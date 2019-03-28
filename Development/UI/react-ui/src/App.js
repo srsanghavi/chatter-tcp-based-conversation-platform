@@ -13,6 +13,7 @@ import Authentication from './Components/Authentication'
 import LoginProcessing from "./Components/LoginProcessing";
 import Register from "./Components/Register";
 import LoadingMessages from "./Components/LoadingMessages";
+import Thread from './Components/Thread';
 
 class App extends Component {
 
@@ -33,6 +34,9 @@ class App extends Component {
                       </Route>
                       <Route path="/conversations/:id"
                              component={Conversation}>
+                      </Route>
+                      <Route path="/thread/:threadId"
+                             component={Thread}>
                       </Route>
                       <Route path="/">
                           <Authentication page={<HomePage/>}/>

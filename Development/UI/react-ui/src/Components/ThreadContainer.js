@@ -1,6 +1,6 @@
 import React from 'react';
 import {css} from 'emotion';
-import Thread from "./Thread";
+import ThreadPreview from "./ThreadPreview";
 
 const ThreadContainer = props => {
     if(props.threads == null || props.threads == undefined || props.threads == []) {
@@ -20,7 +20,9 @@ const ThreadContainer = props => {
                         return message.thread_id == thread.id
                     });
                     return (
-                        <Thread threadMessages={threadMessages}/>
+                        <ThreadPreview threadMessages={threadMessages}
+                                       threadId={thread.id}
+                                       conversationId={thread.conversations_id}/>
                     )
                 })}
             </div>

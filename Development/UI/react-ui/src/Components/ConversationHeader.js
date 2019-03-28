@@ -25,16 +25,28 @@ const ConversationHeader = props => {
                 <span className={css({
                     width: '20%'
                 })}>
-                    <NavLink to='../conversations'
+                    {props.inThread ?
+                    <NavLink to={`../conversations/${props.conversationId}`}
                              className={css({
                                  color: 'white',
                                  textDecoration: 'none',
                                  '&:hover': {
-                                     color: '#CEDAE5'
+                                     color: '#45AAEB'
                                  }
                              })}>
                         <i className="fa fa-arrow-left fa-2x"></i>
-                    </NavLink>
+                    </NavLink> :
+                    <NavLink to='../conv-redirect'
+                             className={css({
+                                 color: 'white',
+                                 textDecoration: 'none',
+                                 '&:hover': {
+                                     color: '#45AAEB'
+                                 }
+                             })}>
+                        <i className="fa fa-arrow-left fa-2x"></i>
+                    </NavLink>}
+
                 </span>
                 <span className={css({
                     width: '60%',
