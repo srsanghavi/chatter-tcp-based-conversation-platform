@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 
-public class ConversationDB{
+public class ConversationModel {
     /**
      * The Mysql con.
      */
@@ -17,7 +17,7 @@ public class ConversationDB{
     /**
      * Instantiates a new Conversation db.
      */
-    public ConversationDB(){
+    public ConversationModel(){
         mysqlCon = MysqlCon.getInstance();
     }
 
@@ -76,6 +76,16 @@ public class ConversationDB{
     }
 
 
+  public static int createThreadForConversationByThreadID(int threadId, int conversationId){
+    String query = "INSERT INTO thread(threadId,conversations_id) VALUES ("+threadId+","+conversationId+")";
+    int r = mysqlCon.sqlcreate(query);
+    if(r>0){
+      return mysqlCon.getLastInsertedID();
+    }
+    return -1;
+  }
+
+
     /**
      * Get threads for conversation list.
      *
@@ -83,10 +93,9 @@ public class ConversationDB{
      * @return the list of threads
      */
     public static List<Map<String,Object>> getThreadsForConversation(int conversationId){
-        String query = "SELECT * FROM thread WHERE conversations_id=" + conversationId;
+        String query = "SELECT * FROM thread WHERE conversations_id='" + conversationId + "';";
         return mysqlCon.sqlGet(query);
     }
-
 
     /**
      * Create message for thread int.
@@ -103,6 +112,15 @@ public class ConversationDB{
             return mysqlCon.getLastInsertedID();
         }
         return -1;
+    }
+
+    public static int addMessageToThread(int messageID, int threadId){
+      String query = "UPDATE message SET thread_id = "+threadId+" WHERE id="+messageID+";";
+      int r = mysqlCon.sqlcreate(query);
+      if(r>0){
+        return mysqlCon.getLastInsertedID();
+      }
+      return -1;
     }
 
     /**
@@ -145,7 +163,7 @@ public class ConversationDB{
    * @return list of messages in the thread
    */
   public static List<Map<String, Object>> getMessagesInThread(int threadID){
-    String sql = "select * from message where thread_id = "+threadID;
+    String sql = "select * from message where thread_id = '"+threadID + "';";
     return mysqlCon.sqlGet(sql);
   }
 

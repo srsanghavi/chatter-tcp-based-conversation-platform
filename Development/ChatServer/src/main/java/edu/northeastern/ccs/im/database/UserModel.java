@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Database methods for User
+ * Database methods for UserModel
  */
-public class UserDB{
+public class UserModel {
     /**
      * The Mysql con.
      */
     private static MysqlCon mysqlCon;
 
     /**
-     * Instantiates a new User db.
+     * Instantiates a new UserModel db.
      */
-    public UserDB(){
+    public UserModel(){
         mysqlCon = MysqlCon.getInstance();
     }
 
@@ -62,6 +62,21 @@ public class UserDB{
                 ");";
         ChatLogger.info("Executing: " + query);
         return mysqlCon.sqlcreate(query);
+    }
+
+    public int createUser(String username, String password){
+
+        final String sep = "\" , \"";
+
+        String query = "INSERT INTO users(username, password) VALUES (\"" +
+                username +
+                sep +
+                "\" , " +
+                "MD5('" + password + "')" +
+                ");";
+        ChatLogger.info("Executing: " + query);
+        ChatLogger.info(Integer.toString(this.mysqlCon.sqlcreate(query)));
+        return 0;
     }
 
     /**
@@ -127,4 +142,13 @@ public class UserDB{
                 "where users_id="+user_id;
         return mysqlCon.sqlGet(sql);
     }
+
+    public int deleteUser(int id){
+        String sql = "UPDATE users SET deleted=true WHERE id='" + id + "';";
+        return mysqlCon.sqlcreate(sql);
+    }
+
+    /*public int updateUserSearchability(int user_id){
+
+    }*/
 }
