@@ -87,6 +87,7 @@ const Thread = props => {
                     border: '1px solid #342E37',
                     wordWrap: 'break-word',
                     maxWidth: '45%',
+                    backgroundColor: props.threadMessages.length > 1 ? '#CEDAE5' : 'white'
                 })}>
                     {props.threadMessages[0].text}
                 </p>

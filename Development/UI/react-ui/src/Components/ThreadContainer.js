@@ -15,7 +15,6 @@ const ThreadContainer = props => {
                 overflowX: 'hidden',
                 paddingBottom: '5em',
             })}>
-                <div className={css({paddingTop: '5em'})}></div>
                 {props.threads.map(thread => {
                     let threadMessages = props.messages.filter(message => {
                         return message.thread_id == thread.id

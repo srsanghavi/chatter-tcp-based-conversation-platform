@@ -8,7 +8,6 @@ class MessageActions {
 
     getMessagesInConversation(username,conversationId) {
         api.getMessagesInConversation(username,conversationId).then(value => {
-            console.log(value);
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_MESSAGES_IN_CONVERSATION,
                 payload: value,
