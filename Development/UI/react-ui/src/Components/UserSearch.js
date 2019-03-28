@@ -1,6 +1,7 @@
 import React from 'react'
 import {css} from 'emotion';
 import UserPreviews from './UserPreviews'
+import GroupPreviews from "./GroupPreviews";
 
 const UserSearch = props => {
     return(
@@ -11,12 +12,15 @@ const UserSearch = props => {
             height: '100%',
             overflowX: 'hidden',
         })}>
-            {props.users.map(user => {
-                return(
-                    <UserPreviews user={user}
-                                  profileOnClick={props.profileOnClick}/>
-                )
-            })}
+            {props.userButtonSelected ?
+                props.users.map(user => {
+                    return( <UserPreviews user={user}
+                                          profileOnClick={props.profileOnClick}/>)
+                }) :
+                props.groups.map(group => {
+                    return( <GroupPreviews/>)
+                })
+            }
         </div>
     )
 };

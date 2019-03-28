@@ -27,11 +27,13 @@ class ThreadStore extends EventEmitter {
     }
 
     _setThreads(threads){
-        _threads = threads;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(THREAD_CHANGED);
-        }, 0);
+        if(!threads == _threads) {
+            _threads = threads;
+            let self = this;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(THREAD_CHANGED);
+            }, 0);
+        }
     }
 
     _getThreads() {

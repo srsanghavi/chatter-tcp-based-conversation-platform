@@ -7,17 +7,25 @@ import DataService from "./Data";
 import SearchBar from "./SearchBar";
 import  { Redirect } from 'react-router-dom'
 import ThreadActions from "../Actions/ThreadActions";
+import UserStore from "../Store/UserStore";
+import ThreadStore from "../Store/ThreadStore";
+
+
+// component updates every interval (in ms)
+const INTERVAL = 500;
 
 class Conversation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            //id: this.props.match.params.id,
+            id: this.props.match.params.id,
             searchBar: false,
             search: '',
             newMessageText: '',
             threads: [],
+            messages: [],
         };
+        ThreadStore._clearThreads();
 
         this.toggleSearch = this.toggleSearch.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
@@ -30,11 +38,23 @@ class Conversation extends Component {
         // this.getThreads(this.props.match.params.id);
     }
 
+    // componentWillMount(){
+    //     ThreadStore.addChangeListener(this._onChange);
+    // }
+    //
+    // componentWillUnmount(){
+    //     ThreadStore.removeChangeListener(this._onChange);
+    //     clearInterval(this.interval);
+    // }
+
     componentDidMount() {
-        console.log(this.props.match.params.id)
-        console.log(localStorage.getItem('username'))
-        ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id)
+        // this.interval = setInterval(() => this.update(), INTERVAL);
+        // ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id);
+        // this.setState({
+        //     threads: ThreadStore._getThreads()
+        // })
     }
+
 
     // sendMessage() {
     //     const message = {
@@ -95,14 +115,14 @@ class Conversation extends Component {
     render() {
         if (!(localStorage.getItem('loggedIn') === 'true')) {
             return <Redirect to='/login'/>
-        } else {
+        } else
             return (
                 <div className={css({
-                    // display: 'flex',
-                    // flexDirection: 'column',
-                    // height: '100%',
-                    // width: '100%',
-                    // overflowX: 'hidden',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                        width: '100%',
+                        overflowX: 'hidden',
                 })}>
                     <div className={css({
                         paddingBottom: '5em'
@@ -122,7 +142,6 @@ class Conversation extends Component {
                 </div>
             );
         }
-    }
 
 }
 

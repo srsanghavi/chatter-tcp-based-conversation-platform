@@ -19,6 +19,7 @@ import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
 import GroupOrUserBar from "./GroupOrUserBar";
 import GroupActions from "../Actions/GroupActions";
+import GroupStore from "../Store/GroupStore";
 
 const tab = {
     CONVERSATIONS: 'conversations',
@@ -66,9 +67,10 @@ class HomePage extends Component {
         this.setState({
             user: JSON.parse(UserStore._getUser()).result[0],
             users: JSON.parse(UserStore._getUsers()).result,
+            groups: JSON.parse(GroupStore._getGroups()).result,
             conversations: JSON.parse(ConversationStore._getConversations()).result
         });
-        GroupActions.getGroups(localStorage.getItem('username'),localStorage.getItem('id'))
+        console.log(JSON.parse(GroupStore._getGroups()).result)
     }
 
     componentWillUnmount() {
@@ -236,6 +238,7 @@ class HomePage extends Component {
                     </Route>
                     <Route path="/search">
                         {() => <UserSearch users={filteredUsers}
+                                           userButtonSelected={this.state.userButtonSelected}
                                            profileOnClick={this.profileTabSelected}/>}
                     </Route>
                 </Switch>

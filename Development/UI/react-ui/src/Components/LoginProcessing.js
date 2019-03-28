@@ -5,6 +5,8 @@ import { css } from 'emotion';
 import UserActions from "../Actions/UserActions";
 import ConversationStore from "../Store/ConversationStore";
 import ConversationActions from "../Actions/ConversationActions";
+import GroupStore from "../Store/GroupStore";
+import GroupActions from "../Actions/GroupActions";
 
 
 const status = {
@@ -28,6 +30,7 @@ class LoginProcessing extends Component {
             loggedIn: false,
             userLoaded: false,
             usersLoaded: false,
+            groupsLoaded: false,
             conversationsLoaded: false,
             finishedLoading: false,
         }
@@ -52,6 +55,8 @@ class LoginProcessing extends Component {
                 this.loadUser()
             } else if (!this.state.usersLoaded) {
                 this.loadUsers()
+            } else if (!this.state.groupsLoaded) {
+                this.loadGroups()
             } else if (!this.state.conversationsLoaded) {
                 this.loadConversations()
             }
@@ -82,6 +87,7 @@ class LoginProcessing extends Component {
                 loggedIn: true,
                 finishedLoading: this.state.userLoaded &&
                                  this.state.usersLoaded &&
+                                 this.state.groupsLoaded &&
                                  this.state.conversationsLoaded
             });
             UserStore._clearUser();
@@ -104,6 +110,7 @@ class LoginProcessing extends Component {
                 userLoaded: true,
                 finishedLoading: this.state.loggedIn &&
                                  this.state.usersLoaded &&
+                                 this.state.groupsLoaded &&
                                  this.state.conversationsLoaded
             });
             let id = JSON.parse(UserStore._getUser()).result[0].id;
@@ -128,6 +135,30 @@ class LoginProcessing extends Component {
                 usersLoaded: true,
                 finishedLoading: this.state.loggedIn &&
                                  this.state.userLoaded &&
+                                 this.state.groupsLoaded &&
+                                 this.state.conversationsLoaded
+            });
+            GroupStore._clearGroups();
+            GroupActions.getGroups(localStorage.getItem('username'),localStorage.getItem('id'))
+        }
+    }
+
+    loadGroups() {
+        if(GroupStore._getGroups() === undefined){
+            if(this.state.interval < TIMEOUT) {
+                this.setState({ interval: this.state.interval + 1 });
+            } else {
+                this.setState({ status: status.FAILURE });
+                clearInterval(this.interval);
+            }
+        } else {
+            this.setState({
+                status: status.PENDING,
+                interval: 0,
+                groupsLoaded: true,
+                finishedLoading: this.state.loggedIn &&
+                                 this.state.userLoaded &&
+                                 this.state.usersLoaded &&
                                  this.state.conversationsLoaded
             });
             ConversationStore._clearConversations();
@@ -150,6 +181,7 @@ class LoginProcessing extends Component {
                 conversationsLoaded: true,
                 finishedLoading: this.state.loggedIn &&
                                  this.state.userLoaded &&
+                                 this.state.groupsLoaded &&
                                  this.state.usersLoaded
             });
         }

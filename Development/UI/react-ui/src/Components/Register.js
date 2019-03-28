@@ -50,7 +50,7 @@ class Register extends Component {
     }
 
     handleSubmit(){
-        console.log(this.state)
+        //UserActions.registerUser(this.state.username, this.state.password)
     }
 
 
@@ -72,15 +72,10 @@ class Register extends Component {
                             value={this.state.password}
                             onChange={this.onPasswordChange}
                             required/>
-                        <NavLink to={'./authentication'}
-                                 className={css({
-                                     textDecoration: 'none !important'
-                                 })}>
                             <button className="btn btn-block btn-outline-primary"
                                     onClick={this.handleSubmit}>
                                 Register
                             </button>
-                        </NavLink>
                     </div>
                 </div>
                 <h3 className="signin-text">Already Registered?
