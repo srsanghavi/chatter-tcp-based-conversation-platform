@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GroupDB {
+public class GroupModel {
 
   private static MysqlCon mysqlCon;
 
-  public GroupDB() {
+  public GroupModel() {
     mysqlCon = MysqlCon.getInstance();
   }
 
@@ -118,6 +118,10 @@ public class GroupDB {
       String query = "UPDATE groups_has_users SET Groups_id='"+id1+"' where Groups_id='"+id2+"';";
       int r = mysqlCon.sqlcreate(query);
       return r<=0?-1:r;
+  }
+  public static List<Map<String, Object>> getAllGroups(){
+        String query = "SELECT * from groups;";
+        return mysqlCon.sqlGet(query);
   }
 
   public int deleteGroup(int id){

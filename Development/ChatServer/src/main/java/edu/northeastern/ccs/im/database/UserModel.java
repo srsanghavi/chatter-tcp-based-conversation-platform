@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Database methods for User
+ * Database methods for UserModel
  */
-public class UserDB{
+public class UserModel {
     /**
      * The Mysql con.
      */
     private static MysqlCon mysqlCon;
 
     /**
-     * Instantiates a new User db.
+     * Instantiates a new UserModel db.
      */
-    public UserDB(){
+    public UserModel(){
         mysqlCon = MysqlCon.getInstance();
     }
 
