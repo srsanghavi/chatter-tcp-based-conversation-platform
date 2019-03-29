@@ -129,6 +129,11 @@ public class RouteTest {
   }
 
   @Test
+  public void testUpdateGroupNameMissingParameters(){
+    ChatLogger.info(Route.getResponsePost("solskjaer","updateGroupName/","{group_name:\"New Man Utd\"}"));
+  }
+
+  @Test
   public void testGetAllUsers(){
       ChatLogger.info(Route.getResponseGet("solskjaer","getUsers/","{}"));
   }
