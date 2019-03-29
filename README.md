@@ -33,6 +33,11 @@ A User would be able to:
 + Delete a Group
 + Retrieve old messages when online
 
+## Demo
+
+<a href="https://drive.google.com/a/husky.neu.edu/uc?id=1szK1d0xhhI-7Br-wzWR_tJgZZ4Qgm1Up&export=download" target="_blank"><img src="screenshot.png" 
+alt="Demo" width="240" height="180" border="10" /></a>
+
 ## Development
 
 - Sprint 1 - High level design, generation of ERD and UML diagrams, user stories and feature choices, working tests for the base code
