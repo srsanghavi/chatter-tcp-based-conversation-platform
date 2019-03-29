@@ -186,6 +186,7 @@ public class Route {
                 json = ControllerFactory
                         .getGroupController()
                         .createGroup(json);
+                break;
 
             default:
                 return  "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
