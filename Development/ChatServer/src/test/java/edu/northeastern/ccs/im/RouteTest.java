@@ -78,6 +78,12 @@ public class RouteTest {
     }
 
   @Test
+  public void testCreateUserUserConversationMissingParameters(){
+    ChatLogger.info(Route.getResponsePost("waynerooney",
+            "addUserUserConversation/","{user_id1:568}"));
+  }
+
+  @Test
   public void testCreateMessageNewThread(){
       ChatLogger.info(Route.getResponsePost("waynerooney","sendMessage/","{sender_id:568,thread_id:-1,message:\"How was the match?\",conversation_id:429}"));
   }
