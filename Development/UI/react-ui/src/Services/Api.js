@@ -97,7 +97,15 @@ export default class Api {
         let msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
             "sender_id:"+userId+",thread_id:"+threadId+",message:"+messageText+",conversation_id:"+conversationId+"}");
         gateway.sendTcp(msg);
-        console.log(msg)
+        console.log(msg);
+        return this.promise();
+    }
+
+    broadcastMessage(username, userId, message) {
+        let msg = this.messageType.makeApiMessage(username,"broadcastMessage/::POST::{" +
+            "sender_id:"+userId+",message:"+message+"}");
+        gateway.sendTcp(msg);
+        console.log(msg);
         return this.promise();
     }
 }

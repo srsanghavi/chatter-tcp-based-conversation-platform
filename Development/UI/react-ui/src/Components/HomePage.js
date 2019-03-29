@@ -20,6 +20,7 @@ import Broadcast from './Broadcast'
 import GroupOrUserBar from "./GroupOrUserBar";
 import GroupActions from "../Actions/GroupActions";
 import GroupStore from "../Store/GroupStore";
+import MessageActions from "../Actions/MessageActions";
 
 const tab = {
     CONVERSATIONS: 'conversations',
@@ -55,6 +56,8 @@ class HomePage extends Component {
         this.toggleSearch = this.toggleSearch.bind(this);
         this.toggleBroadcast = this.toggleBroadcast.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
+        this.onBroadcastChange = this.onBroadcastChange.bind(this);
+        this.sendBroadcast = this.sendBroadcast.bind(this);
         this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this)
 
     }
@@ -155,6 +158,18 @@ class HomePage extends Component {
         this.setState({search: event.target.value});
     }
 
+    onBroadcastChange(event) {
+        this.setState({broadcast: event.target.value});
+    }
+
+    sendBroadcast() {
+        MessageActions.broadcastMessage(localStorage.getItem('username'), localStorage.getItem('id'),
+        "\"" + this.state.broadcast + "\"");
+        this.setState({
+            broadcast: ''
+        })
+    }
+
     groupOrUserBarButtonChange() {
         this.setState({
             userButtonSelected: !this.state.userButtonSelected
@@ -177,7 +192,9 @@ class HomePage extends Component {
         if(this.state.broadcastBar) {
             return(
                 <div className={css({paddingBottom: '3em'})}>
-                    <Broadcast/>
+                    <Broadcast onChange={this.onBroadcastChange}
+                               onClick={this.sendBroadcast}
+                               value={this.state.broadcast}/>
                 </div>
             )
         }

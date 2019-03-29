@@ -30,6 +30,12 @@ class MessageActions {
         })
     }
 
+    broadcastMessage(username, userId, message) {
+        api.broadcastMessage(username, userId, message).then(value => {
+            console.log(value)
+        })
+    }
+
 }
 
 export default new MessageActions();

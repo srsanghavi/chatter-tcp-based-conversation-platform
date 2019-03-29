@@ -11,6 +11,7 @@ import ThreadStore from "../Store/ThreadStore";
 import MessageActions from "../Actions/MessageActions";
 import MessageStore from "../Store/MessageStore";
 import LoadingMessages from "./LoadingMessages";
+import ConversationStore from "../Store/ConversationStore";
 
 
 // component updates every interval (in ms)
@@ -72,6 +73,11 @@ class Conversation extends Component {
     }
 
     update() {
+        let conversation = JSON.parse(ConversationStore._getConversations()).result.filter(conv => {
+            return conv.id == this.props.match.params.id
+        })
+        console.log(conversation)
+        console.log(this.state)
         if(MessageStore._getMessages() != undefined &&
             JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
             this.updateThreads();
@@ -199,15 +205,6 @@ class Conversation extends Component {
                     </div>
                     {this.renderSearchBar()}
                     {this.renderThreads()}
-                    {/*<ConversationFooter onChange={this.onMessageChange}*/}
-                                        {/*onClick={this.sendMessage}/>*/}
-                    {/*{this.renderSearchBar()}*/}
-                    {/*<ThreadContainer threads={this.state.threads}/>*/}
-                    {/*<div className={css({paddingBottom: '5em'})}></div>*/}
-                    {/*<ConversationFooter onChange={this.onMessageChange}*/}
-                    {/*onClick={this.sendMessage}*/}
-                    {/*value={this.state.newMessageText}/>*/}
-                    {/*<h1 className={css({padding: '3em'})}>{this.state.conversation}</h1>*/}
                 </div>
             );
         }
