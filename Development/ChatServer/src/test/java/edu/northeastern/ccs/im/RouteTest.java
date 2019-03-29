@@ -127,4 +127,9 @@ public class RouteTest {
   public void testExceptionThrown(){
       ChatLogger.info(Route.getResponseGet("rashy","messageInThread/","{}"));
   }
+
+  @Test
+  public void testCreateThreadConversation(){
+      ChatLogger.info(Route.getResponsePost("solskjaer","addThreadToConversation/","{thread_id:1500,conversation_id:406}"));
+  }
 }
