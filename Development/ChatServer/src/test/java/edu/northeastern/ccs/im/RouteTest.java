@@ -67,6 +67,8 @@ public class RouteTest {
               "{first_name:Wayne,last_name:Rooney,username:waynerooney,email:wrooney@utd.com,password:wayne}"));
       ChatLogger.info(Route.getResponsePost("rashy","registerUser/",
               "{first_name:Marcus,last_name:Rashford,username:rashy,email:rashford@utd.com,password:mr10}"));
+      ChatLogger.info(Route.getResponsePost("solskjaer","registerUser/",
+              "{first_name:Ole,last_name:Solskjaer,username:solskjaer,email:ole@utd.com,password:ole20}"));
     }
 
     @Test
@@ -75,5 +77,14 @@ public class RouteTest {
               "addUserUserConversation/","{user_id1:568,user_id2:570}"));
     }
 
-  
+  @Test
+  public void testCreateMessageNewThread(){
+      ChatLogger.info(Route.getResponsePost("waynerooney","sendMessage/","{sender_id:568,thread_id:-1,message:\"How was the match?\",conversation_id:429}"));
+  }
+
+  @Test
+  public void testCreateMessageReplyThread(){
+    ChatLogger.info(Route.getResponsePost("rashy","sendMessage/","{sender_id:570,thread_id:1194,message:\"Hey Shashwat.\",conversation_id:429}"));
+  }
+
 }
