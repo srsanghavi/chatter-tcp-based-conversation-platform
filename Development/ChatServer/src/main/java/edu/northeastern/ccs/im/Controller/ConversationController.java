@@ -251,7 +251,7 @@ public class ConversationController {
      * @return the map
      */
     public Map<String,Object> deleteMessage(Map<String,Object> json){
-        String messageId = (String) json.get("message_id");
+        int messageId = Math.toIntExact(Math.round((double) json.get("message_id")));
         if(ModelFactory.getMessageModel().deleteMessage(Integer.valueOf(messageId)) > 0){
             json.put("result_code",201);
             json.put("result","OK");
