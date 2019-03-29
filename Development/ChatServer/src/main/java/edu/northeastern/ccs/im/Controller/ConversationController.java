@@ -227,15 +227,15 @@ public class ConversationController {
      */
     public Map<String,Object> createThread(Map<String,Object> json){
         if(!json.containsKey("thread_id") ||
-            !json.containsKey("group_id")){
+            !json.containsKey("conversation_id")){
             json.put("result_code",400);
             json.put("result","error");
             json.put("error_message","Missing parameter");
             return json;
         }
         String threadId = (String) json.get("thread_id");
-        String groupId = (String) json.get("group_id");
-        if(conversationModel.createThreadForConversationByThreadID(Integer.valueOf(threadId),Integer.valueOf(groupId))>0){
+        String conversation_id = (String) json.get("conversation_id");
+        if(conversationModel.createThreadForConversationByThreadID(Integer.valueOf(threadId),Integer.valueOf(conversation_id))>0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
