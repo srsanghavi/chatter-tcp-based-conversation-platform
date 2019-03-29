@@ -271,12 +271,6 @@ public class ClientRunnable implements Runnable {
                         msg.storeMessageInDb();
 						Prattle.sendMessageToUser(destinationUser,message1);
 					}else if(msg.isApiMessage()){
-					    // handle api messages
-                        // once the user is logged in, all the messages should come here
-
-                        // raw message should be formatted as below
-                        //  <API_Endpoint>::<Method>::{<data>}
-                        //  Example: getUsers::GET::{}
 
 						String rawMessage = msg.getText();
 						String route = rawMessage.split("::")[0];   // route

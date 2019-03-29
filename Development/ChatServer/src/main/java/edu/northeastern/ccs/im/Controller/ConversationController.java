@@ -19,6 +19,18 @@ public class ConversationController {
      */
     private ConversationModel conversationModel = ModelFactory.getInstance().getConversationModel();
     private static String CONVERSATION_ID = "conversation_id";
+    private static String THREAD_ID = "thread_id";
+    private static String MESSAGE = "message";
+    private static String USER_ID = "user_id";
+    private static String RESULT_CODE = "result_code";
+    private static String CONVERSATIONS_ID = "conversations_id";
+    private static String RESULT = "result";
+    private static String ERROR = "error";
+    private static String ERROR_MESSAGE = "error_message";
+    private static String MISSING_PARAMETER = "Missing parameter";
+    private static String SENDER_ID = "sender_id";
+    private static String USERNAME = "username";
+    private static String RESULT_MESSAGE = "result_message";
 
     /**
      * Gets user conversations.
@@ -29,8 +41,8 @@ public class ConversationController {
      */
     public List<Map<String, Object>> getUserConversations(Map<String,Object> json) throws NoSuchFieldException {
         int userId;
-        if(json.containsKey("user_id")) {
-            userId = Math.toIntExact(Math.round((double) json.get("user_id")));
+        if(json.containsKey(USER_ID)) {
+            userId = Math.toIntExact(Math.round((double) json.get(USER_ID)));
         }else {
             throw new NoSuchFieldException();
         }
@@ -112,17 +124,16 @@ public class ConversationController {
      */
 
     public List<Map<String,Object>> getMessagesInThread(String username,Map<String,Object> json) throws NoSuchFieldException {
-        if(!json.containsKey("thread_id")) {
+        if(!json.containsKey(THREAD_ID)) {
             throw new NoSuchFieldException();
         }
 
-        int threadId = Math.toIntExact(Math.round((double) json.getOrDefault("thread_id", 0)));
+        int threadId = Math.toIntExact(Math.round((double) json.getOrDefault(THREAD_ID, 0)));
         List<Map<String, Object>> thread = conversationModel.getThread(threadId);
-        System.out.println(thread);
-        if(thread.get(0).isEmpty() || !thread.get(0).containsKey("conversations_id")){
+        if(thread.get(0).isEmpty() || !thread.get(0).containsKey(CONVERSATIONS_ID)){
             return error400();
         }
-        int conversationId = (int) thread.get(0).get("conversations_id");
+        int conversationId = (int) thread.get(0).get(CONVERSATIONS_ID);
 
         if(!isConversationParticipant(username,conversationId)){
             return error401();
@@ -139,9 +150,9 @@ public class ConversationController {
     public Map<String, Object> createUserUserConversation(Map<String,Object> json){
       if(!json.containsKey("user_id1") ||
               !json.containsKey("user_id2")){
-        json.put("result_code",400);
-        json.put("result","error");
-        json.put("error_message","Missing parameter");
+        json.put(RESULT_CODE, 400);
+        json.put(RESULT, ERROR);
+        json.put(ERROR_MESSAGE, MISSING_PARAMETER);
         return json;
       }
 
@@ -150,8 +161,8 @@ public class ConversationController {
 
       int r = ModelFactory.getConversationModel().createConversationForUser(user1,user2);
       if(r>0){
-        json.put("result_code",201);
-        json.put("result","OK");
+        json.put(RESULT_CODE, 201);
+        json.put(RESULT, "OK");
         return json;
       }else {
         return error500(json);
@@ -165,24 +176,24 @@ public class ConversationController {
      * @return the map
      */
     public Map<String, Object> createMessage(Map<String,Object> json) {
-        if(!json.containsKey("sender_id") ||
-        !json.containsKey("thread_id") ||
-        !json.containsKey("message") ||
+        if(!json.containsKey(SENDER_ID) ||
+        !json.containsKey(THREAD_ID) ||
+        !json.containsKey(MESSAGE) ||
         !json.containsKey(CONVERSATION_ID)){
-            json.put("result_code",400);
-            json.put("result","error");
-            json.put("error_message","Missing parameter");
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,ERROR);
+            json.put(ERROR_MESSAGE, MISSING_PARAMETER);
             return json;
         }
-        int senderId = Math.toIntExact(Math.round((double) json.get("sender_id")));
+        int senderId = Math.toIntExact(Math.round((double) json.get(SENDER_ID)));
         int conversationId = Math.toIntExact(Math.round((double) json.get(CONVERSATION_ID)));
 
         Map<String, Object> sender = ModelFactory.getUserModel().getUser((senderId));
 
-        String senderName = (String) sender.get("username");
+        String senderName = (String) sender.get(USERNAME);
 
-        int threadId = Math.toIntExact(Math.round((double) json.get("thread_id")));
-        String message = (String) json.get("message");
+        int threadId = Math.toIntExact(Math.round((double) json.get(THREAD_ID)));
+        String message = (String) json.get(MESSAGE);
 
         if(threadId==-1){
             if(conversationModel.createThreadForConversation(conversationId)>0){
@@ -195,9 +206,9 @@ public class ConversationController {
         List<Map<String, Object>> users = conversationModel.getUsersInConversation(conversationId);
         List<String> destinationNames = new ArrayList<>();
         for(Map<String,Object> user:users){
-            if(user.containsKey("username") &&
-                user.get("username")!=senderName){
-                destinationNames.add((String) user.get("username"));
+            if(user.containsKey(USERNAME) &&
+                user.get(USERNAME)!=senderName){
+                destinationNames.add((String) user.get(USERNAME));
             }
         }
 
@@ -207,8 +218,8 @@ public class ConversationController {
             for(String destinationName:destinationNames) {
                 Prattle.sendMessageToUser(destinationName, msg);
             }
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }else {
             return error500(json);
@@ -222,18 +233,18 @@ public class ConversationController {
      * @return the map
      */
     public Map<String,Object> createThread(Map<String,Object> json){
-        if(!json.containsKey("thread_id") ||
+        if(!json.containsKey(THREAD_ID) ||
             !json.containsKey(CONVERSATION_ID)){
-            json.put("result_code",400);
-            json.put("result","error");
-            json.put("error_message","Missing parameter");
+            json.put(RESULT_CODE,400);
+            json.put(RESULT, ERROR);
+            json.put(ERROR_MESSAGE, MISSING_PARAMETER);
             return json;
         }
-        int threadId = Math.toIntExact(Math.round((double) json.get("thread_id")));
+        int threadId = Math.toIntExact(Math.round((double) json.get(THREAD_ID)));
         int conversationId = Math.toIntExact(Math.round((double) json.get(CONVERSATION_ID)));
         if(conversationModel.createThreadForConversationByThreadID(threadId,conversationId)>0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }else {
             return error500(json);
@@ -249,8 +260,8 @@ public class ConversationController {
     public Map<String,Object> deleteMessage(Map<String,Object> json){
         int messageId = Math.toIntExact(Math.round((double) json.get("message_id")));
         if(ModelFactory.getMessageModel().deleteMessage(messageId) > 0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }
         else
@@ -264,41 +275,41 @@ public class ConversationController {
      * @return the map
      */
     public Map<String, Object> broadCastMessage(Map<String,Object> json){
-        if(!json.containsKey("message") ||
-        !json.containsKey("sender_id")){
-            json.put("result_code",400);
-            json.put("result","error");
-            json.put("error_message","Missing parameter");
+        if(!json.containsKey(MESSAGE) ||
+        !json.containsKey(SENDER_ID)){
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,"error");
+            json.put(ERROR_MESSAGE,"Missing parameter");
             return json;
         }
-        String text = (String) json.get("message");
-        int sender = Math.toIntExact(Math.round((double) json.get("sender_id")));
+        String text = (String) json.get(MESSAGE);
+        int sender = Math.toIntExact(Math.round((double) json.get(SENDER_ID)));
         List<Map<String, Object>> conversations = conversationModel.getConversations(sender);
-        int conversationId = -1;
-        int threadId = -1;
-        int messageId = -1;
+        int conversationId;
+        int threadId;
+        int messageId;
         for (Map<String, Object> conversation : conversations){
             conversationId = (Integer) conversation.get("id");
             threadId = conversationModel.createThreadForConversation(conversationId);
             messageId = conversationModel.createMessageForThread(threadId, sender, text);
             conversationModel.addMessageToThread(messageId, threadId);
         }
-        json.put("result_code",201);
-        json.put("result","OK");
+        json.put(RESULT_CODE,201);
+        json.put(RESULT,"OK");
         return json;
     }
     private Map<String, Object> error500(Map<String,Object> json){
-        json.put("result_code",500);
-        json.put("result","error");
-        json.put("result_message","Could not create a message");
+        json.put(RESULT_CODE,500);
+        json.put(RESULT,ERROR);
+        json.put(RESULT_MESSAGE,"Could not create a message");
         return json;
     }
 
     private List<Map<String, Object>> error401(){
         Map<String,Object> json = new HashMap<>();
-        json.put("result_code",401);
-        json.put("result","error");
-        json.put("result_message","User not authorized");
+        json.put(RESULT_CODE,401);
+        json.put(RESULT,ERROR);
+        json.put(RESULT_MESSAGE,"User not authorized");
 
         List<Map<String,Object>> jsonList = new ArrayList<>();
         jsonList.add(json);
@@ -307,9 +318,9 @@ public class ConversationController {
 
     private List<Map<String, Object>> error400(){
         Map<String,Object> json = new HashMap<>();
-        json.put("result_code",400);
-        json.put("result","error");
-        json.put("result_message","Content not found");
+        json.put(RESULT_CODE,400);
+        json.put(RESULT,ERROR);
+        json.put(RESULT_MESSAGE,"Content not found");
 
         List<Map<String,Object>> jsonList = new ArrayList<>();
         jsonList.add(json);

@@ -40,5 +40,9 @@ A User would be able to:
 - Sprint 3 - Server setup on AWS, Client development in React and interfacing the client with the server and lending backend support in this process
 
 
+## Design Patterns and Techniques
 
+- Singleton
+- Factory Method
+- Dependency Injection
 

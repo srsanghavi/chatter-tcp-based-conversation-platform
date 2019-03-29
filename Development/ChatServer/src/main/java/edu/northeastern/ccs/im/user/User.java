@@ -4,7 +4,6 @@ import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.database.*;
 import edu.northeastern.ccs.im.database.UserModel;
 
-import javax.jws.WebParam;
 
 
 /**

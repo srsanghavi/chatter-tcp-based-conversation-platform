@@ -18,6 +18,18 @@ public class GroupController {
      */
     GroupModel groupModel = ModelFactory.getGroupModel();
 
+
+    private static String USER_ID = "user_id";
+    private static String GROUP_ID = "group_id";
+    private static String RESULT_MESSAGE = "result_message";
+    private static String GROUP_NAME = "group_name";
+    private static String RESULT_CODE = "result_code";
+    private static String RESULT = "result";
+    private static String ERROR_MESSAGE = "error_message";
+    private static String ERROR = "error";
+    private static String MISSING_PARAMETER = "missing_parameter";
+
+
     /**
      * Get all groups list.
      *
@@ -35,11 +47,11 @@ public class GroupController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String, Object>> getGroupsForUser(Map<String,Object> json) throws NoSuchFieldException {
-        if(!json.containsKey("user_id")){
+        if(!json.containsKey(USER_ID)){
             ChatLogger.info("No user id");
             throw new NoSuchFieldException();
         }
-        int id = Math.toIntExact(Math.round((double) json.getOrDefault("user_id", 0)));
+        int id = Math.toIntExact(Math.round((double) json.getOrDefault(USER_ID, 0)));
         return ModelFactory.getUserModel().getGroups(id);
     }
 
@@ -51,16 +63,15 @@ public class GroupController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String, Object>> getGroupUsers(String username, Map<String,Object> json) throws NoSuchFieldException {
-        if(!json.containsKey("group_id")){
+        if(!json.containsKey(GROUP_ID)){
             throw new NoSuchFieldException();
         }
-        int groupId = Math.toIntExact(Math.round((double) json.getOrDefault("group_id", 0)));
+        int groupId = Math.toIntExact(Math.round((double) json.getOrDefault(GROUP_ID, 0)));
 
         int userId = ModelFactory.getUserModel().getUserID(username);
 
 
         List<Map<String, Object>> groupUsers = groupModel.getUsers(groupId);
-        System.out.println(groupUsers);
         for(Map<String,Object> user:groupUsers){
             if((int)user.get("id")==userId){
                 return groupUsers;
@@ -77,24 +88,24 @@ public class GroupController {
      * @return the map
      */
     public Map<String,Object> addUserToGroup(String username,Map<String,Object> json){
-        if(!json.containsKey("user_id") ||
-                !json.containsKey("group_id")){
-            json.put("result_code",400);
-            json.put("result","error");
-            json.put("error_message","Missing parameter");
+        if(!json.containsKey(USER_ID) ||
+                !json.containsKey(GROUP_ID)){
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,ERROR);
+            json.put(ERROR_MESSAGE,MISSING_PARAMETER);
             return json;
         }
         int adminId = ModelFactory.getUserModel().getUserID(username);
-        int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
-        int groupId = Math.toIntExact(Math.round((double) json.get("group_id")));
+        int userId = Math.toIntExact(Math.round((double) json.get(USER_ID)));
+        int groupId = Math.toIntExact(Math.round((double) json.get(GROUP_ID)));
 
         if(!isGroupAdmin(groupId,adminId)){
             return error401Post();
         }
 
         if(groupModel.addUserToGroup(groupId, userId,0)>0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }else {
            return error500(json);
@@ -108,22 +119,22 @@ public class GroupController {
      * @return the map
      */
     public Map<String,Object> modifyGroupName(String username, Map<String,Object> json){
-        if(!json.containsKey("group_name") ||
-                !json.containsKey("group_id")){
-            json.put("result_code",400);
-            json.put("result","error");
-            json.put("error_message","Missing parameter");
+        if(!json.containsKey(GROUP_NAME) ||
+                !json.containsKey(GROUP_ID)){
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,ERROR);
+            json.put(ERROR_MESSAGE,MISSING_PARAMETER);
             return json;
         }
         int userId = ModelFactory.getUserModel().getUserID(username);
-        int groupId = Math.toIntExact(Math.round((double) json.get("group_id")));
+        int groupId = Math.toIntExact(Math.round((double) json.get(GROUP_ID)));
         if(!isGroupAdmin(groupId,userId)){
             return error401Post();
         }
-        String name = (String) json.get("group_name");
+        String name = (String) json.get(GROUP_NAME);
         if(groupModel.updateGroupName(groupId, name) > 0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }
         else return error500(json);
@@ -137,20 +148,20 @@ public class GroupController {
      * @return the map
      */
     public Map<String,Object> deleteGroup(String username,Map<String,Object> json){
-        if(!json.containsKey("group_id")){
-            json.put("result_code",400);
-            json.put("result","error");
-            json.put("error_message","Missing parameter");
+        if(!json.containsKey(GROUP_ID)){
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,ERROR);
+            json.put(ERROR_MESSAGE,MISSING_PARAMETER);
             return json;
         }
         int userId = ModelFactory.getUserModel().getUserID(username);
-        int groupId = Math.toIntExact(Math.round((double) json.get("group_id")));
+        int groupId = Math.toIntExact(Math.round((double) json.get(GROUP_ID)));
         if(!isGroupAdmin(groupId,userId)){
             return error401Post();
         }
         if(groupModel.deleteGroup(groupId) > 0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }
         else return error500(json);
@@ -162,18 +173,18 @@ public class GroupController {
    * @return the json map
    */
     public Map<String,Object> createGroup(Map<String,Object> json){
-      if(!json.containsKey("group_name")||
+      if(!json.containsKey(GROUP_NAME)||
           !json.containsKey("admin_id")){
-        json.put("result_code",400);
-        json.put("result","error");
-        json.put("error_message","Missing parameter");
+        json.put(RESULT_CODE,400);
+        json.put(RESULT,ERROR);
+        json.put(ERROR_MESSAGE,MISSING_PARAMETER);
         return json;
       }
-      String groupName = (String) json.get("group_name");
+      String groupName = (String) json.get(GROUP_NAME);
       int adminId = Math.toIntExact(Math.round((double) json.get("admin_id")));
       if(groupModel.createGroup(groupName,adminId) > 0){
-        json.put("result_code",201);
-        json.put("result","OK");
+        json.put(RESULT_CODE,201);
+        json.put(RESULT,"OK");
         return json;
       }
       else return error500(json);
@@ -187,9 +198,9 @@ public class GroupController {
     public Map<String,Object> addGroupToGroup(String username, Map<String,Object> json){
         if(!json.containsKey("group_id1") ||
         !json.containsKey("group_id2")){
-            json.put("result_code",400);
-            json.put("result","error");
-            json.put("error_message","Missing parameter");
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,ERROR);
+            json.put(ERROR_MESSAGE,MISSING_PARAMETER);
             return json;
         }
         int userId = ModelFactory.getUserModel().getUserID(username);
@@ -203,8 +214,8 @@ public class GroupController {
         }
 
         if(groupModel.addGroupToGroup(groupId1, groupId2) > 0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }
         else
@@ -212,17 +223,17 @@ public class GroupController {
     }
 
     private Map<String, Object> error500(Map<String,Object> json){
-        json.put("result_code",500);
-        json.put("result","error");
-        json.put("result_message","Could not create a message");
+        json.put(RESULT_CODE,500);
+        json.put(RESULT,ERROR);
+        json.put(RESULT_MESSAGE,"Could not create a message");
         return json;
     }
 
     private List<Map<String, Object>> error401(){
         Map<String,Object> json = new HashMap<>();
-        json.put("result_code",401);
-        json.put("result","error");
-        json.put("result_message","User not authorized");
+        json.put(RESULT_CODE,401);
+        json.put(RESULT,ERROR);
+        json.put(RESULT_MESSAGE,"User not authorized");
 
         List<Map<String,Object>> jsonList = new ArrayList<>();
         jsonList.add(json);
@@ -231,9 +242,9 @@ public class GroupController {
 
     private Map<String, Object> error401Post(){
         Map<String,Object> json = new HashMap<>();
-        json.put("result_code",401);
-        json.put("result","error");
-        json.put("result_message","User not authorized");
+        json.put(RESULT_CODE,401);
+        json.put(RESULT,ERROR);
+        json.put(RESULT_MESSAGE,"User not authorized");
 
         return json;
     }
