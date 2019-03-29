@@ -132,4 +132,9 @@ public class RouteTest {
   public void testCreateThreadConversation(){
       ChatLogger.info(Route.getResponsePost("solskjaer","addThreadToConversation/","{thread_id:1500,conversation_id:406}"));
   }
+
+  @Test
+  public void testDeleteGroup(){
+      ChatLogger.info(Route.getResponsePost("solskjaer","deleteGroup/","{group_id:245}"));
+  }
 }
