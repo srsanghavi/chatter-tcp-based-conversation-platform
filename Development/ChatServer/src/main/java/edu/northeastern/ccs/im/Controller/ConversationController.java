@@ -145,10 +145,10 @@ public class ConversationController {
         return json;
       }
 
-      String user1 = (String) json.get("user_id1");
-      String user2 = (String) json.get("user_id2");
+      int user1 = Math.toIntExact(Math.round((double) json.get("user_id1")));
+      int user2 = Math.toIntExact(Math.round((double) json.get("user_id2")));
 
-      int r = ModelFactory.getConversationModel().createConversationForUser(Integer.valueOf(user1),Integer.valueOf(user2));
+      int r = ModelFactory.getConversationModel().createConversationForUser(user1,user2);
       if(r>0){
         json.put("result_code",201);
         json.put("result","OK");
