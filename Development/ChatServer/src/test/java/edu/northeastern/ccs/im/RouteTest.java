@@ -147,4 +147,10 @@ public class RouteTest {
   public void testAddGroupToGroupNotAdmin(){
       ChatLogger.info(Route.getResponsePost("hsbudhia","addGroupToGroup/","{group_id1:201,group_id2:202}"));
   }
+
+  //TODO 
+  @Test
+  public void testAddGroupToGroupAdmin(){
+    ChatLogger.info(Route.getResponsePost("ram","addGroupToGroup/","{group_id1:201,group_id2:202}"));
+  }
 }
