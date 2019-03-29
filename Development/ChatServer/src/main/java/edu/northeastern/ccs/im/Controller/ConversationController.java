@@ -1,10 +1,8 @@
 package edu.northeastern.ccs.im.Controller;
 
-import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.database.ConversationModel;
 import edu.northeastern.ccs.im.database.ModelFactory;
-import edu.northeastern.ccs.im.database.MysqlCon;
 import edu.northeastern.ccs.im.server.Prattle;
 
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ public class ConversationController {
     /**
      * The Conversation model.
      */
-    ConversationModel conversationModel = ModelFactory.getInstance().getConversationModel();
+    private ConversationModel conversationModel = ModelFactory.getInstance().getConversationModel();
 
     /**
      * Gets user conversations.
@@ -29,20 +27,20 @@ public class ConversationController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String, Object>> getUserConversations(Map<String,Object> json) throws NoSuchFieldException {
-        int user_id;
+        int userId;
         if(json.containsKey("user_id")) {
-            user_id = Math.toIntExact(Math.round((double) json.get("user_id")));
+            userId = Math.toIntExact(Math.round((double) json.get("user_id")));
         }else {
             throw new NoSuchFieldException();
         }
-        return conversationModel.getConversations(user_id);
+        return conversationModel.getConversations(userId);
     }
 
     /**
      * Gets threads in conversation.
      *
      *
-     * @param username
+     * @param username the username of the client user
      * @param json the json
      * @return the threads in conversation
      * @throws NoSuchFieldException the no such field exception
@@ -53,13 +51,13 @@ public class ConversationController {
             throw new NoSuchFieldException();
         }
 
-        int conversation_id;
-        conversation_id = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
-        if(!isConversationParticipant(username,conversation_id)){
+        int conversationId;
+        conversationId = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
+        if(!isConversationParticipant(username,conversationId)){
             return error401();
         }
 
-        return conversationModel.getThreadsForConversation(Integer.valueOf(conversation_id));
+        return conversationModel.getThreadsForConversation(conversationId);
 
     }
 

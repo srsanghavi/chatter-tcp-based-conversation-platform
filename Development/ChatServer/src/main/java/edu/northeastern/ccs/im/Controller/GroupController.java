@@ -15,7 +15,7 @@ public class GroupController {
     /**
      * The Group model.
      */
-    GroupModel groupModel = ModelFactory.getInstance().getGroupModel();
+    GroupModel groupModel = ModelFactory.getGroupModel();
 
     /**
      * Get all groups list.
@@ -168,8 +168,8 @@ public class GroupController {
         return json;
       }
       String groupName = (String) json.get("group_name");
-      int admin_id = Math.toIntExact(Math.round((double) json.get("admin_id")));
-      if(groupModel.createGroup(groupName,admin_id) > 0){
+      int adminId = Math.toIntExact(Math.round((double) json.get("admin_id")));
+      if(groupModel.createGroup(groupName,adminId) > 0){
         json.put("result_code",201);
         json.put("result","OK");
         return json;
@@ -193,14 +193,14 @@ public class GroupController {
         int userId = ModelFactory.getUserModel().getUserID(username);
 
 
-        int group_id1 = Math.toIntExact(Math.round((double) json.get("group_id1")));
-        int group_id2 = Math.toIntExact(Math.round((double) json.get("group_id2")));
+        int groupId1 = Math.toIntExact(Math.round((double) json.get("group_id1")));
+        int groupId2 = Math.toIntExact(Math.round((double) json.get("group_id2")));
 
-        if(!isGroupAdmin(group_id1,userId)){
+        if(!isGroupAdmin(groupId1,userId)){
             return error401Post();
         }
 
-        if(groupModel.addGroupToGroup(group_id1, group_id2) > 0){
+        if(groupModel.addGroupToGroup(groupId1, groupId2) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;

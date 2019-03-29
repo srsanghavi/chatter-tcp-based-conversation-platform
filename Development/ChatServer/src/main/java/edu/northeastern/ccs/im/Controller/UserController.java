@@ -13,7 +13,7 @@ public class UserController {
     /**
      * The User model.
      */
-    static UserModel userModel = ModelFactory.getInstance().getUserModel();
+    private UserModel userModel = ModelFactory.getUserModel();
 
     /**
      * Get users list.
@@ -36,7 +36,7 @@ public class UserController {
             throw new NoSuchFieldException();
         }
         String username = (String) json.getOrDefault("username",0);
-        return UserModel.getUserByUserName(username);
+        return userModel.getUserByUserName(username);
     }
 
     /**

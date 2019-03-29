@@ -1,10 +1,5 @@
 package edu.northeastern.ccs.im.database;
 
-import edu.northeastern.ccs.im.Message;
-import edu.northeastern.ccs.im.group.Group;
-
-import javax.jws.WebParam;
-
 /**
  * The type Model factory.
  */

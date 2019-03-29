@@ -13,7 +13,7 @@ public class UserModel {
     /**
      * The connection
      */
-    private static DataCon conn;
+    private DataCon conn;
 
     /**
      * Instantiates a new UserModel db.
@@ -29,7 +29,7 @@ public class UserModel {
      * @param pass  the pass
      * @return the int (1 if authorized, 0 otherwise)
      */
-    public static int isAuthorized(String username,String pass){
+    public int isAuthorized(String username,String pass){
         String sql = "SELECT user_auth('"+username+"','"+pass+"') as authorized;";
         List<Map<String, Object>> res = conn.sqlGet(sql);
         return (int) res.get(0).get("authorized");
@@ -45,7 +45,7 @@ public class UserModel {
      * @param lastName  the last name
      * @return the int (1 if created, 0 otherwise)
      */
-    public static int createUser(String username, String email, String password, String firstName, String lastName){
+    public int createUser(String username, String email, String password, String firstName, String lastName){
 
         final String sep = "\" , \"";
 
@@ -130,16 +130,15 @@ public class UserModel {
         return id;
     }
 
-    public static List<Map<String, Object>> getUserByUserName(String username){
-        int id = 0;
+    public List<Map<String, Object>> getUserByUserName(String username){
         String sql = "SELECT * FROM users where username='"+username+"'";
         return conn.sqlGet(sql);
     }
 
-    public List<Map<String,Object>> getGroups(int user_id) {
+    public List<Map<String,Object>> getGroups(int userId) {
         String sql = "SELECT *\n" +
                 "FROM groups as g JOIN groups_has_users as gu on g.id = gu.Groups_id\n" +
-                "where users_id="+user_id;
+                "where users_id="+userId;
         return conn.sqlGet(sql);
     }
 
@@ -150,11 +149,11 @@ public class UserModel {
 
     /**
      * Make a user private.
-     * @param user_id id for user
+     * @param userId id for user
      * @return success/failure value
      */
-    public int updateUserToPrivate(int user_id){
-        String query = "UPDATE users SET isSearchable='0' where id='"+user_id+"';";
+    public int updateUserToPrivate(int userId){
+        String query = "UPDATE users SET isSearchable='0' where id='"+userId+"';";
         int r = conn.sqlcreate(query);
         return r<=0?-1:r;
     }
@@ -163,7 +162,7 @@ public class UserModel {
    * Function to retrieve all public users.
    * @return list of public users
    */
-    public static List<Map<String,Object>> getNonPrivateUsers(){
+    public List<Map<String,Object>> getNonPrivateUsers(){
       String sql = "SELECT * from users WHERE isSearchable='1';";
       return conn.sqlGet(sql);
     }
