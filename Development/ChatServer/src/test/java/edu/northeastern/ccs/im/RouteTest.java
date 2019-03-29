@@ -150,6 +150,11 @@ public class RouteTest {
   }
 
   @Test
+  public void testCreateThreadConversationMissingParameters(){
+    ChatLogger.info(Route.getResponsePost("solskjaer","addThreadToConversation/","{thread_id:1500}"));
+  }
+
+  @Test
   public void testDeleteGroup(){
       ChatLogger.info(Route.getResponsePost("solskjaer","deleteGroup/","{group_id:245}"));
   }
