@@ -160,6 +160,11 @@ public class RouteTest {
       ChatLogger.info(Route.getResponseGet("rashy","getUsersInConversation/","{conversation_id:429}"));
   }
 
+    @Test
+    public void testGetUsersInGroup(){
+        ChatLogger.info(Route.getResponseGet("srsanghavi","getGroupUsers/","{group_id:252}"));
+    }
+
   @Test
   public void testGetMessageThread(){
       ChatLogger.info(Route.getResponseGet("waynerooney","messageInThread/","{thread_id:1194}"));
