@@ -241,7 +241,7 @@ public class GroupController {
         for(Map<String,Object> user:users){
             if(user.containsKey("Users_id") &&
                     (int)user.get("Users_id")==userId &&
-                    (boolean)user.get("is_admin")){
+                    ((int)user.get("is_admin")==1)){
                 return true;
             }
         }
