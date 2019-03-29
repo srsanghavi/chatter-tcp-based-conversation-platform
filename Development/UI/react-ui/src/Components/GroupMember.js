@@ -22,18 +22,11 @@ const GroupMember = props => {
                 width: '100%',
                 padding: '0 0.75em'
             })}>
+
                 <span className={css({
-                    width: '25%',
+                    width: '70%'
                 })}>
-                    <img src="./images/image.png" height="60" width="60"
-                         className={css({
-                             borderRadius: 50,
-                         })}/>
-                </span>
-                <span className={css({
-                    width: '50%'
-                })}>
-                    <h5></h5>
+                    <h5>{props.user.name}</h5>
                     <h6 className={css({opacity: '0.5'})}></h6>
                 </span>
                 <span className={css({

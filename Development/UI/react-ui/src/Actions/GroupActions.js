@@ -29,6 +29,16 @@ class GroupActions {
     getGroupUsers(username, groupId) {
         api.getGroupUsers(username, groupId).then(value => {
             console.log(value)
+            Dispatcher.dispatch({
+                actionType: ActionTypes.GET_GROUP_USERS,
+                payload: value,
+            })
+        })
+    }
+
+    addUserToGroup(username, userId, groupId) {
+        api.addUserToGroup(username, userId, groupId).then(value => {
+            console.log(value)
         })
     }
 

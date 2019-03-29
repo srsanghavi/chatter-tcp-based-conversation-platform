@@ -261,9 +261,6 @@ class HomePage extends Component {
                     <Route path="/profile/:id"
                            component={Profile}>
                     </Route>
-                    <Route path="/group/:id"
-                           component={GroupMembers}>
-                    </Route>
                     <Route path="/edit-profile/:id"
                            component={ProfileEdit}>
                     </Route>

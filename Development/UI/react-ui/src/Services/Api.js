@@ -112,5 +112,21 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
+
+    createUserUserConversation(username, userId1, userId2) {
+        let msg = this.messageType.makeApiMessage(username,"addUserUserConversation/::POST::{" +
+            "user_id1:"+userId1+",user_id2:"+userId2+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    addUserToGroup(username, userId, groupId) {
+        let msg = this.messageType.makeApiMessage(username,"addUserToGroup/::POST::{" +
+            "user_id:"+userId+",group_id:"+groupId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+
 }
 

@@ -15,6 +15,7 @@ import RegisterProcessing from "./Components/RegisterProcessing";
 import Register from "./Components/Register";
 import LoadingMessages from "./Components/LoadingMessages";
 import Thread from './Components/Thread';
+import GroupMembers from "./Components/GroupMembers";
 
 class App extends Component {
 
@@ -44,6 +45,9 @@ class App extends Component {
                       </Route>
                       <Route path="/">
                           <Authentication page={<HomePage/>}/>
+                      </Route>
+                      <Route path="/group/:id"
+                             component={GroupMembers}>
                       </Route>
                   </Switch>
               </BrowserRouter>

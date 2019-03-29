@@ -16,6 +16,13 @@ class ConversationActions {
         });
     }
 
+    createUserUserConversation(username, userId1, userId2) {
+        api.createUserUserConversation(username, userId1, userId2).then(value => {
+            console.log(value)
+        })
+    }
+
+
 
 
 }

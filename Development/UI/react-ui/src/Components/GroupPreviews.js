@@ -31,7 +31,7 @@ const GroupPreviews = props => {
                 <span className={css({
                     width: '25%',
                 })}>
-                <NavLink to={`./group/${props.group.id}`}
+                {/*<NavLink to={`./group/${props.group.id}`}*/}
                          className={css({
                              color: 'black',
                              textDecoration: 'none',
@@ -42,7 +42,7 @@ const GroupPreviews = props => {
                     <i className="fa fa-angle-right fa-2x"
                        style={{float: 'right'}}
                     ></i>
-                </NavLink>
+                {/*</NavLink>*/}
             </span>
             </div>
         </div>

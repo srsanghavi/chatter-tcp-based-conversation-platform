@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {css} from "emotion";
 import GroupActions from "../Actions/GroupActions";
 import GroupMember from './GroupMember'
+import GroupStore from "../Store/GroupStore";
 
 class GroupMembers extends Component {
     constructor(props) {
@@ -13,10 +14,11 @@ class GroupMembers extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-           groupMembers: JSON.parse(GroupActions.getGroupUsers(localStorage.getItem('username'),
-               this.props.match.params.id)).result
-        })
+        // GroupActions.getGroupUsers(localStorage.getItem('username'), this.props.match.params.id);
+        // setTimeout(function(){}, 3000);
+        // this.setState({
+        //    groupMembers: JSON.parse(GroupStore._getGroupUsers()).result
+        // })
     }
 
     render() {
