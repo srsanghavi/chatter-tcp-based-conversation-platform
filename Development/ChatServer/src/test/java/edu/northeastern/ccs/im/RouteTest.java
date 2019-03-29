@@ -51,4 +51,29 @@ public class RouteTest {
         ChatLogger.info(Route.getResponsePost("srsanghavi", "deleteUser/","{user_id:1}"));
     }
 
+    @Test
+  public void testGetUserFromGroup(){
+      ChatLogger.info(Route.getResponseGet("hsbudhia","getGroupUsers/","{group_id:199}"));
+    }
+
+    @Test
+  public void testGetThreadInConversation(){
+      ChatLogger.info(Route.getResponseGet("hsbudhia","getThreadsInConversation/","{conversation_id:407}"));
+    }
+
+    @Test
+  public void testCreateAUser(){
+      ChatLogger.info(Route.getResponsePost("waynerooney","registerUser/",
+              "{first_name:Wayne,last_name:Rooney,username:waynerooney,email:wrooney@utd.com,password:wayne}"));
+      ChatLogger.info(Route.getResponsePost("rashy","registerUser/",
+              "{first_name:Marcus,last_name:Rashford,username:rashy,email:rashford@utd.com,password:mr10}"));
+    }
+
+    @Test
+    public void testCreateUserUserConversation(){
+      ChatLogger.info(Route.getResponsePost("waynerooney",
+              "addUserUserConversation/","{user_id1:568,user_id2:570}"));
+    }
+
+  
 }

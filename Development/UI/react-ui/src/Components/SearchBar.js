@@ -1,6 +1,5 @@
 import React from 'react';
 import {css} from 'emotion';
-import { NavLink } from 'react-router-dom';
 
 const SearchBar = props => {
     return (
@@ -14,7 +13,7 @@ const SearchBar = props => {
             border: '0.05em solid gray',
             backgroundColor: 'white',
             boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
-            zIndex: 10
+            zIndex: 5
         })}>
             <div className={css({
                 display: 'flex',
@@ -25,11 +24,14 @@ const SearchBar = props => {
             })}>
                 <input className="input-group-text"
                        placeholder='Search...'
+                       value={props.search}
                        style={{
                            textAlign: 'left',
                            width: '70%',
                            color: 'black',
-                       }}/>
+                           border: '0.05em solid gray'
+                       }}
+                       onChange={props.onChange}/>
             </div>
         </div>
     );

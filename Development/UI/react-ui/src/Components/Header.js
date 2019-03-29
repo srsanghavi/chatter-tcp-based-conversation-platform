@@ -23,7 +23,19 @@ const Header = props => {
                 width: '100%',
                 padding: '0 0.75em'
             })}>
-                <NavLink to={'./profile'}
+                {props.tab === 'profile' ?
+                <NavLink to={props.previousTab === 'search' ? '../search' : '../conversations'}
+                         className={css({
+                             color: 'white',
+                             textDecoration: 'none',
+                             '&:hover': {
+                                 color: '#45AAEB'
+                             }
+                         })}>
+                    <i className="fa fa-arrow-left fa-2x"
+                       onClick={props.previousTab === 'search' ? props.searchOnClick : props.conversationsOnClick}></i>
+                </NavLink> :
+                <NavLink to={`./profile/${props.user.id}`}
                          className={css({
                              color: props.tab === 'profile' ? '#45AAEB' : 'white',
                              textDecoration: 'none',
@@ -33,8 +45,23 @@ const Header = props => {
                          })}>
                     <i className="fa fa-user-circle-o fa-2x"
                        onClick={props.profileOnClick}></i>
-                </NavLink>
-                {props.tab === 'settings' || props.tab === 'profile' ? null :
+                </NavLink>}
+                {props.tab === 'conversations' ?
+                    <i className="fa fa-bullhorn fa-2x"
+                       onClick={props.broadcastClick}
+                       style={{
+                            color: props.broadcast ? '#45AAEB' : 'white',
+                       }}></i> : null }
+                {props.tab === 'settings' ? null :
+                    props.tab === 'profile' && props.previousTab === 'search' ? null :
+                    props.tab === 'profile' ?
+                    <NavLink to={`../edit-profile/${props.user.id}`}>
+                        <i className="fa fa-edit fa-2x"
+                           style={{
+                               float: 'left',
+                               color: window.location.pathname ===  '/edit-profile' ? '#45AAEB' : 'white',
+                           }}></i>
+                    </NavLink> :
                     <i className="fa fa-search fa-2x"
                        onClick={props.searchClick}
                        style={{

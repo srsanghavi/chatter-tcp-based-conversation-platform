@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import DataService from './Data'
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
 import ConversationStore from '../Store/ConversationStore';
-import ConversationActions from '../Actions/ConversationActions';
 import {NavLink} from 'react-router-dom';
 import {css} from 'emotion';
 
@@ -21,26 +19,18 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.api = new Api();
         this._onChange = this._onChange.bind(this);
-        this._onConversationsChanged = this._onConversationsChanged.bind(this);
     }
 
     componentWillMount(){
         UserStore.addChangeListener(this._onChange);
-        ConversationStore.addChangeListener(this._onConversationsChanged);
     }
 
     componentWillUnmount(){
         UserStore.removeChangeListener(this._onChange);
-        ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
     componentDidMount() {
         //console.log(localStorage.getItem('loggedIn'));
-    }
-
-    _onConversationsChanged(){
-        var conv = ConversationStore.getConversations();
-
     }
 
     _onChange(){
@@ -48,7 +38,6 @@ class Login extends Component {
         // UserActions.getUsers('srsanghavi');
         // setTimeout(function(){}, 3000);
         // UserActions.getUserByUsername('srsanghavi');
-        // ConversationActions.getConversations('srsanghavi','1');
     }
 
     onUsernameChange(event) {
@@ -111,7 +100,6 @@ class Login extends Component {
                 </h3>
             </div>
         )
-
     }
 }
 

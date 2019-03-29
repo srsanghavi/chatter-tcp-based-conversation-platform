@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 const Footer = props => {
     return (
+        props.tab === 'profile' ? null :
         <div className={css({
             display: 'flex',
             position: 'fixed',
@@ -14,7 +15,7 @@ const Footer = props => {
             color: 'white',
             padding: '0 0.75em',
             backgroundColor: '#342E37',
-            boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
+            boxShadow: '25px 0px 25px 0px rgba(0,0,0,0.75)',
             zIndex: 10,
             border: '0.05em solid black',
         })}>
@@ -60,7 +61,6 @@ const Footer = props => {
                     <i className="fa fa-cog fa-2x"
                        onClick={props.settingsOnClick}></i>
                 </NavLink>
-
             </div>
         </div>
     );

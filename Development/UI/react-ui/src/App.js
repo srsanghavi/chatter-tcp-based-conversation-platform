@@ -6,12 +6,14 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import Conversation from './Components/Conversation';
 import Login from "./Components/Login";
-import ConversationPreview from './Components/ConversationPreview';
+import ConversationPreviewOld from './Components/ConversationPreviewOld';
 import HomePage from "./Components/HomePage";
 import ThreadContainer from "./Components/ThreadContainer";
 import Authentication from './Components/Authentication'
 import LoginProcessing from "./Components/LoginProcessing";
 import Register from "./Components/Register";
+import LoadingMessages from "./Components/LoadingMessages";
+import Thread from './Components/Thread';
 
 class App extends Component {
 
@@ -30,9 +32,11 @@ class App extends Component {
                       <Route path="/register">
                           {() => <Register/>}
                       </Route>
-                      <Route path="/conversation/:id"
+                      <Route path="/conversations/:id"
                              component={Conversation}>
-                          {/*{() => <Conversation/>}*/}
+                      </Route>
+                      <Route path="/thread/:threadId"
+                             component={Thread}>
                       </Route>
                       <Route path="/">
                           <Authentication page={<HomePage/>}/>

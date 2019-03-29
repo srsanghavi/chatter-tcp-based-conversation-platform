@@ -2,13 +2,13 @@ import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher';
 import ActionTypes from '../AppConstants';
 
-const CONV_CHANGED = 'CONV_CHANGED';
+const THREAD_CHANGED = 'THREAD_CHANGED';
 
-let _conversations;
-class ConversationStore extends EventEmitter {
+let _threads;
+class ThreadStore extends EventEmitter {
     constructor() {
         super();
- 
+
         // Registers action handler with the Dispatcher.
         Dispatcher.register(this._registerToActions.bind(this));
     }
@@ -17,40 +17,40 @@ class ConversationStore extends EventEmitter {
     _registerToActions(action) {
 
         switch(action.actionType) {
-            
-            case ActionTypes.USER_CONVERSATIONS:
-                this._setConversations(action.payload);
+
+            case ActionTypes.GET_THREADS_IN_CONVERSATION:
+                this._setThreads(action.payload);
                 break;
             default:
-            break;
+                break;
         }
     }
 
-    _setConversations(conversations){
-        _conversations = conversations;
+    _setThreads(threads){
+        _threads = threads;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
-            self.emit(CONV_CHANGED);
+            self.emit(THREAD_CHANGED);
         }, 0);
     }
 
-    _getConversations() {
-        return _conversations;
+    _getThreads() {
+        return _threads;
     }
 
-    _clearConversations() {
-        _conversations = undefined;
+    _clearThreads() {
+        _threads = undefined;
     }
 
     // Hooks a React component's callback to the CHANGED event.
     addChangeListener(callback) {
-        this.on(CONV_CHANGED, callback);
+        this.on(THREAD_CHANGED, callback);
     }
 
-     // Removes the listener from the CHANGED event.
-     removeChangeListener(callback) {
-        this.removeListener(CONV_CHANGED, callback);
+    // Removes the listener from the CHANGED event.
+    removeChangeListener(callback) {
+        this.removeListener(THREAD_CHANGED, callback);
     }
 }
 
-export default new ConversationStore();
+export default new ThreadStore();

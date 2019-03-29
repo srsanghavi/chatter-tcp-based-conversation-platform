@@ -32,7 +32,8 @@ const ConversationFooter = props => {
                         width: '100%',
                         textAlign: 'left',
                         color: 'black',
-                        border: '0.05em solid gray'
+                        border: '0.05em solid gray',
+                        backgroundColor: 'white'
                     }}
                 />
             </span>

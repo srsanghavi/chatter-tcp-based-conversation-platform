@@ -214,7 +214,7 @@ public class ConversationModel {
      * @return the list
      */
     public List<Map<String,Object>> getThread(int threadId){
-        String sql = "SELECT * FROM thread WHERE if=" +threadId+";";
+        String sql = "SELECT * FROM thread WHERE id=" +threadId+";";
         ChatLogger.info(sql);
         return conn.sqlGet(sql);
     }

@@ -3,27 +3,46 @@ import {css} from 'emotion';
 import Header from './Header'
 import Footer from './Footer'
 import DataService from "./Data";
-import ConversationContainer from "./ConversationContainer";
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
 import ConversationActions from "../Actions/ConversationActions";
 import ConversationStore from "../Store/ConversationStore";
 import Conversation from "./Conversation";
-import {Route, Switch, BrowserRouter} from 'react-router-dom';
+import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
 import Settings from './Settings';
 import Conversations from './Conversations';
 import UserSearch from './UserSearch';
+import ProfileEdit from './ProfileEdit';
 import Profile from './Profile';
-import SearchBar from "./SearchBar";
+import SearchBar from './SearchBar';
+import Broadcast from './Broadcast'
+import GroupOrUserBar from "./GroupOrUserBar";
+import GroupActions from "../Actions/GroupActions";
+import GroupStore from "../Store/GroupStore";
+
+const tab = {
+    CONVERSATIONS: 'conversations',
+    SETTINGS: 'settings',
+    PROFILE: 'profile'
+};
 
 class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             tab: 'conversations',
-            search: false,
-            user: null
+            previousTab: '',
+            searchBar: false,
+            search: '',
+            broadcastBar: false,
+            broadcast: '',
+            user: {},
+            users: [],
+            myGroups: [],
+            groups: [],
+            conversations: [],
+            userButtonSelected: true
         };
 
         this.api = new Api();
@@ -33,7 +52,10 @@ class HomePage extends Component {
         this.searchTabSelected = this.searchTabSelected.bind(this);
         this.settingsTabSelected = this.settingsTabSelected.bind(this);
         this.profileTabSelected = this.profileTabSelected.bind(this);
-        this.toggleSearch = this.toggleSearch.bind(this)
+        this.toggleSearch = this.toggleSearch.bind(this);
+        this.toggleBroadcast = this.toggleBroadcast.bind(this);
+        this.onSearchChange = this.onSearchChange.bind(this);
+        this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this)
 
     }
 
@@ -45,9 +67,12 @@ class HomePage extends Component {
 
     componentDidMount() {
         this.setState({
-            user: JSON.parse(UserStore._getUser()).result[0]
+            user: JSON.parse(UserStore._getUser()).result[0],
+            users: JSON.parse(UserStore._getUsers()).result,
+            myGroups: JSON.parse(GroupStore._getGroups()).result,
+            groups: JSON.parse(GroupStore._getAllGroups()).result,
+            conversations: JSON.parse(ConversationStore._getConversations()).result
         });
-
     }
 
     componentWillUnmount() {
@@ -56,19 +81,10 @@ class HomePage extends Component {
         ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
-    loadUser() {
-        if(UserStore._getUser() !== null) {
-
-            // this.setState({
-            //     user: JSON.parse(UserStore._getUser()).result[0]
-            // });
-            clearInterval(this.interval);
-        }
-    }
-
     componentDidUpdate() {
-        // UserActions.getUsers(this.state.user.username)
+        //UserActions.getUsers(this.state.user.username)
         //ConversationActions.getConversations(this.state.user.username, this.state.user.id)
+        //console.log(ConversationStore._getConversations())
     }
 
     _onChange() {
@@ -80,72 +96,166 @@ class HomePage extends Component {
 
     conversationTabSelected() {
         this.setState({
+            previousTab: this.state.tab,
             tab: 'conversations',
-            search: false
+            searchBar: false,
+            search: '',
+            broadcastBar: false
         })
     }
 
     searchTabSelected() {
         this.setState({
+            previousTab: this.state.tab,
             tab: 'search',
-            search: false
+            searchBar: false,
+            search: '',
+            broadcastBar: false
         })
     }
 
     settingsTabSelected() {
         this.setState({
+            previousTab: this.state.tab,
             tab: 'settings',
-            search: false
+            searchBar: false,
+            search: '',
+            broadcastBar: false
         })
     }
 
     profileTabSelected() {
         this.setState({
+            previousTab: this.state.tab,
             tab: 'profile',
-            search: false
+            searchBar: false,
+            search: '',
+            broadcastBar: false
         })
     }
 
 
     toggleSearch() {
         this.setState({
-            search: !this.state.search
+            broadcastBar: this.state.searchBar ? this.state.broadcastBar : false,
+            searchBar: !this.state.searchBar,
+            search: ''
         })
     }
 
+    toggleBroadcast() {
+        this.setState({
+            searchBar: this.state.broadcastBar ? this.state.searchBar : false,
+            broadcastBar: !this.state.broadcastBar,
+            broadcast: ''
+        })
+    }
+
+    onSearchChange(event) {
+        this.setState({search: event.target.value});
+    }
+
+    groupOrUserBarButtonChange() {
+        this.setState({
+            userButtonSelected: !this.state.userButtonSelected
+        })
+    }
+
+
     renderSearchBar() {
-        if(this.state.search) {
+        if(this.state.searchBar) {
             return(
-                <div className={css({paddingTop: '5em'})}><SearchBar/></div>
+                <div className={css({paddingBottom: '3em'})}>
+                    <SearchBar search={this.state.search}
+                               onChange={this.onSearchChange}/>
+                </div>
+            )
+        }
+    }
+
+    renderBroadcast() {
+        if(this.state.broadcastBar) {
+            return(
+                <div className={css({paddingBottom: '3em'})}>
+                    <Broadcast/>
+                </div>
+            )
+        }
+    }
+
+    renderGroupOrUserBar() {
+        if(this.state.tab === 'search') {
+            return(
+                <div className={css({paddingBottom: '3em'})}>
+                    <GroupOrUserBar userButtonSelected={this.state.userButtonSelected}
+                                    onButtonClick={this.groupOrUserBarButtonChange}/>
+                </div>
             )
         }
     }
 
 
     render() {
+        const filteredUsers = this.state.users.filter(user => {
+            return (
+                user.id != this.state.user.id &&
+                user.isSearchable &&
+                !user.deleted &&
+                (user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
+                user.last_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
+                user.username.toUpperCase().includes(this.state.search.toUpperCase()))
+            )
+        });
+
+        const filteredGroups = this.state.groups.filter(group => {
+            return (
+                group.isSearchable && group.name.toUpperCase().includes(this.state.search.toUpperCase())
+            )
+        });
+
         return (
             <div>
                 <div className={css({
                     paddingBottom: '5em'
                 })}>
                     <Header tab={this.state.tab}
+                            previousTab={this.state.previousTab}
+                            user={this.state.user}
                             profileOnClick={this.profileTabSelected}
-                            search={this.state.search}
-                            searchClick={this.toggleSearch}/>
-                    {this.renderSearchBar()}
+                            searchOnClick={this.searchTabSelected}
+                            conversationsOnClick={this.conversationTabSelected}
+                            search={this.state.searchBar}
+                            searchClick={this.toggleSearch}
+                            broadcast={this.state.broadcastBar}
+                            broadcastClick={this.toggleBroadcast}/>
                 </div>
+                {this.renderBroadcast()}
+                {this.renderSearchBar()}
+                {this.renderGroupOrUserBar()}
                 <Switch>
-                    <Route path="/profile">
-                        {() => <Profile user={this.state.user}/>}
+                    <Route path="/profile/:id"
+                           component={Profile}>
+                    </Route>
+                    <Route path="/edit-profile/:id"
+                           component={ProfileEdit}>
                     </Route>
                     <Route path="/settings">
                         {() => <Settings/>}
                     </Route>
+                    <Route path="/conv-redirect">
+                        {() => <Redirect to={'./conversations'}/>}
+                    </Route>
                     <Route path="/conversations">
-                        {() => <Conversations/>}
+                        {() => <Conversations conversations={JSON.parse(ConversationStore._getConversations()).result}/>}
+                    </Route>
+                    <Route path="/conversations/:id">
+                        {() => <Conversation/>}
                     </Route>
                     <Route path="/search">
-                        {() => <UserSearch/>}
+                        {() => <UserSearch users={filteredUsers}
+                                           groups={filteredGroups}
+                                           userButtonSelected={this.state.userButtonSelected}
+                                           profileOnClick={this.profileTabSelected}/>}
                     </Route>
                 </Switch>
                 <div className={css({
@@ -159,8 +269,6 @@ class HomePage extends Component {
             </div>
         )
     }
-
-
 }
 
 export default HomePage;

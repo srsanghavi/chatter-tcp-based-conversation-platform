@@ -15,15 +15,16 @@ class UserActions {
     }
 
     getUsers(username){
-      console.log(username);
       api.getUsers(username).then(value => {
-        console.log(value);
+          Dispatcher.dispatch({
+              actionType: ActionTypes.GET_USERS,
+              payload:    value,
+          })
       });
     }
 
     getUserByUsername(username){
         api.getUserByUsername(username).then(value => {
-            console.log(value)
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_USER_BY_USERNAME,
                 payload:    value,
@@ -31,14 +32,25 @@ class UserActions {
         });
     }
 
-    getUserById(id){
+    getUserById(id) {
         api.getUserByUsername(id).then(value => {
-            console.log(value)
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_USER_BY_ID,
                 payload:    value,
             })
         });
+    }
+
+    registerUser(username, password, firstName, lastName, email) {
+        api.registerUser(username, password, firstName, lastName, email).then(value => {
+            console.log(value)
+        })
+    }
+
+    deleteUser(username, userId) {
+        api.deleteUser(username, userId).then(value => {
+            console.log(value)
+        })
     }
 
 }

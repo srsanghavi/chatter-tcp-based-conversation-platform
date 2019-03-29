@@ -60,6 +60,15 @@ code {
   text-align: center;
 }
 
+#broadcastIcon:hover {
+  color: #342E37;
+}
+
+
+
+
+
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;
