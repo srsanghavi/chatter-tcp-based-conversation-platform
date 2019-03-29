@@ -87,4 +87,18 @@ public class RouteTest {
     ChatLogger.info(Route.getResponsePost("rashy","sendMessage/","{sender_id:570,thread_id:1194,message:\"Hey Shashwat.\",conversation_id:429}"));
   }
 
+  @Test
+  public void testCreateGroup(){
+    ChatLogger.info(Route.getResponsePost("solskjaer","createGroup/","{group_name:\"Man Utd\",admin_id:694}"));
+  }
+
+  @Test
+  public void testAddUsersToGroup(){
+      ChatLogger.info(Route.getResponsePost("solskjaer","addUserToGroup/","{user_id:568,group_id:242}"));
+  }
+
+  @Test
+  public void testUpdateGroupName(){
+      ChatLogger.info(Route.getResponsePost("solskjaer","updateGroupName/","{group_name:\"New Man Utd\",group_id:242}"));
+  }
 }
