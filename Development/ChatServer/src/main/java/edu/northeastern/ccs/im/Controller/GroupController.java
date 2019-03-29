@@ -18,12 +18,7 @@ public class GroupController {
      */
     GroupModel groupModel = ModelFactory.getGroupModel();
 
-    private static String RESULT_CODE = "result_code";
-    private static String CONVERSATIONS_ID = "conversations_id";
-    private static String RESULT = "result";
-    private static String ERROR = "error";
-    private static String ERROR_MESSAGE = "error_message";
-    private static String MISSING_PARAMETER = "Missing parameter";
+
     private static String USER_ID = "user_id";
     private static String GROUP_ID = "group_id";
     private static String RESULT_MESSAGE = "result_message";

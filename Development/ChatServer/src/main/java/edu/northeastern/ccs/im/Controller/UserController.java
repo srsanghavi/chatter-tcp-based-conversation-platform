@@ -10,6 +10,11 @@ import java.util.Map;
  * The type User controller.
  */
 public class UserController {
+
+    private static String USERNAME = "username";
+    private static String RESULT_CODE = "result_code";
+    private static String RESULT = "result";
+
     /**
      * The User model.
      */
@@ -32,10 +37,10 @@ public class UserController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String, Object>> getUserByUsername(Map<String,Object> json) throws NoSuchFieldException {
-        if(!json.containsKey("username")){
+        if(!json.containsKey(USERNAME)){
             throw new NoSuchFieldException();
         }
-        String username = (String) json.getOrDefault("username",0);
+        String username = (String) json.getOrDefault(USERNAME,0);
         return userModel.getUserByUserName(username);
     }
 
@@ -51,8 +56,8 @@ public class UserController {
             !json.containsKey("username") ||
             !json.containsKey("email") ||
             !json.containsKey("password")){
-            json.put("result_code",400);
-            json.put("result","error");
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,"error");
             json.put("error_message","Missing parameter");
             return json;
         }
@@ -65,8 +70,8 @@ public class UserController {
 
         int r = userModel.createUser(username, email, password, firstName, lastName);
         if(r>0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }else {
             return error500(json);
