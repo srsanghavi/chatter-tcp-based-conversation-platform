@@ -1,9 +1,17 @@
 package edu.northeastern.ccs.im;
 
 import edu.northeastern.ccs.im.api.Route;
+import edu.northeastern.ccs.im.database.DataCon;
+import edu.northeastern.ccs.im.database.ModelFactory;
+import edu.northeastern.ccs.im.database.MysqlCon;
 import org.junit.jupiter.api.Test;
 
 public class RouteTest {
+
+    int userIdWayne;
+    int userIdRashford;
+    int userIdOle;
+
 
     @Test
     public void testGetConversations(){
@@ -57,34 +65,39 @@ public class RouteTest {
 
     @Test
   public void testGetThreadInConversation(){
-      ChatLogger.info(Route.getResponseGet("hsbudhia","getThreadsInConversation/","{conversation_id:407}"));
+      ChatLogger.info(Route.getResponseGet("hsbudhia","getThreadsInConversation/","{conversation_id:555}"));
     }
 
     @Test
   public void testCreateAUser(){
       ChatLogger.info(Route.getResponsePost("waynerooney","registerUser/",
               "{first_name:Wayne,last_name:Rooney,username:waynerooney,email:wrooney@utd.com,password:wayne}"));
+      userIdWayne = ModelFactory.getUserModel().getUserID("waynerooney");
       ChatLogger.info(Route.getResponsePost("rashy","registerUser/",
               "{first_name:Marcus,last_name:Rashford,username:rashy,email:rashford@utd.com,password:mr10}"));
+      userIdRashford =  ModelFactory.getUserModel().getUserID("rashy");
       ChatLogger.info(Route.getResponsePost("solskjaer","registerUser/",
               "{first_name:Ole,last_name:Solskjaer,username:solskjaer,email:ole@utd.com,password:ole20}"));
+        userIdOle =  ModelFactory.getUserModel().getUserID("solskjaer");
+
     }
 
     @Test
     public void testCreateUserUserConversation(){
       ChatLogger.info(Route.getResponsePost("waynerooney",
-              "addUserUserConversation/","{user_id1:568,user_id2:570}"));
+              "addUserUserConversation/","{user_id1:814,user_id2:815}"));
     }
 
   @Test
   public void testCreateUserUserConversationMissingParameters(){
     ChatLogger.info(Route.getResponsePost("waynerooney",
-            "addUserUserConversation/","{user_id1:568}"));
+            "addUserUserConversation/","{user_id1:"+userIdWayne+"}"));
+
   }
 
   @Test
   public void testCreateMessageNewThread(){
-      ChatLogger.info(Route.getResponsePost("waynerooney","sendMessage/","{sender_id:568,thread_id:-1,message:\"How was the match?\",conversation_id:429}"));
+      ChatLogger.info(Route.getResponsePost("waynerooney","sendMessage/","{sender_id:814,thread_id:-1,message:\"How was the match?\",conversation_id:555}"));
   }
 
   @Test
@@ -94,7 +107,7 @@ public class RouteTest {
 
   @Test
   public void testCreateMessageReplyThread(){
-    ChatLogger.info(Route.getResponsePost("rashy","sendMessage/","{sender_id:570,thread_id:1194,message:\"Hey Shashwat.\",conversation_id:429}"));
+    ChatLogger.info(Route.getResponsePost("rashy","sendMessage/","{sender_id:815,thread_id:1618,message:\"Hey Shashwat.\",conversation_id:555}"));
   }
 
   @Test
@@ -170,6 +183,7 @@ public class RouteTest {
 
   @Test
   public void testDeleteGroup(){
+
       ChatLogger.info(Route.getResponsePost("solskjaer","deleteGroup/","{group_id:245}"));
   }
 

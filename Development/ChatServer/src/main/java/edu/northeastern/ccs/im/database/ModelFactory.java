@@ -6,7 +6,7 @@ package edu.northeastern.ccs.im.database;
 public class ModelFactory {
 
     private static ModelFactory modelFactory = null;
-    private static DataCon conn;
+    private static DataCon conn = new MysqlCon();
 
     private ModelFactory() {
         conn = new MysqlCon();
