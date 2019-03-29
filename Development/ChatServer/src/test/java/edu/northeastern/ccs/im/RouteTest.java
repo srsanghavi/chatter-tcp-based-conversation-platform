@@ -175,6 +175,11 @@ public class RouteTest {
   }
 
   @Test
+  public void testDeleteGroupMissingParameters(){
+    ChatLogger.info(Route.getResponsePost("solskjaer","deleteGroup/","{}"));
+  }
+
+  @Test
   public void testdDeleteMessage(){
       ChatLogger.info(Route.getResponsePost("hsbudhia","deleteMessage/","{message_id:663}"));
   }
