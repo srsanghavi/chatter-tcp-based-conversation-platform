@@ -35,7 +35,6 @@ class Register extends Component {
     }
 
     componentDidMount() {
-        UserActions.signin('john','123');
     }
 
     _onChange(){
@@ -75,11 +74,9 @@ class Register extends Component {
     }
 
     handleSubmit() {
-        //UserStore._setNewUser(this.state);
-
-        setTimeout(function(){}, 3000);
-        UserActions.registerUser('john', "\"" + this.state.username + "\"", "\"" + this.state.password + "\"", "\"" + this.state.firstName + "\"", "\"" + this.state.lastName + "\"",
-            "\"" + this.state.email + "\"")
+        console.log(this.state);
+        UserStore._setNewUser(this.state);
+        UserActions.signin('john','123');
     }
 
 
@@ -113,17 +110,19 @@ class Register extends Component {
                             {/*value={this.state.lastName}*/}
                             {/*onChange={this.onLastNameChange}*/}
                             {/*required/>*/}
-                        {/*<input*/}
-                            {/*className="form-control"*/}
-                            {/*type="email"*/}
-                            {/*placeholder="Email"*/}
-                            {/*value={this.state.email}*/}
-                            {/*onChange={this.onEmailChange}*/}
-                            {/*required/>*/}
-                        <button className="btn btn-block btn-outline-primary"
-                                onClick={this.handleSubmit}>
-                            Register
-                        </button>
+                        <input
+                            className="form-control"
+                            type="email"
+                            placeholder="Email"
+                            value={this.state.email}
+                            onChange={this.onEmailChange}
+                            required/>
+                        <NavLink to={'./processing'}>
+                            <button className="btn btn-block btn-outline-primary"
+                                    onClick={this.handleSubmit}>
+                                Register
+                            </button>
+                        </NavLink>
                     </div>
                 </div>
                 <h3 className="signin-text">Already Registered?

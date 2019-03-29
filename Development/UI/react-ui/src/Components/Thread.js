@@ -27,6 +27,7 @@ class Thread extends Component {
             firstMessage: {},
             replies: [],
             newMessage: '',
+            previousMessageCount: 0
         };
 
         this.toggleSearch = this.toggleSearch.bind(this);
@@ -40,6 +41,7 @@ class Thread extends Component {
         this.interval = setInterval(() => this.update(), INTERVAL);
         if(MessageStore._getThreadMessages() != undefined) {
             this.setState({
+                previousMessageCount: this.state.messages.length,
                 messages: JSON.parse(MessageStore._getThreadMessages()).result
             })
         }
@@ -53,6 +55,7 @@ class Thread extends Component {
     update() {
         if(MessageStore._getThreadMessages() != undefined) {
             this.setState({
+                previousMessageCount: this.state.messages.length,
                 messages: JSON.parse(MessageStore._getThreadMessages()).result
             })
         }
@@ -131,6 +134,9 @@ class Thread extends Component {
     }
 
     render() {
+        if(this.state.messages.length > this.state.previousMessageCount) {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
         const conversationId = JSON.parse(ThreadStore._getThreads()).result.filter(thread => {
             return thread.id == this.props.match.params.threadId
         })[0].conversations_id;
@@ -159,13 +165,6 @@ class Thread extends Component {
                     {this.state.replies.map(message => {
                         return <p>{message.text}</p>
                     })}
-
-                    {/*<ThreadContainer threads={this.state.threads}/>*/}
-                    {/*<div className={css({paddingBottom: '5em'})}></div>*/}
-                    {/*<ConversationFooter onChange={this.onMessageChange}*/}
-                    {/*onClick={this.sendMessage}*/}
-                    {/*value={this.state.newMessageText}/>*/}
-                    {/*<h1 className={css({padding: '3em'})}>{this.state.conversation}</h1>*/}
                 </div>
             );
         }

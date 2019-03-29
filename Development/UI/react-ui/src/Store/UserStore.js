@@ -107,9 +107,10 @@ class UserStore extends EventEmitter {
     }
 
     _clearAll() {
-        _user = undefined;
-        _users = undefined;
-        _signin = undefined;
+        this._clearUser();
+        this._clearUsers();
+        this._clearSignin();
+        this._clearNewUser();
     }
 
 
