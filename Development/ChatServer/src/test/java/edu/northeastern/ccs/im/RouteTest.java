@@ -199,4 +199,10 @@ public class RouteTest {
   public void testAddGroupToGroupAdmin(){
     ChatLogger.info(Route.getResponsePost("ram","addGroupToGroup/","{group_id1:201,group_id2:202}"));
   }
+
+  @Test
+  public void testAddGroupToGroupAdminMissingParameters(){
+    ChatLogger.info(Route.getResponsePost("ram","addGroupToGroup/","{group_id1:201}"));
+  }
+
 }
