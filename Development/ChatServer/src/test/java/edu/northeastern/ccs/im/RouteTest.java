@@ -116,4 +116,9 @@ public class RouteTest {
   public void testGetUsersInConversation(){
       ChatLogger.info(Route.getResponseGet("rashy","getUsersInConversation/","{conversation_id:429}"));
   }
+
+  @Test
+  public void testGetMessageThread(){
+      ChatLogger.info(Route.getResponseGet("waynerooney","messageInThread/","{thread_id:1194}"));
+  }
 }
