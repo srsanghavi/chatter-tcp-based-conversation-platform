@@ -4,6 +4,7 @@ import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.database.ConversationModel;
 import edu.northeastern.ccs.im.database.ModelFactory;
+import edu.northeastern.ccs.im.database.MysqlCon;
 import edu.northeastern.ccs.im.server.Prattle;
 
 import java.util.ArrayList;
@@ -166,30 +167,50 @@ public class ConversationController {
      */
     public Map<String, Object> createMessage(Map<String,Object> json) {
         if(!json.containsKey("sender_id") ||
-        !json.containsKey("destionation_id") ||
         !json.containsKey("thread_id") ||
-        !json.containsKey("message")){
+        !json.containsKey("message") ||
+        !json.containsKey("conversation_id")){
             json.put("result_code",400);
             json.put("result","error");
             json.put("error_message","Missing parameter");
             return json;
         }
-        String senderId = (String) json.get("sender_id");
-        String destinatonId = (String) json.get("destinationId");
+        int senderId = Math.toIntExact(Math.round((double) json.get("sender_id")));
+//        int destinatonId = Math.toIntExact(Math.round((double) json.get("destination_id")));
+        int conversationId = Math.toIntExact(Math.round((double) json.get("conversation_id")));
 
-        Map<String, Object> sender = ModelFactory.getUserModel().getUser(Integer.parseInt(senderId));
-        Map<String, Object> destination = ModelFactory.getUserModel().getUser(Integer.parseInt(destinatonId));
+        Map<String, Object> sender = ModelFactory.getUserModel().getUser((senderId));
+//        Map<String, Object> destination = ModelFactory.getUserModel().getUser((destinatonId));
 
         String senderName = (String) sender.get("username");
-        String destinationName = (String) destination.get("username");
+//        String destinationName = (String) destination.get("username");
 
-        String threadId = (String) json.get("thread_id");
+        int threadId = Math.toIntExact(Math.round((double) json.get("thread_id")));
         String message = (String) json.get("message");
+
+        if(threadId==-1){
+            if(conversationModel.createThreadForConversationByThreadID(Integer.valueOf(threadId),conversationId)>0){
+                threadId = MysqlCon.getInstance().getLastInsertedID();
+            }else {
+                return error500(json);
+            }
+        }
+
+        List<Map<String, Object>> users = conversationModel.getUsersInConversation(conversationId);
+        List<String> destinationNames = new ArrayList<>();
+        for(Map<String,Object> user:users){
+            if(user.containsKey("username") &&
+                user.get("username")!=senderName){
+                destinationNames.add((String) user.get("username"));
+            }
+        }
 
         String data = "{\"sender_name\":\""+senderName+"\",\"message\":\""+message+"\"}";
         if(conversationModel.createMessageForThread(Integer.valueOf(threadId),Integer.valueOf(senderId),message)>0){
             Message msg = Message.makeNotificationMessage(senderName,data);
-            Prattle.sendMessageToUser(destinationName,msg);
+            for(String destinationName:destinationNames) {
+                Prattle.sendMessageToUser(destinationName, msg);
+            }
             json.put("result_code",201);
             json.put("result","OK");
             return json;
