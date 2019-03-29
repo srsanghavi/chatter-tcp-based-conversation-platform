@@ -82,7 +82,7 @@ public class UserController {
      */
     public Map<String,Object> deleteUser(Map<String,Object> json){
         int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
-        if(userModel.deleteUser(Integer.valueOf(userId)) > 0){
+        if(userModel.deleteUser(userId) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;

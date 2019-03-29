@@ -38,7 +38,7 @@ public class GroupController {
             throw new NoSuchFieldException();
         }
         int id = Math.toIntExact(Math.round((double) json.getOrDefault("user_id", 0)));
-        return ModelFactory.getUserModel().getGroups(Integer.valueOf(id));
+        return ModelFactory.getUserModel().getGroups(id);
     }
 
     /**
@@ -57,7 +57,7 @@ public class GroupController {
         int userId = ModelFactory.getUserModel().getUserID(username);
 
 
-        List<Map<String, Object>> groupUsers = groupModel.getUsers(Integer.valueOf(groupId));
+        List<Map<String, Object>> groupUsers = groupModel.getUsers(groupId);
 
         for(Map<String,Object> user:groupUsers){
             if((int)user.get("user_id")==userId){
@@ -90,7 +90,7 @@ public class GroupController {
             return error401Post();
         }
 
-        if(groupModel.addUserToGroup(Integer.valueOf(groupId),Integer.valueOf(userId),0)>0){
+        if(groupModel.addUserToGroup(groupId, userId,0)>0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
@@ -119,7 +119,7 @@ public class GroupController {
             return error401Post();
         }
         String name = (String) json.get("group_name");
-        if(groupModel.updateGroupName(Integer.valueOf(groupId), name) > 0){
+        if(groupModel.updateGroupName(groupId, name) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
@@ -146,7 +146,7 @@ public class GroupController {
         if(!isGroupAdmin(groupId,userId)){
             return error401Post();
         }
-        if(groupModel.deleteGroup(Integer.valueOf(groupId)) > 0){
+        if(groupModel.deleteGroup(groupId) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
@@ -200,7 +200,7 @@ public class GroupController {
             return error401Post();
         }
 
-        if(groupModel.addGroupToGroup(Integer.valueOf(group_id1),Integer.valueOf(group_id2)) > 0){
+        if(groupModel.addGroupToGroup(group_id1, group_id2) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
