@@ -85,7 +85,7 @@ public class ConversationModel {
      * @return the int
      */
     public int createThreadForConversationByThreadID(int threadId, int conversationId){
-    String query = "INSERT INTO thread(threadId,conversations_id) VALUES ("+threadId+","+conversationId+")";
+    String query = "INSERT INTO thread(id,conversations_id) VALUES ("+threadId+","+conversationId+")";
     int r = conn.sqlcreate(query);
     if(r>0){
       return conn.getLastInsertedID();
