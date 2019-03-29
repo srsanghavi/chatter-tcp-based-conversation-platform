@@ -190,7 +190,7 @@ public class ConversationController {
 
         if(threadId==-1){
             if(conversationModel.createThreadForConversation(conversationId)>0){
-                threadId = MysqlCon.getInstance().getLastInsertedID();
+                threadId = conversationModel.getLastInsertedID();
             }else {
                 return error500(json);
             }

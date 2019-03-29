@@ -219,4 +219,12 @@ public class ConversationModel {
         return conn.sqlGet(sql);
     }
 
+    /**
+     * Get last inserted conversation id
+     * @return last inserted conversation id
+     */
+    public int getLastInsertedID() {
+        return conn.getLastInsertedID();
+    }
+
 }
