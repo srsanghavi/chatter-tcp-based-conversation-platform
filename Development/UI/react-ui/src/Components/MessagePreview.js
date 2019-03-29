@@ -4,12 +4,13 @@ import { NavLink } from 'react-router-dom';
 
 
 const MessagePreview = props => {
+    console.log(props)
 
     return(
         <div className={css({
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'flex-end',
+            justifyContent: props.message.sender_id == localStorage.getItem('id') ? 'flex-end' : 'flex-start',
             margin: '0.5em',
             fontSize: '1em',
             backgroundColor: 'white',

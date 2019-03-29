@@ -26,7 +26,7 @@ const GroupPreviews = props => {
                     width: '75%'
                 })}>
                     <h5>{props.group.name}</h5>
-                    <h6 className={css({opacity: '0.5'})}>[ ] Members</h6>
+                    {/*<h6 className={css({opacity: '0.5'})}>[ ] Members</h6>*/}
                 </span>
                 <span className={css({
                     width: '25%',

@@ -79,7 +79,8 @@ const ThreadPreview = props => {
                 <div className={css({
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'flex-end',
+                    justifyContent: props.threadMessages[0].sender_id == localStorage.getItem('id') ?
+                                    'flex-end' : 'flex-start',
                     margin: '0.5em',
                     fontSize: '1em',
                     backgroundColor: 'white',
