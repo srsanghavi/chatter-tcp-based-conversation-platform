@@ -83,6 +83,4 @@ public class ConversationModelTest {
     public void testAddMessageToThread(){
       System.out.println(conversationModel.addMessageToThread(311,519));
     }
-
-
 }
