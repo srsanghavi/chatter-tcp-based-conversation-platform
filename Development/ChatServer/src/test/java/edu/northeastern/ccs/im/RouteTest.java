@@ -114,6 +114,11 @@ public class RouteTest {
   }
 
   @Test
+  public void testAddUsersToGroupNotAdmin(){
+    ChatLogger.info(Route.getResponsePost("rashy","addUserToGroup/","{user_id:568,group_id:242}"));
+  }
+
+  @Test
   public void testAddUsersToGroupMissingParameters(){
     ChatLogger.info(Route.getResponsePost("solskjaer","addUserToGroup/","{user_id:568}"));
   }
