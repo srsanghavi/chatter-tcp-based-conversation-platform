@@ -101,4 +101,9 @@ public class RouteTest {
   public void testUpdateGroupName(){
       ChatLogger.info(Route.getResponsePost("solskjaer","updateGroupName/","{group_name:\"New Man Utd\",group_id:242}"));
   }
+
+  @Test
+  public void testGetAllUsers(){
+      ChatLogger.info(Route.getResponseGet("solskjaer","getUsers/","{}"));
+  }
 }
