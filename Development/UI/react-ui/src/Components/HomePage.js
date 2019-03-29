@@ -11,7 +11,7 @@ import ConversationStore from "../Store/ConversationStore";
 import Conversation from "./Conversation";
 import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
 import Settings from './Settings';
-import Conversations from './Conversations';
+import ConversationContainer from './ConversationContainer';
 import UserSearch from './UserSearch';
 import ProfileEdit from './ProfileEdit';
 import Profile from './Profile';
@@ -263,7 +263,9 @@ class HomePage extends Component {
                         {() => <Redirect to={'./conversations'}/>}
                     </Route>
                     <Route path="/conversations">
-                        {() => <Conversations conversations={JSON.parse(ConversationStore._getConversations()).result}/>}
+                        {() => <ConversationContainer conversations={this.state.conversations}
+                                                      myGroups={this.state.myGroups}
+                                                      users={this.state.users}/>}
                     </Route>
                     <Route path="/conversations/:id">
                         {() => <Conversation/>}

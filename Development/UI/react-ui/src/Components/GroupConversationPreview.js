@@ -4,8 +4,7 @@ import { NavLink } from 'react-router-dom';
 import ThreadStore from "../Store/ThreadStore";
 import MessageStore from "../Store/MessageStore";
 
-const ConversationPreview = props => {
-    console.log(props.user)
+const GroupConversationPreview = props => {
     return (
         <div className={css({
             display: 'flex',
@@ -36,8 +35,8 @@ const ConversationPreview = props => {
                 <span className={css({
                     width: '50%'
                 })}>
-                    <h5>{props.user.username}</h5>
-                    <h6 className={css({opacity: '0.5'})}>{props.conversation.created_on}</h6>
+                    <h5>{props.conversation.name}</h5>
+                    <h6 className={css({opacity: '0.5'})}>{props.conversation.modifiedOn}</h6>
                 </span>
                 <span className={css({
                     width: '25%',
@@ -62,4 +61,4 @@ const ConversationPreview = props => {
         </div>
     );
 };
-export default ConversationPreview;
+export default GroupConversationPreview;
