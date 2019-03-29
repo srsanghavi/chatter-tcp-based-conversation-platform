@@ -142,4 +142,9 @@ public class RouteTest {
   public void testdDeleteMessage(){
       ChatLogger.info(Route.getResponsePost("hsbudhia","deleteMessage/","{message_id:663}"));
   }
+
+  @Test
+  public void testAddGroupToGroupNotAdmin(){
+      ChatLogger.info(Route.getResponsePost("hsbudhia","addGroupToGroup/","{group_id1:201,group_id2:202}"));
+  }
 }
