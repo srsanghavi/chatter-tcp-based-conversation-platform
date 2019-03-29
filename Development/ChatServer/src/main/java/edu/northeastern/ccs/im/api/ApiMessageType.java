@@ -11,7 +11,7 @@ public final class ApiMessageType {
 
     final static String GET_GROUPS =             "getAllGroups/";
     final static String GET_GROUP_USERS =        "getGroupUsers/";
-    final static String CREATE_GROUP =           "";
+    final static String CREATE_GROUP =           "createGroup/";
     final static String ADD_ADMIN_GROUP =        "";
     final static String MODIFY_GROUP_NAME =      "updateGroupName/";
     final static String ADD_USER_GROUP  =        "addUserToGroup/";
