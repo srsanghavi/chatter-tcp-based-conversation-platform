@@ -7,7 +7,9 @@ import java.util.concurrent.ScheduledFuture;
 import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.NetworkConnection;
-import edu.northeastern.ccs.im.database.UserDB;
+import edu.northeastern.ccs.im.api.Route;
+import edu.northeastern.ccs.im.database.ModelFactory;
+import edu.northeastern.ccs.im.database.UserModel;
 
 /**
  * Instances of this class handle all of the incoming communication from a
@@ -98,7 +100,7 @@ public class ClientRunnable implements Runnable {
 				timer.updateAfterInitialization();
 				// Set that the client is initialized.
 				initialized = true;
-                UserDB u = new UserDB();
+                UserModel u = ModelFactory.getUserModel();
                 List<Map<String, Object>> r = u.getUsers();
                 List<String> usernames = new ArrayList<>();
                 for(Map<String,Object> user:r){
@@ -116,8 +118,8 @@ public class ClientRunnable implements Runnable {
 
 
 	private Boolean checkIsAuthorized(String username,String password){
-		UserDB userDB = new UserDB();
-		int localAuthorized = userDB.isAuthorized(username, password);
+		UserModel userModel = ModelFactory.getUserModel();
+		int localAuthorized = userModel.isAuthorized(username, password);
         return localAuthorized == 1;
 	}
 
@@ -260,7 +262,6 @@ public class ClientRunnable implements Runnable {
 			} else {
 				// Check if the message is legal formatted
 				if (messageChecks(msg)) {
-					// Check for our "special messages"
 					if (msg.isBroadcastMessage()) {
 						// Check for our "special messages"
                         String rawMessage = msg.getText();
@@ -269,8 +270,30 @@ public class ClientRunnable implements Runnable {
                         Message message1 = Message.makeBroadcastMessage(msg.getName(),message);
                         msg.storeMessageInDb();
 						Prattle.sendMessageToUser(destinationUser,message1);
+					}else if(msg.isApiMessage()){
+					    // handle api messages
+                        // once the user is logged in, all the messages should come here
+
+                        // raw message should be formatted as below
+                        //  <API_Endpoint>::<Method>::{<data>}
+                        //  Example: getUsers::GET::{}
+
+						String rawMessage = msg.getText();
+						String route = rawMessage.split("::")[0];   // route
+						String method = rawMessage.split("::")[1];  // method
+						String data = rawMessage.split("::")[2];    // data
+
+						if(method.equals("GET")){
+							String response = Route.getResponseGet(this.name,route,data);
+							Message message = Message.makeBroadcastMessage(msg.getName(),response);
+							this.sendMessage(message);
+						}else if(method.equals("POST")){
+							String response = Route.getResponsePost(this.name,route,data);
+							Message message = Message.makeBroadcastMessage(msg.getName(),response);
+							this.sendMessage(message);
+						}
 					}else {
-						ChatLogger.warning("User already logged in");
+						ChatLogger.warning("UserModel already logged in");
 					}
 				} else {
 					Message sendMsg;

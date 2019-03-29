@@ -4,37 +4,42 @@ import {css} from 'emotion';
 import 'font-awesome/css/font-awesome.min.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import Conversation from './Conversation';
-import Login from "./Login";
-import ConversationPreview from './ConversationPreview';
-import HomePage from "./HomePage";
-import ThreadContainer from "./ThreadContainer";
+import Conversation from './Components/Conversation';
+import Login from "./Components/Login";
+import ConversationPreviewOld from './Components/ConversationPreviewOld';
+import HomePage from "./Components/HomePage";
+import ThreadContainer from "./Components/ThreadContainer";
+import Authentication from './Components/Authentication'
+import LoginProcessing from "./Components/LoginProcessing";
+import Register from "./Components/Register";
+import LoadingMessages from "./Components/LoadingMessages";
+import Thread from './Components/Thread';
 
 class App extends Component {
+
+
   render() {
       return (
           <div>
               <BrowserRouter>
                   <Switch>
-                      <Route path="/home">
-                          {() => <HomePage/>}
+                      <Route path="/authentication">
+                          {() => <LoginProcessing/>}
                       </Route>
                       <Route path="/login">
                           {() => <Login/>}
                       </Route>
-                      <Route path="/conversation/:id"
+                      <Route path="/register">
+                          {() => <Register/>}
+                      </Route>
+                      <Route path="/conversations/:id"
                              component={Conversation}>
-                          {/*{() => <Conversation/>}*/}
+                      </Route>
+                      <Route path="/thread/:threadId"
+                             component={Thread}>
                       </Route>
                       <Route path="/">
-                          {() => {
-                              if(localStorage.getItem('id') == null) {
-                                  return <Login/>
-                              } else {
-                                  return <HomePage/>
-                              }
-                            }
-                          }
+                          <Authentication page={<HomePage/>}/>
                       </Route>
                   </Switch>
               </BrowserRouter>

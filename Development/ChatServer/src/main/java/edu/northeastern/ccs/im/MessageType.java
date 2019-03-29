@@ -18,8 +18,9 @@ public enum MessageType {
 	QUIT("BYE"),
 	/** Message whose contents is broadcast to all connected users. */
 	BROADCAST("BCT"),
-	/** Message with password. */
-	PASSWORD("PASS");
+	/** Message for API */
+	API("API"),
+	NOTIFICATION("NOTI");
 
 	/** Store the short name of this message type. */
 	private String abbreviation;

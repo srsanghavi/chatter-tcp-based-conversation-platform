@@ -17,8 +17,8 @@ import java.io.File;
 /**
  * The type Mysql con.
  */
-public class MysqlCon {
-    private static MysqlCon mySqlCon = null;
+public class MysqlCon implements DataCon{
+    private MysqlCon mySqlCon = null;
     private static final String VALUE = "value";
     private Connection con;
     private String hostname;
@@ -47,7 +47,7 @@ public class MysqlCon {
         }
     }
 
-    private MysqlCon(){
+    public MysqlCon(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
             setDBConf();
@@ -65,12 +65,13 @@ public class MysqlCon {
      *
      * @return the mysql con
      */
-    public static MysqlCon getInstance(){
+    public DataCon getInstance(){
         if(mySqlCon==null){
             mySqlCon = new MysqlCon();
         }
         return mySqlCon;
     }
+
 
     /**
      * Gets remote connection.
@@ -141,6 +142,7 @@ public class MysqlCon {
             return stmt.executeUpdate(query);
         } catch (SQLException e ) {
             ChatLogger.warning(e.toString());
+
         } finally {
             if (stmt != null) {
                 try {
@@ -161,4 +163,6 @@ public class MysqlCon {
         }
         return -1;
     }
+
+
 }
