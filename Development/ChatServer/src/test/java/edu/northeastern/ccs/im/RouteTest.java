@@ -33,17 +33,17 @@ public class RouteTest {
 
     @Test
     public void testGetMessagesinConversation(){
-        ChatLogger.info(Route.getResponseGet("srsanghavi","getMessagesInConversation/", "{conversation_id:'205'}"));
+        ChatLogger.info(Route.getResponseGet("srsanghavi","getMessagesInConversation/", "{conversation_id:205}"));
     }
 
     @Test
     public void testGetMessagesinThread(){
-        ChatLogger.info(Route.getResponseGet("srsanghavi","getMessagesInThread/", "{thread_id:'562'}"));
+        ChatLogger.info(Route.getResponseGet("srsanghavi","getMessagesInThread/", "{thread_id:562}"));
     }
 
     @Test
     public void testGetAllGroups(){
-        ChatLogger.info(Route.getResponseGet("srsanghavi","getAllGroups/", "{user_id:'8'}"));
+        ChatLogger.info(Route.getResponseGet("srsanghavi","getAllGroups/", "{user_id:8}"));
     }
 
     @Test
