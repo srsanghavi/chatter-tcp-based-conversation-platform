@@ -233,9 +233,9 @@ public class ConversationController {
             json.put("error_message","Missing parameter");
             return json;
         }
-        String threadId = (String) json.get("thread_id");
-        String conversation_id = (String) json.get("conversation_id");
-        if(conversationModel.createThreadForConversationByThreadID(Integer.valueOf(threadId),Integer.valueOf(conversation_id))>0){
+        int threadId = Math.toIntExact(Math.round((double) json.get("thread_id")));
+        int conversation_id = Math.toIntExact(Math.round((double) json.get("conversation_id")));
+        if(conversationModel.createThreadForConversationByThreadID(threadId,conversation_id)>0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
