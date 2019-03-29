@@ -61,6 +61,8 @@ public class Message {
 
     messageID = UUID.randomUUID().toString();
     this.creationTS = new Timestamp((new Date()).getTime());
+		userModel = ModelFactory.getUserModel();
+		conversationModel = ModelFactory.getConversationModel();
 	}
 
 	/**
