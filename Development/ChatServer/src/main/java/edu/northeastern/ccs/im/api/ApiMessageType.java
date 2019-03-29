@@ -1,35 +1,35 @@
 package edu.northeastern.ccs.im.api;
 
 public final class ApiMessageType {
-    final static String GET_USERS =              "getUsers/";
-    final static String CREATE_USER =            "registerUser/";
-    final static String MODIFY_USER =            "";
-    final static String DELETE_USER =            "deleteUser/";
-    final static String GET_USER_CONVERSATION =  "getConversations/";
-    final static String GET_USER_GROUP =         "getGroups/";
-    final static String GET_USER_BY_USERNAME =   "getUserByUsername/";
+    static final String GET_USERS =              "getUsers/";
+    static final String CREATE_USER =            "registerUser/";
+    static final String MODIFY_USER =            "";
+    static final String DELETE_USER =            "deleteUser/";
+    static final String GET_USER_CONVERSATION =  "getConversations/";
+    static final String GET_USER_GROUP =         "getGroups/";
+    static final String GET_USER_BY_USERNAME =   "getUserByUsername/";
 
-    final static String GET_GROUPS =             "getAllGroups/";
-    final static String GET_GROUP_USERS =        "getGroupUsers/";
-    final static String CREATE_GROUP =           "createGroup/";
-    final static String ADD_ADMIN_GROUP =        "";
-    final static String MODIFY_GROUP_NAME =      "updateGroupName/";
-    final static String ADD_USER_GROUP  =        "addUserToGroup/";
-    final static String ADD_GROUP_GROUP =        "addGroupToGroup/";
-    final static String GET_GROUP_CONVERSATION = "";
-    final static String DELETE_GROUP =           "deleteGroup/";
+    static final String GET_GROUPS =             "getAllGroups/";
+    static final String GET_GROUP_USERS =        "getGroupUsers/";
+    static final String CREATE_GROUP =           "createGroup/";
+    static final String ADD_ADMIN_GROUP =        "";
+    static final String MODIFY_GROUP_NAME =      "updateGroupName/";
+    static final String ADD_USER_GROUP  =        "addUserToGroup/";
+    static final String ADD_GROUP_GROUP =        "addGroupToGroup/";
+    static final String GET_GROUP_CONVERSATION = "";
+    static final String DELETE_GROUP =           "deleteGroup/";
 
-    final static String CREATE_USER_USER_CONV =  "addUserUserConversation/";
-    final static String CREATE_GROUP_CONV =      "";
-    final static String GET_THREAD_CONV =        "getThreadsInConversation/";
-    final static String ADD_MESSAGE_THREAD =     "addMessageToThread/";
-    final static String CREATE_THREAD_CONV =     "addThreadToConversation/";
-    final static String GET_MESSAGE_THREAD =     "messageInThread/";
-    final static String MODIFY_MESSAGE =         "";
-    final static String DELETE_MESSAGE =         "deleteMessage/";
-    final static String GET_CONV_USER =          "getUsersInConversation/";
-    final static String GET_MSG_CONV =           "getMessagesInConversation/";
+    static final String CREATE_USER_USER_CONV =  "addUserUserConversation/";
+    static final String CREATE_GROUP_CONV =      "";
+    static final String GET_THREAD_CONV =        "getThreadsInConversation/";
+    static final String ADD_MESSAGE_THREAD =     "addMessageToThread/";
+    static final String CREATE_THREAD_CONV =     "addThreadToConversation/";
+    static final String GET_MESSAGE_THREAD =     "messageInThread/";
+    static final String MODIFY_MESSAGE =         "";
+    static final String DELETE_MESSAGE =         "deleteMessage/";
+    static final String GET_CONV_USER =          "getUsersInConversation/";
+    static final String GET_MSG_CONV =           "getMessagesInConversation/";
 
-    final static String CREATE_MESSAGE =        "sendMessage/";
-    final static String BROADCAST_MESSAGE =     "broadcastMessage/";
+    static final String CREATE_MESSAGE =        "sendMessage/";
+    static final String BROADCAST_MESSAGE =     "broadcastMessage/";
 }
