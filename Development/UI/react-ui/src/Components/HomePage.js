@@ -21,6 +21,7 @@ import GroupOrUserBar from "./GroupOrUserBar";
 import GroupActions from "../Actions/GroupActions";
 import GroupStore from "../Store/GroupStore";
 import MessageActions from "../Actions/MessageActions";
+import GroupMembers from './GroupMembers'
 
 const tab = {
     CONVERSATIONS: 'conversations',
@@ -259,6 +260,9 @@ class HomePage extends Component {
                 <Switch>
                     <Route path="/profile/:id"
                            component={Profile}>
+                    </Route>
+                    <Route path="/group/:id"
+                           component={GroupMembers}>
                     </Route>
                     <Route path="/edit-profile/:id"
                            component={ProfileEdit}>

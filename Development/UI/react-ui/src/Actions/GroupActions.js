@@ -26,6 +26,12 @@ class GroupActions {
         });
     }
 
+    getGroupUsers(username, groupId) {
+        api.getGroupUsers(username, groupId).then(value => {
+            console.log(value)
+        })
+    }
+
 }
 
 export default new GroupActions();
