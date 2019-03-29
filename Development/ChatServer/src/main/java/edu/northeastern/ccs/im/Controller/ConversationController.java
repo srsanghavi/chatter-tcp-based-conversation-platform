@@ -117,8 +117,8 @@ public class ConversationController {
         }
 
         int threadId = Math.toIntExact(Math.round((double) json.getOrDefault("thread_id", 0)));
-        threadId = Math.toIntExact(Math.round((double) json.getOrDefault("thread_id", 0)));
         List<Map<String, Object>> thread = conversationModel.getThread(threadId);
+        System.out.println(thread);
         if(thread.get(0).isEmpty() || !thread.get(0).containsKey("conversations_id")){
             return error400();
         }
