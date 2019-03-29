@@ -31,7 +31,12 @@ public class RouteTest {
         ChatLogger.info(Route.getResponsePost("srsanghavi","broadcastMessage/", "{message:'hello world';sender_id:8}"));
     }
 
-    @Test
+  @Test
+  public void testBroadcastMessageMissingParameters(){
+    ChatLogger.info(Route.getResponsePost("srsanghavi","broadcastMessage/", "{message:'hello world'}"));
+  }
+
+  @Test
     public void testGetMessagesinConversation(){
         ChatLogger.info(Route.getResponseGet("srsanghavi","getMessagesInConversation/", "{conversation_id:205}"));
     }
