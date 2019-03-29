@@ -137,4 +137,9 @@ public class RouteTest {
   public void testDeleteGroup(){
       ChatLogger.info(Route.getResponsePost("solskjaer","deleteGroup/","{group_id:245}"));
   }
+
+  @Test
+  public void testdDeleteMessage(){
+      ChatLogger.info(Route.getResponsePost("hsbudhia","deleteMessage/","{message_id:663}"));
+  }
 }
