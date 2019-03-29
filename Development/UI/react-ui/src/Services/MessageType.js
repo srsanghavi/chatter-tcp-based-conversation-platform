@@ -11,14 +11,14 @@ export default class MessageType {
     }
 
     makeBroadcastMessage(username, text){
-        if(text!="" || text==null){
+        if(text=="" || text==null){
             text="";
         }
         return 'BCT ' + username.length + ' ' + username + ' ' + text.length + ' ' + text;
     }
 
     makeApiMessage(username, text){
-        if(text!="" || text==null){
+        if(text=="" || text==null){
             text="";
         }
         return 'API ' + username.length + ' ' + username + ' ' + text.length + ' ' + text;
