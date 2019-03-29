@@ -111,5 +111,9 @@ public class RouteTest {
   public void testGetUserByUsername(){
       ChatLogger.info(Route.getResponseGet("solskjaer","getUserByUsername/","{username:rashy}"));
   }
-  
+
+  @Test
+  public void testGetUsersInConversation(){
+      ChatLogger.info(Route.getResponseGet("rashy","getUsersInConversation/","{conversation_id:429}"));
+  }
 }
