@@ -60,9 +60,9 @@ public class GroupController {
 
 
         List<Map<String, Object>> groupUsers = groupModel.getUsers(groupId);
-
+        System.out.println(groupUsers);
         for(Map<String,Object> user:groupUsers){
-            if((int)user.get("user_id")==userId){
+            if((int)user.get("id")==userId){
                 return groupUsers;
             }
         }
