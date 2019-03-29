@@ -213,4 +213,13 @@ public class RouteTest {
     ChatLogger.info(Route.getResponsePost("ram","addGroupToGroup/","{group_id1:201}"));
   }
 
+    @Test
+    public void testGetGroupsForUser(){
+        try{
+            ChatLogger.info(Route.getResponseGet("hsbudhia", "getGroups/", "{}"));
+
+        }catch (Exception e){
+            ChatLogger.info(e.toString());
+        }
+    }
 }

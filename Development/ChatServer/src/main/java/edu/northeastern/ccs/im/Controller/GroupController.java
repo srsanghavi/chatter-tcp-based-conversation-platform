@@ -1,5 +1,6 @@
 package edu.northeastern.ccs.im.Controller;
 
+import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.database.GroupModel;
 import edu.northeastern.ccs.im.database.ModelFactory;
 
@@ -35,6 +36,7 @@ public class GroupController {
      */
     public List<Map<String, Object>> getGroupsForUser(Map<String,Object> json) throws NoSuchFieldException {
         if(!json.containsKey("user_id")){
+            ChatLogger.info("No user id");
             throw new NoSuchFieldException();
         }
         int id = Math.toIntExact(Math.round((double) json.getOrDefault("user_id", 0)));
