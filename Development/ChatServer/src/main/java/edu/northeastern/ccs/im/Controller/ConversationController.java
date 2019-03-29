@@ -302,9 +302,15 @@ public class ConversationController {
     private Boolean isConversationParticipant(String username, int conversationId){
         int userId = ModelFactory.getUserModel().getUserID(username);
 
-        List<Map<String, Object>> conversations = conversationModel.getConversationsById(conversationId);
-        return (!conversations.isEmpty() &&
-                conversations.get(0).containsKey("user_id") &&
-                ((int)conversations.get(0).get("user_id")!=userId));
+        List<Map<String, Object>> conversations = conversationModel.getConversations(userId);
+
+        for(Map<String,Object> c:conversations) {
+            if (!conversations.isEmpty() &&
+                    conversations.get(0).containsKey("id") &&
+                    ((int) conversations.get(0).get("id") == conversationId)){
+                return true;
+            }
+        }
+        return false;
     }
 }
