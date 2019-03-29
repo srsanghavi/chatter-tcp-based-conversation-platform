@@ -35,8 +35,8 @@ A User would be able to:
 
 ## Demo
 
-<a href="https://drive.google.com/a/husky.neu.edu/uc?id=1szK1d0xhhI-7Br-wzWR_tJgZZ4Qgm1Up&export=download" target="_blank"><img src="screenshot.png" 
-alt="Demo" width="240" height="180" border="10" /></a>
+<a href="https://drive.google.com/file/d/1szK1d0xhhI-7Br-wzWR_tJgZZ4Qgm1Up/view" target="_blank"><img src="screenshot.png" 
+alt="Demo" width="400" height="300" border="10" /></a>
 
 ## Development
 
