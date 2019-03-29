@@ -7,6 +7,8 @@ const CHANGE = 'CHANGE';
 let _user;
 let _signin;
 let _users;
+let _newuser;
+
 class UserStore extends EventEmitter {
     constructor() {
         super();
@@ -91,6 +93,18 @@ class UserStore extends EventEmitter {
         _signin = undefined
     }
 
+
+    _setNewUser(user) {
+        _newuser = user;
+    }
+
+    _getNewUser() {
+        return _newuser;
+    }
+
+    _clearNewUser() {
+        _newuser = undefined;
+    }
 
     _clearAll() {
         _user = undefined;

@@ -41,8 +41,8 @@ class UserActions {
         });
     }
 
-    registerUser(username, password, firstName, lastName, email) {
-        api.registerUser(username, password, firstName, lastName, email).then(value => {
+    registerUser(sender, username, password, firstName, lastName, email) {
+        api.registerUser(sender, username, password, firstName, lastName, email).then(value => {
             console.log(value)
         })
     }

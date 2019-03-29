@@ -14,7 +14,7 @@ import LoadingMessages from "./LoadingMessages";
 
 
 // component updates every interval (in ms)
-const INTERVAL = 5000;
+const INTERVAL = 2000;
 
 class Conversation extends Component {
     constructor(props) {
@@ -27,6 +27,7 @@ class Conversation extends Component {
             threads: [],
             messages: [],
             newMessage: '',
+            previousThreadCount: 0
         };
 
         this.toggleSearch = this.toggleSearch.bind(this);
@@ -53,6 +54,7 @@ class Conversation extends Component {
         } else {
             if(ThreadStore._getThreads() != undefined) {
                 this.setState({
+                    previousThreadCount: this.state.threads.length,
                     threads: JSON.parse(ThreadStore._getThreads()).result
                 })
             }
@@ -63,8 +65,6 @@ class Conversation extends Component {
             }
             MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
         }
-
-        //MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
     }
 
     componentWillUnmount() {
@@ -79,6 +79,7 @@ class Conversation extends Component {
         } else {
             if(ThreadStore._getThreads() != undefined) {
                 this.setState({
+                    previousThreadCount: this.state.threads.length,
                     threads: JSON.parse(ThreadStore._getThreads()).result
                 })
             }
@@ -94,6 +95,7 @@ class Conversation extends Component {
     updateThreads() {
         if(ThreadStore._getThreads() != undefined) {
             this.setState({
+                previousThreadCount: this.state.threads.length,
                 threads: JSON.parse(ThreadStore._getThreads()).result
             })
         }
@@ -103,7 +105,6 @@ class Conversation extends Component {
             })
         }
         ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id)
-
     }
 
     sendMessage() {
@@ -175,6 +176,9 @@ class Conversation extends Component {
     }
 
     render() {
+        if(this.state.threads.length > this.state.previousThreadCount) {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
         if (!(localStorage.getItem('loggedIn') === 'true')) {
             return <Redirect to='/login'/>
         } else {

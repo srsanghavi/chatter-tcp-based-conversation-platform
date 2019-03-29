@@ -11,6 +11,7 @@ import HomePage from "./Components/HomePage";
 import ThreadContainer from "./Components/ThreadContainer";
 import Authentication from './Components/Authentication'
 import LoginProcessing from "./Components/LoginProcessing";
+import RegisterProcessing from "./Components/RegisterProcessing";
 import Register from "./Components/Register";
 import LoadingMessages from "./Components/LoadingMessages";
 import Thread from './Components/Thread';
@@ -31,6 +32,9 @@ class App extends Component {
                       </Route>
                       <Route path="/register">
                           {() => <Register/>}
+                      </Route>
+                      <Route path="/processing">
+                          {() => <RegisterProcessing/>}
                       </Route>
                       <Route path="/conversations/:id"
                              component={Conversation}>

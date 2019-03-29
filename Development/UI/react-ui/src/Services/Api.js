@@ -29,8 +29,8 @@ export default class Api {
         gateway.sendTcp(msg);
     }
 
-    registerUser(username, password, first_name, last_name, email) {
-        let msg = this.messageType.makeApiMessage(username,"registerUser/::POST::{username:"+username+"," +
+    registerUser(sender, username, password, first_name, last_name, email) {
+        let msg = this.messageType.makeApiMessage(sender,"registerUser/::POST::{username:"+username+"," +
             "password:"+password+",first_name:"+first_name+",last_name:"+last_name+",email:"+email+"}");
         gateway.sendTcp(msg);
         console.log(msg);

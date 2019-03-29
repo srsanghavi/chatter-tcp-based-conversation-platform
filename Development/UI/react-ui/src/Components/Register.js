@@ -35,6 +35,7 @@ class Register extends Component {
     }
 
     componentDidMount() {
+        UserActions.signin('john','123');
     }
 
     _onChange(){
@@ -73,9 +74,12 @@ class Register extends Component {
         })
     }
 
-    handleSubmit(){
-        UserActions.registerUser(this.state.username, this.state.password, this.state.firstName, this.state.lastName,
-            this.state.email)
+    handleSubmit() {
+        //UserStore._setNewUser(this.state);
+
+        setTimeout(function(){}, 3000);
+        UserActions.registerUser('john', "\"" + this.state.username + "\"", "\"" + this.state.password + "\"", "\"" + this.state.firstName + "\"", "\"" + this.state.lastName + "\"",
+            "\"" + this.state.email + "\"")
     }
 
 
@@ -116,10 +120,10 @@ class Register extends Component {
                             {/*value={this.state.email}*/}
                             {/*onChange={this.onEmailChange}*/}
                             {/*required/>*/}
-                            <button className="btn btn-block btn-outline-primary"
-                                    onClick={this.handleSubmit}>
-                                Register
-                            </button>
+                        <button className="btn btn-block btn-outline-primary"
+                                onClick={this.handleSubmit}>
+                            Register
+                        </button>
                     </div>
                 </div>
                 <h3 className="signin-text">Already Registered?
