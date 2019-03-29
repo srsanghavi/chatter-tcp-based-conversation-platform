@@ -189,7 +189,7 @@ public class ConversationController {
         String message = (String) json.get("message");
 
         if(threadId==-1){
-            if(conversationModel.createThreadForConversationByThreadID(Integer.valueOf(threadId),conversationId)>0){
+            if(conversationModel.createThreadForConversation(conversationId)>0){
                 threadId = MysqlCon.getInstance().getLastInsertedID();
             }else {
                 return error500(json);
