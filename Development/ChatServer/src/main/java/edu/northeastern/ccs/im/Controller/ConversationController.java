@@ -18,6 +18,7 @@ public class ConversationController {
      * The Conversation model.
      */
     private ConversationModel conversationModel = ModelFactory.getInstance().getConversationModel();
+    private static String CONVERSATION_ID = "conversation_id";
 
     /**
      * Gets user conversations.
@@ -47,12 +48,12 @@ public class ConversationController {
      */
     public List<Map<String,Object>> getThreadsInConversation(String username, Map<String, Object> json) throws NoSuchFieldException {
 
-        if(!json.containsKey("conversation_id")) {
+        if(!json.containsKey(CONVERSATION_ID)) {
             throw new NoSuchFieldException();
         }
 
         int conversationId;
-        conversationId = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
+        conversationId = Math.toIntExact(Math.round((double) json.getOrDefault(CONVERSATION_ID, 0)));
         if(!isConversationParticipant(username,conversationId)){
             return error401();
         }
@@ -69,11 +70,11 @@ public class ConversationController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String,Object>> getMessagesInConversation(String username,Map<String,Object> json) throws NoSuchFieldException {
-        if(!json.containsKey("conversation_id")) {
+        if(!json.containsKey(CONVERSATION_ID)) {
             throw new NoSuchFieldException();
         }
         int conversationId;
-        conversationId = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
+        conversationId = Math.toIntExact(Math.round((double) json.getOrDefault(CONVERSATION_ID, 0)));
 
         if(!isConversationParticipant(username,conversationId)){
             return error401();
@@ -91,10 +92,10 @@ public class ConversationController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String,Object>> getUsersInConversation(String username,Map<String,Object> json) throws NoSuchFieldException {
-        if(!json.containsKey("conversation_id")) {
+        if(!json.containsKey(CONVERSATION_ID)) {
             throw new NoSuchFieldException();
         }
-        int conversationId = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
+        int conversationId = Math.toIntExact(Math.round((double) json.getOrDefault(CONVERSATION_ID, 0)));
 
         if(!isConversationParticipant(username,conversationId)){
             return error401();
@@ -167,14 +168,14 @@ public class ConversationController {
         if(!json.containsKey("sender_id") ||
         !json.containsKey("thread_id") ||
         !json.containsKey("message") ||
-        !json.containsKey("conversation_id")){
+        !json.containsKey(CONVERSATION_ID)){
             json.put("result_code",400);
             json.put("result","error");
             json.put("error_message","Missing parameter");
             return json;
         }
         int senderId = Math.toIntExact(Math.round((double) json.get("sender_id")));
-        int conversationId = Math.toIntExact(Math.round((double) json.get("conversation_id")));
+        int conversationId = Math.toIntExact(Math.round((double) json.get(CONVERSATION_ID)));
 
         Map<String, Object> sender = ModelFactory.getUserModel().getUser((senderId));
 
@@ -222,14 +223,14 @@ public class ConversationController {
      */
     public Map<String,Object> createThread(Map<String,Object> json){
         if(!json.containsKey("thread_id") ||
-            !json.containsKey("conversation_id")){
+            !json.containsKey(CONVERSATION_ID)){
             json.put("result_code",400);
             json.put("result","error");
             json.put("error_message","Missing parameter");
             return json;
         }
         int threadId = Math.toIntExact(Math.round((double) json.get("thread_id")));
-        int conversationId = Math.toIntExact(Math.round((double) json.get("conversation_id")));
+        int conversationId = Math.toIntExact(Math.round((double) json.get(CONVERSATION_ID)));
         if(conversationModel.createThreadForConversationByThreadID(threadId,conversationId)>0){
             json.put("result_code",201);
             json.put("result","OK");
