@@ -1,6 +1,6 @@
 export default class MessageType {
     makeLoginMsg(username,password){
-        if(password!="" || password==null){
+        if(password=="" || password==null){
             password="";
         }
         return 'HLO '+ username.length + ' ' + username + ' ' + password.length + ' ' + password;
