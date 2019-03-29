@@ -154,6 +154,28 @@ public class GroupController {
         else return error500(json);
     }
 
+  /**
+   * Create group.
+   * @param json the json
+   * @return the json map
+   */
+    public Map<String,Object> createGroup(Map<String,Object> json){
+      if(!json.containsKey("group_name")||
+          !json.containsKey("admin_id")){
+        json.put("result_code",400);
+        json.put("result","error");
+        json.put("error_message","Missing parameter");
+        return json;
+      }
+      String groupName = (String) json.get("group_name");
+      int admin_id = Math.toIntExact(Math.round((double) json.get("admin_id")));
+      if(groupModel.createGroup(groupName,admin_id) > 0){
+        json.put("result_code",201);
+        json.put("result","OK");
+        return json;
+      }
+      else return error500(json);
+    }
     /**
      * Add group to group map.
      *
