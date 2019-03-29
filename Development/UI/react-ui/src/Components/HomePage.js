@@ -230,6 +230,13 @@ class HomePage extends Component {
             )
         });
 
+        const filteredMyGroups = this.state.myGroups.filter(group => {
+            return (
+                group.isSearchable &&
+                group.name.toUpperCase().includes(this.state.search.toUpperCase())
+            )
+        });
+
         return (
             <div>
                 <div className={css({
@@ -264,8 +271,9 @@ class HomePage extends Component {
                     </Route>
                     <Route path="/conversations">
                         {() => <ConversationContainer conversations={this.state.conversations}
-                                                      myGroups={this.state.myGroups}
-                                                      users={this.state.users}/>}
+                                                      myGroups={filteredMyGroups}
+                                                      users={this.state.users}
+                                                      search={this.state.search}/>}
                     </Route>
                     <Route path="/conversations/:id">
                         {() => <Conversation/>}

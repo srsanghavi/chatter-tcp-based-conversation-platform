@@ -25,15 +25,7 @@ const GroupConversationPreview = props => {
                 padding: '0 0.75em'
             })}>
                 <span className={css({
-                    width: '25%',
-                })}>
-                    <img src="./images/image.png" height="60" width="60"
-                         className={css({
-                             borderRadius: 50,
-                         })}/>
-                </span>
-                <span className={css({
-                    width: '50%'
+                    width: '75%'
                 })}>
                     <h5>{props.conversation.name}</h5>
                     <h6 className={css({opacity: '0.5'})}>{props.conversation.modifiedOn}</h6>
