@@ -58,5 +58,20 @@ public class MessageTest {
       System.out.println(m.getThreadId());
     }
 
+    @Test
+  public void testMakeAPIMessage(){
+      Message.makeApiMessage("hsbudhia","API message text for test");
+    }
+
+    @Test
+  public void testIsAPIMessage(){
+      Message m = Message.makeApiMessage("hsbudhia","API message text for test");
+      assertTrue(m.isApiMessage());
+    }
+
+    @Test
+  public void testMakeNotificationMessage(){
+      Message.makeNotificationMessage("hsbudhia","Notification message text for test");
+    }
 
 }

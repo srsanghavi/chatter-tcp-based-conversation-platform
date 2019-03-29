@@ -13,7 +13,7 @@ public class UserController {
     /**
      * The User model.
      */
-    static UserModel userModel = ModelFactory.getInstance().getUserModel();
+    private UserModel userModel = ModelFactory.getUserModel();
 
     /**
      * Get users list.
@@ -36,7 +36,7 @@ public class UserController {
             throw new NoSuchFieldException();
         }
         String username = (String) json.getOrDefault("username",0);
-        return UserModel.getUserByUserName(username);
+        return userModel.getUserByUserName(username);
     }
 
     /**
@@ -82,7 +82,7 @@ public class UserController {
      */
     public Map<String,Object> deleteUser(Map<String,Object> json){
         int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
-        if(userModel.deleteUser(Integer.valueOf(userId)) > 0){
+        if(userModel.deleteUser(userId) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;

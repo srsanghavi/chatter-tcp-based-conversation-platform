@@ -142,13 +142,13 @@ public class MysqlCon implements DataCon{
             return stmt.executeUpdate(query);
         } catch (SQLException e ) {
             ChatLogger.warning(e.toString());
+
         } finally {
             if (stmt != null) {
                 try {
                     stmt.close();
                 } catch (SQLException e) {
                     ChatLogger.error(e.toString());
-                    return 0;
                 }
             }
         }
@@ -163,4 +163,6 @@ public class MysqlCon implements DataCon{
         }
         return -1;
     }
+
+
 }

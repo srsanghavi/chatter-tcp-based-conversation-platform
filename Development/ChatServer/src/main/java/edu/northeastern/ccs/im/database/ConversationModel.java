@@ -85,7 +85,7 @@ public class ConversationModel {
      * @return the int
      */
     public int createThreadForConversationByThreadID(int threadId, int conversationId){
-    String query = "INSERT INTO thread(threadId,conversations_id) VALUES ("+threadId+","+conversationId+")";
+    String query = "INSERT INTO thread(id,conversations_id) VALUES ("+threadId+","+conversationId+")";
     int r = conn.sqlcreate(query);
     if(r>0){
       return conn.getLastInsertedID();
@@ -166,9 +166,7 @@ public class ConversationModel {
      * @return list of users in the conversation
      */
     public List<Map<String, Object>> getUsersInConversation(int conversationID){
-      String sql = "SELECT * FROM users as u JOIN users_converses_users as uu" +
-              "JOIN conversations as c on u.id = uu.Users_id or u.id = Users_id1 and c.id = " +
-              "uu.Conversations_id WHERE c.id ="+conversationID +" group by u.id";
+      String sql = "SELECT * FROM users as u JOIN users_converses_users as uu on u.id = uu.Users_id or u.id = Users_id1 JOIN conversations as c on c.id = uu.Conversations_id WHERE c.id = "+conversationID+" group by u.id;";
       return conn.sqlGet(sql);
     }
 

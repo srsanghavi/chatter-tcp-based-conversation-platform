@@ -1,5 +1,6 @@
 package edu.northeastern.ccs.im.Controller;
 
+import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.database.GroupModel;
 import edu.northeastern.ccs.im.database.ModelFactory;
 
@@ -15,7 +16,7 @@ public class GroupController {
     /**
      * The Group model.
      */
-    GroupModel groupModel = ModelFactory.getInstance().getGroupModel();
+    GroupModel groupModel = ModelFactory.getGroupModel();
 
     /**
      * Get all groups list.
@@ -35,10 +36,11 @@ public class GroupController {
      */
     public List<Map<String, Object>> getGroupsForUser(Map<String,Object> json) throws NoSuchFieldException {
         if(!json.containsKey("user_id")){
+            ChatLogger.info("No user id");
             throw new NoSuchFieldException();
         }
         int id = Math.toIntExact(Math.round((double) json.getOrDefault("user_id", 0)));
-        return ModelFactory.getUserModel().getGroups(Integer.valueOf(id));
+        return ModelFactory.getUserModel().getGroups(id);
     }
 
     /**
@@ -57,7 +59,7 @@ public class GroupController {
         int userId = ModelFactory.getUserModel().getUserID(username);
 
 
-        List<Map<String, Object>> groupUsers = groupModel.getUsers(Integer.valueOf(groupId));
+        List<Map<String, Object>> groupUsers = groupModel.getUsers(groupId);
 
         for(Map<String,Object> user:groupUsers){
             if((int)user.get("user_id")==userId){
@@ -90,7 +92,7 @@ public class GroupController {
             return error401Post();
         }
 
-        if(groupModel.addUserToGroup(Integer.valueOf(groupId),Integer.valueOf(userId),0)>0){
+        if(groupModel.addUserToGroup(groupId, userId,0)>0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
@@ -119,7 +121,7 @@ public class GroupController {
             return error401Post();
         }
         String name = (String) json.get("group_name");
-        if(groupModel.updateGroupName(Integer.valueOf(groupId), name) > 0){
+        if(groupModel.updateGroupName(groupId, name) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
@@ -146,7 +148,7 @@ public class GroupController {
         if(!isGroupAdmin(groupId,userId)){
             return error401Post();
         }
-        if(groupModel.deleteGroup(Integer.valueOf(groupId)) > 0){
+        if(groupModel.deleteGroup(groupId) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
@@ -154,6 +156,28 @@ public class GroupController {
         else return error500(json);
     }
 
+  /**
+   * Create group.
+   * @param json the json
+   * @return the json map
+   */
+    public Map<String,Object> createGroup(Map<String,Object> json){
+      if(!json.containsKey("group_name")||
+          !json.containsKey("admin_id")){
+        json.put("result_code",400);
+        json.put("result","error");
+        json.put("error_message","Missing parameter");
+        return json;
+      }
+      String groupName = (String) json.get("group_name");
+      int adminId = Math.toIntExact(Math.round((double) json.get("admin_id")));
+      if(groupModel.createGroup(groupName,adminId) > 0){
+        json.put("result_code",201);
+        json.put("result","OK");
+        return json;
+      }
+      else return error500(json);
+    }
     /**
      * Add group to group map.
      *
@@ -171,14 +195,14 @@ public class GroupController {
         int userId = ModelFactory.getUserModel().getUserID(username);
 
 
-        int group_id1 = Math.toIntExact(Math.round((double) json.get("group_id1")));
-        int group_id2 = Math.toIntExact(Math.round((double) json.get("group_id2")));
+        int groupId1 = Math.toIntExact(Math.round((double) json.get("group_id1")));
+        int groupId2 = Math.toIntExact(Math.round((double) json.get("group_id2")));
 
-        if(!isGroupAdmin(group_id1,userId)){
+        if(!isGroupAdmin(groupId1,userId)){
             return error401Post();
         }
 
-        if(groupModel.addGroupToGroup(Integer.valueOf(group_id1),Integer.valueOf(group_id2)) > 0){
+        if(groupModel.addGroupToGroup(groupId1, groupId2) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
@@ -219,7 +243,7 @@ public class GroupController {
         for(Map<String,Object> user:users){
             if(user.containsKey("Users_id") &&
                     (int)user.get("Users_id")==userId &&
-                    (boolean)user.get("is_admin")){
+                    ((int)user.get("is_admin")==1)){
                 return true;
             }
         }

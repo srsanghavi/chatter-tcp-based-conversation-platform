@@ -1,17 +1,12 @@
 package edu.northeastern.ccs.im.database;
 
-import edu.northeastern.ccs.im.Message;
-import edu.northeastern.ccs.im.group.Group;
-
-import javax.jws.WebParam;
-
 /**
  * The type Model factory.
  */
 public class ModelFactory {
 
     private static ModelFactory modelFactory = null;
-    private static DataCon conn;
+    private static DataCon conn = new MysqlCon();
 
     private ModelFactory() {
         conn = new MysqlCon();

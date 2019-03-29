@@ -1,5 +1,7 @@
 package edu.northeastern.ccs.im.group;
 
+import edu.northeastern.ccs.im.ChatLogger;
+import edu.northeastern.ccs.im.Controller.GroupController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
@@ -25,6 +27,7 @@ public class GroupTest {
     group.makeGroupPrivate();
     assertEquals(false,group.getSearchable());
   }
+
 
 
 }
