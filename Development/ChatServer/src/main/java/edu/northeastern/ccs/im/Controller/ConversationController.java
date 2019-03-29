@@ -81,7 +81,7 @@ public class ConversationController {
             return error401();
         }
 
-        return conversationModel.getMessagesForConversation(Integer.valueOf(conversationId));
+        return conversationModel.getMessagesForConversation(conversationId);
     }
 
 
@@ -101,7 +101,7 @@ public class ConversationController {
         if(!isConversationParticipant(username,conversationId)){
             return error401();
         }
-        return conversationModel.getUsersInConversation(Integer.valueOf(conversationId));
+        return conversationModel.getUsersInConversation(conversationId);
     }
 
     /**
@@ -129,7 +129,7 @@ public class ConversationController {
             return error401();
         }
 
-        return conversationModel.getMessagesInThread(Integer.valueOf(threadId));
+        return conversationModel.getMessagesInThread(threadId);
     }
 
   /**
@@ -176,14 +176,11 @@ public class ConversationController {
             return json;
         }
         int senderId = Math.toIntExact(Math.round((double) json.get("sender_id")));
-//        int destinatonId = Math.toIntExact(Math.round((double) json.get("destination_id")));
         int conversationId = Math.toIntExact(Math.round((double) json.get("conversation_id")));
 
         Map<String, Object> sender = ModelFactory.getUserModel().getUser((senderId));
-//        Map<String, Object> destination = ModelFactory.getUserModel().getUser((destinatonId));
 
         String senderName = (String) sender.get("username");
-//        String destinationName = (String) destination.get("username");
 
         int threadId = Math.toIntExact(Math.round((double) json.get("thread_id")));
         String message = (String) json.get("message");
@@ -206,7 +203,7 @@ public class ConversationController {
         }
 
         String data = "{\"sender_name\":\""+senderName+"\",\"message\":\""+message+"\"}";
-        if(conversationModel.createMessageForThread(Integer.valueOf(threadId),Integer.valueOf(senderId),message)>0){
+        if(conversationModel.createMessageForThread(threadId, senderId,message)>0){
             Message msg = Message.makeNotificationMessage(senderName,data);
             for(String destinationName:destinationNames) {
                 Prattle.sendMessageToUser(destinationName, msg);
@@ -234,8 +231,8 @@ public class ConversationController {
             return json;
         }
         int threadId = Math.toIntExact(Math.round((double) json.get("thread_id")));
-        int conversation_id = Math.toIntExact(Math.round((double) json.get("conversation_id")));
-        if(conversationModel.createThreadForConversationByThreadID(threadId,conversation_id)>0){
+        int conversationId = Math.toIntExact(Math.round((double) json.get("conversation_id")));
+        if(conversationModel.createThreadForConversationByThreadID(threadId,conversationId)>0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
@@ -252,7 +249,7 @@ public class ConversationController {
      */
     public Map<String,Object> deleteMessage(Map<String,Object> json){
         int messageId = Math.toIntExact(Math.round((double) json.get("message_id")));
-        if(ModelFactory.getMessageModel().deleteMessage(Integer.valueOf(messageId)) > 0){
+        if(ModelFactory.getMessageModel().deleteMessage(messageId) > 0){
             json.put("result_code",201);
             json.put("result","OK");
             return json;
@@ -278,14 +275,14 @@ public class ConversationController {
         String text = (String) json.get("message");
         int sender = Math.toIntExact(Math.round((double) json.get("sender_id")));
         List<Map<String, Object>> conversations = conversationModel.getConversations(sender);
-        int conversation_id = -1;
-        int thread_id = -1;
-        int message_id = -1;
+        int conversationId = -1;
+        int threadId = -1;
+        int messageId = -1;
         for (Map<String, Object> conversation : conversations){
-            conversation_id = (Integer) conversation.get("id");
-            thread_id = conversationModel.createThreadForConversation(conversation_id);
-            message_id = conversationModel.createMessageForThread(thread_id, sender, text);
-            conversationModel.addMessageToThread(message_id, thread_id);
+            conversationId = (Integer) conversation.get("id");
+            threadId = conversationModel.createThreadForConversation(conversationId);
+            messageId = conversationModel.createMessageForThread(threadId, sender, text);
+            conversationModel.addMessageToThread(messageId, threadId);
         }
         json.put("result_code",201);
         json.put("result","OK");
@@ -326,9 +323,9 @@ public class ConversationController {
         List<Map<String, Object>> conversations = conversationModel.getConversations(userId);
 
         for(Map<String,Object> c:conversations) {
-            if (!conversations.isEmpty() &&
-                    conversations.get(0).containsKey("id") &&
-                    ((int) conversations.get(0).get("id") == conversationId)){
+            if(!conversations.isEmpty() &&
+                    c.containsKey("id") &&
+                    ((int) c.get("id") == conversationId)){
                 return true;
             }
         }
