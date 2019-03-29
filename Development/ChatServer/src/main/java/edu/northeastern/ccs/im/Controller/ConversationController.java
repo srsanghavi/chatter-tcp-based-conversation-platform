@@ -93,7 +93,7 @@ public class ConversationController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String,Object>> getUsersInConversation(String username,Map<String,Object> json) throws NoSuchFieldException {
-        if(json.containsKey("conversation_id")) {
+        if(!json.containsKey("conversation_id")) {
             throw new NoSuchFieldException();
         }
         int conversationId = Math.toIntExact(Math.round((double) json.getOrDefault("conversation_id", 0)));
