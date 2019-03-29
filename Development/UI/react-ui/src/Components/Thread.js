@@ -65,7 +65,7 @@ class Thread extends Component {
             return thread.id == this.props.match.params.threadId
         })[0].conversations_id;
         MessageActions.createMessageForThread(localStorage.getItem('username'), localStorage.getItem('id'),
-            this.props.match.params.threadId, this.state.newMessage, conversationId);
+            this.props.match.params.threadId, "\"" + this.state.newMessage + "\"", conversationId);
         this.setState({
             newMessage: ''
         })
@@ -120,7 +120,12 @@ class Thread extends Component {
                 return message.thread_id == this.props.match.params.threadId
             });
             return(
-                <MessageContainer messages={threadMessages}/>
+                <div>
+                    <MessageContainer messages={threadMessages}/>
+                    <ConversationFooter onChange={this.onMessageChange}
+                                        onClick={this.sendMessage}
+                                        value={this.state.newMessage}/>
+                </div>
             )
         }
     }
@@ -146,7 +151,6 @@ class Thread extends Component {
                         <ConversationHeader search={this.state.searchBar}
                                             searchClick={this.toggleSearch}
                                             inThread={true}
-                                            value={this.state.newMessage}
                                             conversationId={conversationId}/>
                     </div>
                     {this.renderSearchBar()}
@@ -155,8 +159,7 @@ class Thread extends Component {
                     {this.state.replies.map(message => {
                         return <p>{message.text}</p>
                     })}
-                    <ConversationFooter onChange={this.onMessageChange}
-                                        onClick={this.sendMessage}/>
+
                     {/*<ThreadContainer threads={this.state.threads}/>*/}
                     {/*<div className={css({paddingBottom: '5em'})}></div>*/}
                     {/*<ConversationFooter onChange={this.onMessageChange}*/}

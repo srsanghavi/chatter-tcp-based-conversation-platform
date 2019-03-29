@@ -109,7 +109,7 @@ class Conversation extends Component {
     sendMessage() {
         console.log(this.state.newMessage);
         MessageActions.createMessageForThread(localStorage.getItem('username'), localStorage.getItem('id'),
-            -1, this.state.newMessage, this.props.match.params.id);
+            -1, "\"" + this.state.newMessage + "\"", this.props.match.params.id);
         this.setState({
             newMessage: ''
         })
