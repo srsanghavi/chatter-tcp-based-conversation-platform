@@ -10,6 +10,11 @@ import java.util.Map;
  * The type User controller.
  */
 public class UserController {
+
+    private static String USERNAME = "username";
+    private static String RESULT_CODE = "result_code";
+    private static String RESULT = "result";
+
     /**
      * The User model.
      */
@@ -32,10 +37,10 @@ public class UserController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String, Object>> getUserByUsername(Map<String,Object> json) throws NoSuchFieldException {
-        if(!json.containsKey("username")){
+        if(!json.containsKey(USERNAME)){
             throw new NoSuchFieldException();
         }
-        String username = (String) json.getOrDefault("username",0);
+        String username = (String) json.getOrDefault(USERNAME,0);
         return userModel.getUserByUserName(username);
     }
 
@@ -48,25 +53,25 @@ public class UserController {
     public Map<String, Object> createUser(Map<String,Object> json){
         if(!json.containsKey("first_name") ||
             !json.containsKey("last_name") ||
-            !json.containsKey("username") ||
+            !json.containsKey(USERNAME) ||
             !json.containsKey("email") ||
             !json.containsKey("password")){
-            json.put("result_code",400);
-            json.put("result","error");
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,"error");
             json.put("error_message","Missing parameter");
             return json;
         }
         String firstName = (String) json.get("first_name");
         String lastName = (String) json.get("last_name");
 
-        String username = (String) json.get("username");
+        String username = (String) json.get(USERNAME);
         String email = (String) json.get("email");
         String password = (String) json.get("password");
 
         int r = userModel.createUser(username, email, password, firstName, lastName);
         if(r>0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }else {
             return error500(json);
@@ -83,16 +88,16 @@ public class UserController {
     public Map<String,Object> deleteUser(Map<String,Object> json){
         int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
         if(userModel.deleteUser(userId) > 0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }
         else return error500(json);
     }
 
     private Map<String, Object> error500(Map<String,Object> json){
-        json.put("result_code",500);
-        json.put("result","error");
+        json.put(RESULT_CODE,500);
+        json.put(RESULT,"error");
         json.put("result_message","Could not create a message");
         return json;
     }

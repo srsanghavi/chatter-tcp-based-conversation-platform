@@ -114,7 +114,7 @@ public class GroupModel {
      * @return the users
      */
     public List<Map<String, Object>> getUsers(Integer group_id) {
-        String query = "SELECT * FROM users WHERE id in (SELECT users_id FROM groups_has_users WHERE groups_id="+group_id;
+        String query = "SELECT * FROM users WHERE id in (SELECT users_id FROM groups_has_users WHERE groups_id="+group_id+")";
         List<Map<String, Object>> r = conn.sqlGet(query);
         return r;
   }

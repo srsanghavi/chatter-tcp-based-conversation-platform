@@ -7,6 +7,7 @@ package edu.northeastern.ccs.im.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Controller.ControllerFactory;
 import org.json.JSONObject;
 
@@ -200,7 +201,7 @@ public class Route {
                     jsonString, new TypeToken<HashMap<String, Object>>() {}.getType()
             );
         }catch (Exception e){
-            System.out.println(e);
+            ChatLogger.info(e.toString());
             return null;
         }
 
