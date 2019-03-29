@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
-import {css} from "emotion";
+import UserActions from "../Actions/UserActions";
 import UserStore from "../Store/UserStore";
+import {css} from "emotion";
 
-class Profile extends Component {
+class ProfileEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: this.props.match.params.id,
             username: '',
             firstName: '',
             lastName: '',
-            email: ''
-        }
+            email: '',
+            isSearchable: true
+        };
+
+        this.privateChange = this.privateChange.bind(this)
     }
 
     componentDidMount() {
@@ -22,12 +25,25 @@ class Profile extends Component {
             username: user[0].username,
             firstName: user[0].first_name,
             lastName: user[0].last_name,
-            email: user[0].email
+            email: user[0].email,
+            isSearchable: user[0].isSearchable
         })
     }
 
+    componentDidUpdate() {
+        console.log(this.state.isSearchable)
+    }
+
+    privateChange() {
+        this.setState({
+            isSearchable: !this.state.isSearchable
+        });
+    }
+
+
+
     render() {
-        return (
+        return(
             <div className={css({
                 display: 'flex',
                 flexDirection: 'column',
@@ -41,16 +57,16 @@ class Profile extends Component {
                     alignSelf: 'center'
                 })}>
                     <img src="../images/image.png" height="75" width="75"
-                         className={css({
-                             borderRadius: 50
-                         })}/>
+                          className={css({
+                              borderRadius: 50
+                          })}/>
                 </div>
                 <div className={css({
                     "& label": {
                         width: '35%',
                         float: 'left',
                         fontFamily: 'Titillium Web',
-                        fontWeight: 'bold',
+                        fontWeight: 'bold'
                     },
                     "& label.switch": {
                         float: 'none',
@@ -61,44 +77,56 @@ class Profile extends Component {
                         backgroundColor: 'white',
                         textAlign: 'left',
                         fontFamily: 'Titillium Web',
-                        fontWeight: 'bold',
+                        fontWeight: 'bold'
                     },
                     "& p": {
-                        margin: '0.3em !important',
+                        margin: '0.3em !important'
                     }
                 })}>
                     <p>
                         <label>Username:</label>
                         <input type="text"
                                className="input-group-text"
-                               value={this.state.username}
-                               readOnly/>
+                               value={this.state.username}/>
                     </p>
                     <p>
                         <label>First Name:</label>
                         <input type="text"
                                className="input-group-text"
-                               value={this.state.firstName}
-                               readOnly/>
+                               value={this.state.firstName}/>
                     </p>
                     <p>
                         <label>Last Name:</label>
                         <input type="text"
                                className="input-group-text"
-                               value={this.state.lastName}
-                               readOnly/>
+                               value={this.state.lastName}/>
                     </p>
                     <p>
                         <label>Email:</label>
                         <input type="email"
                                className="input-group-text"
-                               value={this.state.email}
-                               readOnly/>
+                               value={this.state.email}/>
                     </p>
+                    {/*<p>*/}
+                        {/*<label>Date Joined:</label>*/}
+                        {/*<h6>{this.state.createdDate}</h6>*/}
+                    {/*</p>*/}
+                    <p>
+                        <label>Private:</label>
+                        <label className="switch">
+                            <input type="checkbox"
+                                   checked={!this.state.isSearchable}
+                                   onChange={this.privateChange}/>
+                            <span className="slider round"></span>
+                        </label>
+                    </p>
+                    <button onClick={() => console.log(this.state)}>
+                        Save
+                    </button>
                 </div>
             </div>
         )
     }
 }
 
-export default Profile;
+export default ProfileEdit;

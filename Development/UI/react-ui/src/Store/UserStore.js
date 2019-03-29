@@ -92,6 +92,13 @@ class UserStore extends EventEmitter {
     }
 
 
+    _clearAll() {
+        _user = undefined;
+        _users = undefined;
+        _signin = undefined;
+    }
+
+
     // Hooks a React component's callback to the CHANGED event.
     addChangeListener(callback) {
         this.on(CHANGE, callback);

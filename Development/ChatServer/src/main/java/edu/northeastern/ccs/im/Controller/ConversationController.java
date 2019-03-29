@@ -1,5 +1,6 @@
 package edu.northeastern.ccs.im.Controller;
 
+import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.database.ConversationModel;
 import edu.northeastern.ccs.im.database.ModelFactory;
@@ -69,7 +70,7 @@ public class ConversationController {
      * @throws NoSuchFieldException the no such field exception
      */
     public List<Map<String,Object>> getMessagesInConversation(String username,Map<String,Object> json) throws NoSuchFieldException {
-        if(json.containsKey("conversation_id")) {
+        if(!json.containsKey("conversation_id")) {
             throw new NoSuchFieldException();
         }
         int conversationId;
@@ -81,6 +82,7 @@ public class ConversationController {
 
         return conversationModel.getMessagesForConversation(Integer.valueOf(conversationId));
     }
+
 
     /**
      * Gets users in conversation.
@@ -108,12 +110,13 @@ public class ConversationController {
      * @return the messages in thread
      * @throws NoSuchFieldException the no such field exception
      */
-    public List<Map<String,Object>> getMessagesInThread(String username, Map<String,Object> json) throws NoSuchFieldException {
-        if(json.containsKey("thread_id")) {
+
+    public List<Map<String,Object>> getMessagesInThread(String username,Map<String,Object> json) throws NoSuchFieldException {
+        if(!json.containsKey("thread_id")) {
             throw new NoSuchFieldException();
         }
 
-        int threadId;
+        int threadId = Math.toIntExact(Math.round((double) json.getOrDefault("thread_id", 0)));
         threadId = Math.toIntExact(Math.round((double) json.getOrDefault("thread_id", 0)));
         List<Map<String, Object>> thread = conversationModel.getThread(threadId);
         if(thread.get(0).isEmpty() || !thread.get(0).containsKey("conversations_id")){
@@ -299,9 +302,15 @@ public class ConversationController {
     private Boolean isConversationParticipant(String username, int conversationId){
         int userId = ModelFactory.getUserModel().getUserID(username);
 
-        List<Map<String, Object>> conversations = conversationModel.getConversationsById(conversationId);
-        return (!conversations.isEmpty() &&
-                conversations.get(0).containsKey("user_id") &&
-                ((int)conversations.get(0).get("user_id")!=userId));
+        List<Map<String, Object>> conversations = conversationModel.getConversations(userId);
+
+        for(Map<String,Object> c:conversations) {
+            if (!conversations.isEmpty() &&
+                    conversations.get(0).containsKey("id") &&
+                    ((int) conversations.get(0).get("id") == conversationId)){
+                return true;
+            }
+        }
+        return false;
     }
 }
