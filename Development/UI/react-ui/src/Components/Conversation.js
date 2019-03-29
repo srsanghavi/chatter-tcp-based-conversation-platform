@@ -3,7 +3,6 @@ import {css} from 'emotion';
 import ConversationHeader from "./ConversationHeader";
 import ConversationFooter from "./ConversationFooter";
 import ThreadContainer from "./ThreadContainer";
-import DataService from "./Data";
 import SearchBar from "./SearchBar";
 import  { Redirect } from 'react-router-dom'
 import ThreadActions from "../Actions/ThreadActions";
@@ -25,7 +24,6 @@ class Conversation extends Component {
             id: this.props.match.params.id,
             searchBar: false,
             search: '',
-            newMessageText: '',
             threads: [],
             messages: [],
             newMessage: '',
@@ -109,26 +107,17 @@ class Conversation extends Component {
     }
 
     sendMessage() {
-        console.log(this.state.newMessageText);
+        console.log(this.state.newMessage);
+        MessageActions.createMessageForThread(localStorage.getItem('username'), localStorage.getItem('id'),
+            -1, this.state.newMessage, this.props.match.params.id);
+        this.setState({
+            newMessage: ''
+        })
     }
-    //
-    //     const thread = {
-    //         conversation_id: this.state.conversation,
-    //         messages: [message]
-    //     };
-    //
-    //     DataService.addThreadToConversation(this.state.conversation, thread);
-    //     this.getThreads();
-    //     this.setState({
-    //         newMessageText: ''
-    //     });
-    //     window.scrollTo(0, document.body.scrollHeight);
-    //
-    // }
-    //
+
 
     onMessageChange = (event) => {
-        this.setState({ newMessageText: event.target.value })
+        this.setState({ newMessage: event.target.value })
     };
 
 
@@ -178,7 +167,8 @@ class Conversation extends Component {
                     <ThreadContainer threads={this.state.threads}
                                      messages={this.state.messages}/>
                     <ConversationFooter onChange={this.onMessageChange}
-                                        onClick={this.sendMessage}/>
+                                        onClick={this.sendMessage}
+                                        value={this.state.newMessage}/>
                 </div>
             )
         }

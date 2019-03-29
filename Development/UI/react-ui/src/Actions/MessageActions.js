@@ -24,6 +24,12 @@ class MessageActions {
         });
     }
 
+    createMessageForThread(username, userId, threadId, messageText, conversationId) {
+        api.createMessageForThread(username, userId, threadId, messageText, conversationId).then(value => {
+            console.log(value)
+        })
+    }
+
 }
 
 export default new MessageActions();

@@ -61,11 +61,18 @@ class Thread extends Component {
 
 
     sendMessage() {
-        console.log(this.state.newMessageText);
+        const conversationId = JSON.parse(ThreadStore._getThreads()).result.filter(thread => {
+            return thread.id == this.props.match.params.threadId
+        })[0].conversations_id;
+        MessageActions.createMessageForThread(localStorage.getItem('username'), localStorage.getItem('id'),
+            this.props.match.params.threadId, this.state.newMessage, conversationId);
+        this.setState({
+            newMessage: ''
+        })
     }
 
     onMessageChange = (event) => {
-        this.setState({ newMessageText: event.target.value })
+        this.setState({ newMessage: event.target.value })
     };
 
 
@@ -139,6 +146,7 @@ class Thread extends Component {
                         <ConversationHeader search={this.state.searchBar}
                                             searchClick={this.toggleSearch}
                                             inThread={true}
+                                            value={this.state.newMessage}
                                             conversationId={conversationId}/>
                     </div>
                     {this.renderSearchBar()}

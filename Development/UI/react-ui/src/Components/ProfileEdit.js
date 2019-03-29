@@ -107,10 +107,6 @@ class ProfileEdit extends Component {
                                className="input-group-text"
                                value={this.state.email}/>
                     </p>
-                    {/*<p>*/}
-                        {/*<label>Date Joined:</label>*/}
-                        {/*<h6>{this.state.createdDate}</h6>*/}
-                    {/*</p>*/}
                     <p>
                         <label>Private:</label>
                         <label className="switch">

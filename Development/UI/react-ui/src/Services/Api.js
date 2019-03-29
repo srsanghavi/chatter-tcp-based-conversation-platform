@@ -70,6 +70,7 @@ export default class Api {
 
     getMessagesInConversation(username,conversationId) {
         let msg = this.messageType.makeApiMessage(username,"getMessagesInConversation/::GET::{conversation_id:"+conversationId+"}");
+        console.log(msg)
         gateway.sendTcp(msg);
         return this.promise();
     }
@@ -89,6 +90,14 @@ export default class Api {
     getAllGroups(username) {
         let msg = this.messageType.makeApiMessage(username,"getAllGroups/::GET::{}");
         gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    createMessageForThread(username, userId, threadId, messageText, conversationId) {
+        let msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
+            "sender_id:"+userId+",thread_id:"+threadId+",message:"+messageText+",conversation_id:"+conversationId+"}");
+        gateway.sendTcp(msg);
+        console.log(msg)
         return this.promise();
     }
 }
