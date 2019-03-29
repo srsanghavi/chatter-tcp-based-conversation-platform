@@ -15,7 +15,7 @@ public class GroupController {
     /**
      * The Group model.
      */
-    GroupModel groupModel = ModelFactory.getGroupModel();
+    GroupModel groupModel = ModelFactory.getInstance().getGroupModel();
 
     /**
      * Get all groups list.

@@ -14,7 +14,7 @@ public class ConversationModelTest {
 
     @BeforeEach
     void setup(){
-        conversationModel = ModelFactory.getConversationModel();
+        conversationModel = ModelFactory.getInstance().getConversationModel();
     }
     @Test
     public void createConversation(){

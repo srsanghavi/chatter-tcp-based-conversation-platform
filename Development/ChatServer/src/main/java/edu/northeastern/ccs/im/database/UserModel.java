@@ -19,7 +19,7 @@ public class UserModel {
      * Instantiates a new UserModel db.
      */
     public UserModel(DataCon connection){
-        conn = connection.getInstance();
+        conn = connection;
     }
 
     /**

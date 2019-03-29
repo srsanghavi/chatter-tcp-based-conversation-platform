@@ -14,7 +14,7 @@ public class UserModelTest {
     UserModel userModel;
     @BeforeEach
     public void setup(){
-        userModel = ModelFactory.getUserModel();
+        userModel = ModelFactory.getInstance().getUserModel();
     }
     @Test
     public void testCreateUser(){

@@ -3,13 +3,26 @@ package edu.northeastern.ccs.im.database;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.group.Group;
 
+import javax.jws.WebParam;
+
 /**
  * The type Model factory.
  */
 public class ModelFactory {
 
-    private static MysqlCon mysqlCon;
-    private static DataCon conn = mysqlCon.getInstance();
+    private static ModelFactory modelFactory = null;
+    private static DataCon conn;
+
+    private ModelFactory() {
+        conn = new MysqlCon();
+    }
+
+    public static ModelFactory getInstance(){
+        if (modelFactory == null){
+            modelFactory = new ModelFactory();
+        }
+        return modelFactory;
+    }
 
     /**
      * Get user model user model.

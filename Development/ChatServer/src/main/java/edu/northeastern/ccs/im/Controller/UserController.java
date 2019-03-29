@@ -13,7 +13,7 @@ public class UserController {
     /**
      * The User model.
      */
-    UserModel userModel = ModelFactory.getUserModel();
+    static UserModel userModel = ModelFactory.getInstance().getUserModel();
 
     /**
      * Get users list.

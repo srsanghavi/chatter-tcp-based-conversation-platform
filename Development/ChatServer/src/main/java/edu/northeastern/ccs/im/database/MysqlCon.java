@@ -18,7 +18,7 @@ import java.io.File;
  * The type Mysql con.
  */
 public class MysqlCon implements DataCon{
-    private static MysqlCon mySqlCon = null;
+    private MysqlCon mySqlCon = null;
     private static final String VALUE = "value";
     private Connection con;
     private String hostname;
@@ -47,7 +47,7 @@ public class MysqlCon implements DataCon{
         }
     }
 
-    private MysqlCon(){
+    public MysqlCon(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
             setDBConf();

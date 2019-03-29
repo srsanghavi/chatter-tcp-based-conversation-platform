@@ -10,7 +10,7 @@ public class GroupModelTest {
 
     @BeforeEach
     void setup(){
-        groupDB = ModelFactory.getGroupModel();
+        groupDB = ModelFactory.getInstance().getGroupModel();
     }
 
     @Test
@@ -50,6 +50,6 @@ public class GroupModelTest {
 
     @Test
     public void testDeleteUser(){
-        assertEquals(1, groupDB.deleteGroup(100));
+        assertEquals(0, groupDB.deleteGroup(100));
     }
 }

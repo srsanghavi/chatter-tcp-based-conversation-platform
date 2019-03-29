@@ -16,7 +16,7 @@ import static junit.framework.TestCase.assertFalse;
 
 public class MysqlConTest {
 
-    private static MysqlCon mysqlCon;
+    private static MysqlCon mysqlCon = new MysqlCon();
     private static DataCon conn = mysqlCon.getInstance();
     /**
      * Test db connection

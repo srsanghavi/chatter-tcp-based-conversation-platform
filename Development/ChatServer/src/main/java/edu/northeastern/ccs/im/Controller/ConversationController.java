@@ -17,7 +17,7 @@ public class ConversationController {
     /**
      * The Conversation model.
      */
-    ConversationModel conversationModel = ModelFactory.getConversationModel();
+    ConversationModel conversationModel = ModelFactory.getInstance().getConversationModel();
 
     /**
      * Gets user conversations.
