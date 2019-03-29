@@ -53,7 +53,7 @@ public class UserController {
     public Map<String, Object> createUser(Map<String,Object> json){
         if(!json.containsKey("first_name") ||
             !json.containsKey("last_name") ||
-            !json.containsKey("username") ||
+            !json.containsKey(USERNAME) ||
             !json.containsKey("email") ||
             !json.containsKey("password")){
             json.put(RESULT_CODE,400);
@@ -64,7 +64,7 @@ public class UserController {
         String firstName = (String) json.get("first_name");
         String lastName = (String) json.get("last_name");
 
-        String username = (String) json.get("username");
+        String username = (String) json.get(USERNAME);
         String email = (String) json.get("email");
         String password = (String) json.get("password");
 
@@ -88,16 +88,16 @@ public class UserController {
     public Map<String,Object> deleteUser(Map<String,Object> json){
         int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
         if(userModel.deleteUser(userId) > 0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }
         else return error500(json);
     }
 
     private Map<String, Object> error500(Map<String,Object> json){
-        json.put("result_code",500);
-        json.put("result","error");
+        json.put(RESULT_CODE,500);
+        json.put(RESULT,"error");
         json.put("result_message","Could not create a message");
         return json;
     }

@@ -130,7 +130,6 @@ public class ConversationController {
 
         int threadId = Math.toIntExact(Math.round((double) json.getOrDefault(THREAD_ID, 0)));
         List<Map<String, Object>> thread = conversationModel.getThread(threadId);
-        System.out.println(thread);
         if(thread.get(0).isEmpty() || !thread.get(0).containsKey(CONVERSATIONS_ID)){
             return error400();
         }
@@ -261,8 +260,8 @@ public class ConversationController {
     public Map<String,Object> deleteMessage(Map<String,Object> json){
         int messageId = Math.toIntExact(Math.round((double) json.get("message_id")));
         if(ModelFactory.getMessageModel().deleteMessage(messageId) > 0){
-            json.put("result_code",201);
-            json.put("result","OK");
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
             return json;
         }
         else
@@ -276,27 +275,27 @@ public class ConversationController {
      * @return the map
      */
     public Map<String, Object> broadCastMessage(Map<String,Object> json){
-        if(!json.containsKey("message") ||
-        !json.containsKey("sender_id")){
-            json.put("result_code",400);
-            json.put("result","error");
-            json.put("error_message","Missing parameter");
+        if(!json.containsKey(MESSAGE) ||
+        !json.containsKey(SENDER_ID)){
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,"error");
+            json.put(ERROR_MESSAGE,"Missing parameter");
             return json;
         }
-        String text = (String) json.get("message");
-        int sender = Math.toIntExact(Math.round((double) json.get("sender_id")));
+        String text = (String) json.get(MESSAGE);
+        int sender = Math.toIntExact(Math.round((double) json.get(SENDER_ID)));
         List<Map<String, Object>> conversations = conversationModel.getConversations(sender);
-        int conversationId = -1;
-        int threadId = -1;
-        int messageId = -1;
+        int conversationId;
+        int threadId;
+        int messageId;
         for (Map<String, Object> conversation : conversations){
             conversationId = (Integer) conversation.get("id");
             threadId = conversationModel.createThreadForConversation(conversationId);
             messageId = conversationModel.createMessageForThread(threadId, sender, text);
             conversationModel.addMessageToThread(messageId, threadId);
         }
-        json.put("result_code",201);
-        json.put("result","OK");
+        json.put(RESULT_CODE,201);
+        json.put(RESULT,"OK");
         return json;
     }
     private Map<String, Object> error500(Map<String,Object> json){
