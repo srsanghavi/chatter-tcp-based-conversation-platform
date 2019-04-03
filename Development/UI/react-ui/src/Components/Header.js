@@ -3,6 +3,9 @@ import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
 
 const Header = props => {
+
+    const PATH = window.location.pathname.split('/');
+
     return (
         <div className={css({
             display: 'flex',
