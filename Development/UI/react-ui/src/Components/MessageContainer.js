@@ -18,24 +18,45 @@ const MessageContainer = props => {
         }
     }
 
+    let firstMessage = props.messages.shift();
+
     if(props.messages == null || props.messages == undefined || props.messages == []) {
         return null
     } else {
         return (
-            <div className={css({
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: '100%',
-                overflowX: 'hidden',
-                paddingBottom: '5em',
-            })}>
-                {props.messages.map(message => {
-                    return (
-                        <Message key={message.id}
-                                 message={message}/>
-                    )
-                })}
+            <div>
+                <div className={css({
+                    border: '1px solid black',
+                    backgroundColor: '#eed6c1',
+                    padding: '0.5em',
+                    marginBottom: '0.5em',
+                    fontWeight: 'bold',
+                    boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
+                })}>
+                    <h5 className={css({
+                        textDecoration: 'underline'
+                    })}>Viewing Thread:</h5>
+                    <h6 className={css({
+                        opacity: '0.75',
+                        fontSize: '0.8em',
+                    })}>{firstMessage.displayDate}</h6>
+                    <h6>{firstMessage.text}</h6>
+                </div>
+                <div className={css({
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    height: '100%',
+                    overflowX: 'hidden',
+                    paddingBottom: '5em',
+                })}>
+                    {props.messages.map(message => {
+                        return (
+                            <Message key={message.id}
+                                     message={message}/>
+                        )
+                    })}
+                </div>
             </div>
         )
     }

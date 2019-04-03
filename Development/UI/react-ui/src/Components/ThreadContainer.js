@@ -18,7 +18,6 @@ const ThreadContainer = props => {
         }
     }
 
-
     if(props.threads == null || props.threads == undefined || props.threads == []) {
         return null
     } else {
