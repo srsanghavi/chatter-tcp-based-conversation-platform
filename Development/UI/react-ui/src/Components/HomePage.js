@@ -85,9 +85,13 @@ class HomePage extends Component {
         ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
-    componentDidUpdate() {
-    }
 
+  /*  componentDidUpdate() {
+        //UserActions.getUsers(this.state.user.username)
+        //ConversationActions.getConversations(this.state.user.username, this.state.user.id)
+        //console.log(ConversationStore._getConversations())
+    }
+    */
     _onChange() {
     }
 
