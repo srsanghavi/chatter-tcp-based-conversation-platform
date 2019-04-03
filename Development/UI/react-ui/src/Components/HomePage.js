@@ -86,16 +86,13 @@ class HomePage extends Component {
     }
 
     componentDidUpdate() {
-        //UserActions.getUsers(this.state.user.username)
-        //ConversationActions.getConversations(this.state.user.username, this.state.user.id)
-        //console.log(ConversationStore._getConversations())
     }
 
     _onChange() {
     }
 
     _onConversationsChanged(){
-        var conv = ConversationStore.getConversations();
+        var conv = ConversationStore._getConversations();
     }
 
     conversationTabSelected() {
