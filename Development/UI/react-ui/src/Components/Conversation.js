@@ -6,11 +6,9 @@ import ThreadContainer from "./ThreadContainer";
 import SearchBar from "./SearchBar";
 import  { Redirect } from 'react-router-dom'
 import ThreadActions from "../Actions/ThreadActions";
-import UserStore from "../Store/UserStore";
 import ThreadStore from "../Store/ThreadStore";
 import MessageActions from "../Actions/MessageActions";
 import MessageStore from "../Store/MessageStore";
-import LoadingMessages from "./LoadingMessages";
 import ConversationStore from "../Store/ConversationStore";
 
 
@@ -48,18 +46,18 @@ class Conversation extends Component {
 
     componentDidMount() {
         this.interval = setInterval(() => this.update(), INTERVAL);
-        if(MessageStore._getMessages() != undefined &&
+        if(MessageStore._getMessages() !== undefined &&
             JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
             this.updateThreads();
             window.scrollTo(0, document.body.scrollHeight);
         } else {
-            if(ThreadStore._getThreads() != undefined) {
+            if(ThreadStore._getThreads() !== undefined) {
                 this.setState({
                     previousThreadCount: this.state.threads.length,
                     threads: JSON.parse(ThreadStore._getThreads()).result
                 })
             }
-            if(MessageStore._getMessages() != undefined) {
+            if(MessageStore._getMessages() !== undefined) {
                 this.setState({
                     messages: JSON.parse(MessageStore._getMessages()).result
                 })
@@ -74,22 +72,22 @@ class Conversation extends Component {
 
     update() {
         let conversation = JSON.parse(ConversationStore._getConversations()).result.filter(conv => {
-            return conv.id == this.props.match.params.id
+            return conv.id === this.props.match.params.id
         })
         console.log(conversation)
         console.log(this.state)
-        if(MessageStore._getMessages() != undefined &&
+        if(MessageStore._getMessages() !== undefined &&
             JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
             this.updateThreads();
             window.scrollTo(0, document.body.scrollHeight);
         } else {
-            if(ThreadStore._getThreads() != undefined) {
+            if(ThreadStore._getThreads() !== undefined) {
                 this.setState({
                     previousThreadCount: this.state.threads.length,
                     threads: JSON.parse(ThreadStore._getThreads()).result
                 })
             }
-            if(MessageStore._getMessages() != undefined) {
+            if(MessageStore._getMessages() !== undefined) {
                 this.setState({
                     messages: JSON.parse(MessageStore._getMessages()).result
                 })
@@ -99,13 +97,13 @@ class Conversation extends Component {
     }
 
     updateThreads() {
-        if(ThreadStore._getThreads() != undefined) {
+        if(ThreadStore._getThreads() !== undefined) {
             this.setState({
                 previousThreadCount: this.state.threads.length,
                 threads: JSON.parse(ThreadStore._getThreads()).result
             })
         }
-        if(MessageStore._getMessages() != undefined) {
+        if(MessageStore._getMessages() !== undefined) {
             this.setState({
                 messages: JSON.parse(MessageStore._getMessages()).result
             })
@@ -150,7 +148,7 @@ class Conversation extends Component {
     }
 
     renderThreads() {
-        if((ThreadStore._getThreads() == undefined || MessageStore._getMessages() == undefined)
+        if((ThreadStore._getThreads() === undefined || MessageStore._getMessages() === undefined)
                 && this.state.threads.length === 0) {
             return(
                 <div className={css({

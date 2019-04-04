@@ -25,7 +25,7 @@ const UserPreviews = props => {
                 <span className={css({
                     width: '25%',
                 })}>
-                    <img src="./images/image.png" height="60" width="60"
+                    <img src="./images/image.png" height="60" width="60" alt=""
                          className={css({
                              borderRadius: 50,
                          })}/>

@@ -16,7 +16,7 @@ class Profile extends Component {
 
     componentDidMount() {
         let user = JSON.parse(UserStore._getUsers()).result.filter(user => {
-            return user.id == this.props.match.params.id
+            return user.id === this.props.match.params.id
         });
         this.setState({
             username: user[0].username,
@@ -40,7 +40,7 @@ class Profile extends Component {
                     padding: '1em',
                     alignSelf: 'center'
                 })}>
-                    <img src="../images/image.png" height="75" width="75"
+                    <img src="../images/image.png" alt="" height="75" width="75"
                          className={css({
                              borderRadius: 50
                          })}/>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import {css} from "emotion";
-import GroupActions from "../Actions/GroupActions";
 import GroupMember from './GroupMember'
-import GroupStore from "../Store/GroupStore";
 
 class GroupMembers extends Component {
     constructor(props) {

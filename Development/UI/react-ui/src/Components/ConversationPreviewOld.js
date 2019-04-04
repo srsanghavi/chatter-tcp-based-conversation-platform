@@ -32,7 +32,7 @@ class ConversationPreviewOld extends Component {
                         name: response.name
                     })
                 } else if(DataService.isUserConversation(this.state.conversation.id)) {
-                    DataService.getUserById(response.users.find(user => user.id != localStorage.getItem('id')).id)
+                    DataService.getUserById(response.users.find(user => user.id !== localStorage.getItem('id')).id)
                         .then(user => {
                             this.setState({
                                 name: user.username
@@ -73,7 +73,7 @@ class ConversationPreviewOld extends Component {
                     overflow: 'hidden',
                     //padding: '0 0.5em 0 0.5em',
                 })}>
-                <img src="./images/image.png" height="60" width="60"
+                <img src="./images/image.png" height="60" width="60" alt=""
                      className={css({
                          borderRadius: 50,
                      })}/>

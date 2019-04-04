@@ -1,6 +1,5 @@
 import React from 'react';
 import {css} from 'emotion';
-import { NavLink } from 'react-router-dom';
 
 const GroupPreviews = props => {
     return (

@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import {css} from 'emotion';
 import Header from './Header'
 import Footer from './Footer'
-import DataService from "./Data";
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
-import UserActions from '../Actions/UserActions';
-import ConversationActions from "../Actions/ConversationActions";
 import ConversationStore from "../Store/ConversationStore";
 import Conversation from "./Conversation";
-import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import Settings from './Settings';
 import ConversationContainer from './ConversationContainer';
 import UserSearch from './UserSearch';
@@ -18,16 +15,14 @@ import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
 import GroupOrUserBar from "./GroupOrUserBar";
-import GroupActions from "../Actions/GroupActions";
 import GroupStore from "../Store/GroupStore";
 import MessageActions from "../Actions/MessageActions";
-import GroupMembers from './GroupMembers'
 
-const tab = {
-    CONVERSATIONS: 'conversations',
-    SETTINGS: 'settings',
-    PROFILE: 'profile'
-};
+// const tab = {
+//     CONVERSATIONS: 'conversations',
+//     SETTINGS: 'settings',
+//     PROFILE: 'profile'
+// };
 
 class HomePage extends Component {
     constructor(props) {
@@ -96,7 +91,7 @@ class HomePage extends Component {
     }
 
     _onConversationsChanged(){
-        var conv = ConversationStore._getConversations();
+        // var conv = ConversationStore._getConversations();
     }
 
     conversationTabSelected() {
@@ -217,7 +212,7 @@ class HomePage extends Component {
     render() {
         const filteredUsers = this.state.users.filter(user => {
             return (
-                user.id != this.state.user.id &&
+                user.id !== this.state.user.id &&
                 user.isSearchable &&
                 !user.deleted &&
                 (user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||

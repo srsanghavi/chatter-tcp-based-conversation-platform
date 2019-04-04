@@ -1,6 +1,5 @@
 import React from 'react';
 import {css} from 'emotion';
-import { NavLink } from 'react-router-dom';
 
 const GroupMember = props => {
     return (
@@ -27,7 +26,7 @@ const GroupMember = props => {
                     width: '70%'
                 })}>
                     <h5>{props.user.name}</h5>
-                    <h6 className={css({opacity: '0.5'})}></h6>
+                    {/* <h6 className={css({opacity: '0.5'})}></h6> */}
                 </span>
                 <span className={css({
                     width: '25%',

@@ -15,7 +15,7 @@ const ConversationContainer = props => {
             {props.conversations.map(conversation => {
                 let user = props.users.filter(user => {
                     return (user.id === conversation.Users_id || user.id === conversation.Users_id1)
-                        && user.id != localStorage.getItem('id')
+                        && user.id !== localStorage.getItem('id')
                         && (user.first_name.toUpperCase().includes(props.search.toUpperCase()) ||
                             user.last_name.toUpperCase().includes(props.search.toUpperCase()) ||
                             user.username.toUpperCase().includes(props.search.toUpperCase()))

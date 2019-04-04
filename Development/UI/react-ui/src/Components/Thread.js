@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import {css} from 'emotion';
 import ConversationHeader from "./ConversationHeader";
 import ConversationFooter from "./ConversationFooter";
-import ThreadContainer from "./ThreadContainer";
 import SearchBar from "./SearchBar";
 import  { Redirect } from 'react-router-dom'
-import ThreadActions from "../Actions/ThreadActions";
 import ThreadStore from "../Store/ThreadStore";
 import MessageActions from "../Actions/MessageActions";
 import MessageStore from "../Store/MessageStore";
@@ -39,7 +37,7 @@ class Thread extends Component {
 
     componentDidMount() {
         this.interval = setInterval(() => this.update(), INTERVAL);
-        if(MessageStore._getThreadMessages() != undefined) {
+        if(MessageStore._getThreadMessages() !== undefined) {
             this.setState({
                 previousMessageCount: this.state.messages.length,
                 messages: JSON.parse(MessageStore._getThreadMessages()).result
@@ -53,7 +51,7 @@ class Thread extends Component {
     }
 
     update() {
-        if(MessageStore._getThreadMessages() != undefined) {
+        if(MessageStore._getThreadMessages() !== undefined) {
             this.setState({
                 previousMessageCount: this.state.messages.length,
                 messages: JSON.parse(MessageStore._getThreadMessages()).result
@@ -65,7 +63,7 @@ class Thread extends Component {
 
     sendMessage() {
         const conversationId = JSON.parse(ThreadStore._getThreads()).result.filter(thread => {
-            return thread.id == this.props.match.params.threadId
+            return thread.id === this.props.match.params.threadId
         })[0].conversations_id;
         MessageActions.createMessageForThread(localStorage.getItem('username'), localStorage.getItem('id'),
             this.props.match.params.threadId, "\"" + this.state.newMessage + "\"", conversationId);
@@ -101,7 +99,7 @@ class Thread extends Component {
     }
 
     renderMessages() {
-        if(MessageStore._getThreadMessages() == undefined) {
+        if(MessageStore._getThreadMessages() === undefined) {
             return(
                 <div className={css({
                     textAlign: 'center',
@@ -120,7 +118,7 @@ class Thread extends Component {
             )
         } else {
             let threadMessages = this.state.messages.filter(message => {
-                return message.thread_id == this.props.match.params.threadId
+                return message.thread_id === this.props.match.params.threadId
             });
             return(
                 <div>
@@ -138,7 +136,7 @@ class Thread extends Component {
             window.scrollTo(0, document.body.scrollHeight);
         }
         const conversationId = JSON.parse(ThreadStore._getThreads()).result.filter(thread => {
-            return thread.id == this.props.match.params.threadId
+            return thread.id === this.props.match.params.threadId
         })[0].conversations_id;
         if (!(localStorage.getItem('loggedIn') === 'true')) {
             return <Redirect to='/login'/>

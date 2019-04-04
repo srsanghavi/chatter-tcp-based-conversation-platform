@@ -1,4 +1,3 @@
-import * as React from 'react';
 import moment from 'moment';
 
 
@@ -240,32 +239,33 @@ const DataService = {
     getConversationsForUser: id => {
         let userConversations = [];
         groups.map(group => {
-            if (group.users.filter(user => user.id == id).length > 0) {
-                userConversations.push(conversations.find(conv => conv.id == group.conversation_id))
+            if (group.users.filter(user => user.id === id).length > 0) {
+                userConversations.push(conversations.find(conv => conv.id === group.conversation_id))
             }
+            return;
         });
         users_converses_users.map(convo => {
-            if(convo.users.filter(user => user.id == id).length > 0) {
-                userConversations.push(conversations.find(conv => conv.id == convo.conversation_id))
+            if(convo.users.filter(user => user.id === id).length > 0) {
+                userConversations.push(conversations.find(conv => conv.id === convo.conversation_id))
             }
         });
         return Promise.resolve(userConversations)
     },
 
     getUserById: id => {
-        return Promise.resolve(users.find(user => user.id == id))
+        return Promise.resolve(users.find(user => user.id === id))
     },
 
     getGroupOrUserByConversationId: id => {
-        if(groups.find(group => group.conversation_id == id) == undefined) {
-            return Promise.resolve(users_converses_users.find(conv => conv.conversation_id == id));
+        if(groups.find(group => group.conversation_id === id) === undefined) {
+            return Promise.resolve(users_converses_users.find(conv => conv.conversation_id === id));
         } else {
-            return Promise.resolve(groups.find(group => group.conversation_id == id));
+            return Promise.resolve(groups.find(group => group.conversation_id === id));
         }
     },
 
     isGroupConversation: id => {
-        if(groups.filter(group => group.conversation_id == id).length > 0) {
+        if(groups.filter(group => group.conversation_id === id).length > 0) {
             return true;
         } else {
             return false;
@@ -273,7 +273,7 @@ const DataService = {
     },
 
     isUserConversation: id => {
-        if(users_converses_users.filter(conv => conv.conversation_id == id).length > 0) {
+        if(users_converses_users.filter(conv => conv.conversation_id === id).length > 0) {
             return true;
         } else {
             return false;
@@ -281,12 +281,12 @@ const DataService = {
     },
 
     getThreadsForConversation: id => {
-        let conversation = conversations.find(conv => conv.id == id);
+        let conversation = conversations.find(conv => conv.id === id);
         return Promise.resolve(conversation.threads)
     },
 
     addThreadToConversation: (id, thread) => {
-        conversations.find(conversation => conversation.id == id).threads.push(thread)
+        conversations.find(conversation => conversation.id === id).threads.push(thread)
     }
 };
 

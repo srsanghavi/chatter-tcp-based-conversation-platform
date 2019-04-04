@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import UserActions from "../Actions/UserActions";
 import UserStore from "../Store/UserStore";
 import {css} from "emotion";
 
@@ -19,7 +18,7 @@ class ProfileEdit extends Component {
 
     componentDidMount() {
         let user = JSON.parse(UserStore._getUsers()).result.filter(user => {
-            return user.id == this.props.match.params.id
+            return user.id === this.props.match.params.id
         });
         this.setState({
             username: user[0].username,
@@ -56,7 +55,7 @@ class ProfileEdit extends Component {
                     padding: '1em',
                     alignSelf: 'center'
                 })}>
-                    <img src="../images/image.png" height="75" width="75"
+                    <img src="../images/image.png" height="75" width="75" alt=""
                           className={css({
                               borderRadius: 50
                           })}/>

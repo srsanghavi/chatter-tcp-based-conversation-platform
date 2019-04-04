@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
-import ConversationStore from '../Store/ConversationStore';
 import {NavLink} from 'react-router-dom';
 import {css} from 'emotion';
 

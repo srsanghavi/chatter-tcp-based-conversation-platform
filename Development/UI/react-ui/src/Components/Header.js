@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 const Header = props => {
 
-    const PATH = window.location.pathname.split('/');
+    // const PATH = window.location.pathname.split('/');
 
     return (
         <div className={css({

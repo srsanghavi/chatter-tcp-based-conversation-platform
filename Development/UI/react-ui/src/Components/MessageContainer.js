@@ -20,7 +20,7 @@ const MessageContainer = props => {
 
     let firstMessage = props.messages.shift();
 
-    if(props.messages == null || props.messages == undefined || props.messages == []) {
+    if(props.messages === null || props.messages === undefined || props.messages === []) {
         return null
     } else {
         return (
