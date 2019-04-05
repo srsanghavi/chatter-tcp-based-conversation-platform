@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import Api from '../Services/Api';
-import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
 import {NavLink} from 'react-router-dom';
 import {css} from 'emotion';
+import AuthStore from '../Store/AuthStore';
+import {withRouter} from "react-router-dom";
+
 
 class Login extends Component {
     constructor(props) {
@@ -13,30 +15,32 @@ class Login extends Component {
             password: '',
         };
 
-        this.onUsernameChange = this.onUsernameChange.bind(this);
-        this.onPasswordChange = this.onPasswordChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.api = new Api();
         this._onChange = this._onChange.bind(this);
+
+        this.onUsernameChange = this.onUsernameChange.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillMount(){
-        UserStore.addChangeListener(this._onChange);
+        AuthStore.addChangeListener(this._onChange);
     }
 
     componentWillUnmount(){
-        UserStore.removeChangeListener(this._onChange);
+        AuthStore.removeChangeListener(this._onChange);
     }
 
-    componentDidMount() {
-        //console.log(localStorage.getItem('loggedIn'));
-    }
+
 
     _onChange(){
-        console.log("logged In");
-        // UserActions.getUsers('srsanghavi');
-        // setTimeout(function(){}, 3000);
-        // UserActions.getUserByUsername('srsanghavi');
+        const user = AuthStore._getAuthUser();
+        if(user===null){
+            alert("Could not sign in");
+        }else{
+            this.props.history.replace("./conversations");            
+        }
     }
 
     onUsernameChange(event) {
@@ -76,15 +80,10 @@ class Login extends Component {
                             value={this.state.password}
                             onChange={this.onPasswordChange}
                             required/>
-                        <NavLink to={'./authentication'}
-                                className={css({
-                                    textDecoration: 'none !important'
-                                })}>
                             <button className="btn btn-block btn-outline-primary"
                                     onClick={this.handleSubmit}>
                                 Log In
                             </button>
-                        </NavLink>
                     </div>
                 </div>
                 <h3 className="signin-text">Don't have an account?
@@ -102,4 +101,4 @@ class Login extends Component {
     }
 }
 
-export default Login
+export default withRouter(Login);

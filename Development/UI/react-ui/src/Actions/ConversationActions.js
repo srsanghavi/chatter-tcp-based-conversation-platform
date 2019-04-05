@@ -8,7 +8,6 @@ class ConversationActions {
 
     getConversations(username,userId){
         api.getConversations(username,userId).then(value => {
-            console.log(value);
             Dispatcher.dispatch({
                 actionType: ActionTypes.USER_CONVERSATIONS,
                 payload:    value, 
@@ -18,7 +17,6 @@ class ConversationActions {
 
     createUserUserConversation(username, userId1, userId2) {
         api.createUserUserConversation(username, userId1, userId2).then(value => {
-            console.log(value)
         })
     }
 

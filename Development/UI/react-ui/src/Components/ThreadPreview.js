@@ -1,6 +1,8 @@
 import React from 'react';
 import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
+import AuthStore from '../Store/AuthStore';
+
 
 const ThreadPreview = props => {
 
@@ -20,7 +22,7 @@ const ThreadPreview = props => {
                     <div className={css({
                         display: 'flex',
                         flexDirection: 'row',
-                        justifyContent: props.threadMessages[0].sender_id.toString() === localStorage.getItem('id') ?
+                        justifyContent: props.threadMessages[0].sender_id === AuthStore._getAuthUser().id ?
                                         'flex-end' : 'flex-start',
                         margin: '0.5em',
                         textAlign: 'left',

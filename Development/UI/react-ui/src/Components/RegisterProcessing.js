@@ -65,7 +65,6 @@ class RegisterProcessing extends Component {
     }
 
     registerUser() {
-        console.log(UserStore._getNewUser());
         let username = UserStore._getNewUser().username;
         let password = UserStore._getNewUser().password;
         let firstName = UserStore._getNewUser().firstName;

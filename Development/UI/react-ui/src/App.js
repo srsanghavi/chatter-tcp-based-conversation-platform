@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Switch, BrowserRouter} from 'react-router-dom';
+import {Route, Switch, BrowserRouter, withRouter} from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './App.css';
@@ -19,7 +19,6 @@ class App extends Component {
   render() {
       return (
           <div>
-              <BrowserRouter>
                   <Switch>
                       <Route path="/authentication">
                           {() => <LoginProcessing/>}
@@ -46,7 +45,6 @@ class App extends Component {
                              component={GroupMembers}>
                       </Route>
                   </Switch>
-              </BrowserRouter>
           </div>
     );
   }

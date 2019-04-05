@@ -7,6 +7,7 @@ const api = new Api();
 class UserActions {
     signin(username,password){
         api.signin(username,password).then(value => {
+            
           Dispatcher.dispatch({
               actionType: ActionTypes.ACCOUNT_SIGN_IN,
               payload:    value,
@@ -43,13 +44,11 @@ class UserActions {
 
     registerUser(sender, username, password, firstName, lastName, email) {
         api.registerUser(sender, username, password, firstName, lastName, email).then(value => {
-            console.log(value)
         })
     }
 
     deleteUser(username, userId) {
         api.deleteUser(username, userId).then(value => {
-            console.log(value)
         })
     }
 

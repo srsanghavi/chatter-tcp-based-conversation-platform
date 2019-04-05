@@ -30,7 +30,6 @@ class ProfileEdit extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.state.isSearchable)
     }
 
     privateChange() {
@@ -115,7 +114,7 @@ class ProfileEdit extends Component {
                             <span className="slider round"></span>
                         </label>
                     </p>
-                    <button onClick={() => console.log(this.state)}>
+                    <button>
                         Save
                     </button>
                 </div>

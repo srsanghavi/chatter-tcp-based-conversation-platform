@@ -40,7 +40,6 @@ class LoadingMessages extends Component {
     }
 
     update() {
-        console.log(this.state)
         if (!this.state.finishedLoading) {
             if (!this.state.threadsLoaded) {
                 this.loadThreads()

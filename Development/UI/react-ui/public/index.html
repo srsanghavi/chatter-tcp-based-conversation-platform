@@ -33,24 +33,31 @@
       var socket;
       window.newResponse = false;
       window.apiResponse = {};
+      window.newNoti = false;
+      window.newNotiContent = "";
       function connectTcp(){
-          var net = new WebTCP('ec2-18-221-137-248.us-east-2.compute.amazonaws.com', 9999);
-          //window.socket = net.createSocket("18.218.165.28", 4545);
-          //window.socket = net.createSocket("ec2-18-218-165-28.us-east-2.compute.amazonaws.com", 4545);
-          window.socket = net.createSocket("ec2-18-221-137-248.us-east-2.compute.amazonaws.com",4545);
+          // var net = new WebTCP('ec2-18-221-137-248.us-east-2.compute.amazonaws.com', 9999);
+          var net = new WebTCP('localhost', 9999);
+
+          // window.socket = net.createSocket("localhost", 4545);
+          window.socket = net.createSocket("localhost", 4545);
+          // window.socket = net.createSocket("ec2-18-221-137-248.us-east-2.compute.amazonaws.com",4545);
           // When the connection is open, send some data to the server
           window.socket.on('connect', function(){
               isRunning = true;
+              newResponse = false;
               console.log('connected');
           })
           // This gets called every time new data for this socket is received
           window.socket.on('data', function(data) {
+              
               if(isNotificationMessage(data)){
+                  window.newNoti = true;
                   data = data.split(" ");
                   data = data.slice(4);
                   data = data.join(" ");
                   data = JSON.parse(data);
-                  console.log(data);
+                  window.newNotiContent = data;
                   const name = data['sender_name'];
                   const message = data['message_text'];
                   var notification = new Notification("New message from "+name,{body:message});
@@ -61,9 +68,11 @@
               data = data.join(" ");
               window.newResponse = true;
               window.apiResponse = data;
+              console.log("Received: "+data);
+              
           });
           window.socket.on('end', function(data) {
-              console.log("socket is closed ");
+            console.log("socket is closed ");
           });
           return window.socket;
       }

@@ -43,12 +43,12 @@ class ThreadStore extends EventEmitter {
     }
 
     // Hooks a React component's callback to the CHANGED event.
-    addChangeListener(callback) {
+    addThreadsChangeListener(callback) {
         this.on(THREAD_CHANGED, callback);
     }
 
     // Removes the listener from the CHANGED event.
-    removeChangeListener(callback) {
+    removeThreadsChangeListener(callback) {
         this.removeListener(THREAD_CHANGED, callback);
     }
 }

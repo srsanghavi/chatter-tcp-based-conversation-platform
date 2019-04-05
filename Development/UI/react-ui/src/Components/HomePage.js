@@ -17,6 +17,9 @@ import Broadcast from './Broadcast'
 import GroupOrUserBar from "./GroupOrUserBar";
 import GroupStore from "../Store/GroupStore";
 import MessageActions from "../Actions/MessageActions";
+import ConversationActions from '../Actions/ConversationActions';
+import UserActions from '../Actions/UserActions';
+import AuthStore from '../Store/AuthStore';
 
 // const tab = {
 //     CONVERSATIONS: 'conversations',
@@ -59,19 +62,20 @@ class HomePage extends Component {
     }
 
     componentWillMount(){
+        console.log(AuthStore._getAuthUser());
         UserStore.addChangeListener(this._onChange);
         ConversationStore.addChangeListener(this._onConversationsChanged);
     }
 
 
     componentDidMount() {
+        const user = AuthStore._getAuthUser();
         this.setState({
-            user: JSON.parse(UserStore._getUser()).result[0],
-            users: JSON.parse(UserStore._getUsers()).result,
-            myGroups: JSON.parse(GroupStore._getGroups()).result,
-            groups: JSON.parse(GroupStore._getAllGroups()).result,
-            conversations: JSON.parse(ConversationStore._getConversations()).result
+            user: user,
+            conversations: ConversationStore._getConversations(),
         });
+        ConversationActions.getConversations(user.username,user.id);
+        
     }
 
     componentWillUnmount() {
@@ -81,17 +85,19 @@ class HomePage extends Component {
     }
 
 
-  /*  componentDidUpdate() {
-        //UserActions.getUsers(this.state.user.username)
-        //ConversationActions.getConversations(this.state.user.username, this.state.user.id)
-        //console.log(ConversationStore._getConversations())
-    }
-    */
+
     _onChange() {
     }
 
     _onConversationsChanged(){
-        // var conv = ConversationStore._getConversations();
+        const conversations = ConversationStore._getConversations();
+        this.setState({
+            // users: JSON.parse(UserStore._getUsers()).result,
+            // myGroups: JSON.parse(GroupStore._getGroups()).result,
+            // groups: JSON.parse(GroupStore._getAllGroups()).result,
+            conversations: conversations,
+        });
+        
     }
 
     conversationTabSelected() {

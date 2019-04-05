@@ -5,7 +5,6 @@ import ThreadStore from "../Store/ThreadStore";
 import MessageStore from "../Store/MessageStore";
 
 const ConversationPreview = props => {
-    console.log(props.user)
     return (
         <div className={css({
             display: 'flex',
@@ -36,7 +35,7 @@ const ConversationPreview = props => {
                 <span className={css({
                     width: '50%'
                 })}>
-                    <h5>{props.user.username}</h5>
+                    <h5>{props.conversation.destination_firstname} {props.conversation.destination_lastname}</h5>{props.conversation.destination_username}
                     <h6 className={css({opacity: '0.5'})}>{props.conversation.created_on}</h6>
                 </span>
                 <span className={css({

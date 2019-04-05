@@ -10,6 +10,7 @@ import ThreadStore from "../Store/ThreadStore";
 import MessageActions from "../Actions/MessageActions";
 import MessageStore from "../Store/MessageStore";
 import ConversationStore from "../Store/ConversationStore";
+import AuthStore from '../Store/AuthStore';
 
 
 // component updates every interval (in ms)
@@ -32,9 +33,87 @@ class Conversation extends Component {
         this.toggleSearch = this.toggleSearch.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
-        this.onMessageChange = this.onMessageChange.bind(this);
+        // this.onMessageChange = this.onMessageChange.bind(this);
+
+        this._onThreadsChanged = this._onThreadsChanged.bind(this);
+        this._onMessageschanged = this._onMessageschanged.bind(this);
+
+        this._onNewMessageReceieved = this._onNewMessageReceieved.bind(this);
+
     }
 
+    scrollToBottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+      
+
+    componentWillMount(){
+        ThreadStore.addThreadsChangeListener(this._onThreadsChanged);
+        MessageStore.addMessagesChangeListener(this._onMessageschanged);
+        MessageStore.addNewMessageListener(this._onNewMessageReceieved);
+        // console.log(this.props)
+        // ThreadActions.getThreadsInConversation(localStorage.getItem("username"),this.props.match.params.id);
+        MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,this.props.match.params.id);
+
+        this.interval = setInterval(() => this.newMessage(), INTERVAL);
+    }
+
+   
+    componentDidMount(){
+        this.scrollToBottom();
+    }
+    componentDidUpdate(){
+        this.scrollToBottom();
+    }
+
+    componentWillUnmount(){
+        ThreadStore.removeThreadsChangeListener(this._onThreadsChanged);
+        MessageStore.removeMessagesChangeListener(this._onMessageschanged);
+        MessageStore.removeNewMessageListener(this._onNewMessageReceieved);
+    }
+    _onThreadsChanged(){
+        const _threads = ThreadStore._getThreads();
+        console.log(_threads);
+        this.setState({
+            threads: _threads,
+        });
+    }
+
+    _onMessageschanged(){
+        const _messages = MessageStore._getMessages().result;
+        var _threads = new Set(_messages.map(msg => msg.thread_id));
+
+        var thread_messages = [];
+        _threads.forEach(t => {
+            thread_messages.push({
+                thread_id: t,
+                messages: _messages.filter(msg => msg.thread_id==t),
+            })
+        });
+
+        
+        this.setState({
+            threads: thread_messages,
+        })
+    }
+
+    _onNewMessageReceieved(){
+        console.log("new Message")
+        MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,this.props.match.params.id);
+    }
+
+    newMessage(){
+        if(window.newNoti){
+            const notiMessage =(window.newNotiContent);
+            console.log(notiMessage);
+            
+            if(notiMessage.conversation_id==this.props.match.params.id){
+                MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,this.props.match.params.id);
+            }
+            window.newNotiContent = "";
+            window.newNoti = false;
+        }
+    }
     // componentWillMount(){
     //     ThreadStore.addChangeListener(this._onChange);
     // }
@@ -44,79 +123,80 @@ class Conversation extends Component {
     //     clearInterval(this.interval);
     // }
 
-    componentDidMount() {
-        this.interval = setInterval(() => this.update(), INTERVAL);
-        if(MessageStore._getMessages() !== undefined &&
-            JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
-            this.updateThreads();
-            window.scrollTo(0, document.body.scrollHeight);
-        } else {
-            if(ThreadStore._getThreads() !== undefined) {
-                this.setState({
-                    previousThreadCount: this.state.threads.length,
-                    threads: JSON.parse(ThreadStore._getThreads()).result
-                })
-            }
-            if(MessageStore._getMessages() !== undefined) {
-                this.setState({
-                    messages: JSON.parse(MessageStore._getMessages()).result
-                })
-            }
-            MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
-        }
-    }
+    // componentDidMount() {
+    //     this.interval = setInterval(() => this.update(), INTERVAL);
+    //     if(MessageStore._getMessages() !== undefined &&
+    //         JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
+    //         this.updateThreads();
+    //         window.scrollTo(0, document.body.scrollHeight);
+    //     } else {
+    //         if(ThreadStore._getThreads() !== undefined) {
+    //             this.setState({
+    //                 previousThreadCount: this.state.threads.length,
+    //                 threads: JSON.parse(ThreadStore._getThreads()).result
+    //             })
+    //         }
+    //         if(MessageStore._getMessages() !== undefined) {
+    //             this.setState({
+    //                 messages: JSON.parse(MessageStore._getMessages()).result
+    //             })
+    //         }
+    //         MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
+    //     }
+    // }
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
+    // componentWillUnmount() {
+    //     clearInterval(this.interval);
+    // }
 
-    update() {
-        let conversation = JSON.parse(ConversationStore._getConversations()).result.filter(conv => {
-            return conv.id === this.props.match.params.id
-        })
-        console.log(conversation)
-        console.log(this.state)
-        if(MessageStore._getMessages() !== undefined &&
-            JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
-            this.updateThreads();
-            window.scrollTo(0, document.body.scrollHeight);
-        } else {
-            if(ThreadStore._getThreads() !== undefined) {
-                this.setState({
-                    previousThreadCount: this.state.threads.length,
-                    threads: JSON.parse(ThreadStore._getThreads()).result
-                })
-            }
-            if(MessageStore._getMessages() !== undefined) {
-                this.setState({
-                    messages: JSON.parse(MessageStore._getMessages()).result
-                })
-            }
-            MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
-        }
-    }
+    // update() {
+    //     let conversation = JSON.parse(ConversationStore._getConversations()).result.filter(conv => {
+    //         return conv.id === this.props.match.params.id
+    //     })
+     
+    //     if(MessageStore._getMessages() !== undefined &&
+    //         JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
+    //         this.updateThreads();
+    //         window.scrollTo(0, document.body.scrollHeight);
+    //     } else {
+    //         if(ThreadStore._getThreads() !== undefined) {
+    //             this.setState({
+    //                 previousThreadCount: this.state.threads.length,
+    //                 threads: JSON.parse(ThreadStore._getThreads()).result
+    //             })
+    //         }
+    //         if(MessageStore._getMessages() !== undefined) {
+    //             this.setState({
+    //                 messages: JSON.parse(MessageStore._getMessages()).result
+    //             })
+    //         }
+    //         MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
+    //     }
+    // }
 
-    updateThreads() {
-        if(ThreadStore._getThreads() !== undefined) {
-            this.setState({
-                previousThreadCount: this.state.threads.length,
-                threads: JSON.parse(ThreadStore._getThreads()).result
-            })
-        }
-        if(MessageStore._getMessages() !== undefined) {
-            this.setState({
-                messages: JSON.parse(MessageStore._getMessages()).result
-            })
-        }
-        ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id)
-    }
+    // updateThreads() {
+    //     if(ThreadStore._getThreads() !== undefined) {
+    //         this.setState({
+    //             previousThreadCount: this.state.threads.length,
+    //             threads: JSON.parse(ThreadStore._getThreads()).result
+    //         })
+    //     }
+    //     if(MessageStore._getMessages() !== undefined) {
+    //         this.setState({
+    //             messages: JSON.parse(MessageStore._getMessages()).result
+    //         })
+    //     }
+    //     ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id)
+    // }
 
     sendMessage() {
-        console.log(this.state.newMessage);
-        MessageActions.createMessageForThread(localStorage.getItem('username'), localStorage.getItem('id'),
-            -1, "\"" + this.state.newMessage + "\"", this.props.match.params.id);
-        this.setState({
-            newMessage: ''
+        MessageActions.createMessageForThread(AuthStore._getAuthUser().username,
+                                              AuthStore._getAuthUser().id,
+                                               -1, 
+                                               "\"" + this.state.newMessage + "\"", 
+                                               this.props.match.params.id);
+            this.setState({
+            newMessage: '',
         })
     }
 
@@ -170,7 +250,7 @@ class Conversation extends Component {
             return(
                 <div>
                     <ThreadContainer threads={this.state.threads}
-                                     messages={this.state.messages}/>
+                                     conversation_id = {this.props.match.params.id}/>
                     <ConversationFooter onChange={this.onMessageChange}
                                         onClick={this.sendMessage}
                                         value={this.state.newMessage}/>
@@ -187,13 +267,17 @@ class Conversation extends Component {
             return <Redirect to='/login'/>
         } else {
             return (
+                <div ref={(div) => {
+                    this.messageList = div;
+                  }}>
                 <div className={css({
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%',
                     width: '100%',
                     overflowX: 'hidden',
-                })}>
+                    })} >
+                    
                     <div className={css({
                         paddingBottom: '5em'
                     })}>
@@ -203,6 +287,7 @@ class Conversation extends Component {
                     </div>
                     {this.renderSearchBar()}
                     {this.renderThreads()}
+                </div>
                 </div>
             );
         }

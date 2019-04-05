@@ -22,16 +22,10 @@ class UserStore extends EventEmitter {
 
         switch(action.actionType) {
             
-            case ActionTypes.ACCOUNT_SIGN_IN:
-                console.log(action);
-                this._setSignin(action.payload);
-                break;
             case ActionTypes.GET_USERS:
-                console.log(action);
                 this._setUsers(action.payload);
                 break;
             case ActionTypes.GET_USER_BY_USERNAME:
-                console.log(action);
                 this._setUser(action.payload);
                 break;
             default:
@@ -41,7 +35,6 @@ class UserStore extends EventEmitter {
 
 
     _setUser(user){
-        console.log(user);
         _user=user;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
@@ -59,7 +52,6 @@ class UserStore extends EventEmitter {
 
 
     _setUsers(users){
-        console.log(users);
         _users=users;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
@@ -77,7 +69,6 @@ class UserStore extends EventEmitter {
 
 
     _setSignin(payload){
-        console.log(payload);
         _signin=payload;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished

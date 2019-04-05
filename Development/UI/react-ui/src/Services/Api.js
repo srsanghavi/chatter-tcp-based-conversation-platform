@@ -12,7 +12,10 @@ export default class Api {
     promise() {
         let promise = new Promise(function(resolve, reject) {
             setTimeout(function() {
-                resolve(gateway.getResult());
+                var result = gateway.getResult();
+                if(result){
+                    resolve(JSON.parse(result));
+                }
             }, 1000);
         });
         return promise;
@@ -33,8 +36,6 @@ export default class Api {
         let msg = this.messageType.makeApiMessage(sender,"registerUser/::POST::{username:"+username+"," +
             "password:"+password+",first_name:"+first_name+",last_name:"+last_name+",email:"+email+"}");
         gateway.sendTcp(msg);
-        console.log(msg);
-        console.log(this.promise);
         return this.promise();
     }
 
@@ -70,7 +71,6 @@ export default class Api {
 
     getMessagesInConversation(username,conversationId) {
         let msg = this.messageType.makeApiMessage(username,"getMessagesInConversation/::GET::{conversation_id:"+conversationId+"}");
-        console.log(msg)
         gateway.sendTcp(msg);
         return this.promise();
     }
@@ -126,7 +126,6 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
-
 
 }
 

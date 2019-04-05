@@ -74,7 +74,6 @@ class Register extends Component {
     }
 
     handleSubmit() {
-        console.log(this.state);
         UserStore._setNewUser(this.state);
         UserActions.signin('john','123');
     }

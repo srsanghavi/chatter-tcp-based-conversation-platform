@@ -1,9 +1,10 @@
 import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher';
 import ActionTypes from '../AppConstants';
+import MessageActions from '../Actions/MessageActions';
 
 const MESSAGES_CHANGED = 'MESSAGES_CHANGED';
-
+const NEW_MESSAGE = 'NEW_MESSAGE';
 let _messages;
 let _threadMessages;
 
@@ -26,6 +27,8 @@ class MessageStore extends EventEmitter {
             case ActionTypes.GET_MESSAGES_IN_THREAD:
                 this._setThreadMessages(action.payload);
                 break;
+            case ActionTypes.INSERT_NEW_MESSAGE:
+                this._newMessage(action.payload);
             default:
                 break;
         }
@@ -64,14 +67,28 @@ class MessageStore extends EventEmitter {
         _threadMessages = undefined;
     }
 
+    _newMessage(newMessage){
+        var self = this;
+        setTimeout(() => { // Run after dispatcher has finished
+            self.emit(NEW_MESSAGE);
+        }, 0);
+    }
     // Hooks a React component's callback to the CHANGED event.
-    addChangeListener(callback) {
+    addMessagesChangeListener(callback) {
         this.on(MESSAGES_CHANGED, callback);
     }
 
     // Removes the listener from the CHANGED event.
-    removeChangeListener(callback) {
+    removeMessagesChangeListener(callback) {
         this.removeListener(MESSAGES_CHANGED, callback);
+    }
+
+    addNewMessageListener(callback){
+        this.on(NEW_MESSAGE, callback)
+    }
+
+    removeNewMessageListener(callback){
+        this.removeListener(NEW_MESSAGE,callback);
     }
 }
 
