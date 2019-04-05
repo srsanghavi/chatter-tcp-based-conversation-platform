@@ -13,7 +13,6 @@ import java.util.Map;
 import java.io.File;
 
 
-
 /**
  * The type Mysql con.
  */
@@ -47,6 +46,9 @@ public class MysqlCon implements DataCon{
         }
     }
 
+    /**
+     * Instantiates a new Mysql con.
+     */
     public MysqlCon(){
         try {
             Class.forName("com.mysql.jdbc.Driver");

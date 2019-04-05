@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * The type Group.
+ */
 public class Group {
 
   private String id; // UUID
@@ -13,7 +16,12 @@ public class Group {
   private int conversationId; // Conversation the group belongs to
   private boolean searchable; // Group being private/public with default public
 
-  public Group(String name) {
+    /**
+     * Instantiates a new Group.
+     *
+     * @param name the name
+     */
+    public Group(String name) {
     this.name = name;
     UUID uid = UUID.randomUUID();
     id = uid.toString();
@@ -24,58 +32,64 @@ public class Group {
     searchable = true;
   }
 
-  /**
-   *
-   * @return group ID
-   */
-  public String getId() {
+    /**
+     * Gets id.
+     *
+     * @return group ID
+     */
+    public String getId() {
     return id;
   }
 
-  /**
-   *
-   * @return group name
-   */
-  public String getName() {
+    /**
+     * Gets name.
+     *
+     * @return group name
+     */
+    public String getName() {
     return name;
   }
 
-  /**
-   *
-   * @return group creation date
-   */
-  public Timestamp getCreatedOn() {
+    /**
+     * Gets created on.
+     *
+     * @return group creation date
+     */
+    public Timestamp getCreatedOn() {
     return createdOn;
   }
 
-  /**
-   *
-   * @return group last modified date
-   */
-  public Timestamp getModifiedOn() {
+    /**
+     * Gets modified on.
+     *
+     * @return group last modified date
+     */
+    public Timestamp getModifiedOn() {
     return modifiedOn;
   }
 
-  /**
-   *
-   * @return conversation id for the group
-   */
-  public int getConversationId() {
+    /**
+     * Gets conversation id.
+     *
+     * @return conversation id for the group
+     */
+    public int getConversationId() {
     return conversationId;
   }
 
-  /**
-   * Make group private.
-   */
-  public void makeGroupPrivate(){
+    /**
+     * Make group private.
+     */
+    public void makeGroupPrivate(){
     this.searchable = false;
   }
 
-  /**
-   *
-   * @return searchable criteria for group
-   */
-  public boolean getSearchable(){
+    /**
+     * Get searchable boolean.
+     *
+     * @return searchable criteria for group
+     */
+    public boolean getSearchable(){
     return this.searchable;
   }
 }

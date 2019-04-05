@@ -12,6 +12,11 @@ public class ModelFactory {
         conn = new MysqlCon();
     }
 
+    /**
+     * Get instance model factory.
+     *
+     * @return the model factory
+     */
     public static ModelFactory getInstance(){
         if (modelFactory == null){
             modelFactory = new ModelFactory();

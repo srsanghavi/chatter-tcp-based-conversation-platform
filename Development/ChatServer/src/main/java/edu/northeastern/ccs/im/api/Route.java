@@ -15,13 +15,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Route.
+ */
 public class Route {
 
     /**
      * Get GET API response string.
      *
-     * @param route  the route
-     * @param params the params JSON string with all elements as strings
+     * @param username the username
+     * @param route    the route
+     * @param params   the params JSON string with all elements as strings
      * @return the string
      */
     public static String getResponseGet(String username, String route, String params){
@@ -108,8 +112,9 @@ public class Route {
     /**
      * Get POST response  string.
      *
-     * @param route the route
-     * @param data  the data JSON
+     * @param username the username
+     * @param route    the route
+     * @param data     the data JSON
      * @return the string with POST response
      */
     public static String getResponsePost(String username, String route,String data){

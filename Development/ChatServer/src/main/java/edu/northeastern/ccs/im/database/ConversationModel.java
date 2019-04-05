@@ -17,6 +17,8 @@ public class ConversationModel {
 
     /**
      * Instantiates a new Conversation db.
+     *
+     * @param dataConnection the data connection
      */
     public ConversationModel(DataCon dataConnection){
         conn = dataConnection.getInstance();
@@ -145,7 +147,7 @@ public class ConversationModel {
      * @return the list of messages inside a conversation
      */
     public List<Map<String,Object>> getMessagesForConversation(int conversationId){
-        String query = "CALL message_in_conversation("+conversationId+");";
+            String query = "CALL message_in_conversation("+conversationId+");";
         return conn.sqlGet(query);
     }
 
@@ -189,7 +191,7 @@ public class ConversationModel {
      * @return the list of conversations with that id
      */
     public List<Map<String, Object>> getConversationsById(int id){
-        String sql = "SELECT * FROM conversations where id='"+id+"'";
+        String sql = "SELECT * FROM conversations where id='"+id+"' AND deleted=0";
         return conn.sqlGet(sql);
     }
 
@@ -200,7 +202,17 @@ public class ConversationModel {
      * @return the list
      */
     public List<Map<String, Object>> getConversations(int userId){
-        String sql = "SELECT * FROM conversations as c JOIN users_converses_users as uu on c.id = uu.Conversations_id WHERE uu.users_id=" +userId+" OR uu.users_id1="+userId+";";
+        String sql = "SELECT c.id as id, c.created_on,\n" +
+                "\t\t\t\tCASE WHEN uu.users_id != "+userId+" THEN uu.users_id1 ELSE uu.users_id END as destination_id,\n" +
+                "\t\t\t\tCASE WHEN uu.users_id != "+userId+" THEN u1.username ELSE u2.username END as destination_username,\n" +
+                "\t\t\t\tCASE WHEN uu.users_id != "+userId+" THEN u1.first_name ELSE u2.first_name END as destination_firstname,\n" +
+                "\t\t\t\tCASE WHEN uu.users_id != "+userId+" THEN u1.last_name ELSE u2.last_name END as destination_lastname\n" +
+                "\n" +
+                "FROM conversations as c JOIN users_converses_users as uu on c.id = uu.Conversations_id \n" +
+                "\t\t\tJOIN users as u1 on users_id = u1.id \n" +
+                "            JOIN users as u2 on users_id1 = u2.id\n" +
+                "WHERE uu.users_id="+userId+" OR uu.users_id1="+userId+";";
+
         ChatLogger.info(sql);
         return conn.sqlGet(sql);
     }
@@ -219,6 +231,7 @@ public class ConversationModel {
 
     /**
      * Get last inserted conversation id
+     *
      * @return last inserted conversation id
      */
     public int getLastInsertedID() {
