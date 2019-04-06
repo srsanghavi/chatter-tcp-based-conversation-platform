@@ -152,8 +152,8 @@ public class UserModel {
      * @param userId id for user
      * @return success/failure value
      */
-    public int updateUserToPrivate(int userId){
-        String query = "UPDATE users SET isSearchable='0' where id='"+userId+"';";
+    public int updateUserSearchable(int userId, int isSearchable){
+        String query = "UPDATE users SET isSearchable="+ isSearchable +" where id='"+userId+"';";
         int r = conn.sqlcreate(query);
         return r<=0?-1:r;
     }
