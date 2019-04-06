@@ -152,10 +152,17 @@ public class UserModel {
      * @param userId id for user
      * @return success/failure value
      */
-    public int updateUserToPrivate(int userId){
+    public int updateUserToPrivate(int userId) {
         String query = "UPDATE users SET isSearchable='0' where id=?;";
         List<String> args = new ArrayList<>();
         args.add(Integer.toString(userId));
+        int r = conn.sqlcreate(query, args);
+        return r<=0?-1:r;
+    }
+
+    public int updateUserSearchable(int userId, int isSearchable){
+        String query = "UPDATE users SET isSearchable=? where id=?;";
+        List<String> args = new ArrayList<>(Arrays.asList(Integer.toString(isSearchable), Integer.toString(userId)));
         int r = conn.sqlcreate(query, args);
         return r<=0?-1:r;
     }
@@ -169,9 +176,18 @@ public class UserModel {
       return conn.sqlGet(sql, new ArrayList<>());
     }
 
-    // UpdateUserSearchable
-    // ModifyUserFirstName
-    // ModifyUserLastName
+    public int modifyUserFirstName(int userId, String name){
+        String query = "UPDATE users SET first_name =? where id=?;";
+        List<String> args = new ArrayList<>(Arrays.asList(name, Integer.toString(userId)));
+        int r = conn.sqlcreate(query, args);
+        return r<=0?-1:r;
+    }
 
+    public int modifyUserLastName(int userId, String name){
+        String query = "UPDATE users SET last_name =? where id=?;";
+        List<String> args = new ArrayList<>(Arrays.asList(name, Integer.toString(userId)));
+        int r = conn.sqlcreate(query, args);
+        return r<=0?-1:r;
+    }
 
 }

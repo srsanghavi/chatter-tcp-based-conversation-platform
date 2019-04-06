@@ -3,7 +3,7 @@ package edu.northeastern.ccs.im.api;
 public final class ApiMessageType {
     static final String GET_USERS =              "getUsers/";
     static final String CREATE_USER =            "registerUser/";
-    static final String MODIFY_USER =            "";
+    static final String MODIFY_USER =            "modifyUser/";
     static final String DELETE_USER =            "deleteUser/";
     static final String GET_USER_CONVERSATION =  "getConversations/";
     static final String GET_USER_GROUP =         "getGroups/";

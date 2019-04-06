@@ -141,15 +141,21 @@ public class GroupModel {
      * @param id2 the group to add
      * @return success value
      */
-// Changing group id from id2 to id1 for all users where it is applicable.
-  // Essentially group 2 does not exist.
-  // The admin status of group 2 is passed in group 1.
+    // All users from group 2 will be added to group 1 while maintaining group 2 separately
   public int addGroupToGroup(int id1, int id2){
-      String query = "UPDATE groups_has_users SET Groups_id=? where Groups_id=?;";
+      String sql = "Select Users_id from groups_has_users where Groups_id = ?;";
       List<String> args = new ArrayList<>();
-      Collections.addAll(args, Integer.toString(id1), Integer.toString(id2));
-      int r = conn.sqlcreate(query, args);
-      return r<=0?-1:r;
+      Collections.addAll(args, Integer.toString(id2));
+      List<Map<String, Object>> r = conn.sqlGet(sql, args);
+      int res = 0;
+      for(Map<String,Object> user: r){
+        int userId = (int) user.get("Users_id");
+        res = addUserToGroup(id1,userId,0);
+        if(res<0){
+          return -1;
+        }
+    }
+    return res;
   }
 
     /**

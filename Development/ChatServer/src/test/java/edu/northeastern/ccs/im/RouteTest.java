@@ -227,4 +227,9 @@ public class RouteTest {
             ChatLogger.info(e.toString());
         }
     }
+
+    @Test
+  public void testModifyUser(){
+      ChatLogger.info(Route.getResponsePost("hsbudhia","modifyUser/","{user_id:21,first_name:Himanshu,last_name:Budhia,isSearchable:1}"));
+    }
 }
