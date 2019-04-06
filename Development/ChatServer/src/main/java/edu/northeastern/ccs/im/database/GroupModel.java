@@ -132,7 +132,7 @@ public class GroupModel {
       List<Map<String, Object>> r = conn.sqlGet(sql);
       int res = 0;
       for(Map<String,Object> user: r){
-        int userId = Math.toIntExact(Math.round((double) user.get("Users_id")));
+        int userId = (int) user.get("Users_id");
         res = addUserToGroup(id1,userId,0);
         if(res<0){
           return -1;
