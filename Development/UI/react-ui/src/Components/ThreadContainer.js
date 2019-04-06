@@ -16,7 +16,7 @@ class ThreadContainer extends Component {
 
     componentDidMount(){
         this.setState({
-            thread_id:this.props.threads,
+            threads:this.props.threads,
         })
     }
     render(){
@@ -24,13 +24,13 @@ class ThreadContainer extends Component {
         let previousDate = moment('0000-00-00', 'YYYY-MM-DD');
 
         for(let i = 0; i < props.threads.length; i++) {
-            if(moment(props.threads[i].messages[0].message_created_on).isSame(previousDate, 'day')) {
-                props.threads[i].displayDate = moment(props.threads[i].messages[0].message_created_on).format('h:mm a');
-            } else if(moment(props.threads[i].messages[0].message_created_on).isSame(previousDate, 'minute')) {
+            if(moment(props.threads[i].messages[0].createdOn).isSame(previousDate, 'day')) {
+                props.threads[i].displayDate = moment(props.threads[i].messages[0].createdOn).format('h:mm a');
+            } else if(moment(props.threads[i].messages[0].createdOn).isSame(previousDate, 'minute')) {
                 props.threads[i].displayDate = null;
             } else {
-                props.threads[i].displayDate =  moment(props.threads[i].messages[0].message_created_on).format('MMMM Do YYYY, h:mm a');
-                previousDate = moment(props.threads[i].created_on);
+                props.threads[i].displayDate =  moment(props.threads[i].messages[0].createdOn).format('MMMM Do YYYY, h:mm a');
+                previousDate = moment(props.threads[i].messages[0].createdOn);
             }
         }
 
@@ -54,7 +54,7 @@ class ThreadContainer extends Component {
                             <ThreadPreview threadMessages={thread.messages}
                                         threadId={thread.id}
                                         conversationId={this.props.conversation_id}
-                                        displayDate={thread.messages[0].message_created_on}/>
+                                        displayDate={thread.displayDate}/>
                         )
                     })}
                 </div>

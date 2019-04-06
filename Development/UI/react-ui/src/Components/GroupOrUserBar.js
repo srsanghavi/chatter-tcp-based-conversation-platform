@@ -24,7 +24,7 @@ const GroupOrUserBar = props => {
                     borderRight: '0.05em solid black',
                     backgroundColor: props.userButtonSelected ? '#CEDAE5' : 'white'
                 })}
-                 onClick={props.onButtonClick}>
+                 onClick={props.onUserClick}>
                 <h6 className={css({
                     color: 'black',
                     fontWeight: 'bold',
@@ -38,7 +38,7 @@ const GroupOrUserBar = props => {
                     width: '50%',
                     backgroundColor: props.userButtonSelected ? 'white' : '#CEDAE5'
                     })}
-                 onClick={props.onButtonClick}>
+                 onClick={props.onGroupClick}>
                 <h6 className={css({
                     color: 'black',
                     fontWeight: 'bold',

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {css} from "emotion";
 import UserStore from "../Store/UserStore";
+import AuthStore from '../Store/AuthStore';
 
 class Profile extends Component {
     constructor(props) {
@@ -15,9 +16,7 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-        let user = JSON.parse(UserStore._getUsers()).result.filter(user => {
-            return user.id === this.props.match.params.id
-        });
+        let user = AuthStore._getAuthUser();
         this.setState({
             username: user[0].username,
             firstName: user[0].first_name,

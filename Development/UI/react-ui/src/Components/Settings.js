@@ -3,6 +3,7 @@ import {css} from 'emotion';
 import UserActions from "../Actions/UserActions";
 import ConversationActions from "../Actions/ConversationActions";
 import GroupActions from "../Actions/GroupActions";
+import AuthStore from '../Store/AuthStore';
 
 class Settings extends Component {
     constructor(props) {
@@ -34,12 +35,12 @@ class Settings extends Component {
     }
 
     newConvSubmit() {
-        ConversationActions.createUserUserConversation(localStorage.getItem('username'), localStorage.getItem('id'),
+        ConversationActions.createUserUserConversation(AuthStore._getAuthUser().username, AuthStore._getAuthUser().id,
             this.state.newConvUserId)
     }
 
     addUserToGroupSubmit() {
-        GroupActions.addUserToGroup(localStorage.getItem('username'), this.state.addUserToGroupUserId,
+        GroupActions.addUserToGroup(AuthStore._getAuthUser().username, this.state.addUserToGroupUserId,
             this.state.addUserToGroupGroupId)
     }
 

@@ -14,7 +14,7 @@ import AuthStore from '../Store/AuthStore';
 
 
 // component updates every interval (in ms)
-const INTERVAL = 2000;
+const INTERVAL = 500;
 
 class Conversation extends Component {
     constructor(props) {
@@ -81,20 +81,27 @@ class Conversation extends Component {
 
     _onMessageschanged(){
         const _messages = MessageStore._getMessages().result;
-        var _threads = new Set(_messages.map(msg => msg.thread_id));
+        if(!_messages){
+            MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,
+                                                     AuthStore._getAuthUser().id,
+                                                     this.props.match.params.id);
+        }
+        else{
+            var _threads = new Set(_messages.map(msg => msg.thread_id));
 
-        var thread_messages = [];
-        _threads.forEach(t => {
-            thread_messages.push({
-                thread_id: t,
-                messages: _messages.filter(msg => msg.thread_id==t),
+            var thread_messages = [];
+            _threads.forEach(t => {
+                thread_messages.push({
+                    thread_id: t,
+                    messages: _messages.filter(msg => msg.thread_id==t),
+                })
+            });
+
+            
+            this.setState({
+                threads: thread_messages,
             })
-        });
-
-        
-        this.setState({
-            threads: thread_messages,
-        })
+        }
     }
 
     _onNewMessageReceieved(){
@@ -114,80 +121,6 @@ class Conversation extends Component {
             window.newNoti = false;
         }
     }
-    // componentWillMount(){
-    //     ThreadStore.addChangeListener(this._onChange);
-    // }
-    //
-    // componentWillUnmount(){
-    //     ThreadStore.removeChangeListener(this._onChange);
-    //     clearInterval(this.interval);
-    // }
-
-    // componentDidMount() {
-    //     this.interval = setInterval(() => this.update(), INTERVAL);
-    //     if(MessageStore._getMessages() !== undefined &&
-    //         JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
-    //         this.updateThreads();
-    //         window.scrollTo(0, document.body.scrollHeight);
-    //     } else {
-    //         if(ThreadStore._getThreads() !== undefined) {
-    //             this.setState({
-    //                 previousThreadCount: this.state.threads.length,
-    //                 threads: JSON.parse(ThreadStore._getThreads()).result
-    //             })
-    //         }
-    //         if(MessageStore._getMessages() !== undefined) {
-    //             this.setState({
-    //                 messages: JSON.parse(MessageStore._getMessages()).result
-    //             })
-    //         }
-    //         MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
-    //     }
-    // }
-
-    // componentWillUnmount() {
-    //     clearInterval(this.interval);
-    // }
-
-    // update() {
-    //     let conversation = JSON.parse(ConversationStore._getConversations()).result.filter(conv => {
-    //         return conv.id === this.props.match.params.id
-    //     })
-     
-    //     if(MessageStore._getMessages() !== undefined &&
-    //         JSON.parse(MessageStore._getMessages()).result.length !== this.state.messages.length) {
-    //         this.updateThreads();
-    //         window.scrollTo(0, document.body.scrollHeight);
-    //     } else {
-    //         if(ThreadStore._getThreads() !== undefined) {
-    //             this.setState({
-    //                 previousThreadCount: this.state.threads.length,
-    //                 threads: JSON.parse(ThreadStore._getThreads()).result
-    //             })
-    //         }
-    //         if(MessageStore._getMessages() !== undefined) {
-    //             this.setState({
-    //                 messages: JSON.parse(MessageStore._getMessages()).result
-    //             })
-    //         }
-    //         MessageActions.getMessagesInConversation(localStorage.getItem('username'), this.props.match.params.id);
-    //     }
-    // }
-
-    // updateThreads() {
-    //     if(ThreadStore._getThreads() !== undefined) {
-    //         this.setState({
-    //             previousThreadCount: this.state.threads.length,
-    //             threads: JSON.parse(ThreadStore._getThreads()).result
-    //         })
-    //     }
-    //     if(MessageStore._getMessages() !== undefined) {
-    //         this.setState({
-    //             messages: JSON.parse(MessageStore._getMessages()).result
-    //         })
-    //     }
-    //     ThreadActions.getThreadsInConversation(localStorage.getItem('username'), this.props.match.params.id)
-    // }
 
     sendMessage() {
         MessageActions.createMessageForThread(AuthStore._getAuthUser().username,

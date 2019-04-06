@@ -3,10 +3,11 @@ import Dispatcher from '../dispatcher';
 import ActionTypes from '../AppConstants';
 
 const CHANGE = 'CHANGE';
+const USERS_LIST_CHANGE = "USERS_LIST_CHANGE";
 
 let _user;
 let _signin;
-let _users;
+let _users = [];
 let _newuser;
 
 class UserStore extends EventEmitter {
@@ -52,11 +53,13 @@ class UserStore extends EventEmitter {
 
 
     _setUsers(users){
-        _users=users;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(CHANGE);
-        }, 0);
+        if(users){
+            _users=users.result;
+            let self = this;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(USERS_LIST_CHANGE);
+            }, 0);
+        }
     }
 
     _getUsers() {
@@ -115,6 +118,14 @@ class UserStore extends EventEmitter {
         this.removeListener(CHANGE, callback);
     }
 
+
+    addUserListChangeListener(callback){
+        this.on(USERS_LIST_CHANGE,callback);
+    }
+
+    removeUserListChangeListener(callback){
+        this.removeListener(USERS_LIST_CHANGE,callback);
+    }
 }
 
 export default new UserStore();

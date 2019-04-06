@@ -19,6 +19,8 @@ import GroupStore from "../Store/GroupStore";
 import MessageActions from "../Actions/MessageActions";
 import ConversationActions from '../Actions/ConversationActions';
 import UserActions from '../Actions/UserActions';
+import GroupActions from '../Actions/GroupActions';
+
 import AuthStore from '../Store/AuthStore';
 
 // const tab = {
@@ -57,7 +59,9 @@ class HomePage extends Component {
         this.onSearchChange = this.onSearchChange.bind(this);
         this.onBroadcastChange = this.onBroadcastChange.bind(this);
         this.sendBroadcast = this.sendBroadcast.bind(this);
-        this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this)
+        this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this);
+        this.barGroupPressed = this.barGroupPressed.bind(this);
+        this.barUserPressed = this.barUserPressed.bind(this);
 
     }
 
@@ -173,13 +177,32 @@ class HomePage extends Component {
         })
     }
 
-    groupOrUserBarButtonChange() {
+    groupOrUserBarButtonChange(opt) {
         this.setState({
-            userButtonSelected: !this.state.userButtonSelected
+            userButtonSelected: opt
         })
+        console.log(this.state.userButtonSelected);
+        if(this.state.userButtonSelected==true){
+            UserActions.getUsers(AuthStore._getAuthUser().username);
+        }else{
+            GroupActions.getAllGroups(AuthStore._getAuthUser().username);
+        }
     }
 
+    barGroupPressed(){
+        this.setState({
+            userButtonSelected: false,
+        })
+        GroupActions.getAllGroups(AuthStore._getAuthUser().username);
+    }
 
+    barUserPressed(){
+        this.setState({
+            userButtonSelected: true,
+        })
+
+        UserActions.getUsers(AuthStore._getAuthUser().username);
+    }
     renderSearchBar() {
         if(this.state.searchBar) {
             return(
@@ -208,7 +231,8 @@ class HomePage extends Component {
             return(
                 <div className={css({paddingBottom: '3em'})}>
                     <GroupOrUserBar userButtonSelected={this.state.userButtonSelected}
-                                    onButtonClick={this.groupOrUserBarButtonChange}/>
+                                    onUserClick={this.barUserPressed}
+                                    onGroupClick={this.barGroupPressed}/>
                 </div>
             )
         }
