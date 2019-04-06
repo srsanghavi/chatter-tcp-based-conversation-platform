@@ -167,4 +167,16 @@ public class UserModel {
       return conn.sqlGet(sql);
     }
 
+    public int modifyUserFirstName(int userId, String name){
+        String query = "UPDATE users SET first_name ="+ name +" where id='"+userId+"';";
+        int r = conn.sqlcreate(query);
+        return r<=0?-1:r;
+    }
+
+    public int modifyUserLastName(int userId, String name){
+        String query = "UPDATE users SET last_name ="+ name +" where id='"+userId+"';";
+        int r = conn.sqlcreate(query);
+        return r<=0?-1:r;
+    }
+
 }

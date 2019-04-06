@@ -101,4 +101,8 @@ public class UserController {
         json.put("result_message","Could not create a message");
         return json;
     }
+
+    public Map<String,Object> modifyUser(Map<String,Object> json){
+
+    }
 }
