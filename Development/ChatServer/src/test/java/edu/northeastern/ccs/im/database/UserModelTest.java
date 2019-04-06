@@ -9,13 +9,15 @@ import static junit.framework.TestCase.assertNotSame;
 
 public class UserModelTest {
     UserModel userModel;
+    int lastCreatedUser;
     @BeforeEach
     public void setup(){
         userModel = ModelFactory.getInstance().getUserModel();
     }
     @Test
     public void testCreateUser(){
-        userModel.createUser("hsbudhia","budhia.h@husky.neu.edu","123","Himanshu","Budhia");
+        userModel.createUser("junitBot","junitbot@prattle.com","123","JUnit","Bot");
+        lastCreatedUser = userModel.lastCreatedUser();
     }
 
     @Test
@@ -60,6 +62,6 @@ public class UserModelTest {
 
     @Test
     public void testDeleteUser(){
-        assertEquals(1, userModel.deleteUser(353));
+        assertEquals(1, userModel.deleteUser(1167));
     }
 }

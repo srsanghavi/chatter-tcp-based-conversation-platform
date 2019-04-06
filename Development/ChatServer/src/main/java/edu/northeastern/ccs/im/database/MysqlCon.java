@@ -88,61 +88,81 @@ public class MysqlCon implements DataCon{
      * @return the JDBC ResultTest
      */
 
-    public List<Map<String, Object>> sqlGet(String query) {
-            Statement stmt = null;
-            ResultSet rs = null;
-            List<Map<String, Object>> resultList = new ArrayList<>();
-            Map<String, Object> row = null;
+//    public List<Map<String, Object>> sqlGet(String query) {
+//            Statement stmt = null;
+//            ResultSet rs = null;
+//            List<Map<String, Object>> resultList = new ArrayList<>();
+//            Map<String, Object> row = null;
+//
+//            try {
+//                stmt = con.createStatement();
+//                try {
+//                    rs = stmt.executeQuery(query);
+//
+//                    ResultSetMetaData metaData = rs.getMetaData();
+//                    int columnCount = metaData.getColumnCount();
+//
+//                    while (rs.next()) {
+//                        row = new HashMap<>();
+//                        for (int i = 1; i <= columnCount; i++) {
+//                            row.put(metaData.getColumnName(i), rs.getObject(i));
+//                        }
+//                        resultList.add(row);
+//                    }
+//                }
+//                finally {
+//                    if (rs!= null)
+//                        rs.close();
+//                }
+//
+//            } catch (SQLException e ) {
+//                ChatLogger.warning(e.toString());
+//            } finally {
+//                if (stmt != null) {
+//                    try {
+//                        stmt.close();
+//                    } catch (SQLException e) {
+//                        ChatLogger.error(e.toString());
+//                    }
+//                }
+//            }
+//        return resultList;
+//    }
 
+    public List<Map<String, Object>> sqlGet(String query, List<String> arguments) {
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        Map<String, Object> row = null;
+        int argLength = arguments.size();
+
+
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
             try {
-                stmt = con.createStatement();
-                try {
-                    rs = stmt.executeQuery(query);
 
-                    ResultSetMetaData metaData = rs.getMetaData();
-                    int columnCount = metaData.getColumnCount();
+                for (int i=0; i<argLength; i++)
+                    ps.setString(i+1, arguments.get(i));
+                rs = ps.executeQuery();
 
-                    while (rs.next()) {
-                        row = new HashMap<>();
-                        for (int i = 1; i <= columnCount; i++) {
-                            row.put(metaData.getColumnName(i), rs.getObject(i));
-                        }
-                        resultList.add(row);
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                while (rs.next()) {
+                    row = new HashMap<>();
+                    for (int i = 1; i <= columnCount; i++) {
+                        row.put(metaData.getColumnName(i), rs.getObject(i));
                     }
-                }
-                finally {
-                    if (rs!= null)
-                        rs.close();
-                }
-
-            } catch (SQLException e ) {
-                ChatLogger.warning(e.toString());
-            } finally {
-                if (stmt != null) {
-                    try {
-                        stmt.close();
-                    } catch (SQLException e) {
-                        ChatLogger.error(e.toString());
-                    }
+                    resultList.add(row);
                 }
             }
-        return resultList;
-    }
+            finally {
+                if (rs!= null)
+                    rs.close();
+            }
 
-    /**
-     * Create Sql statement
-     * @param query the SQL query
-     * @return query status
-     * @throws SQLException
-     */
-    public int sqlcreate(String query) {
-        Statement stmt = null;
-        try {
-            stmt = con.createStatement();
-            return stmt.executeUpdate(query);
         } catch (SQLException e ) {
             ChatLogger.warning(e.toString());
-
         } finally {
             if (stmt != null) {
                 try {
@@ -152,16 +172,71 @@ public class MysqlCon implements DataCon{
                 }
             }
         }
+        return resultList;
+    }
+    /**
+     * Create Sql statement
+     * @param query the SQL query
+     * @return query status
+     * @throws SQLException
+     */
+//    public int sqlcreate(String query) {
+//        Statement stmt = null;
+//        try {
+//            stmt = con.createStatement();
+//            return stmt.executeUpdate(query);
+//        } catch (SQLException e ) {
+//            ChatLogger.warning(e.toString());
+//
+//        } finally {
+//            if (stmt != null) {
+//                try {
+//                    stmt.close();
+//                } catch (SQLException e) {
+//                    ChatLogger.error(e.toString());
+//                }
+//            }
+//        }
+//        return 0;
+//    }
+
+    public int sqlcreate(String query, List<String> arguments) {
+        System.out.println(arguments);
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            for (int i=0; i<arguments.size(); i++)
+                ps.setString(i+1, arguments.get(i));
+
+            return ps.executeUpdate();
+        } catch (SQLException e ) {
+            ChatLogger.warning(e.toString());
+
+        }
         return 0;
     }
 
+
+    /**
+     * Fetch the ID of the last inserted row in the database
+     * @return the last inserted ID
+     */
     public int getLastInsertedID() {
         String query = "SELECT LAST_INSERT_ID() as id;";
-        List<Map<String, Object>> r = sqlGet(query);
+        List<Map<String, Object>> r = sqlGet(query, new ArrayList<>());
         if(!r.isEmpty()) {
             return Integer.valueOf(String.valueOf(r.get(0).get("id")));
         }
         return -1;
+    }
+
+    public PreparedStatement createPreparedStatement(String q){
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(q);
+        } catch (SQLException e){
+            ChatLogger.error(e.toString());
+        }
+        return ps;
     }
 
 

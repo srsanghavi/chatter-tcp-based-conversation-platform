@@ -1,5 +1,8 @@
 package edu.northeastern.ccs.im.database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The type Message model.
  */
@@ -25,7 +28,9 @@ public class MessageModel {
      * @return the int
      */
     public int deleteMessage(int id){
-        String sql = "UPDATE message SET deleted=true WHERE id='" + id + "';";
-        return conn.sqlcreate(sql);
+        String sql = "UPDATE message SET deleted=true WHERE id=?;";
+        List<String> args = new ArrayList<>();
+        args.add(Integer.toString(id));
+        return conn.sqlcreate(sql, args);
     }
 }
