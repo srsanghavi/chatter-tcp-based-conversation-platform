@@ -54,4 +54,6 @@ public class ModelFactory {
     public static MessageModel getMessageModel(){
         return new MessageModel(conn);
     }
+
+    public static S3Model getS3Model(){ return new S3Model();}
 }
