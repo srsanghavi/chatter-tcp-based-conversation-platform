@@ -179,4 +179,10 @@ public class UserModel {
         return r<=0?-1:r;
     }
 
+    public int modifyPreferredLanguage(int userID, String language){
+        String query = "UPDATE users SET preferredLanguage ='"+ language +"' where id='"+ userID +"';";
+        int r = conn.sqlcreate(query);
+        return r<=0?-1:r;
+    }
+
 }
