@@ -130,18 +130,17 @@ public class MysqlCon implements DataCon{
 //    }
 
     public List<Map<String, Object>> sqlGet(String query, List<String> arguments) {
-        Statement stmt = null;
         ResultSet rs = null;
+        PreparedStatement ps = null;
         List<Map<String, Object>> resultList = new ArrayList<>();
         Map<String, Object> row = null;
-        int argLength = arguments.size();
 
 
         try {
-            PreparedStatement ps = con.prepareStatement(query);
+            ps = con.prepareStatement(query);
             try {
 
-                for (int i=0; i<argLength; i++)
+                for (int i=0; i<arguments.size(); i++)
                     ps.setString(i+1, arguments.get(i));
                 rs = ps.executeQuery();
 
@@ -164,12 +163,11 @@ public class MysqlCon implements DataCon{
         } catch (SQLException e ) {
             ChatLogger.warning(e.toString());
         } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    ChatLogger.error(e.toString());
-                }
+            try {
+                if (ps != null)
+                    ps.close();
+            } catch (SQLException e) {
+                ChatLogger.error(e.toString());
             }
         }
         return resultList;
@@ -201,15 +199,23 @@ public class MysqlCon implements DataCon{
 //    }
 
     public int sqlcreate(String query, List<String> arguments) {
-        System.out.println(arguments);
+        PreparedStatement ps = null;
         try {
-            PreparedStatement ps = con.prepareStatement(query);
+            ps = con.prepareStatement(query);
             for (int i=0; i<arguments.size(); i++)
                 ps.setString(i+1, arguments.get(i));
 
             return ps.executeUpdate();
         } catch (SQLException e ) {
             ChatLogger.warning(e.toString());
+
+        } finally {
+            try {
+                if (ps != null)
+                    ps.close();
+            } catch (SQLException e) {
+                ChatLogger.error(e.toString());
+            }
 
         }
         return 0;
