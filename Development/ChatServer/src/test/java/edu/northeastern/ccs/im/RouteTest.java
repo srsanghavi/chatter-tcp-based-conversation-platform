@@ -239,4 +239,9 @@ public class RouteTest {
   public void testModifyUser(){
       ChatLogger.info(Route.getResponsePost("hsbudhia","modifyUser/","{user_id:21,first_name:Himanshu,last_name:Budhia,isSearchable:1}"));
     }
+
+    @Test
+    public void testUpdateProfilePicture(){
+        ChatLogger.info(Route.getResponsePost("hsbudhia","modifyUser/","{user_id:21, profile_picture:'https://s3.amazonaws.com/cs5500/temp/testUser.png'}"));
+    }
 }

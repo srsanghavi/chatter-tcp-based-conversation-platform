@@ -12,12 +12,15 @@ public class UserModel {
      * The connection
      */
     private DataCon conn;
+    private MediaCon mconn;
+    private final String profileLocation = "https://s3.amazonaws.com/cs5500/u/";
 
     /**
      * Instantiates a new UserModel db.
      */
-    public UserModel(DataCon connection){
+    public UserModel(DataCon connection, MediaCon mconnection){
         conn = connection;
+        mconn = mconnection;
     }
 
     /**
@@ -188,6 +191,26 @@ public class UserModel {
         List<String> args = new ArrayList<>(Arrays.asList(name, Integer.toString(userId)));
         int r = conn.sqlcreate(query, args);
         return r<=0?-1:r;
+    }
+
+    public String updateProfilePicture(int userid, String file){
+        String[] parts = file.split("\\.");
+        String extension = parts[parts.length -1];
+
+        String currentPicture = "u/" + userid + "." + extension;
+        String tempPicture = file.replace("https://s3.amazonaws.com/cs5500/", "");
+        mconn.deleteObject(currentPicture);
+        mconn.moveObject(tempPicture, currentPicture);
+        String url = profileLocation + userid + "." + extension;
+
+        String query = "UPDATE users SET profile_picture=? where id=?;";
+        List<String> args = new ArrayList<>(Arrays.asList(url, Integer.toString(userid)));
+        int r = conn.sqlcreate(query, args);
+        if (r <=0 )
+            return "";
+        else
+            return url;
+
     }
 
 }

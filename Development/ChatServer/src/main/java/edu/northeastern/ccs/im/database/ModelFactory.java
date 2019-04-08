@@ -25,7 +25,7 @@ public class ModelFactory {
      * @return the user model
      */
     public static UserModel getUserModel(){
-        return new UserModel(conn);
+        return new UserModel(conn, getS3Model());
     }
 
     /**
