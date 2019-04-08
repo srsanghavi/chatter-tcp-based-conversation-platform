@@ -1,6 +1,9 @@
 pipeline {
  environment {
    jobBaseName = "${env.JOB_NAME}".split('/').first()
+   AWS_DEFAULT_REGION = us-east-1
+   AWS_ACCESS_KEY_ID = AKIA2MS5HQUYVLXCTZPI
+   AWS_SECRET_ACCESS_KEY = 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
  }
  options {
   timeout(time: 10, unit: 'MINUTES') 
