@@ -40,7 +40,7 @@ public class UserController {
         if(!json.containsKey(USERNAME)){
             throw new NoSuchFieldException();
         }
-        String username = (String) json.getOrDefault(USERNAME,0);
+        String username = (String) json.getOrDefault(USERNAME,"");
         return userModel.getUserByUserName(username);
     }
 

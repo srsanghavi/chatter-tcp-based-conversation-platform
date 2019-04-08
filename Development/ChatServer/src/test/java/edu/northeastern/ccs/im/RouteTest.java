@@ -69,7 +69,12 @@ public class RouteTest {
     }
 
     @Test
-  public void testCreateAUser(){
+    public void testCreateAUser() {
+        ChatLogger.info(Route.getResponsePost("srsanghavi", "registerUser/",
+                "{first_name:Paul,last_name:Pogba,username:pogba,email:pogba@utd.com,password:123x}"));
+    }
+    @Test
+  public void testCreateAUsers(){
       ChatLogger.info(Route.getResponsePost("waynerooney","registerUser/",
               "{first_name:Wayne,last_name:Rooney,username:waynerooney,email:wrooney@utd.com,password:wayne}"));
       userIdWayne = ModelFactory.getUserModel().getUserID("waynerooney");
