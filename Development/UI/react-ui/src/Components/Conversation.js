@@ -70,6 +70,8 @@ class Conversation extends Component {
         ThreadStore.removeThreadsChangeListener(this._onThreadsChanged);
         MessageStore.removeMessagesChangeListener(this._onMessageschanged);
         MessageStore.removeNewMessageListener(this._onNewMessageReceieved);
+        clearInterval(this.interval);
+
     }
     _onThreadsChanged(){
         const _threads = ThreadStore._getThreads();

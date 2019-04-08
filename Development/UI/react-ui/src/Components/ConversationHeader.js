@@ -26,7 +26,7 @@ const ConversationHeader = props => {
                     width: '20%'
                 })}>
                     {props.inThread ?
-                    <NavLink to={`../conversations/${props.conversationId}`}
+                    <NavLink to={`/conversations/${props.conversationId}`}
                              className={css({
                                  color: 'white',
                                  textDecoration: 'none',

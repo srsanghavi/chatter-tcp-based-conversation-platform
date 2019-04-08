@@ -5,8 +5,9 @@ import MessageActions from '../Actions/MessageActions';
 
 const MESSAGES_CHANGED = 'MESSAGES_CHANGED';
 const NEW_MESSAGE = 'NEW_MESSAGE';
-let _messages;
-let _threadMessages;
+const THREAD_MESSAGES_CHANGED = 'THREAD_MESSAGES_CHANGED';
+let _messages = [];
+let _threadMessages = [];
 
 class MessageStore extends EventEmitter {
     constructor() {
@@ -52,11 +53,13 @@ class MessageStore extends EventEmitter {
 
 
     _setThreadMessages(messages){
-        _threadMessages = messages;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(MESSAGES_CHANGED);
-        }, 0);
+        if(messages){
+            _threadMessages = messages.result;
+            let self = this;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(THREAD_MESSAGES_CHANGED);
+            }, 0);
+        }
     }
 
     _getThreadMessages() {
@@ -89,6 +92,14 @@ class MessageStore extends EventEmitter {
 
     removeNewMessageListener(callback){
         this.removeListener(NEW_MESSAGE,callback);
+    }
+
+    addThreadMessagesChangeListner(callback){
+        this.on(THREAD_MESSAGES_CHANGED,callback);
+    }
+
+    removeThreadMessagesChangeListner(callback){
+        this.removeListener(THREAD_MESSAGES_CHANGED,callback);
     }
 }
 

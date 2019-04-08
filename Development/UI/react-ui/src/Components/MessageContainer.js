@@ -18,8 +18,8 @@ const MessageContainer = props => {
         }
     }
 
-    let firstMessage = props.messages.shift();
-
+    let firstMessage = props.messages[0];
+    
     if(props.messages === null || props.messages === undefined || props.messages === []) {
         return null
     } else {
@@ -33,14 +33,14 @@ const MessageContainer = props => {
                     fontWeight: 'bold',
                     boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
                 })}>
-                    <h5 className={css({
+                    {/* <h5 className={css({
                         textDecoration: 'underline'
                     })}>Viewing Thread:</h5>
                     <h6 className={css({
                         opacity: '0.75',
                         fontSize: '0.8em',
-                    })}>{firstMessage.displayDate}</h6>
-                    <h6>{firstMessage.text}</h6>
+                    })}>{props.messages[0].createdOn}</h6>
+                    <h6>{props.messages[0].text}</h6> */}
                 </div>
                 <div className={css({
                     display: 'flex',

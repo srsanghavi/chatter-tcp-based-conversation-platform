@@ -29,7 +29,7 @@ const ThreadPreview = props => {
                         fontSize: '1em',
                         backgroundColor: 'white',
                     })}>
-                        <NavLink to={`/thread/${props.threadId}`}
+                        <NavLink to={`${props.conversationId}/thread/${props.threadMessages[0].thread_id}`}
                                  className={css({
                             padding: '0.5em',
                             borderRadius: '0.25em',
@@ -40,9 +40,21 @@ const ThreadPreview = props => {
                             color: 'black',
                             textDecoration: 'none'
                         })}>
+                            <h6>{props.threadMessages[0].first_name} {props.threadMessages[0].last_name}</h6>
                             {props.threadMessages[0].text}
+
+                            <div className = {css({
+                                visibility: props.threadMessages.length<=1? "hidden" : "visible",
+                                color: '#666',
+                                textDecorationStyle: 'wavy',
+
+                            })}>
+                                <small>{props.threadMessages.length-1} replies</small>
+                            </div>
                         </NavLink>
+                        
                     </div>
+                   
             </div>
         )
     }

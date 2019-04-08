@@ -1,5 +1,6 @@
 import React from 'react';
 import {css} from 'emotion';
+import AuthStore from '../Store/AuthStore';
 
 const Message = props => {
 
@@ -16,7 +17,7 @@ const Message = props => {
             <div className={css({
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: props.message.sender_id.toString() === localStorage.getItem('id') ?
+                justifyContent: props.message.sender_id.toString() == AuthStore._getAuthUser().id ?
                                 'flex-end' : 'flex-start',
                 margin: '0.5em',
                 textAlign: 'left',
