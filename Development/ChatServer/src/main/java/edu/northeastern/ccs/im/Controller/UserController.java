@@ -133,6 +133,15 @@ public class UserController {
              return json;
            }
          }
+         if(json.containsKey("preferredLanguage")){
+           String language = (String) json.get("preferredLanguage");
+           if(userModel.modifyPreferredLanguage(userId,language) < 0){
+             json.put(RESULT_CODE,500);
+             json.put(RESULT,"error");
+             json.put("result_message","Could not modify user details");
+             return json;
+           }
+         }
         json.put(RESULT_CODE,201);
         json.put(RESULT,"OK");
         return json;
