@@ -180,7 +180,7 @@ public class ConversationModel {
      * @return list of messages in the thread
      */
     public List<Map<String, Object>> getMessagesInThread(int threadID){
-    String sql = "select * from message where thread_id = '"+threadID + "';";
+    String sql = "select * from message JOIN users on message.sender_id = users.id where thread_id = '"+threadID + "';";
     return conn.sqlGet(sql);
   }
 
