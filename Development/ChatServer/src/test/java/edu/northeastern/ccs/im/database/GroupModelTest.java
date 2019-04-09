@@ -52,4 +52,9 @@ public class GroupModelTest {
     public void testDeleteUser(){
         assertEquals(0, groupDB.deleteGroup(100));
     }
+
+    @Test
+    public void testAddGroupToGroup(){
+      groupDB.addGroupToGroup(332,333);
+    }
 }

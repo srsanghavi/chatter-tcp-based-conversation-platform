@@ -15,7 +15,7 @@ public final class ApiMessageType {
     /**
      * The Modify user.
      */
-    static final String MODIFY_USER =            "";
+    static final String MODIFY_USER =            "modifyUser/";
     /**
      * The Delete user.
      */

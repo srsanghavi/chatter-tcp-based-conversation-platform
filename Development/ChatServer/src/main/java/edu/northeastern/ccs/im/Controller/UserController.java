@@ -101,4 +101,41 @@ public class UserController {
         json.put("result_message","Could not create a message");
         return json;
     }
+
+    public Map<String,Object> modifyUser(Map<String,Object> json){
+        int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
+        String name = "";
+        int isSearchable = 0;
+        if(json.containsKey("first_name")){
+            name = (String) json.get("first_name");
+            if(userModel.modifyUserFirstName(userId,name) < 0){
+                  json.put(RESULT_CODE,500);
+                  json.put(RESULT,"error");
+                  json.put("result_message","Could not modify user details");
+                  return json;
+            }
+        }
+         if(json.containsKey("last_name")){
+           name = (String) json.get("last_name");
+           if(userModel.modifyUserLastName(userId,name) < 0){
+             json.put(RESULT_CODE,500);
+             json.put(RESULT,"error");
+             json.put("result_message","Could not modify user details");
+             return json;
+           }
+         }
+         if(json.containsKey("isSearchable")){
+           isSearchable = Math.toIntExact(Math.round((double) json.get("isSearchable")));
+           if(userModel.updateUserSearchable(userId,isSearchable) < 0){
+             json.put(RESULT_CODE,500);
+             json.put(RESULT,"error");
+             json.put("result_message","Could not modify user details");
+             return json;
+           }
+         }
+        json.put(RESULT_CODE,201);
+        json.put(RESULT,"OK");
+        return json;
+    }
+
 }
