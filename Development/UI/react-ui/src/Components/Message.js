@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {css} from 'emotion';
 import AuthStore from '../Store/AuthStore';
 
-const Message = props => {
+class Message extends Component {
 
+    render(){
+        let props = this.props;
     return(
         <div className={css({
             width: '100%',
@@ -33,11 +35,13 @@ const Message = props => {
                     color: 'black',
                     textDecoration: 'none'
                 })}>
+                 <h6>{props.message.first_name} {props.message.last_name}</h6>
                     {props.message.text}
                 </p>
             </div>
         </div>
     )
+    }
 };
 
 export default Message;
