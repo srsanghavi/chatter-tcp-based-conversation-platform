@@ -14,7 +14,7 @@ class UserSearch extends Component{
         this.state = {
             users: [],
             groups: [],
-        }
+        };
         this._onUsersChanged = this._onUsersChanged.bind(this);
         this._onGroupsChanged = this._onGroupsChanged.bind(this);
     }

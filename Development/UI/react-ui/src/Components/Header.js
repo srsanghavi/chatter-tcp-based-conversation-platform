@@ -38,7 +38,7 @@ const Header = props => {
                     <i className="fa fa-arrow-left fa-2x"
                        onClick={props.previousTab === 'search' ? props.searchOnClick : props.conversationsOnClick}></i>
                 </NavLink> :
-                <NavLink to={`./profile/${props.user.username}`}
+                <NavLink to={`../profile/${props.user.username}`}
                          className={css({
                              color: props.tab === 'profile' ? '#45AAEB' : 'white',
                              textDecoration: 'none',
