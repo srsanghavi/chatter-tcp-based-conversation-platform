@@ -5,8 +5,7 @@ import ActionTypes from '../AppConstants';
 const CHANGE = 'CHANGE';
 const USERS_LIST_CHANGE = "USERS_LIST_CHANGE";
 
-let _user;
-let _signin;
+let _user = {};
 let _users = [];
 let _newuser;
 
@@ -36,7 +35,7 @@ class UserStore extends EventEmitter {
 
 
     _setUser(user){
-        _user=user;
+        _user=user.result[0];
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
             self.emit(CHANGE);
@@ -44,11 +43,11 @@ class UserStore extends EventEmitter {
     }
 
     _getUser() {
-        return _user
+        return _user;
     }
 
     _clearUser() {
-        _user = undefined
+        _user = {}
     }
 
 
@@ -71,22 +70,6 @@ class UserStore extends EventEmitter {
     }
 
 
-    _setSignin(payload){
-        _signin=payload;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(CHANGE);
-        }, 0);
-    }
-
-    _getSignIn() {
-        return _signin
-    }
-
-    _clearSignin() {
-        _signin = undefined
-    }
-
 
     _setNewUser(user) {
         _newuser = user;
@@ -103,7 +86,6 @@ class UserStore extends EventEmitter {
     _clearAll() {
         this._clearUser();
         this._clearUsers();
-        this._clearSignin();
         this._clearNewUser();
     }
 

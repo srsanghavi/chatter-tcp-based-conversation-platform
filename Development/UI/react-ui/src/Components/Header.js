@@ -38,7 +38,7 @@ const Header = props => {
                     <i className="fa fa-arrow-left fa-2x"
                        onClick={props.previousTab === 'search' ? props.searchOnClick : props.conversationsOnClick}></i>
                 </NavLink> :
-                <NavLink to={`./profile/${props.user.id}`}
+                <NavLink to={`./profile/${props.user.username}`}
                          className={css({
                              color: props.tab === 'profile' ? '#45AAEB' : 'white',
                              textDecoration: 'none',
@@ -58,7 +58,7 @@ const Header = props => {
                 {props.tab === 'settings' ? null :
                     props.tab === 'profile' && props.previousTab === 'search' ? null :
                     props.tab === 'profile' ?
-                    <NavLink to={`../edit-profile/${props.user.id}`}>
+                    <NavLink to={`../edit-profile/${props.user.username}`}>
                         <i className="fa fa-edit fa-2x"
                            style={{
                                float: 'left',

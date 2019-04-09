@@ -39,7 +39,7 @@ const UserPreviews = props => {
                 <span className={css({
                     width: '25%',
                 })}>
-                <NavLink to={`./profile/${props.user.id}`}
+                <NavLink to={`./profile/${props.user.username}`}
                          className={css({
                              color: 'black',
                              textDecoration: 'none',

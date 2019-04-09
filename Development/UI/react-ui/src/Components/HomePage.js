@@ -284,7 +284,7 @@ class HomePage extends Component {
                 {this.renderSearchBar()}
                 {this.renderGroupOrUserBar()}
                 <Switch>
-                    <Route path="/profile/:id"
+                    <Route path="/profile/:username"
                            component={Profile}>
                     </Route>
                     <Route path="/edit-profile/:id"
