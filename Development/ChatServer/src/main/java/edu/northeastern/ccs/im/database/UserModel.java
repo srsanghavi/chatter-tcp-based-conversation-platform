@@ -54,6 +54,7 @@ public class UserModel {
 
         List<String> arguments = new ArrayList<>(Arrays.asList(username, firstName, lastName, email, password));
         ChatLogger.info("Executing: " + query);
+        ChatLogger.info(email);
         return conn.sqlcreate(query, arguments);
     }
 
@@ -95,13 +96,25 @@ public class UserModel {
      * @return the list
      */
     public List<Map<String, Object>> getUsers(String filterBy,String value){
-        if(!filterBy.equals("email") && !filterBy.equals("first_name") && !filterBy.equals("last_name")
-                && !filterBy.equals("username")){
-            ChatLogger.error("Illegal filter name passed. Available filter names : email, first_name, last_name");
-            return Collections.emptyList();
+        String query;
+        switch(filterBy) {
+            case "email":
+                query = "SELECT * FROM users where email=?;";
+                break;
+            case "first_name":
+                query = "SELECT * FROM users where first_name=?;";
+                break;
+            case "last_name":
+                query = "SELECT * FROM users where last_name=?;";
+                break;
+            case "username":
+                query = "SELECT * FROM users where username=?;";
+                break;
+            default:
+                ChatLogger.error("Illegal filter name passed. Available filter names : email, first_name, last_name");
+                return Collections.emptyList();
         }
-        String sql = "SELECT * FROM users where ?=?";
-        return conn.sqlGet(sql, new ArrayList<>(Arrays.asList(filterBy, value)));
+        return conn.sqlGet(query, new ArrayList<>(Arrays.asList(value)));
     }
 
     /**
@@ -211,6 +224,18 @@ public class UserModel {
         else
             return url;
 
+    }
+
+    /**
+     * Delete user record permanently
+     * @param id User ID
+     * @return Result code
+     */
+    public int deleteUserPermanently(int id){
+        String query = "DELETE FROM users WHERE id=?";
+        List<String> args = new ArrayList<>(Arrays.asList(Integer.toString(id)));
+        int r = conn.sqlcreate(query, args);
+        return r<=0?-1:r;
     }
 
 }

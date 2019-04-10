@@ -140,8 +140,9 @@ public class MysqlCon implements DataCon{
             ps = con.prepareStatement(query);
             try {
 
-                for (int i=0; i<arguments.size(); i++)
-                    ps.setString(i+1, arguments.get(i));
+                for (int i=0; i<arguments.size(); i++) {
+                    ps.setString(i + 1, arguments.get(i));
+                }
                 rs = ps.executeQuery();
 
                 ResultSetMetaData metaData = rs.getMetaData();
