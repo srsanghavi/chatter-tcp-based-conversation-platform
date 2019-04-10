@@ -1,8 +1,10 @@
 import React from 'react';
 import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
+import ThreadStore from "../Store/ThreadStore";
+import MessageStore from "../Store/MessageStore";
 
-const UserPreviews = props => {
+const GroupConversationPreview = props => {
     return (
         <div className={css({
             display: 'flex',
@@ -23,37 +25,32 @@ const UserPreviews = props => {
                 padding: '0 0.75em'
             })}>
                 <span className={css({
-                    width: '25%',
+                    width: '75%'
                 })}>
-                    <img src="./images/image.png" height="60" width="60" alt=""
-                         className={css({
-                             borderRadius: 50,
-                         })}/>
-                </span>
-                <span className={css({
-                    width: '50%'
-                })}>
-                    <h5>{props.user.first_name + ' ' + props.user.last_name}</h5>
-                    <h6 className={css({opacity: '0.5'})}>{props.user.username}</h6>
+                    <h5>{props.conversation.name}</h5>
+                    <h6 className={css({opacity: '0.5'})}>{props.conversation.modifiedOn}</h6>
                 </span>
                 <span className={css({
                     width: '25%',
                 })}>
-                <NavLink to={`./profile/${props.user.id}`}
+                <NavLink to={`./conversations/${props.conversation.id}`}
                          className={css({
                              color: 'black',
                              textDecoration: 'none',
                              '&:hover': {
                                  color: '#45AAEB'
                              }
-                         })}>
+                         })}
+                         onClick={() => {
+                             ThreadStore._clearThreads();
+                             MessageStore._clearMessages();
+                         }}>
                     <i className="fa fa-angle-right fa-2x"
-                       style={{float: 'right'}}
-                       onClick={props.profileOnClick}></i>
+                       style={{float: 'right'}}></i>
                 </NavLink>
             </span>
             </div>
         </div>
     );
 };
-export default UserPreviews;
+export default GroupConversationPreview;

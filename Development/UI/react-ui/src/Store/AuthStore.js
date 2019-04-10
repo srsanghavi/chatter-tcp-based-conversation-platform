@@ -2,10 +2,12 @@ import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher';
 import ActionTypes from '../AppConstants';
 
-const CONV_CHANGED = 'CONV_CHANGED';
+const CHANGE = 'CHANGE';
 
-let _conversations = [];
-class ConversationStore extends EventEmitter {
+let _user;
+
+
+class UserStore extends EventEmitter {
     constructor() {
         super();
  
@@ -18,39 +20,44 @@ class ConversationStore extends EventEmitter {
 
         switch(action.actionType) {
             
-            case ActionTypes.USER_CONVERSATIONS:
-                this._setConversations(action.payload);
+            case ActionTypes.ACCOUNT_SIGN_IN:
+                this._setUser(action.payload);
                 break;
             default:
             break;
         }
     }
 
-    _setConversations(conversations){        
-        _conversations = conversations.result;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(CONV_CHANGED);
-        }, 0);
+
+
+    _setUser(users){
+        if(users.result.length===0){
+            _user = null;
+        }
+        else{
+            let self = this;
+            localStorage.setItem("loggedIn",true);
+            _user = users.result[0];
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(CHANGE);
+            }, 0);
+        }
     }
 
-    _getConversations() {
-        return _conversations;
-    }
-
-    _clearConversations() {
-        _conversations = undefined;
+    _getAuthUser() {
+        return _user
     }
 
     // Hooks a React component's callback to the CHANGED event.
     addChangeListener(callback) {
-        this.on(CONV_CHANGED, callback);
+        this.on(CHANGE, callback);
     }
 
      // Removes the listener from the CHANGED event.
      removeChangeListener(callback) {
-        this.removeListener(CONV_CHANGED, callback);
+        this.removeListener(CHANGE, callback);
     }
+
 }
 
-export default new ConversationStore();
+export default new UserStore();

@@ -58,7 +58,8 @@ public class GroupController {
     /**
      * Gets group users.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the group users
      * @throws NoSuchFieldException the no such field exception
      */
@@ -84,7 +85,8 @@ public class GroupController {
     /**
      * Add user to group map.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the map
      */
     public Map<String,Object> addUserToGroup(String username,Map<String,Object> json){
@@ -115,7 +117,8 @@ public class GroupController {
     /**
      * Modify group name map.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the map
      */
     public Map<String,Object> modifyGroupName(String username, Map<String,Object> json){
@@ -144,7 +147,8 @@ public class GroupController {
     /**
      * Delete group map.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the map
      */
     public Map<String,Object> deleteGroup(String username,Map<String,Object> json){
@@ -167,11 +171,12 @@ public class GroupController {
         else return error500(json);
     }
 
-  /**
-   * Create group.
-   * @param json the json
-   * @return the json map
-   */
+    /**
+     * Create group.
+     *
+     * @param json the json
+     * @return the json map
+     */
     public Map<String,Object> createGroup(Map<String,Object> json){
       if(!json.containsKey(GROUP_NAME)||
           !json.containsKey("admin_id")){
@@ -189,10 +194,12 @@ public class GroupController {
       }
       else return error500(json);
     }
+
     /**
      * Add group to group map.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the map
      */
     public Map<String,Object> addGroupToGroup(String username, Map<String,Object> json){

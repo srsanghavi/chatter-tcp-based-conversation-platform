@@ -73,9 +73,9 @@ class Register extends Component {
         })
     }
 
-    handleSubmit(){
-        UserActions.registerUser(this.state.username, this.state.password, this.state.firstName, this.state.lastName,
-            this.state.email)
+    handleSubmit() {
+        UserStore._setNewUser(this.state);
+        UserActions.signin('john','123');
     }
 
 
@@ -109,17 +109,19 @@ class Register extends Component {
                             {/*value={this.state.lastName}*/}
                             {/*onChange={this.onLastNameChange}*/}
                             {/*required/>*/}
-                        {/*<input*/}
-                            {/*className="form-control"*/}
-                            {/*type="email"*/}
-                            {/*placeholder="Email"*/}
-                            {/*value={this.state.email}*/}
-                            {/*onChange={this.onEmailChange}*/}
-                            {/*required/>*/}
+                        <input
+                            className="form-control"
+                            type="email"
+                            placeholder="Email"
+                            value={this.state.email}
+                            onChange={this.onEmailChange}
+                            required/>
+                        <NavLink to={'./processing'}>
                             <button className="btn btn-block btn-outline-primary"
                                     onClick={this.handleSubmit}>
                                 Register
                             </button>
+                        </NavLink>
                     </div>
                 </div>
                 <h3 className="signin-text">Already Registered?

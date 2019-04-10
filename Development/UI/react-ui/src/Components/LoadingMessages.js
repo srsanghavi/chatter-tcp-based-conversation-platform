@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom';
 import { css } from 'emotion';
 import ThreadStore from "../Store/ThreadStore";
 import MessageStore from "../Store/MessageStore";
@@ -27,7 +26,7 @@ class LoadingMessages extends Component {
             interval: 0,
             threadsLoaded: false,
             messagesLoaded: false,
-            finishedLoading: (ThreadStore._getThreads() != undefined) && (MessageStore._getMessages() != undefined)
+            finishedLoading: (ThreadStore._getThreads() !== undefined) && (MessageStore._getMessages() !== undefined)
         }
     }
 
@@ -41,7 +40,6 @@ class LoadingMessages extends Component {
     }
 
     update() {
-        console.log(this.state)
         if (!this.state.finishedLoading) {
             if (!this.state.threadsLoaded) {
                 this.loadThreads()

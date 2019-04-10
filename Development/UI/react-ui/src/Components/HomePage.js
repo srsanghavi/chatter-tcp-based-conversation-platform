@@ -2,30 +2,32 @@ import React, { Component } from 'react';
 import {css} from 'emotion';
 import Header from './Header'
 import Footer from './Footer'
-import DataService from "./Data";
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
-import UserActions from '../Actions/UserActions';
-import ConversationActions from "../Actions/ConversationActions";
 import ConversationStore from "../Store/ConversationStore";
 import Conversation from "./Conversation";
-import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import Settings from './Settings';
-import Conversations from './Conversations';
+import ConversationContainer from './ConversationContainer';
 import UserSearch from './UserSearch';
 import ProfileEdit from './ProfileEdit';
 import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
 import GroupOrUserBar from "./GroupOrUserBar";
-import GroupActions from "../Actions/GroupActions";
 import GroupStore from "../Store/GroupStore";
+import MessageActions from "../Actions/MessageActions";
+import ConversationActions from '../Actions/ConversationActions';
+import UserActions from '../Actions/UserActions';
+import GroupActions from '../Actions/GroupActions';
 
-const tab = {
-    CONVERSATIONS: 'conversations',
-    SETTINGS: 'settings',
-    PROFILE: 'profile'
-};
+import AuthStore from '../Store/AuthStore';
+
+// const tab = {
+//     CONVERSATIONS: 'conversations',
+//     SETTINGS: 'settings',
+//     PROFILE: 'profile'
+// };
 
 class HomePage extends Component {
     constructor(props) {
@@ -55,24 +57,29 @@ class HomePage extends Component {
         this.toggleSearch = this.toggleSearch.bind(this);
         this.toggleBroadcast = this.toggleBroadcast.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
-        this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this)
+        this.onBroadcastChange = this.onBroadcastChange.bind(this);
+        this.sendBroadcast = this.sendBroadcast.bind(this);
+        this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this);
+        this.barGroupPressed = this.barGroupPressed.bind(this);
+        this.barUserPressed = this.barUserPressed.bind(this);
 
     }
 
     componentWillMount(){
+        console.log(AuthStore._getAuthUser());
         UserStore.addChangeListener(this._onChange);
         ConversationStore.addChangeListener(this._onConversationsChanged);
     }
 
 
     componentDidMount() {
+        const user = AuthStore._getAuthUser();
         this.setState({
-            user: JSON.parse(UserStore._getUser()).result[0],
-            users: JSON.parse(UserStore._getUsers()).result,
-            myGroups: JSON.parse(GroupStore._getGroups()).result,
-            groups: JSON.parse(GroupStore._getAllGroups()).result,
-            conversations: JSON.parse(ConversationStore._getConversations()).result
+            user: user,
+            conversations: ConversationStore._getConversations(),
         });
+        ConversationActions.getConversations(user.username,user.id);
+        
     }
 
     componentWillUnmount() {
@@ -81,17 +88,20 @@ class HomePage extends Component {
         ConversationStore.removeChangeListener(this._onConversationsChanged);
     }
 
-    componentDidUpdate() {
-        //UserActions.getUsers(this.state.user.username)
-        //ConversationActions.getConversations(this.state.user.username, this.state.user.id)
-        //console.log(ConversationStore._getConversations())
-    }
+
 
     _onChange() {
     }
 
     _onConversationsChanged(){
-        var conv = ConversationStore.getConversations();
+        const conversations = ConversationStore._getConversations();
+        this.setState({
+            // users: JSON.parse(UserStore._getUsers()).result,
+            // myGroups: JSON.parse(GroupStore._getGroups()).result,
+            // groups: JSON.parse(GroupStore._getAllGroups()).result,
+            conversations: conversations,
+        });
+        
     }
 
     conversationTabSelected() {
@@ -155,13 +165,44 @@ class HomePage extends Component {
         this.setState({search: event.target.value});
     }
 
-    groupOrUserBarButtonChange() {
+    onBroadcastChange(event) {
+        this.setState({broadcast: event.target.value});
+    }
+
+    sendBroadcast() {
+        MessageActions.broadcastMessage(localStorage.getItem('username'), localStorage.getItem('id'),
+        "\"" + this.state.broadcast + "\"");
         this.setState({
-            userButtonSelected: !this.state.userButtonSelected
+            broadcast: ''
         })
     }
 
+    groupOrUserBarButtonChange(opt) {
+        this.setState({
+            userButtonSelected: opt
+        })
+        console.log(this.state.userButtonSelected);
+        if(this.state.userButtonSelected==true){
+            UserActions.getUsers(AuthStore._getAuthUser().username);
+        }else{
+            GroupActions.getAllGroups(AuthStore._getAuthUser().username);
+        }
+    }
 
+    barGroupPressed(){
+        this.setState({
+            userButtonSelected: false,
+        })
+        GroupActions.getAllGroups(AuthStore._getAuthUser().username);
+    }
+
+    barUserPressed(){
+        this.setState({
+            userButtonSelected: true,
+        })
+
+        UserActions.getUsers(AuthStore._getAuthUser().username);
+    }
     renderSearchBar() {
         if(this.state.searchBar) {
             return(
@@ -177,7 +218,9 @@ class HomePage extends Component {
         if(this.state.broadcastBar) {
             return(
                 <div className={css({paddingBottom: '3em'})}>
-                    <Broadcast/>
+                    <Broadcast onChange={this.onBroadcastChange}
+                               onClick={this.sendBroadcast}
+                               value={this.state.broadcast}/>
                 </div>
             )
         }
@@ -188,7 +231,8 @@ class HomePage extends Component {
             return(
                 <div className={css({paddingBottom: '3em'})}>
                     <GroupOrUserBar userButtonSelected={this.state.userButtonSelected}
-                                    onButtonClick={this.groupOrUserBarButtonChange}/>
+                                    onUserClick={this.barUserPressed}
+                                    onGroupClick={this.barGroupPressed}/>
                 </div>
             )
         }
@@ -198,7 +242,7 @@ class HomePage extends Component {
     render() {
         const filteredUsers = this.state.users.filter(user => {
             return (
-                user.id != this.state.user.id &&
+                user.id !== this.state.user.id &&
                 user.isSearchable &&
                 !user.deleted &&
                 (user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
@@ -210,6 +254,13 @@ class HomePage extends Component {
         const filteredGroups = this.state.groups.filter(group => {
             return (
                 group.isSearchable && group.name.toUpperCase().includes(this.state.search.toUpperCase())
+            )
+        });
+
+        const filteredMyGroups = this.state.myGroups.filter(group => {
+            return (
+                group.isSearchable &&
+                group.name.toUpperCase().includes(this.state.search.toUpperCase())
             )
         });
 
@@ -246,7 +297,10 @@ class HomePage extends Component {
                         {() => <Redirect to={'./conversations'}/>}
                     </Route>
                     <Route path="/conversations">
-                        {() => <Conversations conversations={JSON.parse(ConversationStore._getConversations()).result}/>}
+                        {() => <ConversationContainer conversations={this.state.conversations}
+                                                      myGroups={filteredMyGroups}
+                                                      users={this.state.users}
+                                                      search={this.state.search}/>}
                     </Route>
                     <Route path="/conversations/:id">
                         {() => <Conversation/>}

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class MysqlConTest {
 
     @Test
     public void TestSqlQuery(){
-        List<Map<String, Object>> rs = conn.sqlGet("SELECT DATABASE() as db");
+        List<Map<String, Object>> rs = conn.sqlGet("SELECT DATABASE() as db", new ArrayList<>());
         System.out.println(rs.get(0).get("db"));
     }
 }

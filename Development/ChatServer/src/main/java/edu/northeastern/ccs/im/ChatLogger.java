@@ -11,9 +11,9 @@ import java.util.logging.SimpleFormatter;
 
 /**
  * Logger class that handles logging of all levels of messages.
- * 
+ *
  * @author Maria Jump and Riya Nadkarni
- * @version 12-20-2018
+ * @version 12 -20-2018
  */
 public class ChatLogger {
   /** Name of the logger file. */
@@ -39,39 +39,39 @@ public class ChatLogger {
     throw new IllegalStateException("ChatLogger not instantiable");
   }
 
-  /**
-   * Logs the error messages.
-   * 
-   * @param msg error message to be logged
-   */
-  public static final void error(String msg) {
+    /**
+     * Logs the error messages.
+     *
+     * @param msg error message to be logged
+     */
+    public static final void error(String msg) {
     write(Level.SEVERE, msg);
   }
 
-  /**
-   * Logs the warnings.
-   * 
-   * @param msg warning to be logged
-   */
-  public static final void warning(String msg) {
+    /**
+     * Logs the warnings.
+     *
+     * @param msg warning to be logged
+     */
+    public static final void warning(String msg) {
     write(Level.WARNING, msg);
   }
 
-  /**
-   * Logs the general messages.
-   * 
-   * @param msg message to be logged
-   */
-  public static final void info(String msg) {
+    /**
+     * Logs the general messages.
+     *
+     * @param msg message to be logged
+     */
+    public static final void info(String msg) {
     write(Level.INFO, msg);
   }
 
-  /**
-   * Toggles between the handler types.
-   * 
-   * @param type the type of handler to be used by the logger
-   */
-  public static void setMode(HandlerType type) {
+    /**
+     * Toggles between the handler types.
+     *
+     * @param type the type of handler to be used by the logger
+     */
+    public static void setMode(HandlerType type) {
 
     switch (type) {
     case FILE:
@@ -145,22 +145,31 @@ public class ChatLogger {
    * Private Enum class for Handler Types.
    */
   private enum HandlerType {
-    /** The file handler. */
-    FILE,
-    /** The console handler. */
-    CONSOLE,
-    /** Test Handler*/
-    TEST,
-    /** Both handlers. */
-    BOTH;
+      /**
+       * The file handler.
+       */
+      FILE,
+      /**
+       * The console handler.
+       */
+      CONSOLE,
+      /**
+       * Test Handler
+       */
+      TEST,
+      /**
+       * Both handlers.
+       */
+      BOTH;
   }
 
-  /**
-   * Returns the handler type from Enum class HandlerType
-   * @param hType the type of handler in String
-   * @return the ENUM class HandlerType
-   */
-  public static HandlerType getHandlerType(String hType){
+    /**
+     * Returns the handler type from Enum class HandlerType
+     *
+     * @param hType the type of handler in String
+     * @return the ENUM class HandlerType
+     */
+    public static HandlerType getHandlerType(String hType){
       switch(hType){
         case "file":
           return HandlerType.FILE;

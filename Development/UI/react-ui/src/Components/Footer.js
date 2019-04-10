@@ -2,8 +2,10 @@ import React from 'react';
 import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
 
-
 const Footer = props => {
+
+    const PATH = window.location.pathname.split('/');
+
     return (
         props.tab === 'profile' ? null :
         <div className={css({
@@ -30,10 +32,10 @@ const Footer = props => {
             })}>
                 <NavLink to={'./conversations'}
                          className={css({
-                             color: props.tab === 'conversations' ? '#45AAEB' : 'white',
+                             color: PATH[1] === 'conversations' ? '#45AAEB' : 'white',
                              textDecoration: 'none',
                              '&:hover': {
-                                 color: props.tab === 'conversations' ? '#45AAEB' : 'white'
+                                 color: PATH[1] === 'conversations' ? '#45AAEB' : 'white'
                              }
                          })}>
                     <i className="fa fa-comments fa-2x"
@@ -41,23 +43,23 @@ const Footer = props => {
                 </NavLink>
                 <NavLink to={'./search'}
                          className={css({
-                             color: props.tab === 'search' ? '#45AAEB' : 'white',
+                             color: PATH[1] === 'search' ? '#45AAEB' : 'white',
                              textDecoration: 'none',
                              '&:hover': {
-                                 color: props.tab === 'search' ? '#45AAEB' : 'white'
+                                 color: PATH[1] === 'search' ? '#45AAEB' : 'white'
                              },
                          })}>
                     <i className="fa fa-group fa-2x"
                        onClick={props.searchOnClick}></i>
                 </NavLink>
                 <NavLink to={'./settings'}
-                    className={css({
-                        color: props.tab === 'settings' ? '#45AAEB' : 'white',
-                        textDecoration: 'none',
-                        '&:hover': {
-                            color: props.tab === 'settings' ? '#45AAEB' : 'white'
-                        }
-                    })}>
+                         className={css({
+                             color: PATH[1] === 'settings' ? '#45AAEB' : 'white',
+                             textDecoration: 'none',
+                             '&:hover': {
+                                 color: PATH[1] === 'settings' ? '#45AAEB' : 'white'
+                             }
+                         })}>
                     <i className="fa fa-cog fa-2x"
                        onClick={props.settingsOnClick}></i>
                 </NavLink>

@@ -49,15 +49,7 @@ const Broadcast = props => {
                        marginLeft: 10,
                        color: '#342E37'
                    }}
-                   onClick={() => {
-                       if(window.confirm('You are about to broadcast this message to all of your conversations. ' +
-                           'Do you wish to continue?')) {
-                           console.log('broadcast')
-                       } else {
-                           console.log('abort')
-                       }
-                   }
-                   }/>
+                   onClick={props.onClick}/>
             </span>
             </div>
         </div>

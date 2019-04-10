@@ -12,7 +12,10 @@ export default class Api {
     promise() {
         let promise = new Promise(function(resolve, reject) {
             setTimeout(function() {
-                resolve(gateway.getResult());
+                var result = gateway.getResult();
+                if(result){
+                    resolve(JSON.parse(result));
+                }
             }, 1000);
         });
         return promise;
@@ -29,12 +32,10 @@ export default class Api {
         gateway.sendTcp(msg);
     }
 
-    registerUser(username, password, first_name, last_name, email) {
-        let msg = this.messageType.makeApiMessage(username,"registerUser/::POST::{username:"+username+"," +
+    registerUser(sender, username, password, first_name, last_name, email) {
+        let msg = this.messageType.makeApiMessage(sender,"registerUser/::POST::{username:"+username+"," +
             "password:"+password+",first_name:"+first_name+",last_name:"+last_name+",email:"+email+"}");
         gateway.sendTcp(msg);
-        console.log(msg);
-        console.log(this.promise);
         return this.promise();
     }
 
@@ -91,5 +92,47 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
+
+    createMessageForThread(username, userId, threadId, messageText, conversationId) {
+        let msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
+            "sender_id:"+userId+",thread_id:"+threadId+",message:"+messageText+",conversation_id:"+conversationId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    broadcastMessage(username, userId, message) {
+        let msg = this.messageType.makeApiMessage(username,"broadcastMessage/::POST::{" +
+            "sender_id:"+userId+",message:"+message+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    getGroupUsers(username, groupId) {
+        let msg = this.messageType.makeApiMessage(username,"getGroupUsers/::GET::{group_id:"+groupId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    createUserUserConversation(username, userId1, userId2) {
+        let msg = this.messageType.makeApiMessage(username,"addUserUserConversation/::POST::{" +
+            "user_id1:"+userId1+",user_id2:"+userId2+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    addUserToGroup(username, userId, groupId) {
+        let msg = this.messageType.makeApiMessage(username,"addUserToGroup/::POST::{" +
+            "user_id:"+userId+",group_id:"+groupId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    updateProfile(username,userId,firstName,lastName,isSearchable){
+        let msg = this.messageType.makeApiMessage(username,"modifyUser/::POST::{" +
+        "user_id:"+userId+",first_name:"+firstName+",last_name:"+lastName+",isSearchable:"+isSearchable+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
 }
 

@@ -18,13 +18,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * methods work with our non-blocking Socket classes. This class could easily be
  * made to wait for network output (e.g., be made &quot;non-blocking&quot; in
  * technical parlance), but I have not worried about it yet.
- * 
+ * <p>
  * This work is licensed under the Creative Commons Attribution-ShareAlike 4.0
  * International License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by-sa/4.0/. It is based on work
  * originally written by Matthew Hertz and has been adapted for use in a class
  * assignment at Northeastern University.
- * 
+ *
  * @version 1.4
  */
 public class NetworkConnection implements Iterable<Message> {
@@ -64,17 +64,15 @@ public class NetworkConnection implements Iterable<Message> {
 	/** Queue of messages for this client. */
 	private Queue<Message> messages;
 
-	/**
-	 * Creates a new instance of this class. Since, by definition, this class sends
-	 * output over the network, we need to supply the non-blocking Socket instance
-	 * to which we will write.
-	 * 
-	 * @param sockChan Non-blocking SocketChannel instance to which we will send all
-	 *                 communication.
-	 * @throws IOException Exception thrown if we have trouble completing this
-     *                     connection
-	 */
-	public NetworkConnection(SocketChannel sockChan) {
+    /**
+     * Creates a new instance of this class. Since, by definition, this class sends
+     * output over the network, we need to supply the non-blocking Socket instance
+     * to which we will write.
+     *
+     * @param sockChan Non-blocking SocketChannel instance to which we will send all                 communication.
+     * @throws IOException Exception thrown if we have trouble completing this                     connection
+     */
+    public NetworkConnection(SocketChannel sockChan) {
 		// Create the queue that will hold the messages received from over the network
 		messages = new ConcurrentLinkedQueue<>();
 		// Allocate the buffer we will use to read data
@@ -95,16 +93,16 @@ public class NetworkConnection implements Iterable<Message> {
 		}
 	}
 
-	/**
-	 * Send a Message over the network. This method performs its actions by printing
-	 * the given Message over the SocketNB instance with which the PrintNetNB was
-	 * instantiated. This returns whether our attempt to send the message was
-	 * successful.
-	 * 
-	 * @param msg Message to be sent out over the network.
-	 * @return True if we successfully send this message; false otherwise.
-	 */
-	public boolean sendMessage(Message msg) {
+    /**
+     * Send a Message over the network. This method performs its actions by printing
+     * the given Message over the SocketNB instance with which the PrintNetNB was
+     * instantiated. This returns whether our attempt to send the message was
+     * successful.
+     *
+     * @param msg Message to be sent out over the network.
+     * @return True if we successfully send this message; false otherwise.
+     */
+    public boolean sendMessage(Message msg) {
 		boolean result = true;
 		String str = msg.toString();
 		ByteBuffer wrapper = ByteBuffer.wrap(str.getBytes());
@@ -128,10 +126,10 @@ public class NetworkConnection implements Iterable<Message> {
 		return result;
 	}
 
-	/**
-	 * Close this client network connection.
-	 */
-	public void close() {
+    /**
+     * Close this client network connection.
+     */
+    public void close() {
 		try {
 			selector.close();
 			channel.close();
@@ -154,8 +152,10 @@ public class NetworkConnection implements Iterable<Message> {
 	   */
 	  private class MessageIterator implements Iterator<Message> {
 
-	    /** Default constructor. */
-	    public MessageIterator() {
+          /**
+           * Default constructor.
+           */
+          public MessageIterator() {
 	      // nothing to do here
 	    }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {css} from 'emotion';
 
-const GroupPreviews = props => {
+const GroupMember = props => {
     return (
         <div className={css({
             display: 'flex',
@@ -21,30 +21,20 @@ const GroupPreviews = props => {
                 width: '100%',
                 padding: '0 0.75em'
             })}>
+
                 <span className={css({
-                    width: '75%'
+                    width: '70%'
                 })}>
-                    <h5>{props.group.name}</h5>
-                    {/*<h6 className={css({opacity: '0.5'})}>[ ] Members</h6>*/}
+                    <h5>{props.user.name}</h5>
+                    {/* <h6 className={css({opacity: '0.5'})}></h6> */}
                 </span>
                 <span className={css({
                     width: '25%',
                 })}>
-                {/*<NavLink to={`./group/${props.group.id}`}*/}
-                         className={css({
-                             color: 'black',
-                             textDecoration: 'none',
-                             '&:hover': {
-                                 color: '#45AAEB'
-                             }
-                         })}>
-                    <i className="fa fa-angle-right fa-2x"
-                       style={{float: 'right'}}
-                    ></i>
-                {/*</NavLink>*/}
+
             </span>
             </div>
         </div>
     );
 };
-export default GroupPreviews;
+export default GroupMember;

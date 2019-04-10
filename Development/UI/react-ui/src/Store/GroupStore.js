@@ -3,9 +3,10 @@ import Dispatcher from '../dispatcher';
 import ActionTypes from '../AppConstants';
 
 const GROUP_CHANGED = 'GROUP_CHANGED';
-
+const GROUPS_CHANGED = "GROUPS_CHANGED";
 let _userGroups;
-let _allGroups;
+let _allGroups = [];
+let _groupUsers;
 
 class GroupStore extends EventEmitter {
     constructor() {
@@ -25,6 +26,9 @@ class GroupStore extends EventEmitter {
                 break;
             case ActionTypes.GET_ALL_GROUPS:
                 this._setAllGroups(action.payload);
+                break;
+            case ActionTypes.GET_GROUP_USERS:
+                this._setGroupUsers(action.payload);
                 break;
             default:
                 break;
@@ -49,11 +53,13 @@ class GroupStore extends EventEmitter {
 
 
     _setAllGroups(groups){
-        _allGroups = groups;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(GROUP_CHANGED);
-        }, 0);
+        if(groups){
+            _allGroups = groups.result;
+            let self = this;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(GROUPS_CHANGED);
+            }, 0);
+        }
     }
 
     _getAllGroups() {
@@ -64,6 +70,21 @@ class GroupStore extends EventEmitter {
         _allGroups = undefined;
     }
 
+    _setGroupUsers(users) {
+        _groupUsers = users;
+        let self = this;
+        setTimeout(() => { // Run after dispatcher has finished
+            self.emit(GROUP_CHANGED);
+        }, 0);
+    }
+
+    _getGroupUsers() {
+        return _groupUsers;
+    }
+
+    _clearGroupUsers() {
+        _groupUsers = undefined;
+    }
 
 
     // Hooks a React component's callback to the CHANGED event.
@@ -74,6 +95,14 @@ class GroupStore extends EventEmitter {
     // Removes the listener from the CHANGED event.
     removeChangeListener(callback) {
         this.removeListener(GROUP_CHANGED, callback);
+    }
+
+    addGroupsChageListner(callback){
+        this.on(GROUPS_CHANGED,callback);
+    }
+
+    removeGroupsListener(callback){
+        this.removeListener(GROUPS_CHANGED,callback);
     }
 }
 

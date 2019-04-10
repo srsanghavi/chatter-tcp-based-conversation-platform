@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {css} from "emotion";
 import UserStore from "../Store/UserStore";
+import AuthStore from '../Store/AuthStore';
+import UserActions from '../Actions/UserActions';
 
 class Profile extends Component {
     constructor(props) {
@@ -10,22 +12,81 @@ class Profile extends Component {
             username: '',
             firstName: '',
             lastName: '',
-            email: ''
+            email: '',
+            profilePicture:'',
+            edit:false,
+            isSearchable: false,
+            userid: -1,
         }
+
+        this._onEdit = this._onEdit.bind(this);
+        this._onSave = this._onSave.bind(this);
+        this.lastNameChange = this.lastNameChange.bind(this);
+        this.firstNameChange = this.firstNameChange.bind(this);
+        this._onProfileUpdated = this._onProfileUpdated.bind(this);
+
     }
 
+  
     componentDidMount() {
-        let user = JSON.parse(UserStore._getUsers()).result.filter(user => {
-            return user.id == this.props.match.params.id
-        });
+        let user = AuthStore._getAuthUser();
+        UserStore.addChangeListener(this._onProfileUpdated);
+        UserActions.getUserByUsername(user.username);
+    }
+
+    componentWillUnmount(){
+        UserStore.removeChangeListener(this._onProfileUpdated);
+    }
+
+    _onProfileUpdated(){
+        let user = UserStore._getUser();
+        console.log(user);
+        
+        AuthStore._setUser(user);
+        user = user.result[0];
         this.setState({
-            username: user[0].username,
-            firstName: user[0].first_name,
-            lastName: user[0].last_name,
-            email: user[0].email
+            username: user.username,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            profilePicture: user.profilePicture,
+            isSearchable: user.isSearchable,
+            userid: user.id,
+        })
+    }
+    _onEdit(e){
+        console.log("hi");
+        e.preventDefault();
+        this.setState({
+            edit:true,
+        });
+    }
+
+    _onSave(e){
+        e.preventDefault();
+        
+        this.setState({
+            edit:false
+        })
+
+        UserActions.updateUser(this.state.username,
+                                this.state.userid,
+                                this.state.firstName,
+                                this.state.lastName,
+                                this.state.isSearchable);
+    }
+
+    firstNameChange(e){
+        this.setState({
+            firstName:e.target.value,
         })
     }
 
+    lastNameChange(e){
+        this.setState({
+            lastName:e.target.value,
+        })
+    }
     render() {
         return (
             <div className={css({
@@ -40,10 +101,12 @@ class Profile extends Component {
                     padding: '1em',
                     alignSelf: 'center'
                 })}>
-                    <img src="../images/image.png" height="75" width="75"
-                         className={css({
-                             borderRadius: 50
-                         })}/>
+                    <a href="#">
+                        <img src={this.state.profilePicture} alt="" height="75" width="75"
+                            className={css({
+                                borderRadius: 50
+                            })}/>
+                    </a>
                 </div>
                 <div className={css({
                     "& label": {
@@ -72,6 +135,7 @@ class Profile extends Component {
                         <input type="text"
                                className="input-group-text"
                                value={this.state.username}
+                               
                                readOnly/>
                     </p>
                     <p>
@@ -79,14 +143,16 @@ class Profile extends Component {
                         <input type="text"
                                className="input-group-text"
                                value={this.state.firstName}
-                               readOnly/>
+                               onChange={this.firstNameChange}
+                               />
                     </p>
                     <p>
                         <label>Last Name:</label>
                         <input type="text"
                                className="input-group-text"
                                value={this.state.lastName}
-                               readOnly/>
+                               onChange={this.lastNameChange}
+                               />
                     </p>
                     <p>
                         <label>Email:</label>
@@ -94,7 +160,16 @@ class Profile extends Component {
                                className="input-group-text"
                                value={this.state.email}
                                readOnly/>
+
+                        <label>Is Searchable:</label>
+                        <checkbox value={this.state.isSearchable}></checkbox>
                     </p>
+                </div>
+                {/* <div className={this.state.edit?'hidden':''}>
+                    <a href="#" onClick={this._onEdit}>Edit</a>
+                </div> */}
+                <div className={this.state.edit?'':''}>
+                    <a href="#" onClick={this._onSave}>Save</a>
                 </div>
             </div>
         )

@@ -20,10 +20,13 @@ public class Thread {
   private ArrayList<String> messageID;  // List of messages in the thread
 
 
-  /**
-   * Constructor to initialize a thread.
-   */
-  public Thread(String messageID, String conversationID) {
+    /**
+     * Constructor to initialize a thread.
+     *
+     * @param messageID      the message id
+     * @param conversationID the conversation id
+     */
+    public Thread(String messageID, String conversationID) {
     this.creationTS = new Timestamp((new Date()).getTime());  // Initialize the creation timestamp
     this.modifiedTS = new Timestamp((new Date()).getTime());  // Initialize the modified timestamp
     this.messageID = new ArrayList<>();        // Initialize the message list
@@ -32,59 +35,69 @@ public class Thread {
     this.conversationID = conversationID; // Update conversation ID of the thread
   }
 
-  /**
-   * Method to add messages in the thread.
-   *
-   * @param messageID new message ID
-   */
-  public void addMessageToThread(String messageID) {
+    /**
+     * Method to add messages in the thread.
+     *
+     * @param messageID new message ID
+     */
+    public void addMessageToThread(String messageID) {
 
     this.messageID.add(messageID);      // Add the new message to the thread list of messages
     this.modifiedTS = new Timestamp((new Date()).getTime());  // Update modified timestamp
 
   }
 
-  /**
-   * Getter to return threadID.
-   *
-   * @return threadID
-   */
-  public int getThreadID() {
+    /**
+     * Getter to return threadID.
+     *
+     * @return threadID thread id
+     */
+    public int getThreadID() {
     return this.threadID;
   }
 
-  /**
-   * Getter to check active status of thread.
-   */
-  public boolean isActive() {
+    /**
+     * Getter to check active status of thread.
+     *
+     * @return the boolean
+     */
+    public boolean isActive() {
     return this.active;
   }
 
-  /**
-   * Getter to return conversation ID for this thread.
-   */
-  public String getConversationID() {
+    /**
+     * Getter to return conversation ID for this thread.
+     *
+     * @return the conversation id
+     */
+    public String getConversationID() {
     return this.conversationID;
   }
 
-  /**
-   * Getter to return creation timestamp of the thread.
-   */
-  public Timestamp getCreationTS() {
+    /**
+     * Getter to return creation timestamp of the thread.
+     *
+     * @return the creation ts
+     */
+    public Timestamp getCreationTS() {
     return this.creationTS;
   }
 
-  /**
-   * Getter to return modified timestamp of the thread.
-   */
-  public Timestamp getModifiedTS() {
+    /**
+     * Getter to return modified timestamp of the thread.
+     *
+     * @return the modified ts
+     */
+    public Timestamp getModifiedTS() {
     return this.modifiedTS;
   }
 
-  /**
-   * Getter to return the list of messages in the thread.
-   */
-  public List<String> getMessageID() {
+    /**
+     * Getter to return the list of messages in the thread.
+     *
+     * @return the message id
+     */
+    public List<String> getMessageID() {
     return this.messageID;
   }
 

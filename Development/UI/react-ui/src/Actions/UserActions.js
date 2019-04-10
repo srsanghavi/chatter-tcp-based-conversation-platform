@@ -7,6 +7,7 @@ const api = new Api();
 class UserActions {
     signin(username,password){
         api.signin(username,password).then(value => {
+            
           Dispatcher.dispatch({
               actionType: ActionTypes.ACCOUNT_SIGN_IN,
               payload:    value,
@@ -33,7 +34,7 @@ class UserActions {
     }
 
     getUserById(id) {
-        api.getUserByUsername(id).then(value => {
+        api.getUserById(id).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_USER_BY_ID,
                 payload:    value,
@@ -41,15 +42,22 @@ class UserActions {
         });
     }
 
-    registerUser(username, password, firstName, lastName, email) {
-        api.registerUser(username, password, firstName, lastName, email).then(value => {
-            console.log(value)
+    registerUser(sender, username, password, firstName, lastName, email) {
+        api.registerUser(sender, username, password, firstName, lastName, email).then(value => {
         })
     }
 
     deleteUser(username, userId) {
         api.deleteUser(username, userId).then(value => {
-            console.log(value)
+        })
+    }
+
+    updateUser(username,userId,firstName,lastName,isSearchable){
+        api.updateProfile(username,userId,firstName,lastName,isSearchable).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.UPDATE_USER,
+                payload: value,
+            })
         })
     }
 

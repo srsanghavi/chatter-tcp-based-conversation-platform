@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledFuture;
 import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
 import edu.northeastern.ccs.im.NetworkConnection;
+import edu.northeastern.ccs.im.api.ApiMessageType;
 import edu.northeastern.ccs.im.api.Route;
 import edu.northeastern.ccs.im.database.ModelFactory;
 import edu.northeastern.ccs.im.database.UserModel;
@@ -17,7 +18,7 @@ import edu.northeastern.ccs.im.database.UserModel;
  * server. After instantiation, it is executed periodically on one of the
  * threads from the thread pool and will stop being run only when the client
  * signs off.
- *
+ * <p>
  * This work is licensed under the Creative Commons Attribution-ShareAlike 4.0
  * International License. To view a copy of this license, visit
  * http://creativecommons.org/licenses/by-sa/4.0/. It is based on work
@@ -63,12 +64,12 @@ public class ClientRunnable implements Runnable {
 	/** Collection of messages queued up to be sent to this client. */
 	private Queue<Message> waitingList;
 
-	/**
-	 * Create a new thread with which we will communicate with this single client.
-	 *
-	 * @param network NetworkConnection used by this new client
-	 */
-	public ClientRunnable(NetworkConnection network) {
+    /**
+     * Create a new thread with which we will communicate with this single client.
+     *
+     * @param network NetworkConnection used by this new client
+     */
+    public ClientRunnable(NetworkConnection network) {
 		// Create the class we will use to send and receive communication
 		connection = network;
 		// Mark that we are not initialized
@@ -100,16 +101,19 @@ public class ClientRunnable implements Runnable {
 				timer.updateAfterInitialization();
 				// Set that the client is initialized.
 				initialized = true;
-                UserModel u = ModelFactory.getUserModel();
-                List<Map<String, Object>> r = u.getUsers();
-                List<String> usernames = new ArrayList<>();
-                for(Map<String,Object> user:r){
-                    usernames.add(user.get("username").toString());
-                }
-                Message usernamesMessage = Message.makeBroadcastMessage("ADMIN","Available Users are " + usernames.toString());
-                sendMessage(usernamesMessage);
+				String response = Route.getResponseGet(this.name, ApiMessageType.GET_USER_BY_USERNAME,"{username:'"+userName+"'}");
+
+//                UserModel u = ModelFactory.getUserModel();
+//                List<Map<String, Object>> r = u.getUsers();
+//                List<String> usernames = new ArrayList<>();
+//                for(Map<String,Object> user:r){
+//                    usernames.add(user.get("username").toString());
+//                }
+//                Message usernamesMessage = Message.makeBroadcastMessage("ADMIN","Available Users are " + usernames.toString());
+				Message message = Message.makeBroadcastMessage(msg.getName(),response);
+				this.sendMessage(message);
 			} else {
-			    Message errormsg = Message.makeBroadcastMessage("ADMIN","Incorrect username/password");
+			    Message errormsg = Message.makeBroadcastMessage("ADMIN","{\"result\":[]}");
 			    sendMessage(errormsg);
 			    terminateClient();
 			}
@@ -147,13 +151,13 @@ public class ClientRunnable implements Runnable {
 		return connection.sendMessage(message);
 	}
 
-	/**
-	 * Try allowing this user to set his/her user name to the given username.
-	 *
-	 * @param userName The new value to which we will try to set userName.
-	 * @return True if the username is deemed acceptable; false otherwise
-	 */
-	//changing a private method to public to test
+    /**
+     * Try allowing this user to set his/her user name to the given username.
+     *
+     * @param userName The new value to which we will try to set userName.
+     * @return True if the username is deemed acceptable; false otherwise
+     */
+//changing a private method to public to test
 	public boolean setUserName(String userName) {
 		boolean result = false;
 		// Now make sure this name is legal.
@@ -169,50 +173,50 @@ public class ClientRunnable implements Runnable {
 		return result;
 	}
 
-	/**
-	 * Add the given message to this client to the queue of message to be sent to
-	 * the client.
-	 *
-	 * @param message Complete message to be sent.
-	 */
-	public void enqueueMessage(Message message) {
+    /**
+     * Add the given message to this client to the queue of message to be sent to
+     * the client.
+     *
+     * @param message Complete message to be sent.
+     */
+    public void enqueueMessage(Message message) {
 		waitingList.add(message);
 	}
 
-	/**
-	 * Get the name of the user for which this ClientRunnable was created.
-	 *
-	 * @return Returns the name of this client.
-	 */
-	public String getName() {
+    /**
+     * Get the name of the user for which this ClientRunnable was created.
+     *
+     * @return Returns the name of this client.
+     */
+    public String getName() {
 		return name;
 	}
 
-	/**
-	 * Set the name of the user for which this ClientRunnable was created.
-	 *
-	 * @param name The name for which this ClientRunnable.
-	 */
-	public void setName(String name) {
+    /**
+     * Set the name of the user for which this ClientRunnable was created.
+     *
+     * @param name The name for which this ClientRunnable.
+     */
+    public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Gets the name of the user for which this ClientRunnable was created.
-	 *
-	 * @return Returns the current value of userName.
-	 */
-	public int getUserId() {
+    /**
+     * Gets the name of the user for which this ClientRunnable was created.
+     *
+     * @return Returns the current value of userName.
+     */
+    public int getUserId() {
 		return userId;
 	}
 
-	/**
-	 * Return if this thread has completed the initialization process with its
-	 * client and is read to receive messages.
-	 *
-	 * @return True if this thread's client should be considered; false otherwise.
-	 */
-	public boolean isInitialized() {
+    /**
+     * Return if this thread has completed the initialization process with its
+     * client and is read to receive messages.
+     *
+     * @return True if this thread's client should be considered; false otherwise.
+     */
+    public boolean isInitialized() {
 		return initialized;
 	}
 
@@ -240,11 +244,11 @@ public class ClientRunnable implements Runnable {
 		}
 	}
 
-	/**
-	 * Checks incoming messages and performs appropriate actions based on the type
-	 * of message.
-	 */
-	protected void handleIncomingMessages() {
+    /**
+     * Checks incoming messages and performs appropriate actions based on the type
+     * of message.
+     */
+    protected void handleIncomingMessages() {
 		// Client has already been initialized, so we should first check
 		// if there are any input
 		// messages.
@@ -281,6 +285,7 @@ public class ClientRunnable implements Runnable {
 							String response = Route.getResponseGet(this.name,route,data);
 							Message message = Message.makeBroadcastMessage(msg.getName(),response);
 							this.sendMessage(message);
+
 						}else if(method.equals("POST")){
 							String response = Route.getResponsePost(this.name,route,data);
 							Message message = Message.makeBroadcastMessage(msg.getName(),response);
@@ -300,10 +305,10 @@ public class ClientRunnable implements Runnable {
 	}
 
 
-	/**
-	 * Sends the enqueued messages to the printer and makes sure they were sent out.
-	 */
-	protected void handleOutgoingMessages() {
+    /**
+     * Sends the enqueued messages to the printer and makes sure they were sent out.
+     */
+    protected void handleOutgoingMessages() {
 		// Check to make sure we have a client to send to.
 		boolean keepAlive = true;
 		if (!waitingList.isEmpty()) {
@@ -322,22 +327,21 @@ public class ClientRunnable implements Runnable {
 		terminate |= !keepAlive;
 	}
 
-	/**
-	 * Store the object used by this client runnable to control when it is scheduled
-	 * for execution in the thread pool.
-	 *
-	 * @param future Instance controlling when the runnable is executed from within
-	 *               the thread pool.
-	 */
-	public void setFuture(ScheduledFuture<?> future) {
+    /**
+     * Store the object used by this client runnable to control when it is scheduled
+     * for execution in the thread pool.
+     *
+     * @param future Instance controlling when the runnable is executed from within               the thread pool.
+     */
+    public void setFuture(ScheduledFuture<?> future) {
 		runnableMe = future;
 	}
 
-	/**
-	 * Terminate a client that we wish to remove. This termination could happen at
-	 * the client's request or due to system need.
-	 */
-	public void terminateClient() {
+    /**
+     * Terminate a client that we wish to remove. This termination could happen at
+     * the client's request or due to system need.
+     */
+    public void terminateClient() {
 		// Once the communication is done, close this connection.
 		connection.close();
 		// Remove the client from our client listing.
@@ -346,7 +350,12 @@ public class ClientRunnable implements Runnable {
 		runnableMe.cancel(false);
 	}
 
-	public void setInitialized(boolean b) {
+    /**
+     * Sets initialized.
+     *
+     * @param b the b
+     */
+    public void setInitialized(boolean b) {
 		initialized = b;
 	}
 }

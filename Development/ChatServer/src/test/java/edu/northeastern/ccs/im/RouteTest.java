@@ -69,7 +69,12 @@ public class RouteTest {
     }
 
     @Test
-  public void testCreateAUser(){
+    public void testCreateAUser() {
+        ChatLogger.info(Route.getResponsePost("srsanghavi", "registerUser/",
+                "{first_name:Paul,last_name:Pogba,username:pogba,email:pogba@utd.com,password:123x}"));
+    }
+    @Test
+  public void testCreateAUsers(){
       ChatLogger.info(Route.getResponsePost("waynerooney","registerUser/",
               "{first_name:Wayne,last_name:Rooney,username:waynerooney,email:wrooney@utd.com,password:wayne}"));
       userIdWayne = ModelFactory.getUserModel().getUserID("waynerooney");
@@ -156,6 +161,13 @@ public class RouteTest {
   }
 
   @Test
+  public void testGetUserByNullUsername() {
+      ChatLogger.info(Route.getResponseGet("solskjaer","getUserByUsername/","{userame:rashy}"));
+  }
+
+
+
+  @Test
   public void testGetUsersInConversation(){
       ChatLogger.info(Route.getResponseGet("rashy","getUsersInConversation/","{conversation_id:429}"));
   }
@@ -231,5 +243,10 @@ public class RouteTest {
     @Test
   public void testModifyUser(){
       ChatLogger.info(Route.getResponsePost("hsbudhia","modifyUser/","{user_id:21,first_name:Himanshu,last_name:Budhia,isSearchable:1}"));
+    }
+
+    @Test
+    public void testUpdateProfilePicture(){
+        ChatLogger.info(Route.getResponsePost("hsbudhia","modifyUser/","{user_id:21, profile_picture:'https://s3.amazonaws.com/cs5500/temp/testUser.png'}"));
     }
 }

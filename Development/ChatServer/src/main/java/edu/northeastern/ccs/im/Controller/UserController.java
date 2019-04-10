@@ -14,6 +14,8 @@ public class UserController {
     private static String USERNAME = "username";
     private static String RESULT_CODE = "result_code";
     private static String RESULT = "result";
+    private static String RESULT_MESSAGE = "result_message";
+    private static String PROFILE_PICTURE = "profile_picture";
 
     /**
      * The User model.
@@ -40,7 +42,7 @@ public class UserController {
         if(!json.containsKey(USERNAME)){
             throw new NoSuchFieldException();
         }
-        String username = (String) json.getOrDefault(USERNAME,0);
+        String username = (String) json.getOrDefault(USERNAME,"");
         return userModel.getUserByUserName(username);
     }
 
@@ -98,20 +100,21 @@ public class UserController {
     private Map<String, Object> error500(Map<String,Object> json){
         json.put(RESULT_CODE,500);
         json.put(RESULT,"error");
-        json.put("result_message","Could not create a message");
+        json.put(RESULT_MESSAGE,"Could not create a message");
         return json;
     }
 
     public Map<String,Object> modifyUser(Map<String,Object> json){
         int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
         String name = "";
+        String pp = "";
         int isSearchable = 0;
         if(json.containsKey("first_name")){
             name = (String) json.get("first_name");
             if(userModel.modifyUserFirstName(userId,name) < 0){
                   json.put(RESULT_CODE,500);
                   json.put(RESULT,"error");
-                  json.put("result_message","Could not modify user details");
+                  json.put(RESULT_MESSAGE,"Could not modify user details");
                   return json;
             }
         }
@@ -129,7 +132,7 @@ public class UserController {
            if(userModel.updateUserSearchable(userId,isSearchable) < 0){
              json.put(RESULT_CODE,500);
              json.put(RESULT,"error");
-             json.put("result_message","Could not modify user details");
+             json.put(RESULT_MESSAGE,"Could not modify user details");
              return json;
            }
          }
@@ -142,6 +145,17 @@ public class UserController {
              return json;
            }
          }
+        if(json.containsKey("profile_picture")){
+            pp = (String) json.get("profile_picture");
+            String url = userModel.updateProfilePicture(userId, pp);
+            if(url.equals("")){
+                json.put(RESULT_CODE,500);
+                json.put(RESULT,"error");
+                json.put(RESULT_MESSAGE,"Could not modify user details");
+                return json;
+            }
+            json.put(PROFILE_PICTURE, url);
+        }
         json.put(RESULT_CODE,201);
         json.put(RESULT,"OK");
         return json;
