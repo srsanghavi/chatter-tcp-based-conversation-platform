@@ -4,7 +4,7 @@ import ActionTypes from '../AppConstants';
 
 const GROUP_CHANGED = 'GROUP_CHANGED';
 const GROUPS_CHANGED = "GROUPS_CHANGED";
-let _userGroups;
+let _userGroups = [];
 let _allGroups = [];
 let _groupUsers;
 
@@ -30,16 +30,19 @@ class GroupStore extends EventEmitter {
             case ActionTypes.GET_GROUP_USERS:
                 this._setGroupUsers(action.payload);
                 break;
+            case ActionTypes.GET_GROUP_CONVERSATIONS:
+                this._setGroups(action.payload);
+                break;
             default:
                 break;
         }
     }
 
     _setGroups(groups){
-        _userGroups = groups;
+        _userGroups = groups.result;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
-            self.emit(GROUP_CHANGED);
+            self.emit(GROUPS_CHANGED);
         }, 0);
     }
 

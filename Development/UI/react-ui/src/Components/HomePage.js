@@ -50,6 +50,7 @@ class HomePage extends Component {
         this.api = new Api();
         this._onChange = this._onChange.bind(this);
         this._onConversationsChanged = this._onConversationsChanged.bind(this);
+        this._onGroupConversationsChanged = this._onGroupConversationsChanged.bind(this);
         this.conversationTabSelected = this.conversationTabSelected.bind(this);
         this.searchTabSelected = this.searchTabSelected.bind(this);
         this.settingsTabSelected = this.settingsTabSelected.bind(this);
@@ -69,6 +70,7 @@ class HomePage extends Component {
         console.log(AuthStore._getAuthUser());
         UserStore.addChangeListener(this._onChange);
         ConversationStore.addChangeListener(this._onConversationsChanged);
+        GroupStore.addGroupsChageListner(this._onGroupConversationsChanged);
     }
 
 
@@ -76,7 +78,7 @@ class HomePage extends Component {
         const user = AuthStore._getAuthUser();
         this.setState({
             user: user,
-            conversations: ConversationStore._getConversations(),
+            conversations: ConversationStore._getConversations().concat(GroupStore._getGroups()),
         });
         ConversationActions.getConversations(user.username,user.id);
         
@@ -86,22 +88,35 @@ class HomePage extends Component {
         clearInterval(this.interval);
         UserStore.removeChangeListener(this._onChange);
         ConversationStore.removeChangeListener(this._onConversationsChanged);
+        GroupStore.removeGroupsListener(this._onGroupConversationsChanged);
     }
-
-
-
+    
     _onChange() {
     }
 
     _onConversationsChanged(){
         const conversations = ConversationStore._getConversations();
         this.setState({
-            // users: JSON.parse(UserStore._getUsers()).result,
-            // myGroups: JSON.parse(GroupStore._getGroups()).result,
-            // groups: JSON.parse(GroupStore._getAllGroups()).result,
             conversations: conversations,
         });
+        GroupActions.getGroupConversations(AuthStore._getAuthUser().username,AuthStore._getAuthUser().id);
         
+    }
+
+    _onGroupConversationsChanged(){
+        var convs = GroupStore._getGroups();
+        convs = convs.map(c => {
+            return {
+            created_on:c.created_on,
+            destination_firstname:c.name,
+            destination_id:-1,
+            destination_lastname:"",
+            destination_username:"",
+            id:c.conversation_id,
+        }})
+             this.setState({
+                 conversations:this.state.conversations.concat(convs),
+             })
     }
 
     conversationTabSelected() {

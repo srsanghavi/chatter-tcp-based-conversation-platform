@@ -163,25 +163,25 @@ class Conversation extends Component {
     }
 
     renderThreads() {
-        if((ThreadStore._getThreads() === undefined || MessageStore._getMessages() === undefined)
-                && this.state.threads.length === 0) {
-            return(
-                <div className={css({
-                    textAlign: 'center',
-                    position: 'absolute',
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translateY(-50%) translateX(-50%)',
-                })}>
-                    <div className="lds-ring">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                </div>
-            )
-        } else {
+        // if((ThreadStore._getThreads() === undefined || MessageStore._getMessages() === undefined)
+        //         && this.state.threads.length === 0) {
+        //     // return(
+            //     <div className={css({
+            //         textAlign: 'center',
+            //         position: 'absolute',
+            //         left: '50%',
+            //         top: '50%',
+            //         transform: 'translateY(-50%) translateX(-50%)',
+            //     })}>
+            //         <div className="lds-ring">
+            //             <div></div>
+            //             <div></div>
+            //             <div></div>
+            //             <div></div>
+            //         </div>
+            //     </div>
+            // )
+        // } else {
             return(
                 <div>
                     <ThreadContainer threads={this.state.threads}
@@ -191,7 +191,7 @@ class Conversation extends Component {
                                         value={this.state.newMessage}/>
                 </div>
             )
-        }
+        // }
     }
 
     render() {
