@@ -187,8 +187,8 @@ public class UserModel {
      * @param userId id for user
      * @return success /failure value
      */
-    public int updateUserToPrivate(int userId){
-        String query = "UPDATE users SET isSearchable='0' where id='"+userId+"';";
+    public int updateUserSearchable(int userId, int isSearchable){
+        String query = "UPDATE users SET isSearchable="+ isSearchable +" where id='"+userId+"';";
         int r = conn.sqlcreate(query);
         return r<=0?-1:r;
     }
@@ -201,6 +201,24 @@ public class UserModel {
     public List<Map<String,Object>> getNonPrivateUsers(){
       String sql = "SELECT * from users WHERE isSearchable='1';";
       return conn.sqlGet(sql);
+    }
+
+    public int modifyUserFirstName(int userId, String name){
+        String query = "UPDATE users SET first_name ='"+ name +"' where id='"+userId+"';";
+        int r = conn.sqlcreate(query);
+        return r<=0?-1:r;
+    }
+
+    public int modifyUserLastName(int userId, String name){
+        String query = "UPDATE users SET last_name ='"+ name +"' where id='"+userId+"';";
+        int r = conn.sqlcreate(query);
+        return r<=0?-1:r;
+    }
+
+    public int modifyPreferredLanguage(int userID, String language){
+        String query = "UPDATE users SET preferredLanguage ='"+ language +"' where id='"+ userID +"';";
+        int r = conn.sqlcreate(query);
+        return r<=0?-1:r;
     }
 
 }

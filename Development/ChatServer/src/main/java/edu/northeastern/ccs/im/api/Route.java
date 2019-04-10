@@ -193,6 +193,11 @@ public class Route {
                         .getGroupController()
                         .createGroup(json);
                 break;
+            case ApiMessageType.MODIFY_USER:
+                json = ControllerFactory
+                        .getUserController()
+                        .modifyUser(json);
+                break;
 
             default:
                 return  "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";

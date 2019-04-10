@@ -62,4 +62,20 @@ public class UserModelTest {
     public void testDeleteUser(){
         assertEquals(1, userModel.deleteUser(353));
     }
+
+    @Test
+    public void testUpdateUserSearchable(){
+        System.out.println(userModel.updateUserSearchable(1,0));
+    }
+
+    @Test
+    public void testModifyFirstName(){
+        System.out.println(userModel.modifyUserFirstName(1,"Shashwat"));
+    }
+
+    @Test
+    public void testModifyLastName(){
+        System.out.println(userModel.modifyUserLastName(1,"Sanghavi"));
+    }
+
 }
