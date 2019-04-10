@@ -238,4 +238,19 @@ public class ConversationModel {
         return conn.getLastInsertedID();
     }
 
+    public List<Map<String, Object>> getGroupConversations(int userId) {
+        String sql = "SELECT Groups_id as groupid, u.id as user_id, first_name,last_name, conversation_id, name as destination_name, username, c.created_on\n" +
+                "FROM groups_has_users as gu JOIN \n" +
+                "\t\t\tgroups as g on gu.Groups_id = g.id JOIN \n" +
+                "            conversations as c on g.conversation_id = c.id JOIN\n" +
+                "            users as u on u.id=gu.Users_id\n" +
+                "where Users_id ="+userId+";";
+
+        return conn.sqlGet(sql);
+    }
+
+    public List<Map<String, Object>> getConversationGroup(int conversationId) {
+        String sql = "SELECT * FROM groups WHERE conversation_id="+conversationId+";";
+        return conn.sqlGet(sql);
+    }
 }

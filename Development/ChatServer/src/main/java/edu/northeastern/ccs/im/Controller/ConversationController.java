@@ -87,11 +87,16 @@ public class ConversationController {
         int conversationId;
         conversationId = Math.toIntExact(Math.round((double) json.getOrDefault(CONVERSATION_ID, 0)));
 
-        if(!isConversationParticipant(username,conversationId)){
+        if(!isConversationParticipant(username,conversationId) && !groupConversation(conversationId)){
             return error401();
         }
 
         return conversationModel.getMessagesForConversation(conversationId);
+    }
+
+    private boolean groupConversation(int conversationId) {
+        List<Map<String, Object>> res = ModelFactory.getConversationModel().getConversationGroup(conversationId);
+        return res.size()>0;
     }
 
 
@@ -135,7 +140,7 @@ public class ConversationController {
         }
         int conversationId = (int) thread.get(0).get(CONVERSATIONS_ID);
 
-        if(!isConversationParticipant(username,conversationId)){
+        if(!isConversationParticipant(username,conversationId) && !groupConversation(conversationId)){
             return error401();
         }
 
@@ -205,13 +210,26 @@ public class ConversationController {
                 return error500(json);
             }
         }
-
-        List<Map<String, Object>> users = conversationModel.getUsersInConversation(conversationId);
         List<String> destinationNames = new ArrayList<>();
-        for(Map<String,Object> user:users){
-            if(user.containsKey(USERNAME) &&
-                !user.get(USERNAME).equals(senderName)){
-                destinationNames.add((String) user.get(USERNAME));
+
+        if(groupConversation(conversationId)){
+            List<Map<String, Object>> res = ModelFactory.getConversationModel().getConversationGroup(conversationId);
+            int groupId = (int) res.get(0).get("id");
+            List<Map<String, Object>> users = ModelFactory.getGroupModel().getUsersInGroups(groupId);
+            for (Map<String, Object> user : users) {
+                if (user.containsKey(USERNAME) &&
+                        !user.get(USERNAME).equals(senderName)) {
+                    destinationNames.add((String) user.get(USERNAME));
+                }
+            }
+            System.out.println(destinationNames);
+        }else {
+            List<Map<String, Object>> users = conversationModel.getUsersInConversation(conversationId);
+            for (Map<String, Object> user : users) {
+                if (user.containsKey(USERNAME) &&
+                        !user.get(USERNAME).equals(senderName)) {
+                    destinationNames.add((String) user.get(USERNAME));
+                }
             }
         }
 
@@ -344,4 +362,16 @@ public class ConversationController {
         }
         return false;
     }
+
+
+    public List<Map<String, Object>> getGroupConversations(Map<String,Object> json) throws NoSuchFieldException {
+        int userId;
+        if(json.containsKey(USER_ID)) {
+            userId = Math.toIntExact(Math.round((double) json.get(USER_ID)));
+        }else {
+            throw new NoSuchFieldException();
+        }
+        return conversationModel.getGroupConversations(userId);
+    }
+
 }
