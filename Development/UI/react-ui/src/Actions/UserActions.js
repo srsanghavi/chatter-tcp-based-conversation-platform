@@ -34,7 +34,7 @@ class UserActions {
     }
 
     getUserById(id) {
-        api.getUserByUsername(id).then(value => {
+        api.getUserById(id).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_USER_BY_ID,
                 payload:    value,
@@ -49,6 +49,15 @@ class UserActions {
 
     deleteUser(username, userId) {
         api.deleteUser(username, userId).then(value => {
+        })
+    }
+
+    updateUser(username,userId,firstName,lastName,isSearchable){
+        api.updateProfile(username,userId,firstName,lastName,isSearchable).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.UPDATE_USER,
+                payload: value,
+            })
         })
     }
 

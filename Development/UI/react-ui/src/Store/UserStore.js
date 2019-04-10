@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher';
 import ActionTypes from '../AppConstants';
+import UserActions from '../Actions/UserActions';
+import AuthStore from './AuthStore';
 
 const CHANGE = 'CHANGE';
 const USERS_LIST_CHANGE = "USERS_LIST_CHANGE";
@@ -29,18 +31,27 @@ class UserStore extends EventEmitter {
             case ActionTypes.GET_USER_BY_USERNAME:
                 this._setUser(action.payload);
                 break;
+            case ActionTypes.UPDATE_USER:
+                this._updateUser(action.payload);
             default:
             break;
         }
     }
 
 
+    _updateUser(res){
+        if(res){
+            UserActions.getUserByUsername(AuthStore._getAuthUser().username);
+        }
+    }
     _setUser(user){
-        _user=user;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(CHANGE);
-        }, 0);
+        if(user){
+            _user=user;
+            let self = this;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(CHANGE);
+            }, 0);
+        }
     }
 
     _getUser() {
