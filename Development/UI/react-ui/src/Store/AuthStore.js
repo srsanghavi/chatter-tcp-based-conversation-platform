@@ -7,7 +7,7 @@ const CHANGE = 'CHANGE';
 let _user;
 
 
-class UserStore extends EventEmitter {
+class AuthStore extends EventEmitter {
     constructor() {
         super();
  
@@ -22,6 +22,12 @@ class UserStore extends EventEmitter {
             
             case ActionTypes.ACCOUNT_SIGN_IN:
                 this._setUser(action.payload);
+                break;
+            case ActionTypes.MODIFY_USER:
+                console.log(test);
+                if(action.payload.username === _user.username) {
+                    this._setUser(action.payload);
+                }
                 break;
             default:
             break;
@@ -60,4 +66,4 @@ class UserStore extends EventEmitter {
 
 }
 
-export default new UserStore();
+export default new AuthStore();

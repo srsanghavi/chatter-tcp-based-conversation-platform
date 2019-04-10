@@ -57,6 +57,13 @@ export default class Api {
         return this.promise();
     }
 
+    modifyUser(username, first_name, last_name, isSearchable) {
+        let msg = this.messageType.makeApiMessage(username,"modifyUser/::POST::{first_name:"+first_name+"," +
+            "last_name:"+last_name+",isSearchable:"+isSearchable+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
     getConversations(username,userId){
         let msg = this.messageType.makeApiMessage(username,"getConversations/::GET::{user_id:"+userId+"}");
         gateway.sendTcp(msg);

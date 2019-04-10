@@ -25,7 +25,7 @@ const ProfileHeader = props => {
                 width: '100%',
                 padding: '0 0.75em'
             })}>
-                <NavLink to={`/conversations`}
+                <NavLink to={`../conversations`}
                          className={css({
                              color: 'white',
                              textDecoration: 'none',

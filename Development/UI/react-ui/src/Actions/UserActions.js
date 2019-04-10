@@ -42,6 +42,15 @@ class UserActions {
         });
     }
 
+    modifyUser(username, firstName, lastName, isSearchable) {
+        api.modifyUser(username, firstName, lastName, isSearchable).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.MODIFY_USER,
+                payload:    value,
+            })
+        });
+    }
+
     registerUser(sender, username, password, firstName, lastName, email) {
         api.registerUser(sender, username, password, firstName, lastName, email).then(value => {
         })
