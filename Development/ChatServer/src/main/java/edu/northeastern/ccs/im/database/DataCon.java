@@ -29,7 +29,9 @@ public interface DataCon {
      * @param query in string
      * @return List of Rows from database
      */
-    List<Map<String, Object>> sqlGet(String query);
+//    List<Map<String, Object>> sqlGet(String query);
+
+    List<Map<String, Object>> sqlGet(String query, List<String> arguments);
 
     /**
      * Create entries in database
@@ -37,7 +39,9 @@ public interface DataCon {
      * @param query in String
      * @return success code
      */
-    int sqlcreate(String query);
+//    int sqlcreate(String query);
+
+    int sqlcreate(String query, List<String> arguments);
 
     /**
      * Get Last Inserted ID
