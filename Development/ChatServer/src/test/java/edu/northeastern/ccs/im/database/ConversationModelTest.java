@@ -51,7 +51,7 @@ public class ConversationModelTest {
         int user_id2 = 21;
         int r = conversationModel.createConversationForUser(user_id1,user_id2);
         ChatLogger.info("Conversation ID:"+String.valueOf(r));
-        ChatLogger.info("Messages For Conversation: "+ conversationModel.getMessagesForConversation(r));
+        ChatLogger.info("Messages For Conversation: "+ conversationModel.getMessagesForConversation("hsbudhia",r));
     }
 
     @Test
@@ -90,7 +90,12 @@ public class ConversationModelTest {
     }
 
     @Test
-    public void testReceivedTranslatedMessage(){
+    public void testReceivedTranslatedMessageInThread(){
         System.out.println(conversationModel.getMessagesInThread("rashy",2633));
+    }
+
+    @Test
+    public void testReceivedTranslatedMessageInConversation(){
+        System.out.println(conversationModel.getMessagesForConversation("rashy",555));
     }
 }
