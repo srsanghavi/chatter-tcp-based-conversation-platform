@@ -84,7 +84,7 @@ class GroupStore extends EventEmitter {
     }
 
     _clearGroupMembers() {
-        _groupMembers = undefined;
+        _groupMembers = [];
     }
 
 

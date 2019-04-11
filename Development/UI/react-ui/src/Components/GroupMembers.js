@@ -3,7 +3,6 @@ import {css} from "emotion";
 import GroupActions from '../Actions/GroupActions'
 import GroupStore from "../Store/GroupStore";
 import AuthStore from "../Store/AuthStore";
-import UserPreviews from "./UserPreviews";
 import GroupMember from "./GroupMember";
 import GroupHeader from "./GroupHeader";
 
@@ -24,7 +23,6 @@ class GroupMembers extends Component {
     }
 
     componentDidMount() {
-        GroupActions.getGroupUsers(AuthStore._getAuthUser().username, this.props.match.params.id);
         this.setState({
             groupMembers: GroupStore._getGroupMembers()
         })
@@ -32,6 +30,7 @@ class GroupMembers extends Component {
 
     componentWillUnmount(){
         GroupStore.removeGroupMembersChangeListener(this._onGroupChanged);
+        GroupStore._clearGroupMembers()
     }
 
     _onGroupChanged(){
@@ -54,10 +53,11 @@ class GroupMembers extends Component {
                 })}>
                     <GroupHeader/>
                 </div>
-                {this.state.groupMembers.map(member=> {
+                {this.state.groupMembers.length > 0 ?
+                this.state.groupMembers.map(member=> {
                     return(<GroupMember user={member}
                                         key={member.id}/>)
-                })}
+                }) : null}
             </div>
         )
     }

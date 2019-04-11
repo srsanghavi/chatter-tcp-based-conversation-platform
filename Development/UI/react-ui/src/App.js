@@ -13,6 +13,7 @@ import Register from "./Components/Register";
 import Thread from './Components/Thread';
 import GroupMembers from "./Components/GroupMembers";
 import Profile from "./Components/Profile";
+import AuthStore from "./Store/AuthStore";
 
 class App extends Component {
 

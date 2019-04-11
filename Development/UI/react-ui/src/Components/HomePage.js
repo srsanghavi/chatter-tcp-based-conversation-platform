@@ -75,7 +75,10 @@ class HomePage extends Component {
             user: user,
             conversations: ConversationStore._getConversations(),
         });
-        ConversationActions.getConversations(user.username,user.id);
+        const PATH = window.location.pathname.split('/');
+        if(PATH[PATH.length - 1] === 'conversations') {
+            ConversationActions.getConversations(user.username, user.id);
+        }
         
     }
 
