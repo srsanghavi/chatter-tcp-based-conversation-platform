@@ -14,4 +14,22 @@ export default {
     GET_MESSAGES_IN_THREAD: 'GET_MESSAGES_IN_THREAD',
     GET_GROUP_USERS: 'GET_GROUP_USERS',
     INSERT_NEW_MESSAGE: 'INSERT_NEW_MESSAGE',
+    GET_GROUP_CONVERSATIONS: 'GET_GROUP_CONVERSATIONS',
+
+    LANGUAGES: [
+        "English",
+        "Arabic",
+        "Chinese",
+        "Czech",
+        "Dutch",
+        "French",
+        "German",
+        "Gujarati",
+        "Hindi",
+        "Latin",
+        "Korean",
+        "Spanish",
+        "Urdu"
+    ]
 }
+

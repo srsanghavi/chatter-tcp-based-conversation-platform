@@ -134,5 +134,11 @@ export default class Api {
         return this.promise();
     }
 
+    getGroupConversations(username,userid){
+        let msg = this.messageType.makeApiMessage(username,"getGroupConversation/::GET::{user_id:"+userid+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
 }
 

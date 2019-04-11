@@ -8,6 +8,7 @@ import ProfileHeader from "./ProfileHeader";
 import ConversationStore from "../Store/ConversationStore";
 import { NavLink } from 'react-router-dom';
 import ConversationActions from "../Actions/ConversationActions";
+import data from '../AppConstants';
 
 class Profile extends Component {
     constructor(props) {
@@ -251,12 +252,23 @@ class Profile extends Component {
                         </p>
                         <p>
                             <label>Language:</label>
-                            <input type="text"
-                                   className="input-group-text"
-                                   value={this.state.preferredLanguage}
-                                   readOnly={!this.state.editMode}
-                                   style={this.state.editMode ?
-                                       {backgroundColor: 'lightgray', fontStyle: 'italic'} : {}}/>
+                            {this.state.editMode ?
+                                <select className="custom-select"
+                                        style={{
+                                            width: '65%',
+                                            backgroundColor: 'white',
+                                            textAlign: 'left',
+                                            fontFamily: 'Titillium Web',
+                                            fontWeight: 'bold',
+                                        }}>
+                                    {data.LANGUAGES.map(language => {
+                                        return <option value={language}>{language}</option>
+                                    })}
+                                </select> :
+                                <input type="text"
+                                       className="input-group-text"
+                                       value={this.state.preferredLanguage}
+                                       readOnly/>}
                         </p>
                         <p>
                             <label>Join Date:</label>

@@ -18,7 +18,7 @@ class SearchGroups extends Component {
     }
 
     componentWillMount() {
-        GroupStore.addGroupsChageListner(this._onGroupsChanged);
+        GroupStore.addGroupsChangeListener(this._onGroupsChanged);
         GroupActions.getAllGroups(AuthStore._getAuthUser().username);
     }
 

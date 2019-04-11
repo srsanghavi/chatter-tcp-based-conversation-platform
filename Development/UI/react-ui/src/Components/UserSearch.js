@@ -29,7 +29,7 @@ class UserSearch extends Component{
 
     componentWillMount(){
         UserStore.addUserListChangeListener(this._onUsersChanged);
-        GroupStore.addGroupsChageListner(this._onGroupsChanged);
+        GroupStore.addGroupsChangeListener(this._onGroupsChanged);
         if(this.state.userButtonSelected === true){
             UserActions.getUsers(AuthStore._getAuthUser().username);
         }else{

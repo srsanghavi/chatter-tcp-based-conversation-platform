@@ -64,7 +64,7 @@ public final class ApiMessageType {
     /**
      * The Get group conversation.
      */
-    static final String GET_GROUP_CONVERSATION = "";
+    static final String GET_GROUP_CONVERSATION = "getGroupConversation/";
     /**
      * The Delete group.
      */
