@@ -216,7 +216,7 @@ public class ConversationModel {
      * @param threadID the thread id
      * @return list of messages in the thread
      */
-    public List<Map<String, Object>> getMessagesInThread(int threadID){
+    public List<Map<String, Object>> getMessagesInThread(String username,int threadID){
         String sql = "select * from message JOIN users on message.sender_id = users.id where thread_id=?;";
 
         List<String> args = new ArrayList<>();
