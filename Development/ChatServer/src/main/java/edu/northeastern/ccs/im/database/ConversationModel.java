@@ -165,11 +165,26 @@ public class ConversationModel {
      * @return the list of messages inside a conversation
      */
     //TODO Add translaltion
-    public List<Map<String,Object>> getMessagesForConversation(int conversationId){
+    public List<Map<String,Object>> getMessagesForConversation(String username, int conversationId){
         String query = "CALL message_in_conversation(?);";
         List<String> args = new ArrayList<>();
         args.add(Integer.toString(conversationId));
-        return conn.sqlGet(query, args);
+        List<Map<String, Object>> result = conn.sqlGet(query,  args);
+
+        List<String> langArgs = new ArrayList<>();
+        langArgs.add(username);
+
+        String language = (String) (conn.sqlGet("select preferredLanguage from users where username = ?;",langArgs)).get(0).get("preferredLanguage");
+        if(language.compareTo("English")!=0){
+          for(Map<String, Object> message : result){
+            String currentText = (String) message.get("text");
+            message.put("text",translateText(currentText,language));
+          }
+        }
+
+
+
+        return result;
     }
 
     /**
@@ -202,7 +217,6 @@ public class ConversationModel {
      * @param threadID the thread id
      * @return list of messages in the thread
      */
-    //TODO Add translaltion
     public List<Map<String, Object>> getMessagesInThread(String username, int threadID){
         String sql = "select * from message where thread_id =?;";
         List<String> args = new ArrayList<>();

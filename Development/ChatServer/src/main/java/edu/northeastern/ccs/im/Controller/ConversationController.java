@@ -91,7 +91,7 @@ public class ConversationController {
             return error401();
         }
 
-        return conversationModel.getMessagesForConversation(conversationId);
+        return conversationModel.getMessagesForConversation(username,conversationId);
     }
 
 
