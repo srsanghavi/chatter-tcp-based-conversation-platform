@@ -1,5 +1,9 @@
 package edu.northeastern.ccs.im.database;
 
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
+
 import edu.northeastern.ccs.im.ChatLogger;
 
 import java.util.*;
@@ -251,6 +255,83 @@ public class ConversationModel {
      */
     public int getLastInsertedID() {
         return conn.getLastInsertedID();
+    }
+
+  /**
+   * Method to translate the given text in to target language.
+   * @param text to translate
+   * @param language to translate into
+   * @return translated text
+   */
+    public String translateText(String text, String language){
+
+      Translate translate = TranslateOptions.newBuilder().setApiKey("AIzaSyAYnvDZd5G7FNPRbbeDhGvmRzT2B7mbVWU").build().getService();
+
+      String translatedText;
+      String languageCode = getTargetLanguageCode(language);
+      Translation translation =
+              translate.translate(
+                      text,
+                      Translate.TranslateOption.targetLanguage(languageCode));
+      translatedText = translation.getTranslatedText();
+
+      return translatedText;
+    }
+
+  /**
+   * Method to return target language ISO-639-1 Code.
+   * @param languauge to get the code of
+   * @return ISO-639-1 Code
+   */
+    private String getTargetLanguageCode(String languauge){
+      String code = "";
+
+      switch (languauge) {
+        case "Arabic":
+          code = "ar";
+          break;
+        case "English":
+          code = "en";
+          break;
+        case "Chinese":
+          code = "zh-TW";
+          break;
+        case "Czech":
+          code = "cs";
+          break;
+        case "Dutch":
+          code = "nl";
+          break;
+        case "French":
+          code = "fr";
+          break;
+        case "German":
+          code = "de";
+          break;
+        case "Gujarati":
+          code = "gu";
+          break;
+        case "Hindi":
+          code = "hi";
+          break;
+        case "Latin":
+          code = "la";
+          break;
+        case "Korean":
+          code = "ko";
+          break;
+        case "Spanish":
+          code = "es";
+          break;
+        case "Urdu":
+          code = "ur";
+          break;
+        default:
+          code = "en";
+          break;
+      }
+
+      return code;
     }
 
 }
