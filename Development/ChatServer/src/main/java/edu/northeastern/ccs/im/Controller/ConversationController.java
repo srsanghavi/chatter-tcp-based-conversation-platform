@@ -139,7 +139,7 @@ public class ConversationController {
             return error401();
         }
 
-        return conversationModel.getMessagesInThread(threadId);
+        return conversationModel.getMessagesInThread(username,threadId);
     }
 
     /**
