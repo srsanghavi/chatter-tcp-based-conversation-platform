@@ -5,6 +5,7 @@ import AuthStore from '../Store/AuthStore';
 import UserActions from "../Actions/UserActions";
 import UserStore from '../Store/UserStore';
 import ProfileHeader from "./ProfileHeader";
+import ConversationStore from "../Store/ConversationStore";
 
 class Profile extends Component {
     constructor(props) {
@@ -115,6 +116,10 @@ class Profile extends Component {
     handleSubmit() {
         UserActions.modifyUser(AuthStore._getAuthUser().username, this.state.first_name,
             this.state.last_name, this.state.isSearchable)
+    }
+
+    sendMessage() {
+
     }
 
     firstNameChange(event) {
@@ -277,6 +282,12 @@ class Profile extends Component {
                                     onClick={this.cancelOnClick}>Cancel</button>
                         </div> : null}
                     </div>
+                    {this.props.match.params.username !== AuthStore._getAuthUser().username ?
+                        <div className={css({
+                            padding: '1em'
+                        })}>
+                            <button className="btn btn-primary">Send Message</button>
+                        </div> : null}
                 </div>
             </div>
         )

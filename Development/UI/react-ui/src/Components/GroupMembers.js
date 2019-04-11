@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import {css} from "emotion";
-import GroupMember from './GroupMember'
+import GroupActions from '../Actions/GroupActions'
+import GroupStore from "../Store/GroupStore";
+import AuthStore from "../Store/AuthStore";
+import UserPreviews from "./UserPreviews";
 
 class GroupMembers extends Component {
     constructor(props) {
@@ -8,15 +11,30 @@ class GroupMembers extends Component {
         this.state = {
             id: this.props.match.params.id,
             groupMembers: []
-        }
+        };
+
+        this._onGroupChanged = this._onGroupChanged.bind(this);
+    }
+
+    componentWillMount() {
+        GroupStore.addGroupMembersChangeListener(this._onGroupChanged);
     }
 
     componentDidMount() {
-        // GroupActions.getGroupUsers(localStorage.getItem('username'), this.props.match.params.id);
-        // setTimeout(function(){}, 3000);
-        // this.setState({
-        //    groupMembers: JSON.parse(GroupStore._getGroupUsers()).result
-        // })
+        GroupActions.getGroupUsers(AuthStore._getAuthUser().username, this.props.match.params.id);
+        this.setState({
+            groupMembers: GroupStore._getGroupMembers()
+        })
+    }
+
+    componentWillUnmount(){
+        GroupStore.removeGroupMembersChangeListener(this._onGroupChanged);
+    }
+
+    _onGroupChanged(){
+        this.setState({
+            groupMembers: GroupStore._getGroupMembers()
+        })
     }
 
     render() {
@@ -29,7 +47,7 @@ class GroupMembers extends Component {
                 overflowX: 'hidden',
             })}>
                 {this.state.groupMembers.map(member => {
-                    return(<GroupMember user={member}/>)
+                    return(<UserPreviews user={member}/>)
                 })}
             </div>
         )
