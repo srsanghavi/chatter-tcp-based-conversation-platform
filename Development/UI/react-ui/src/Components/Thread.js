@@ -89,7 +89,7 @@ class Thread extends Component {
     sendMessage() {
         const conversationId = this.props.match.params.id;
         MessageActions.createMessageForThread(AuthStore._getAuthUser().username, AuthStore._getAuthUser().id,
-            this.props.match.params.threadId, "\"" + this.state.newMessage + "\"", conversationId);
+            this.props.match.params.threadId, this.state.newMessage , conversationId,0);
         this.setState({
             newMessage: ''
         })
@@ -145,7 +145,9 @@ class Thread extends Component {
                     <MessageContainer messages={this.state.messages}/>
                     <ConversationFooter onChange={this.onMessageChange}
                                         onClick={this.sendMessage}
-                                        value={this.state.newMessage}/>
+                                        value={this.state.newMessage}
+                                        conversation_id={this.props.match.params.id}
+                                        threadid={this.props.match.params.threadId}/>
                 </div>
             )
         }

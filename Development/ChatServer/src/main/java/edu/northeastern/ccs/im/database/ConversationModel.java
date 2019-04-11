@@ -124,10 +124,10 @@ public class ConversationModel {
      * @param text     the text
      * @return the int
      */
-    public int createMessageForThread(int threadId, int senderId, String text){
-        String query = "INSERT INTO message(sender_id,thread_id,text) VALUES (?, ?, ?);";
+    public int createMessageForThread(int threadId, int senderId, String text,String mediaURL){
+        String query = "INSERT INTO message(sender_id,thread_id,text,mediaURL) VALUES (?, ?, ?, ?);";
         List<String> args = new ArrayList<>();
-        Collections.addAll(args, Integer.toString(senderId), Integer.toString(threadId), text);
+        Collections.addAll(args, Integer.toString(senderId), Integer.toString(threadId), text, mediaURL);
         int r = conn.sqlcreate(query, args);
         if(r>0){
             return conn.getLastInsertedID();
@@ -197,7 +197,7 @@ public class ConversationModel {
      * @return list of messages in the thread
      */
     public List<Map<String, Object>> getMessagesInThread(int threadID){
-        String sql = "select * from message where thread_id =?;";
+        String sql = "select * from message JOIN users on message.sender_id = users.id where thread_id=?;";
         List<String> args = new ArrayList<>();
         args.add(Integer.toString(threadID));
         return conn.sqlGet(sql,  args);

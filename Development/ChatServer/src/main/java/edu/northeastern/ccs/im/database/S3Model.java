@@ -47,6 +47,7 @@ public class S3Model implements MediaCon{
                 .withRegion("us-east-1")
                 .withCredentials(new AWSStaticCredentialsProvider(creds))
                 .build();
+        System.out.println(s3);
     }
 
     public String getBucket(){

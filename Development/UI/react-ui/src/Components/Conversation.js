@@ -144,7 +144,8 @@ class Conversation extends Component {
                                               AuthStore._getAuthUser().id,
                                                -1, 
                                                 newMesage, 
-                                               this.props.match.params.id);
+                                               this.props.match.params.id,
+                                               0);
             this.setState({
             newMessage: '',
         })
@@ -208,6 +209,8 @@ class Conversation extends Component {
                     <ConversationFooter onChange={this.onMessageChange}
                                         onClick={this.sendMessage}
                                         value={this.state.newMessage}
+                                        conversation_id={this.props.match.params.id}
+                                        thread_id={-1}
                                        />
                 </div>
             )

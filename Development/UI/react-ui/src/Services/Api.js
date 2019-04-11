@@ -93,9 +93,15 @@ export default class Api {
         return this.promise();
     }
 
-    createMessageForThread(username, userId, threadId, messageText, conversationId) {
-        let msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
+    createMessageForThread(username, userId, threadId, messageText, conversationId,media) {
+        let msg;
+        if(media!=1){
+        msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
             "sender_id:"+userId+",thread_id:"+threadId+",message:\""+messageText+"\",conversation_id:"+conversationId+"}");
+        }else{
+            msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
+            "sender_id:"+userId+",thread_id:"+threadId+",mediaURL:\""+messageText+"\",conversation_id:"+conversationId+"}");
+        }
         gateway.sendTcp(msg);
         return this.promise();
     }

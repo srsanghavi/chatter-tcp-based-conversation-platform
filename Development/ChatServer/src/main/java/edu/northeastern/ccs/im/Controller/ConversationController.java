@@ -186,13 +186,14 @@ public class ConversationController {
     public Map<String, Object> createMessage(Map<String,Object> json) {
         if(!json.containsKey(SENDER_ID) ||
         !json.containsKey(THREAD_ID) ||
-        !json.containsKey(MESSAGE) ||
+        !(json.containsKey(MESSAGE) || json.containsKey("mediaURL")) ||
         !json.containsKey(CONVERSATION_ID)){
             json.put(RESULT_CODE,400);
             json.put(RESULT,ERROR);
             json.put(ERROR_MESSAGE, MISSING_PARAMETER);
             return json;
         }
+
         int senderId = Math.toIntExact(Math.round((double) json.get(SENDER_ID)));
         int conversationId = Math.toIntExact(Math.round((double) json.get(CONVERSATION_ID)));
 
@@ -201,7 +202,13 @@ public class ConversationController {
         String senderName = (String) sender.get(USERNAME);
 
         int threadId = Math.toIntExact(Math.round((double) json.get(THREAD_ID)));
-        String message = (String) json.get(MESSAGE);
+        String message="";
+        String mediapath="";
+        if(json.containsKey(MESSAGE)){
+             message = (String) json.get(MESSAGE);
+        }else if(json.containsKey("mediaURL")){
+            mediapath = (String) json.get("mediaURL");
+        }
 
         if(threadId==-1){
             if(conversationModel.createThreadForConversation(conversationId)>0){
@@ -234,7 +241,7 @@ public class ConversationController {
         }
 
         String data = "{\"sender_name\":\""+senderName+"\",\"message\":\""+message+"\",\"conversation_id\":"+conversationId+"}";
-        if(conversationModel.createMessageForThread(threadId, senderId,message)>0){
+        if(conversationModel.createMessageForThread(threadId, senderId,message,mediapath)>0){
             Message msg = Message.makeNotificationMessage(senderName,data);
             for(String destinationName:destinationNames) {
                 Prattle.sendMessageToUser(destinationName, msg);
@@ -312,7 +319,7 @@ public class ConversationController {
         for (Map<String, Object> conversation : conversations){
             conversationId = (Integer) conversation.get("id");
             threadId = conversationModel.createThreadForConversation(conversationId);
-            messageId = conversationModel.createMessageForThread(threadId, sender, text);
+            messageId = conversationModel.createMessageForThread(threadId, sender, text,"");
             conversationModel.addMessageToThread(messageId, threadId);
         }
         json.put(RESULT_CODE,201);

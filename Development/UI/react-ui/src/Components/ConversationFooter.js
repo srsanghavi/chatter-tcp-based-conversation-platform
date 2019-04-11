@@ -1,11 +1,30 @@
 import React,{Component} from 'react';
 import {css} from 'emotion';
 import {EmojiPicker} from 'emoji-picker-react';
+import Mediauploader from './Mediauploader';
+import MessageActions from '../Actions/MessageActions';
+import AuthStore from '../Store/AuthStore';
 
 
 class ConversationFooter extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            editProfilePic:false,
+            newMessageMedia:null,
+        }
+        
+        this.onMediaPathSave = this.onMediaPathSave.bind(this);
+    }
+
+    onMediaPathSave = (p) => {
+        
+        MessageActions.createMessageForThread(AuthStore._getAuthUser().username,
+                                              AuthStore._getAuthUser().id,
+                                              this.props.threadid,
+                                              p,
+                                              this.props.conversation_id,1)
+        
     }
 
     render(){
@@ -30,7 +49,7 @@ class ConversationFooter extends Component{
                 <span className={css({
                     width: '70%'
                 })}>
-
+                    {this.state.newMessageMedia!==null?"Photo included":""}
                     <input
                         type='text'
                         placeholder='Send message...'
@@ -46,10 +65,19 @@ class ConversationFooter extends Component{
                         }}
                     />
                 </span>
+
                 <span className={css({
                         width: '15%'
                 })}>
-                    {/* <EmojiPicker onEmojiClick={this.handleEmojiClick}/> */}
+                
+                      <Mediauploader onSave = {this.onMediaPathSave}/>
+
+                </span>
+                
+                <span className={css({
+                        width: '15%'
+                })}>
+                
                     <i className='fa fa-paper-plane'
                     style={{
                             fontSize: '1.5em',

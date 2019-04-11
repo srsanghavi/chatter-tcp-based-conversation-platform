@@ -24,13 +24,13 @@ class MessageActions {
         });
     }
 
-    createMessageForThread(username, userId, threadId, messageText, conversationId) {
-        api.createMessageForThread(username, userId, threadId, messageText, conversationId).then(value => {
+    createMessageForThread(username, userId, threadId, messageText, conversationId,media) {
+        api.createMessageForThread(username, userId, threadId, messageText, conversationId,media).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.INSERT_NEW_MESSAGE,
                 payload: value,
             })
-        })
+        });
     }
 
     broadcastMessage(username, userId, message) {
