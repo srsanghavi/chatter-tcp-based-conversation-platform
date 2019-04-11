@@ -250,4 +250,15 @@ public class ConversationModel {
         return conn.getLastInsertedID();
     }
 
+    /**
+     * Delete conversation record permanently
+     * @param id conversation ID
+     * @return Result code
+     */
+    public int deleteConversationPermanently(int id){
+        String query = "DELETE FROM conversations WHERE id=?";
+        List<String> args = new ArrayList<>(Arrays.asList(Integer.toString(id)));
+        int r = conn.sqlcreate(query, args);
+        return r<=0?-1:r;
+    }
 }
