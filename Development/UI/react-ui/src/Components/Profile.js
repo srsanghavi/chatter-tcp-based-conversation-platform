@@ -48,7 +48,7 @@ class Profile extends Component {
         this._onSave = this._onSave.bind(this);
         this.lastNameChange = this.lastNameChange.bind(this);
         this.firstNameChange = this.firstNameChange.bind(this);
-        this._onProfileUpdated = this._onProfileUpdated.bind(this);
+        // this._onProfileUpdated = this._onProfileUpdated.bind(this);
 
         this.onEditProfilePicClick = this.onEditProfilePicClick.bind(this);
         this.onSaveProfilePicClick = this.onSaveProfilePicClick.bind(this);

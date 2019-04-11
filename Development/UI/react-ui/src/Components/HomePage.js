@@ -60,7 +60,7 @@ class HomePage extends Component {
     componentWillMount(){
         console.log(AuthStore._getAuthUser());
         ConversationStore.addChangeListener(this._onConversationsChanged);
-        GroupStore.addGroupsChageListner(this._onGroupConversationsChanged);
+        GroupStore.addGroupsChangeListener(this._onGroupConversationsChanged);
     }
 
 
