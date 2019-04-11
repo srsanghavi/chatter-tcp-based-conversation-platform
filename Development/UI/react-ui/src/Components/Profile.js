@@ -6,11 +6,14 @@ import UserActions from "../Actions/UserActions";
 import UserStore from '../Store/UserStore';
 import ProfileHeader from "./ProfileHeader";
 import ConversationStore from "../Store/ConversationStore";
+import { NavLink } from 'react-router-dom';
+import ConversationActions from "../Actions/ConversationActions";
 
 class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: '',
             profilePicture: '',
             username: '',
             first_name: '',
@@ -19,7 +22,8 @@ class Profile extends Component {
             created_on: '',
             preferredLanguage: '',
             isSearchable: 'true',
-            editMode: false
+            editMode: false,
+            conversation: [],
         };
         this._onUserChanged = this._onUserChanged.bind(this);
         this.editOnClick = this.editOnClick.bind(this);
@@ -28,6 +32,7 @@ class Profile extends Component {
         this.firstNameChange = this.firstNameChange.bind(this);
         this.lastNameChange = this.lastNameChange.bind(this);
         this.isSearchableChange = this.isSearchableChange.bind(this);
+        this.createConversation = this.createConversation.bind(this);
     }
 
     componentWillMount() {
@@ -46,6 +51,7 @@ class Profile extends Component {
             user = UserStore._getUser();
         }
         this.setState({
+            id: user.id,
             profilePicture: user.profilePicture,
             username: user.username,
             first_name: user.first_name,
@@ -54,12 +60,16 @@ class Profile extends Component {
             created_on: user.created_on,
             preferredLanguage: user.preferredLanguage,
             isSearchable: user.isSearchable,
-        })
+        });
     }
 
     _onUserChanged(){
         const user = UserStore._getUser();
+        const conversation = ConversationStore._getConversations().filter(conv => {
+            return conv.destination_username === user.username
+        });
         this.setState({
+            id: user.id,
             profilePicture: user.profilePicture,
             username: user.username,
             first_name: user.first_name,
@@ -68,12 +78,14 @@ class Profile extends Component {
             created_on: user.created_on,
             preferredLanguage: user.preferredLanguage,
             isSearchable: user.isSearchable,
-        })
+            conversation: conversation
+        });
     }
 
     _onAuthChanged(){
         const user = AuthStore._getAuthUser();
         this.setState({
+            id: user.id,
             profilePicture: user.profilePicture,
             username: user.username,
             first_name: user.first_name,
@@ -101,6 +113,7 @@ class Profile extends Component {
     cancelOnClick() {
         const user = AuthStore._getAuthUser();
         this.setState({
+            id: user.id,
             profilePicture: user.profilePicture,
             username: user.username,
             first_name: user.first_name,
@@ -118,9 +131,11 @@ class Profile extends Component {
             this.state.last_name, this.state.isSearchable)
     }
 
-    sendMessage() {
-
+    createConversation() {
+        ConversationActions.createUserUserConversation(AuthStore._getAuthUser().username,
+            AuthStore._getAuthUser().id, this.state.id)
     }
+
 
     firstNameChange(event) {
         this.setState({
@@ -286,7 +301,17 @@ class Profile extends Component {
                         <div className={css({
                             padding: '1em'
                         })}>
-                            <button className="btn btn-primary">Send Message</button>
+                            {this.state.conversation.length > 0 ?
+                                <NavLink to={`../conversations/${this.state.conversation[0].id}`}>
+                                    <button className="btn btn-primary"
+                                            onClick={this.sendMessage}>
+                                        Send Message
+                                    </button>
+                                </NavLink> :
+                                <button className="btn btn-primary"
+                                        onClick={this.createConversation}>
+                                    Send Message
+                                </button>}
                         </div> : null}
                 </div>
             </div>
