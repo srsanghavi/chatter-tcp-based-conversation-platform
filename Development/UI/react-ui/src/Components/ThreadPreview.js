@@ -56,7 +56,10 @@ const ThreadPreview = props => {
                             color: 'black',
                             textDecoration: 'none'
                         })}>
-                            <h6>{props.threadMessages[0].first_name} {props.threadMessages[0].last_name}</h6>
+                            <h6 className={css({
+                                fontSize: '0.9em',
+                                borderBottom: '1px solid gray'
+                            })}>{props.threadMessages[0].first_name}</h6>
                             <img src={props.threadMessages[0].mediaURL && props.threadMessages[0].mediaURL!=="" 
                                         && isImage(props.threadMessages[0].mediaURL)?props.threadMessages[0].mediaURL:""} width="200" />
                             
@@ -73,7 +76,8 @@ const ThreadPreview = props => {
                                 textDecorationStyle: 'wavy',
 
                             })}>
-                                <small>{props.threadMessages.length-1} replies</small>
+                                {props.threadMessages.length < 2 ? null :
+                                <small>{props.threadMessages.length-1} replies</small>}
                             </div>
                         </NavLink>
                         

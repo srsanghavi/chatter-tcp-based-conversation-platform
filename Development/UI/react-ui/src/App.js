@@ -15,6 +15,10 @@ import GroupMembers from "./Components/GroupMembers";
 import Profile from "./Components/Profile";
 import AuthStore from "./Store/AuthStore";
 
+
+const PATH = window.location.pathname.split('/');
+
+
 class App extends Component {
 
 

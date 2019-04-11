@@ -45,7 +45,20 @@ class ConversationFooter extends Component{
                 boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
                 border: '0.05em solid black',
             })}>
-                <span className={css({width: '15%'})}></span>
+                <span className={css({
+                    display: 'flex',
+                    justifyContent: 'center',
+                    width: '15%'
+                })}>
+                      <Mediauploader onSave = {this.onMediaPathSave}
+                                     icon={(<i className='fa fa-image'
+                                               style={{
+                                                   fontSize: '1.5em',
+                                                   color: 'white'
+                                               }}/>
+                                     )}
+                      />
+                </span>
                 <span className={css({
                     width: '70%'
                 })}>
@@ -67,29 +80,13 @@ class ConversationFooter extends Component{
                 </span>
 
                 <span className={css({
-                        width: '15%'
+                    display: 'flex',
+                    justifyContent: 'center',
+                        width: '15%',
                 })}>
-                
-                      <Mediauploader onSave = {this.onMediaPathSave}
-                        icon={(<i className='fa fa-image'
-                        style={{
-                                fontSize: '1.5em',
-                                marginLeft: 10,
-                                color: 'white'
-                            }}/>
-                        )}
-                        />
-
-                </span>
-                
-                <span className={css({
-                        width: '15%'
-                })}>
-                
                     <i className='fa fa-paper-plane'
                     style={{
                             fontSize: '1.5em',
-                            marginLeft: 10,
                             color: 'white'
                         }}
                     onClick={props.onClick}/>

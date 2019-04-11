@@ -1,6 +1,6 @@
 import React from 'react';
 import {css} from 'emotion';
-import {NavLink} from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import AuthStore from "../Store/AuthStore";
 
 const ProfileHeader = props => {
@@ -51,4 +51,4 @@ const ProfileHeader = props => {
     );
 };
 
-export default ProfileHeader;
+export default withRouter(ProfileHeader);
