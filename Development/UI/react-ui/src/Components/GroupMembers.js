@@ -4,6 +4,8 @@ import GroupActions from '../Actions/GroupActions'
 import GroupStore from "../Store/GroupStore";
 import AuthStore from "../Store/AuthStore";
 import UserPreviews from "./UserPreviews";
+import GroupMember from "./GroupMember";
+import GroupHeader from "./GroupHeader";
 
 class GroupMembers extends Component {
     constructor(props) {
@@ -46,8 +48,13 @@ class GroupMembers extends Component {
                 height: '100%',
                 overflowX: 'hidden',
             })}>
+                <div className={css({
+                    paddingBottom: '5em'
+                })}>
+                    <GroupHeader/>
+                </div>
                 {this.state.groupMembers.map(member => {
-                    return(<UserPreviews user={member}/>)
+                    return(<GroupMember user={member}/>)
                 })}
             </div>
         )

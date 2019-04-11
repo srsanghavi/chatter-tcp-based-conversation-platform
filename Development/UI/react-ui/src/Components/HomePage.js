@@ -14,7 +14,6 @@ import ProfileEdit from './ProfileEdit';
 import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
-import GroupOrUserBar from "./GroupOrUserBar";
 import GroupStore from "../Store/GroupStore";
 import MessageActions from "../Actions/MessageActions";
 import ConversationActions from '../Actions/ConversationActions';
@@ -44,7 +43,6 @@ class HomePage extends Component {
             myGroups: [],
             groups: [],
             conversations: [],
-            userButtonSelected: true
         };
 
         this.api = new Api();
@@ -59,9 +57,6 @@ class HomePage extends Component {
         this.onSearchChange = this.onSearchChange.bind(this);
         this.onBroadcastChange = this.onBroadcastChange.bind(this);
         this.sendBroadcast = this.sendBroadcast.bind(this);
-        this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this);
-        this.barGroupPressed = this.barGroupPressed.bind(this);
-        this.barUserPressed = this.barUserPressed.bind(this);
 
     }
 
@@ -177,32 +172,7 @@ class HomePage extends Component {
         })
     }
 
-    groupOrUserBarButtonChange(opt) {
-        this.setState({
-            userButtonSelected: opt
-        })
-        console.log(this.state.userButtonSelected);
-        if(this.state.userButtonSelected==true){
-            UserActions.getUsers(AuthStore._getAuthUser().username);
-        }else{
-            GroupActions.getAllGroups(AuthStore._getAuthUser().username);
-        }
-    }
 
-    barGroupPressed(){
-        this.setState({
-            userButtonSelected: false,
-        })
-        GroupActions.getAllGroups(AuthStore._getAuthUser().username);
-    }
-
-    barUserPressed(){
-        this.setState({
-            userButtonSelected: true,
-        })
-
-        UserActions.getUsers(AuthStore._getAuthUser().username);
-    }
     renderSearchBar() {
         if(this.state.searchBar) {
             return(
@@ -221,18 +191,6 @@ class HomePage extends Component {
                     <Broadcast onChange={this.onBroadcastChange}
                                onClick={this.sendBroadcast}
                                value={this.state.broadcast}/>
-                </div>
-            )
-        }
-    }
-
-    renderGroupOrUserBar() {
-        if(this.state.tab === 'search') {
-            return(
-                <div className={css({paddingBottom: '3em'})}>
-                    <GroupOrUserBar userButtonSelected={this.state.userButtonSelected}
-                                    onUserClick={this.barUserPressed}
-                                    onGroupClick={this.barGroupPressed}/>
                 </div>
             )
         }
@@ -282,7 +240,6 @@ class HomePage extends Component {
                 </div>
                 {this.renderBroadcast()}
                 {this.renderSearchBar()}
-                {this.renderGroupOrUserBar()}
                 <Switch>
                     <Route path="/edit-profile/:id"
                            component={ProfileEdit}>

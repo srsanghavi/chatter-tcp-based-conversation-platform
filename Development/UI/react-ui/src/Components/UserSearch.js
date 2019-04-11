@@ -7,6 +7,7 @@ import GroupActions from '../Actions/GroupActions';
 import AuthStore from '../Store/AuthStore';
 import UserStore from '../Store/UserStore';
 import GroupStore from '../Store/GroupStore';
+import GroupOrUserBar from './GroupOrUserBar'
 
 class UserSearch extends Component{
     constructor(props){
@@ -14,15 +15,18 @@ class UserSearch extends Component{
         this.state = {
             users: [],
             groups: [],
+            userButtonSelected: true
         };
         this._onUsersChanged = this._onUsersChanged.bind(this);
         this._onGroupsChanged = this._onGroupsChanged.bind(this);
+        this.userButtonPressed = this.userButtonPressed.bind(this);
+        this.groupButtonPressed = this.groupButtonPressed.bind(this);
     }
 
     componentWillMount(){
         UserStore.addUserListChangeListener(this._onUsersChanged);
         GroupStore.addGroupsChageListner(this._onGroupsChanged);
-        if(this.props.userButtonSelected==true){
+        if(this.state.userButtonSelected==true){
             UserActions.getUsers(AuthStore._getAuthUser().username);
         }else{
             GroupActions.getAllGroups(AuthStore._getAuthUser().username);
@@ -61,6 +65,33 @@ class UserSearch extends Component{
             groups: groups,
         })
     }
+
+    // groupOrUserBarButtonChange(opt) {
+    //     this.setState({
+    //         userButtonSelected: opt
+    //     })
+    //     console.log(this.state.userButtonSelected);
+    //     if(this.state.userButtonSelected==true){
+    //         UserActions.getUsers(AuthStore._getAuthUser().username);
+    //     }else{
+    //         GroupActions.getAllGroups(AuthStore._getAuthUser().username);
+    //     }
+    // }
+
+    groupButtonPressed(){
+        this.setState({
+            userButtonSelected: false,
+        });
+        GroupActions.getAllGroups(AuthStore._getAuthUser().username);
+    }
+
+    userButtonPressed(){
+        this.setState({
+            userButtonSelected: true,
+        });
+        UserActions.getUsers(AuthStore._getAuthUser().username);
+    }
+
     render(){
         const props = this.props;
         return(
@@ -71,7 +102,12 @@ class UserSearch extends Component{
                 height: '100%',
                 overflowX: 'hidden',
             })}>
-                {props.userButtonSelected ?
+                <div className={css({paddingBottom: '3em'})}>
+                    <GroupOrUserBar userButtonSelected={this.state.userButtonSelected}
+                                    onUserClick={this.userButtonPressed}
+                                    onGroupClick={this.groupButtonPressed}/>
+                </div>
+                {this.state.userButtonSelected ?
                     this.state.users.map(user => {
                         return( <UserPreviews user={user}
                                               profileOnClick={props.profileOnClick}/>)
