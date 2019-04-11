@@ -46,6 +46,7 @@ class GroupActions {
             })
         })
     }
+
 }
 
 export default new GroupActions();

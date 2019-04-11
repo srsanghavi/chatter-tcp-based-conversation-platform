@@ -12,8 +12,14 @@ public final class ApiMessageType {
      * The Create user.
      */
     static final String CREATE_USER =            "registerUser/";
-
+    /**
+     * The Modify user.
+     */
     static final String MODIFY_USER =            "modifyUser/";
+    /**
+     * The Delete user.
+     */
+
     static final String DELETE_USER =            "deleteUser/";
     /**
      * The Get user conversation.

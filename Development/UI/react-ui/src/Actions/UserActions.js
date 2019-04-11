@@ -24,8 +24,8 @@ class UserActions {
       });
     }
 
-    getUserByUsername(username){
-        api.getUserByUsername(username).then(value => {
+    getUserByUsername(username1, username2){
+        api.getUserByUsername(username1, username2).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_USER_BY_USERNAME,
                 payload:    value,
@@ -37,6 +37,15 @@ class UserActions {
         api.getUserById(id).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_USER_BY_ID,
+                payload:    value,
+            })
+        });
+    }
+
+    modifyUser(username, firstName, lastName, isSearchable) {
+        api.modifyUser(username, firstName, lastName, isSearchable).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.MODIFY_USER,
                 payload:    value,
             })
         });

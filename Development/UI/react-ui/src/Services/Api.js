@@ -51,8 +51,15 @@ export default class Api {
         return this.promise();
     }
 
-    getUserByUsername(username){
-        let msg = this.messageType.makeApiMessage(username,"getUserByUsername/::GET::{username:"+username+"}");
+    getUserByUsername(loggedInUsername, searchingForUsername){
+        let msg = this.messageType.makeApiMessage(loggedInUsername,"getUserByUsername/::GET::{username:"+searchingForUsername+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    modifyUser(username, first_name, last_name, isSearchable) {
+        let msg = this.messageType.makeApiMessage(username,"modifyUser/::POST::{first_name:"+first_name+"," +
+            "last_name:"+last_name+",isSearchable:"+isSearchable+"}");
         gateway.sendTcp(msg);
         return this.promise();
     }
@@ -145,5 +152,6 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
+
 }
 

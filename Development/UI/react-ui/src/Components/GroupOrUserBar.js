@@ -1,5 +1,6 @@
 import React from 'react';
 import {css} from 'emotion';
+import { NavLink } from 'react-router-dom';
 
 const GroupOrUserBar = props => {
 
@@ -16,35 +17,39 @@ const GroupOrUserBar = props => {
             backgroundColor: 'white',
             zIndex: 5
         })}>
-            <div className={css({
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '50%',
-                    borderRight: '0.05em solid black',
-                    backgroundColor: props.userButtonSelected ? '#CEDAE5' : 'white'
-                })}
-                 onClick={props.onUserClick}>
-                <h6 className={css({
-                    color: 'black',
-                    fontWeight: 'bold',
-                    fontFamily: 'Titillium Web'
-                })}>Users</h6>
-            </div>
-            <div className={css({
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '50%',
-                    backgroundColor: props.userButtonSelected ? 'white' : '#CEDAE5'
+            <NavLink to={'/search-users'}>
+                <div className={css({
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '50%',
+                        borderRight: '0.05em solid black',
+                        backgroundColor: props.userButtonSelected ? '#CEDAE5' : 'white'
                     })}
-                 onClick={props.onGroupClick}>
-                <h6 className={css({
-                    color: 'black',
-                    fontWeight: 'bold',
-                    fontFamily: 'Titillium Web'
-                    })}>Groups</h6>
-            </div>
+                     onClick={props.onUserClick}>
+                    <h6 className={css({
+                        color: 'black',
+                        fontWeight: 'bold',
+                        fontFamily: 'Titillium Web'
+                    })}>Users</h6>
+                </div>
+            </NavLink>
+            <NavLink to={'/search-groups'}>
+                <div className={css({
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '50%',
+                        backgroundColor: props.userButtonSelected ? 'white' : '#CEDAE5'
+                        })}
+                     onClick={props.onGroupClick}>
+                    <h6 className={css({
+                        color: 'black',
+                        fontWeight: 'bold',
+                        fontFamily: 'Titillium Web'
+                        })}>Groups</h6>
+                </div>
+            </NavLink>
         </div>
     );
 };
