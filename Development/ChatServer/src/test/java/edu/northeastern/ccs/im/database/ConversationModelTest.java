@@ -88,4 +88,9 @@ public class ConversationModelTest {
     public void testCreateMessageInEnglish(){
         System.out.println(conversationModel.createMessageForThread(2633,814,"Como estas?"));
     }
+
+    @Test
+    public void testReceivedTranslatedMessage(){
+        System.out.println(conversationModel.getMessagesInThread("rashy",2633));
+    }
 }
