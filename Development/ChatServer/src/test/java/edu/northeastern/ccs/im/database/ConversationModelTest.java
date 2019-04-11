@@ -83,4 +83,9 @@ public class ConversationModelTest {
     public void testAddMessageToThread(){
       System.out.println(conversationModel.addMessageToThread(311,519));
     }
+
+    @Test
+    public void testCreateMessageInEnglish(){
+        System.out.println(conversationModel.createMessageForThread(2633,814,"Como estas?"));
+    }
 }
