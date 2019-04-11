@@ -129,6 +129,7 @@ public class ConversationModel {
      * @return the int
      */
     public int createMessageForThread(int threadId, int senderId, String text){
+        text = translateText(text,"English");
         String query = "INSERT INTO message(sender_id,thread_id,text) VALUES (?, ?, ?);";
         List<String> args = new ArrayList<>();
         Collections.addAll(args, Integer.toString(senderId), Integer.toString(threadId), text);
@@ -163,6 +164,7 @@ public class ConversationModel {
      * @param conversationId the conversation id
      * @return the list of messages inside a conversation
      */
+    //TODO Add translaltion
     public List<Map<String,Object>> getMessagesForConversation(int conversationId){
         String query = "CALL message_in_conversation(?);";
         List<String> args = new ArrayList<>();
@@ -200,6 +202,7 @@ public class ConversationModel {
      * @param threadID the thread id
      * @return list of messages in the thread
      */
+    //TODO Add translaltion
     public List<Map<String, Object>> getMessagesInThread(int threadID){
         String sql = "select * from message where thread_id =?;";
         List<String> args = new ArrayList<>();
