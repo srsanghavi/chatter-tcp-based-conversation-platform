@@ -11,9 +11,9 @@ class SearchUsers extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: []
+            users: [],
         };
-
+        console.log(props);
         this._onUsersChanged = this._onUsersChanged.bind(this);
     }
 
@@ -39,6 +39,17 @@ class SearchUsers extends Component {
     }
 
     render() {
+        const filteredUsers = this.state.users.filter(user => {
+            return (
+                user.id !== AuthStore._getAuthUser().id &&
+                user.isSearchable &&
+                !user.deleted &&
+                (user.first_name.toUpperCase().includes(this.props.search.toUpperCase()) ||
+                    user.last_name.toUpperCase().includes(this.props.search.toUpperCase()) ||
+                    user.username.toUpperCase().includes(this.props.search.toUpperCase()))
+            )
+        });
+
         return(
             <div className={css({
                 display: 'flex',
@@ -98,7 +109,7 @@ class SearchUsers extends Component {
                 <div className={css({
                     marginTop: '3em'
                 })}>
-                    {this.state.users.map(user => {
+                    {filteredUsers.map(user => {
                         return( <UserPreviews key={user.id}
                                               user={user}/> )
                     })}

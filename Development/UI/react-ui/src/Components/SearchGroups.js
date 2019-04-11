@@ -39,6 +39,13 @@ class SearchGroups extends Component {
     }
 
     render() {
+
+        const filteredGroups = this.state.groups.filter(group => {
+            return (
+                group.isSearchable && group.name.toUpperCase().includes(this.props.search.toUpperCase())
+            )
+        });
+
         return(
             <div className={css({
                 display: 'flex',
@@ -97,7 +104,7 @@ class SearchGroups extends Component {
                 <div className={css({
                     marginTop: '3em'
                 })}>
-                    {this.state.groups.map(group => {
+                    {filteredGroups.map(group => {
                         return( <GroupPreviews key={group.id}
                                                group={group}/> )
                     })}

@@ -278,10 +278,10 @@ class HomePage extends Component {
                                            profileOnClick={this.profileTabSelected}/>}
                     </Route>
                     <Route path="/search-users">
-                        {() => <SearchUsers/>}
+                        {() => <SearchUsers search={this.state.search}/>}
                     </Route>
                     <Route path="/search-groups">
-                        {() => <SearchGroups/>}
+                        {() => <SearchGroups search={this.state.search}/>}
                     </Route>
                 </Switch>
                 <div className={css({
