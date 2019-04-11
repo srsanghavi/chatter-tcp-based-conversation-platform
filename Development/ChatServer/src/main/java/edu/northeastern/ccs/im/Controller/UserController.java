@@ -137,8 +137,8 @@ public class UserController {
            }
          }
 
-        if(json.containsKey("profile_picture")){
-            pp = (String) json.get("profile_picture");
+        if(json.containsKey("profilePicture")){
+            pp = (String) json.get("profilePicture");
             String url = userModel.updateProfilePicture(userId, pp);
             if(url.equals("")){
                 json.put(RESULT_CODE,500);

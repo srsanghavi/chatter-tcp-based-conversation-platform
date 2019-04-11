@@ -227,7 +227,7 @@ public class ConversationController {
             List<Map<String, Object>> users = conversationModel.getUsersInConversation(conversationId);
             for (Map<String, Object> user : users) {
                 if (user.containsKey(USERNAME) &&
-                        !user.get(USERNAME).equals(senderName)) {
+                            !user.get(USERNAME).equals(senderName)) {
                     destinationNames.add((String) user.get(USERNAME));
                 }
             }
