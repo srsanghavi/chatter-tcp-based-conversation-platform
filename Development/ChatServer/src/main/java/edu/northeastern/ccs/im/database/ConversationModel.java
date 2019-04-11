@@ -1,5 +1,9 @@
 package edu.northeastern.ccs.im.database;
 
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
+
 import edu.northeastern.ccs.im.ChatLogger;
 
 import java.util.*;
@@ -159,11 +163,27 @@ public class ConversationModel {
      * @param conversationId the conversation id
      * @return the list of messages inside a conversation
      */
-    public List<Map<String,Object>> getMessagesForConversation(int conversationId){
+    //TODO Add translaltion
+    public List<Map<String,Object>> getMessagesForConversation(String username, int conversationId){
         String query = "CALL message_in_conversation(?);";
         List<String> args = new ArrayList<>();
         args.add(Integer.toString(conversationId));
-        return conn.sqlGet(query, args);
+        List<Map<String, Object>> result = conn.sqlGet(query,  args);
+
+        List<String> langArgs = new ArrayList<>();
+        langArgs.add(username);
+
+        String language = (String) (conn.sqlGet("select preferredLanguage from users where username = ?;",langArgs)).get(0).get("preferredLanguage");
+        if(language.compareTo("English")!=0){
+          for(Map<String, Object> message : result){
+            String currentText = (String) message.get("text");
+            message.put("text",translateText(currentText,language));
+          }
+        }
+
+
+
+        return result;
     }
 
     /**
@@ -198,9 +218,22 @@ public class ConversationModel {
      */
     public List<Map<String, Object>> getMessagesInThread(int threadID){
         String sql = "select * from message JOIN users on message.sender_id = users.id where thread_id=?;";
+
         List<String> args = new ArrayList<>();
         args.add(Integer.toString(threadID));
-        return conn.sqlGet(sql,  args);
+        List<Map<String, Object>> result = conn.sqlGet(sql,  args);
+
+        List<String> langArgs = new ArrayList<>();
+        langArgs.add(username);
+
+        String language = (String) (conn.sqlGet("select preferredLanguage from users where username = ?;",langArgs)).get(0).get("preferredLanguage");
+        if(language.compareTo("English")!=0){
+          for(Map<String, Object> message : result){
+            String currentText = (String) message.get("text");
+            message.put("text",translateText(currentText,language));
+          }
+        }
+        return result;
   }
 
     /**
@@ -289,5 +322,81 @@ public class ConversationModel {
         List<String> args = new ArrayList<>();
         args.add((Integer.toString(conversationId)));
         return conn.sqlGet(sql,args);
+    }
+  /**
+   * Method to translate the given text in to target language.
+   * @param text to translate
+   * @param language to translate into
+   * @return translated text
+   */
+    public String translateText(String text, String language){
+
+      Translate translate = TranslateOptions.newBuilder().setApiKey("AIzaSyAYnvDZd5G7FNPRbbeDhGvmRzT2B7mbVWU").build().getService();
+
+      String translatedText;
+      String languageCode = getTargetLanguageCode(language);
+      Translation translation =
+              translate.translate(
+                      text,
+                      Translate.TranslateOption.targetLanguage(languageCode));
+      translatedText = translation.getTranslatedText();
+
+      return translatedText;
+    }
+
+  /**
+   * Method to return target language ISO-639-1 Code.
+   * @param languauge to get the code of
+   * @return ISO-639-1 Code
+   */
+    private String getTargetLanguageCode(String languauge){
+      String code = "";
+
+      switch (languauge) {
+        case "Arabic":
+          code = "ar";
+          break;
+        case "English":
+          code = "en";
+          break;
+        case "Chinese":
+          code = "zh-TW";
+          break;
+        case "Czech":
+          code = "cs";
+          break;
+        case "Dutch":
+          code = "nl";
+          break;
+        case "French":
+          code = "fr";
+          break;
+        case "German":
+          code = "de";
+          break;
+        case "Gujarati":
+          code = "gu";
+          break;
+        case "Hindi":
+          code = "hi";
+          break;
+        case "Latin":
+          code = "la";
+          break;
+        case "Korean":
+          code = "ko";
+          break;
+        case "Spanish":
+          code = "es";
+          break;
+        case "Urdu":
+          code = "ur";
+          break;
+        default:
+          code = "en";
+          break;
+      }
+
+      return code;
     }
 }

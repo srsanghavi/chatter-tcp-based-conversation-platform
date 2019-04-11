@@ -91,7 +91,7 @@ public class ConversationController {
             return error401();
         }
 
-        return conversationModel.getMessagesForConversation(conversationId);
+        return conversationModel.getMessagesForConversation(username,conversationId);
     }
 
     private boolean groupConversation(int conversationId) {
@@ -144,7 +144,7 @@ public class ConversationController {
             return error401();
         }
 
-        return conversationModel.getMessagesInThread(threadId);
+        return conversationModel.getMessagesInThread(username,threadId);
     }
 
     /**

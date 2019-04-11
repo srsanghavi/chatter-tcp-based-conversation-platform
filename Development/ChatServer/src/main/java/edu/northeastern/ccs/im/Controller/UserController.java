@@ -136,7 +136,18 @@ public class UserController {
              return json;
            }
          }
-
+         
+        if(json.containsKey("profilePicture")){
+            pp = (String) json.get("profilePicture");
+         if(json.containsKey("preferredLanguage")){
+           String language = (String) json.get("preferredLanguage");
+           if(userModel.modifyPreferredLanguage(userId,language) < 0){
+             json.put(RESULT_CODE,500);
+             json.put(RESULT,"error");
+             json.put("result_message","Could not modify user details");
+             return json;
+           }
+         }
         if(json.containsKey("profilePicture")){
             pp = (String) json.get("profilePicture");
             String url = userModel.updateProfilePicture(userId, pp);
