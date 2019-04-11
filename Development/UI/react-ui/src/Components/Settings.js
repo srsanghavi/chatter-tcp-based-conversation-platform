@@ -16,6 +16,7 @@ class Settings extends Component {
         };
 
         this.createGroupOnClick = this.createGroupOnClick.bind(this);
+        this.onGroupNameChange = this.onGroupNameChange.bind(this);
         this.logOut = this.logOut.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
     }
@@ -24,6 +25,12 @@ class Settings extends Component {
         this.setState({
             creatingGroup: !this.state.creatingGroup,
             groupName: ''
+        })
+    }
+
+    onGroupNameChange(event) {
+        this.setState({
+            groupName: event.target.value
         })
     }
 
@@ -60,6 +67,7 @@ class Settings extends Component {
                     <input type="text"
                                className="input-group-text"
                                value={this.state.groupName}
+                               onChange={this.onGroupNameChange}
                                style={{
                                    width: '100%',
                                    fontFamily: 'Titillium Web',
