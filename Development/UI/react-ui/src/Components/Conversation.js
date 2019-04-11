@@ -210,7 +210,7 @@ class Conversation extends Component {
                                         onClick={this.sendMessage}
                                         value={this.state.newMessage}
                                         conversation_id={this.props.match.params.id}
-                                        thread_id={-1}
+                                        threadid={-1}
                                        />
                 </div>
             )

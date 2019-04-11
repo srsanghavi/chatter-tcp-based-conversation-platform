@@ -70,7 +70,15 @@ class ConversationFooter extends Component{
                         width: '15%'
                 })}>
                 
-                      <Mediauploader onSave = {this.onMediaPathSave}/>
+                      <Mediauploader onSave = {this.onMediaPathSave}
+                        icon={(<i className='fa fa-image'
+                        style={{
+                                fontSize: '1.5em',
+                                marginLeft: 10,
+                                color: 'white'
+                            }}/>
+                        )}
+                        />
 
                 </span>
                 

@@ -141,13 +141,8 @@ class Mediauploader extends Component {
     render(){
         return (<div>
                 <a href="#" onClick={this.onEditProfilePicClick} data-toggle="modal" data-target="#exampleModal">
-                <i className='fa fa-image'
-                    style={{
-                            fontSize: '1.5em',
-                            marginLeft: 10,
-                            color: 'white'
-                        }}/>
-                    </a>
+                {this.props.icon}
+                </a>
                 {this.state.editProfilePic===true?this.renderProfileEdit():''}
        
         </div>);

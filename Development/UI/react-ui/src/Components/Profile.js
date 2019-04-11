@@ -3,6 +3,7 @@ import {css} from "emotion";
 import UserStore from "../Store/UserStore";
 import AuthStore from '../Store/AuthStore';
 import UserActions from '../Actions/UserActions';
+import Mediauploader from './Mediauploader';
 
 class Profile extends Component {
     constructor(props) {
@@ -116,9 +117,9 @@ class Profile extends Component {
     }
 
     onProfilePicChange(e){
-        e.preventDefault();
+        // e.preventDefault();
         this.setState({
-            profilePicture:e.target.value,
+            profilePicture:e,
         })
     }
     renderProfileEdit(){
@@ -160,11 +161,15 @@ class Profile extends Component {
                     alignSelf: 'center'
                 })}>
                     <a href="#" onClick={this.onEditProfilePicClick} data-toggle="modal" data-target="#exampleModal">
-                        <img src={this.state.profilePicture} alt="" height="75" width="75"
-                            className={css({
-                                borderRadius: 50
-                            })}/>
+                        
                     </a>
+                    <Mediauploader onSave={this.onProfilePicChange} 
+                        icon={(<img src={this.state.profilePicture} alt="" height="75" width="75"
+                                    className={css({
+                                        borderRadius: 50
+                                    })}/>
+                                )}
+                    />
                 </div>
                 <div className={css({
                     "& label": {
@@ -230,7 +235,6 @@ class Profile extends Component {
                     <a href="#" onClick={this._onSave}>Save</a>
                 </div>
 
-                {this.state.editProfilePic===true?this.renderProfileEdit():''}
 
             </div>
         )
