@@ -55,8 +55,8 @@ class GroupMembers extends Component {
                 </div>
                 {this.state.groupMembers.length > 0 ?
                 this.state.groupMembers.map(member=> {
-                    return(<GroupMember user={member}
-                                        key={member.id}/>)
+                    return(<GroupMember key={member.id}
+                                        user={member}/>)
                 }) : null}
             </div>
         )

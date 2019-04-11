@@ -286,7 +286,7 @@ class Profile extends Component {
                                 <input type="checkbox"
                                        checked={!this.state.isSearchable}
                                        onChange={this.isSearchableChange}
-                                       readOnly={!this.state.editMode}/>
+                                       disabled={!this.state.editMode}/>
                                 <span className="slider round"></span>
                             </label>
                         </p> : null}

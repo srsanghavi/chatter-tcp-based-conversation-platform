@@ -99,7 +99,8 @@ class SearchUsers extends Component {
                     marginTop: '3em'
                 })}>
                     {this.state.users.map(user => {
-                        return( <UserPreviews user={user}/> )
+                        return( <UserPreviews key={user.id}
+                                              user={user}/> )
                     })}
                 </div>
             </div>

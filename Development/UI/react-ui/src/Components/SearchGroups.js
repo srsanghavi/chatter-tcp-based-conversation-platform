@@ -98,7 +98,8 @@ class SearchGroups extends Component {
                     marginTop: '3em'
                 })}>
                     {this.state.groups.map(group => {
-                        return( <GroupPreviews group={group}/> )
+                        return( <GroupPreviews key={group.id}
+                                               group={group}/> )
                     })}
                 </div>
             </div>
