@@ -25,7 +25,7 @@ const GroupHeader = props => {
                 width: '100%',
                 padding: '0 0.75em'
             })}>
-                <NavLink to={`../search`}
+                <NavLink to={`../search-groups`}
                          className={css({
                              color: 'white',
                              textDecoration: 'none',

@@ -63,7 +63,7 @@ class Profile extends Component {
         });
     }
 
-    _onUserChanged(){
+    _onUserChanged() {
         const user = UserStore._getUser();
         const conversation = ConversationStore._getConversations().filter(conv => {
             return conv.destination_username === user.username

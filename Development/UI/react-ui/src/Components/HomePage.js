@@ -19,6 +19,8 @@ import MessageActions from "../Actions/MessageActions";
 import ConversationActions from '../Actions/ConversationActions';
 import UserActions from '../Actions/UserActions';
 import GroupActions from '../Actions/GroupActions';
+import SearchUsers from './SearchUsers';
+import SearchGroups from './SearchGroups'
 
 import AuthStore from '../Store/AuthStore';
 
@@ -266,6 +268,12 @@ class HomePage extends Component {
                                            groups={filteredGroups}
                                            userButtonSelected={this.state.userButtonSelected}
                                            profileOnClick={this.profileTabSelected}/>}
+                    </Route>
+                    <Route path="/search-users">
+                        {() => <SearchUsers/>}
+                    </Route>
+                    <Route path="/search-groups">
+                        {() => <SearchGroups/>}
                     </Route>
                 </Switch>
                 <div className={css({

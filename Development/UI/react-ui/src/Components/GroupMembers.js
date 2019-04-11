@@ -20,6 +20,7 @@ class GroupMembers extends Component {
 
     componentWillMount() {
         GroupStore.addGroupMembersChangeListener(this._onGroupChanged);
+        GroupActions.getGroupUsers(AuthStore._getAuthUser().username, this.props.match.params.id);
     }
 
     componentDidMount() {
@@ -53,8 +54,9 @@ class GroupMembers extends Component {
                 })}>
                     <GroupHeader/>
                 </div>
-                {this.state.groupMembers.map(member => {
-                    return(<GroupMember user={member}/>)
+                {this.state.groupMembers.map(member=> {
+                    return(<GroupMember user={member}
+                                        key={member.id}/>)
                 })}
             </div>
         )

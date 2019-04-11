@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {css} from 'emotion';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import UserPreviews from './UserPreviews'
 import GroupPreviews from "./GroupPreviews";
 import UserActions from '../Actions/UserActions';
@@ -8,6 +9,9 @@ import AuthStore from '../Store/AuthStore';
 import UserStore from '../Store/UserStore';
 import GroupStore from '../Store/GroupStore';
 import GroupOrUserBar from './GroupOrUserBar'
+import SearchUsers from "./SearchUsers";
+import SearchGroups from "./SearchGroups";
+
 
 class UserSearch extends Component{
     constructor(props){
@@ -26,16 +30,13 @@ class UserSearch extends Component{
     componentWillMount(){
         UserStore.addUserListChangeListener(this._onUsersChanged);
         GroupStore.addGroupsChageListner(this._onGroupsChanged);
-        if(this.state.userButtonSelected==true){
+        if(this.state.userButtonSelected === true){
             UserActions.getUsers(AuthStore._getAuthUser().username);
         }else{
             GroupActions.getAllGroups(AuthStore._getAuthUser().username);
         }
     }
 
-    componentWillUpdate(){
-        
-    }
 
     componentDidMount(){
         this.setState({
@@ -66,34 +67,25 @@ class UserSearch extends Component{
         })
     }
 
-    // groupOrUserBarButtonChange(opt) {
-    //     this.setState({
-    //         userButtonSelected: opt
-    //     })
-    //     console.log(this.state.userButtonSelected);
-    //     if(this.state.userButtonSelected==true){
-    //         UserActions.getUsers(AuthStore._getAuthUser().username);
-    //     }else{
-    //         GroupActions.getAllGroups(AuthStore._getAuthUser().username);
-    //     }
-    // }
-
     groupButtonPressed(){
+        // if(this.state.userButtonSelected) {
+        //     GroupActions.getAllGroups(AuthStore._getAuthUser().username);
+        // }
         this.setState({
             userButtonSelected: false,
         });
-        GroupActions.getAllGroups(AuthStore._getAuthUser().username);
     }
 
     userButtonPressed(){
+        // if(!this.state.userButtonSelected) {
+        //     UserActions.getUsers(AuthStore._getAuthUser().username);
+        // }
         this.setState({
             userButtonSelected: true,
         });
-        UserActions.getUsers(AuthStore._getAuthUser().username);
     }
 
-    render(){
-        const props = this.props;
+    render() {
         return(
             <div className={css({
                 display: 'flex',
@@ -107,15 +99,23 @@ class UserSearch extends Component{
                                     onUserClick={this.userButtonPressed}
                                     onGroupClick={this.groupButtonPressed}/>
                 </div>
-                {this.state.userButtonSelected ?
-                    this.state.users.map(user => {
-                        return( <UserPreviews user={user}
-                                              profileOnClick={props.profileOnClick}/>)
-                    }) :
-                    this.state.groups.map(group => {
-                        return( <GroupPreviews group={group}/>)
-                    })
-                }
+                <Switch>
+                    <Route path="/search-users">
+                        {() => <SearchUsers/>}
+                    </Route>
+                    <Route path="/search-groups">
+                        {() => <SearchGroups/>}
+                    </Route>
+                </Switch>
+                {/*{this.state.userButtonSelected ?*/}
+                    {/*this.state.users.map(user => {*/}
+                        {/*return( <UserPreviews user={user}*/}
+                                              {/*profileOnClick={props.profileOnClick}/>)*/}
+                    {/*}) :*/}
+                    {/*this.state.groups.map(group => {*/}
+                        {/*return( <GroupPreviews group={group}/>)*/}
+                    {/*})*/}
+                {/*}*/}
             </div>
         )
     }

@@ -19,9 +19,8 @@ class UserStore extends EventEmitter {
 
     // Switches over the action's type when an action is dispatched.
     _registerToActions(action) {
-
         switch(action.actionType) {
-            
+
             case ActionTypes.GET_USERS:
                 this._setUsers(action.payload);
                 break;
@@ -29,7 +28,6 @@ class UserStore extends EventEmitter {
                 this._setUser(action.payload);
                 break;
             case ActionTypes.MODIFY_USER:
-                console.log(test);
                 this._setUser(action.payload);
                 break;
             default:
