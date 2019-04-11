@@ -2,6 +2,8 @@ import React from 'react';
 import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
 import AuthStore from '../Store/AuthStore';
+import Emojify from 'react-emojione';
+
 
 
 const ThreadPreview = props => {
@@ -41,7 +43,10 @@ const ThreadPreview = props => {
                             textDecoration: 'none'
                         })}>
                             <h6>{props.threadMessages[0].first_name} {props.threadMessages[0].last_name}</h6>
-                            {props.threadMessages[0].text}
+                            <Emojify style={{height: 32, width: 32}} onClick={e => alert(e.target.title)}>
+                                <span>{props.threadMessages[0].text}</span>
+                            </Emojify>
+                            
 
                             <div className = {css({
                                 visibility: props.threadMessages.length<=1? "hidden" : "visible",

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {css} from 'emotion';
 import AuthStore from '../Store/AuthStore';
+import Emojify from 'react-emojione';
 
 class Message extends Component {
 
@@ -36,7 +37,10 @@ class Message extends Component {
                     textDecoration: 'none'
                 })}>
                  <h6>{props.message.first_name} {props.message.last_name}</h6>
+                 <Emojify style={{height: 32, width: 32}} onClick={e => alert(e.target.title)}>
+
                     {props.message.text}
+                    </Emojify>
                 </p>
             </div>
         </div>

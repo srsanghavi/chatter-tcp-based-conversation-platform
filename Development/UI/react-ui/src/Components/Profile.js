@@ -17,6 +17,7 @@ class Profile extends Component {
             edit:false,
             isSearchable: false,
             userid: -1,
+            editProfilePic:false,
         }
 
         this._onEdit = this._onEdit.bind(this);
@@ -24,6 +25,12 @@ class Profile extends Component {
         this.lastNameChange = this.lastNameChange.bind(this);
         this.firstNameChange = this.firstNameChange.bind(this);
         this._onProfileUpdated = this._onProfileUpdated.bind(this);
+
+        this.onEditProfilePicClick = this.onEditProfilePicClick.bind(this);
+        this.onSaveProfilePicClick = this.onSaveProfilePicClick.bind(this);
+        this.onCancelProfilePicClick = this.onCancelProfilePicClick.bind(this);
+
+        this.onProfilePicChange = this.onProfilePicChange.bind(this);
 
     }
 
@@ -68,12 +75,14 @@ class Profile extends Component {
         this.setState({
             edit:false
         })
-
+        console.log(this.state);
+        
         UserActions.updateUser(this.state.username,
                                 this.state.userid,
                                 this.state.firstName,
                                 this.state.lastName,
-                                this.state.isSearchable);
+                                this.state.isSearchable,
+                                this.state.profilePicture);
     }
 
     firstNameChange(e){
@@ -87,6 +96,55 @@ class Profile extends Component {
             lastName:e.target.value,
         })
     }
+
+    onEditProfilePicClick(){
+        this.setState({
+            editProfilePic:true,
+        })
+    }
+
+    onSaveProfilePicClick(){
+        this.setState({
+            editProfilePic:false,
+        })
+    }
+
+    onCancelProfilePicClick(){
+        this.setState({
+            editProfilePic:false,
+        })
+    }
+
+    onProfilePicChange(e){
+        e.preventDefault();
+        this.setState({
+            profilePicture:e.target.value,
+        })
+    }
+    renderProfileEdit(){
+       
+        return(
+
+            <div class="" id="exampleModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Upload picture</h5>
+                        
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" value={this.state.profilePicture} onChange={this.onProfilePicChange}></input>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" className="btn btn-primary" onClick={this.onSaveProfilePicClick}>Save</button>
+                        <button type="button" className="btn btn-secondary" onClick={this.onCancelProfilePicClick} data-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className={css({
@@ -101,7 +159,7 @@ class Profile extends Component {
                     padding: '1em',
                     alignSelf: 'center'
                 })}>
-                    <a href="#">
+                    <a href="#" onClick={this.onEditProfilePicClick} data-toggle="modal" data-target="#exampleModal">
                         <img src={this.state.profilePicture} alt="" height="75" width="75"
                             className={css({
                                 borderRadius: 50
@@ -171,6 +229,9 @@ class Profile extends Component {
                 <div className={this.state.edit?'':''}>
                     <a href="#" onClick={this._onSave}>Save</a>
                 </div>
+
+                {this.state.editProfilePic===true?this.renderProfileEdit():''}
+
             </div>
         )
     }

@@ -11,6 +11,8 @@ import MessageActions from "../Actions/MessageActions";
 import MessageStore from "../Store/MessageStore";
 import ConversationStore from "../Store/ConversationStore";
 import AuthStore from '../Store/AuthStore';
+import {EmojiPicker} from 'emoji-picker-react';
+import {jsemoji} from 'emoji-js';
 
 
 // component updates every interval (in ms)
@@ -27,7 +29,8 @@ class Conversation extends Component {
             threads: [],
             messages: [],
             newMessage: '',
-            previousThreadCount: 0
+            previousThreadCount: 0,
+            editProfilePic: false,
         };
 
         this.toggleSearch = this.toggleSearch.bind(this);
@@ -39,6 +42,8 @@ class Conversation extends Component {
         this._onMessageschanged = this._onMessageschanged.bind(this);
 
         this._onNewMessageReceieved = this._onNewMessageReceieved.bind(this);
+        this.handleEmojiClick = this.handleEmojiClick.bind(this);
+        
 
     }
 
@@ -47,6 +52,12 @@ class Conversation extends Component {
       }
       
 
+    handleEmojiClick=(code,emoji) => {
+        // let emojiPic = jsemoji.replace_colons(`:${emoji.name}:`);
+        // this.setState({
+        // newMessage: event.target.value + emojiPic,
+        // });
+    }
     componentWillMount(){
         ThreadStore.addThreadsChangeListener(this._onThreadsChanged);
         MessageStore.addMessagesChangeListener(this._onMessageschanged);
@@ -125,10 +136,14 @@ class Conversation extends Component {
     }
 
     sendMessage() {
+        var newMesage = this.state.newMessage;
+        newMesage = newMesage.replace('\n',' ');
+        console.log(newMesage);
+
         MessageActions.createMessageForThread(AuthStore._getAuthUser().username,
                                               AuthStore._getAuthUser().id,
                                                -1, 
-                                               "\"" + this.state.newMessage + "\"", 
+                                                newMesage, 
                                                this.props.match.params.id);
             this.setState({
             newMessage: '',
@@ -162,6 +177,10 @@ class Conversation extends Component {
         }
     }
 
+  
+
+   
+
     renderThreads() {
         // if((ThreadStore._getThreads() === undefined || MessageStore._getMessages() === undefined)
         //         && this.state.threads.length === 0) {
@@ -188,7 +207,8 @@ class Conversation extends Component {
                                      conversation_id = {this.props.match.params.id}/>
                     <ConversationFooter onChange={this.onMessageChange}
                                         onClick={this.sendMessage}
-                                        value={this.state.newMessage}/>
+                                        value={this.state.newMessage}
+                                       />
                 </div>
             )
         // }

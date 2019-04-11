@@ -52,8 +52,9 @@ class UserActions {
         })
     }
 
-    updateUser(username,userId,firstName,lastName,isSearchable){
-        api.updateProfile(username,userId,firstName,lastName,isSearchable).then(value => {
+    updateUser(username,userId,firstName,lastName,isSearchable,profilePicture){
+        console.log(profilePicture);
+        api.updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.UPDATE_USER,
                 payload: value,

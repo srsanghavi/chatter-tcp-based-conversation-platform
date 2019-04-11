@@ -95,7 +95,7 @@ export default class Api {
 
     createMessageForThread(username, userId, threadId, messageText, conversationId) {
         let msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
-            "sender_id:"+userId+",thread_id:"+threadId+",message:"+messageText+",conversation_id:"+conversationId+"}");
+            "sender_id:"+userId+",thread_id:"+threadId+",message:\""+messageText+"\",conversation_id:"+conversationId+"}");
         gateway.sendTcp(msg);
         return this.promise();
     }
@@ -127,9 +127,9 @@ export default class Api {
         return this.promise();
     }
 
-    updateProfile(username,userId,firstName,lastName,isSearchable){
+    updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture){
         let msg = this.messageType.makeApiMessage(username,"modifyUser/::POST::{" +
-        "user_id:"+userId+",first_name:"+firstName+",last_name:"+lastName+",isSearchable:"+isSearchable+"}");
+        "user_id:"+userId+",first_name:"+firstName+",last_name:"+lastName+",isSearchable:"+isSearchable+",profilePicture:'"+profilePicture+"'}");
         gateway.sendTcp(msg);
         return this.promise();
     }
