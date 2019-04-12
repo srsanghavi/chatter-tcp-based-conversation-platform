@@ -35,6 +35,11 @@ public class Route {
         try {
             switch (route) {
 
+                case ApiMessageType.ONLINE_USERS:
+                    response = ControllerFactory
+                            .getUserController()
+                            .getOnlineUsers();
+                    break;
                 case ApiMessageType.GET_USERS:
                     response = ControllerFactory
                             .getUserController()
