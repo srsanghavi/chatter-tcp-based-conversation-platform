@@ -1,6 +1,7 @@
 package edu.northeastern.ccs.im.database;
 
 import edu.northeastern.ccs.im.ChatLogger;
+import edu.northeastern.ccs.im.server.Prattle;
 
 import java.util.*;
 
@@ -285,6 +286,18 @@ public class UserModel {
         List<String> args = new ArrayList<>(Arrays.asList(language, Integer.toString(userID)));
         int r = conn.sqlcreate(query, args);
         return r<=0?-1:r;
+    }
+
+    /**
+     * Get online users as a list.
+     * @return online users 
+     */
+    public List<Map<String,Object>> getOnlineUsers(){
+        List<Map<String,Object>> result = null;
+        Map<String,Object> users = null;
+        users.put("onlineUsers",Prattle.getActiveUsers());
+        result.add(users);
+        return result;
     }
 
 }

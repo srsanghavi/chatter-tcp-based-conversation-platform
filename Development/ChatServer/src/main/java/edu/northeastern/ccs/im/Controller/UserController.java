@@ -161,4 +161,13 @@ public class UserController {
         return json;
     }
 
+  /**
+   * Get list of online users.
+   * @return list of online users
+   */
+    public List<Map<String,Object>> getOnlineUsers(){
+      return userModel.getOnlineUsers();
+    }
+
+
 }
