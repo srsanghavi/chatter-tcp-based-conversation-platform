@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 public class ClientRunnableTest {
 
     @Test
-    public void testTimerIsBehind(){
+    public void testBroadCastMessageAndTime(){
 
         ClientTimer clientTimer = Mockito.mock(ClientTimer.class);
         NetworkConnection nc = Mockito.mock(NetworkConnection.class);
@@ -34,7 +34,59 @@ public class ClientRunnableTest {
             }
         });
 
-        ClientRunnable cr = new ClientRunnable(nc, clientTimer, false);
+        ClientRunnable cr = new ClientRunnable(nc, clientTimer, false, false, "hsbudhia");
+        when(clientTimer.isBehind()).thenReturn(true);
+        try {
+            cr.run();
+        } catch( NullPointerException e){
+            ChatLogger.info("Exception caught: " + e.toString());
+        }
+    }
+
+    @Test
+    public void testAPIMessageGET(){
+
+        ClientTimer clientTimer = Mockito.mock(ClientTimer.class);
+        NetworkConnection nc = Mockito.mock(NetworkConnection.class);
+        when(nc.iterator()).thenReturn(new Iterator<Message>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Message next() {
+                return Message.makeApiMessage("hsbudhia", "API 4 john 22 getAllGroups/::GET::{}");
+            }
+        });
+
+        ClientRunnable cr = new ClientRunnable(nc, clientTimer, false, true, "hsbudhia");
+        when(clientTimer.isBehind()).thenReturn(true);
+        try {
+            cr.run();
+        } catch( NullPointerException e){
+            ChatLogger.info("Exception caught: " + e.toString());
+        }
+    }
+
+    @Test
+    public void testAPIMessagePOST(){
+
+        ClientTimer clientTimer = Mockito.mock(ClientTimer.class);
+        NetworkConnection nc = Mockito.mock(NetworkConnection.class);
+        when(nc.iterator()).thenReturn(new Iterator<Message>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Message next() {
+                return Message.makeApiMessage("hsbudhia", "API 4 john 63 updateGroupName/::POST::{group_name:ThisWasEdited,group_id:428}");
+            }
+        });
+
+        ClientRunnable cr = new ClientRunnable(nc, clientTimer, false, true, "hsbudhia");
         when(clientTimer.isBehind()).thenReturn(true);
         try {
             cr.run();
