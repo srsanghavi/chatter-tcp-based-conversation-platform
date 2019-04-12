@@ -209,7 +209,7 @@ public class Route {
             case ApiMessageType.ADD_ADMIN_GROUP:
                 json = ControllerFactory
                         .getGroupController()
-                        .addAdmin(json);
+                        .addAdmin(username,json);
                 break;
             default:
                 return  "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";

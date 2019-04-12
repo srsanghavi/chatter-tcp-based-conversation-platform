@@ -252,4 +252,9 @@ public class RouteTest {
     public void testUpdateProfilePicture(){
         ChatLogger.info(Route.getResponsePost("hsbudhia","modifyUser/","{user_id:21, profile_picture:'https://s3.amazonaws.com/cs5500/temp/testUser.png'}"));
     }
+
+    @Test
+  public void testAddAdmin(){
+      ChatLogger.info(Route.getResponsePost("ram","addAdminGroup/","{username:ram, group_id:534, user_id: 21}"));
+    }
 }
