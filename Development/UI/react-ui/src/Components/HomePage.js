@@ -23,6 +23,7 @@ import SearchUsers from './SearchUsers';
 import SearchGroups from './SearchGroups'
 
 import AuthStore from '../Store/AuthStore';
+import GroupSettings from "./GroupSettings";
 
 
 class HomePage extends Component {
@@ -289,6 +290,9 @@ class HomePage extends Component {
                     </Route>
                     <Route path="/search-groups">
                         {() => <SearchGroups search={this.state.search}/>}
+                    </Route>
+                    <Route exact path="/group-settings/:id"
+                           component={GroupSettings}>
                     </Route>
                 </Switch>
                 <div className={css({
