@@ -1,9 +1,6 @@
 package edu.northeastern.ccs.im.database;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -203,5 +200,15 @@ public class GroupModel {
   }
 
   // AddGroupToGroup
-
+    /**
+     * Delete group record permanently
+     * @param id group ID
+     * @return Result code
+     */
+    public int deleteGroupPermanently(int id){
+        String query = "DELETE FROM users WHERE id=?";
+        List<String> args = new ArrayList<>(Arrays.asList(Integer.toString(id)));
+        int r = conn.sqlcreate(query, args);
+        return r<=0?-1:r;
+    }
 }
