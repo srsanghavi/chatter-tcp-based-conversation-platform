@@ -2,6 +2,9 @@ package edu.northeastern.ccs.im.database;
 
 import edu.northeastern.ccs.im.ChatLogger;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
@@ -34,13 +37,47 @@ public class UserModel {
      */
     public int isAuthorized(String username,String pass){
         List<String> arguments = new ArrayList<>();
+        String query = "SELECT * from users WHERE username=?;";
         arguments.add(username);
-        arguments.add(pass);
-        String sql = "SELECT user_auth(?, ?) as authorized;";
-        List<Map<String, Object>> res = conn.sqlGet(sql, arguments);
-        return (int) res.get(0).get("authorized");
+        List<Map<String, Object>> res = conn.sqlGet(query, arguments);
+        String p = (String) res.get(0).get("password");
+        if (p.equals(MD5(pass)))
+            return 1;
+        else
+            return 0;
     }
 
+    /**
+     * https://www.geeksforgeeks.org/md5-hash-in-java/
+     * @param s
+     * @return
+     */
+    public String MD5(String s){
+        try {
+
+            // Static getInstance method is called with hashing MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // digest() method is called to calculate message digest
+            //  of an input digest() return array of byte
+            byte[] messageDigest = md.digest(s.getBytes());
+
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            return hashtext;
+        }
+
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
     /**
      * Create user int.
      *
@@ -52,9 +89,9 @@ public class UserModel {
      * @return the int (1 if created, 0 otherwise)
      */
     public int createUser(String username, String email, String password, String firstName, String lastName){
-        String query = "INSERT INTO users(username,first_name,last_name, email, password) VALUES (?, ?, ?, ?, MD5(?));";
+        String query = "INSERT INTO users(username,first_name,last_name, email, password) VALUES (?, ?, ?, ?, ?);";
 
-        List<String> arguments = new ArrayList<>(Arrays.asList(username, firstName, lastName, email, password));
+        List<String> arguments = new ArrayList<>(Arrays.asList(username, firstName, lastName, email, MD5(password)));
         ChatLogger.info("Executing: " + query);
         ChatLogger.info(email);
         return conn.sqlcreate(query, arguments);
