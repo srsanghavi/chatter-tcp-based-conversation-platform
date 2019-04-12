@@ -85,6 +85,25 @@ public class ClientRunnable implements Runnable {
 	}
 
 	/**
+	 * Create a new thread with which we will communicate with this single client.
+	 *
+	 * @param network NetworkConnection used by this new client
+	 */
+	public ClientRunnable(NetworkConnection network, ClientTimer t, boolean init) {
+		// Create the class we will use to send and receive communication
+		connection = network;
+		// Mark that we are not initialized
+		initialized = false;
+		// Mark that we are not terminated
+		terminate = init;
+		// Create the queue of messages to be sent
+		waitingList = new ConcurrentLinkedQueue<>();
+		// Mark that the client is active now and start the timer until we
+		// terminate for inactivity.
+		timer = t;
+	}
+
+	/**
 	 * Check to see for an initialization attempt and process the message sent.
 	 */
 	private void checkForInitialization() {
