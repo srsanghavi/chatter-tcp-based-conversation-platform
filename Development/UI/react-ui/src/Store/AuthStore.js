@@ -24,9 +24,8 @@ class AuthStore extends EventEmitter {
                 this._setUser(action.payload);
                 break;
             case ActionTypes.MODIFY_USER:
-                console.log(test);
                 if(action.payload.username === _user.username) {
-                    this._setUser(action.payload);
+                    this._updateUser(action.payload);
                 }
                 break;
             default:
@@ -44,6 +43,21 @@ class AuthStore extends EventEmitter {
             let self = this;
             localStorage.setItem("loggedIn",true);
             _user = users.result[0];
+            _user.isSearchable = _user.isSearchable==1;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(CHANGE);
+            }, 0);
+        }
+    }
+
+    _updateUser(user){
+        if(user){
+          
+            let self = this;
+            let username = _user.username;
+            _user = user;
+            _user.isSearchable = _user.isSearchable==1;
+            _user.user = username;
             setTimeout(() => { // Run after dispatcher has finished
                 self.emit(CHANGE);
             }, 0);

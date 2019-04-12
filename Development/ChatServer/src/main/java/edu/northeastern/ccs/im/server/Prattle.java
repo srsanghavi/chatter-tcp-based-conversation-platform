@@ -7,7 +7,9 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
@@ -166,7 +168,7 @@ public abstract class Prattle {
 
 	/**
 	 * Create a new thread to handle the client for which a request is received.
-	 * 
+	 *
 	 * @param serverSocket The channel to use.
 	 * @param threadPool   The thread pool to add client to.
 	 */
@@ -193,4 +195,25 @@ public abstract class Prattle {
 			ChatLogger.error("Caught Exception: " + e.toString());
 		}
 	}
+
+  /**
+   * Get list of active client runnable.
+   * @return list of active client runnable
+   */
+	public static List<String> getActiveUsers(){
+    List<String> ret = new ArrayList<>();
+    for(ClientRunnable a:active){
+      ret.add(a.getName());
+    }
+    return ret;
+  }
+
+  public static boolean isOnline(String username){
+		for(ClientRunnable a: active){
+			if(a.getName().compareTo(username)==0){
+				return true;
+			}
+		}
+	  return false;
+  }
 }

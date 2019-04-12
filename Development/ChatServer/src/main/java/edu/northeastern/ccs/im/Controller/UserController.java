@@ -107,7 +107,7 @@ public class UserController {
         int userId = Math.toIntExact(Math.round((double) json.get("user_id")));
         String name = "";
         String pp = "";
-        int isSearchable = 0;
+         boolean isSearchable;
         if(json.containsKey("first_name")){
             name = (String) json.get("first_name");
             if(userModel.modifyUserFirstName(userId,name) < 0){
@@ -127,8 +127,8 @@ public class UserController {
             }
         }
         if(json.containsKey("isSearchable")){
-            isSearchable = Math.toIntExact(Math.round((double) json.get("isSearchable")));
-            if(userModel.updateUserSearchable(userId,isSearchable) < 0){
+            isSearchable = ((boolean) json.get("isSearchable"));
+            if(userModel.updateUserSearchable(userId,isSearchable?1:0) < 0){
                 json.put(RESULT_CODE,500);
                 json.put(RESULT,"error");
                 json.put(RESULT_MESSAGE,"Could not modify user details");
@@ -166,8 +166,19 @@ public class UserController {
             }
             json.put(PROFILE_PICTURE, url);
         }
+        json = userModel.getUser(userId);
         json.put(RESULT_CODE, 201);
         json.put(RESULT, "OK");
         return json;
     }
+
+  /**
+   * Get list of online users.
+   * @return list of online users
+   */
+    public List<Map<String,Object>> getOnlineUsers(){
+      return userModel.getOnlineUsers();
+    }
+
+
 }

@@ -330,9 +330,10 @@ public class ConversationModel {
    * @return translated text
    */
     public String translateText(String text, String language){
-    if(text.compareTo("")==0){
+
+      if(text.compareTo("") == 0){
         return text;
-    }
+      }
       Translate translate = TranslateOptions.newBuilder().setApiKey("AIzaSyAYnvDZd5G7FNPRbbeDhGvmRzT2B7mbVWU").build().getService();
 
       String translatedText;

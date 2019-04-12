@@ -1,6 +1,7 @@
 import Dispatcher from '../dispatcher';
 import ActionTypes from '../AppConstants';
 import Api from '../Services/Api';
+import { lang } from 'moment';
 
 const api = new Api();
 
@@ -61,12 +62,21 @@ class UserActions {
         })
     }
 
-    updateUser(username,userId,firstName,lastName,isSearchable,profilePicture){
+    updateUser(username,userId,firstName,lastName,isSearchable,profilePicture,language){
         console.log(profilePicture);
-        api.updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture).then(value => {
+        api.updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture,language).then(value => {
             Dispatcher.dispatch({
-                actionType: ActionTypes.UPDATE_USER,
+                actionType: ActionTypes.MODIFY_USER,
                 payload: value,
+            })
+        })
+    }
+
+    onlineUsers(username){
+        api.onlineUsers(username).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.ONLINE_USER,
+                payload:value,
             })
         })
     }

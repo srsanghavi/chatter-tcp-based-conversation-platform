@@ -1,6 +1,7 @@
 package edu.northeastern.ccs.im.database;
 
 import edu.northeastern.ccs.im.ChatLogger;
+import edu.northeastern.ccs.im.server.Prattle;
 
 import java.util.*;
 
@@ -92,6 +93,7 @@ public class UserModel {
         String sql = "SELECT * FROM users";
         List<Map<String, Object>> r = conn.sqlGet(sql, new ArrayList<>());
         for(Map<String, Object> user: r){
+            user.put("online",Prattle.isOnline((String) user.get("username")));
             user.remove("password");
         }
         return r;
@@ -281,10 +283,22 @@ public class UserModel {
      * @return result code
      */
     public int modifyPreferredLanguage(int userID, String language){
-        String query = "UPDATE users SET preferredLanguage ='"+ language +"' where id='"+ userID +"';";
+        String query = "UPDATE users SET preferredLanguage = ? where id=?;";
         List<String> args = new ArrayList<>(Arrays.asList(language, Integer.toString(userID)));
         int r = conn.sqlcreate(query, args);
         return r<=0?-1:r;
+    }
+
+    /**
+     * Get online users as a list.
+     * @return online users 
+     */
+    public List<Map<String,Object>> getOnlineUsers(){
+        List<Map<String,Object>> result = null;
+        Map<String,Object> users = null;
+        users.put("onlineUsers",Prattle.getActiveUsers());
+        result.add(users);
+        return result;
     }
 
 }

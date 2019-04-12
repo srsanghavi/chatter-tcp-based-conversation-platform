@@ -140,9 +140,9 @@ export default class Api {
         return this.promise();
     }
 
-    updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture){
+    updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture,language){
         let msg = this.messageType.makeApiMessage(username,"modifyUser/::POST::{" +
-        "user_id:"+userId+",first_name:"+firstName+",last_name:"+lastName+",isSearchable:"+isSearchable+",profilePicture:'"+profilePicture+"'}");
+        "user_id:"+userId+",first_name:"+firstName+",last_name:"+lastName+",isSearchable:"+isSearchable+",profilePicture:'"+profilePicture+"', preferredLanguage:'"+language+"'}");
         gateway.sendTcp(msg);
         return this.promise();
     }
@@ -159,5 +159,10 @@ export default class Api {
         return this.promise();
     }
 
+    getOnlineUsers(username){
+        let msg = this.messageType.makeApiMessage(username,"onlineUsers/::GET::{}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
 }
 

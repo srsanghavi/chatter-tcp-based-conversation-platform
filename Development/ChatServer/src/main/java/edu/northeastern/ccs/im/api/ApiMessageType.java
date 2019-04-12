@@ -120,4 +120,9 @@ public final class ApiMessageType {
      * The Broadcast message.
      */
     static final String BROADCAST_MESSAGE =     "broadcastMessage/";
+
+    /**
+     * The online users.
+     */
+    static final String ONLINE_USERS =             "onlineUsers/";
 }
