@@ -50,6 +50,8 @@ class GroupSettings extends Component {
         GroupStore.removeGroupsListener(this._onGroupsChanged);
     }
 
+    
+
     _onUsersChanged(){
         this.setState({
             users: UserStore._getUsers(),
@@ -107,13 +109,13 @@ class GroupSettings extends Component {
     }
 
     addUserToGroup(id, username) {
-        if(window.confirm("Add " + username + "to group?")) {
+        if(window.confirm("Add " + username + " to group?")) {
             GroupActions.addUserToGroup(AuthStore._getAuthUser().username, id, this.state.groupId, username)
         }
     }
 
     addGroupToGroup(id, name) {
-        if(window.confirm("Add " + name + "to group?")) {
+        if(window.confirm("Add " + name + " to group?")) {
             GroupActions.addGroupToGroup(AuthStore._getAuthUser().username, this.state.groupId, id, name)
         }
     }

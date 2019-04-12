@@ -19,6 +19,7 @@ export default {
     CREATE_GROUP: 'CREATE_GROUP',
     ONLINE_USER: 'ONLINE_USER',
     MODIFY_GROUP_NAME: 'MODIFY_GROUP_NAME',
+    REGISTER_USER: 'REGISTER_USER',
 
     LANGUAGES: [
         "English",

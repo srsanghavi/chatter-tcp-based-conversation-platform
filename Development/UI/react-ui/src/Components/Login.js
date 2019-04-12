@@ -74,11 +74,12 @@ class Login extends Component {
                     boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
                     textAlign: 'center',
                 })}>
-                <h1 className={css({
+                <h1 id="logo" className={css({
                     color: 'white',
                     fontSize: '3em',
                     fontFamily: 'Pacifico',
-                    paddingTop: '0.5em'
+                    paddingTop: '0.5em',
+                    transform: 'rotate(-5deg)'
                 })}>Chatter</h1>
                 </div>
                 <div className={css({

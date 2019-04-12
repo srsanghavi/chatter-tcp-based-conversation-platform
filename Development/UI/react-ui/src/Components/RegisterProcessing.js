@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import UserStore from "../Store/UserStore";
 import { css } from 'emotion';
 import UserActions from "../Actions/UserActions";
+import AuthStore from "../Store/AuthStore";
 
 const status = {
     PENDING: 'pending',
@@ -43,16 +44,13 @@ class RegisterProcessing extends Component {
     }
 
     authenticate() {
-        if(UserStore._getSignIn() === undefined){
+        if(AuthStore._getAuthUser() === undefined){
             if(this.state.interval < TIMEOUT) {
                 this.setState({ interval: this.state.interval + 1});
             } else {
                 this.setState({ status: status.FAILURE });
                 clearInterval(this.interval);
             }
-        } else if (UserStore._getSignIn() === 'Incorrect username/password') {
-            this.setState({ status: status.FAILURE });
-            clearInterval(this.interval);
         } else {
             this.setState({
                 status: status.PENDING,
@@ -70,7 +68,7 @@ class RegisterProcessing extends Component {
         let firstName = UserStore._getNewUser().firstName;
         let lastName = UserStore._getNewUser().lastName;
         let email = UserStore._getNewUser().email;
-        UserActions.registerUser('john', "\"" + username + "\"", "\"" + password + "\"", "\"" + firstName + "\"", "\""
+        UserActions.registerUser(AuthStore._getAuthUser().username, "\"" + username + "\"", "\"" + password + "\"", "\"" + firstName + "\"", "\""
             + lastName + "\"", "\"" + email + "\"");
         setTimeout(function(){}, 1500);
         this.setState({

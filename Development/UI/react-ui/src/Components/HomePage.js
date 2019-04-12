@@ -83,8 +83,14 @@ class HomePage extends Component {
         ConversationStore.removeChangeListener(this._onConversationsChanged);
         GroupStore.removeGroupsListener(this._onGroupConversationsChanged);
     }
-    
-    _onChange() {
+
+    _onChange(){
+        const user = AuthStore._getAuthUser();
+        if(user===null){
+            alert("Could not register");
+        }else{
+            UserActions.registerUser()
+        }
     }
 
     _onConversationsChanged(){
