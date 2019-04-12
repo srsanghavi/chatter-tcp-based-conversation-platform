@@ -25,7 +25,7 @@ const UserPreviews = props => {
                 <span className={css({
                     width: '25%',
                 })}>
-                    <img src="./images/image.png" height="60" width="60"
+                    <img src={props.user.profilePicture} height="60" width="60" alt=""
                          className={css({
                              borderRadius: 50,
                          })}/>
@@ -33,13 +33,13 @@ const UserPreviews = props => {
                 <span className={css({
                     width: '50%'
                 })}>
-                    <h5>{props.user.first_name + ' ' + props.user.last_name}</h5>
+                    <h5><span className={css({color:"#00ff00",fontSize:"30px"})}>{props.user.online?'•':''}</span>{props.user.first_name + ' ' + props.user.last_name}</h5>
                     <h6 className={css({opacity: '0.5'})}>{props.user.username}</h6>
                 </span>
                 <span className={css({
                     width: '25%',
                 })}>
-                <NavLink to={`./profile/${props.user.id}`}
+                <NavLink to={`./profile/${props.user.username}`}
                          className={css({
                              color: 'black',
                              textDecoration: 'none',

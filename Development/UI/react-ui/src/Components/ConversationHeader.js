@@ -26,7 +26,7 @@ const ConversationHeader = props => {
                     width: '20%'
                 })}>
                     {props.inThread ?
-                    <NavLink to={`../conversations/${props.conversationId}`}
+                    <NavLink to={`../../${props.conversationId}`}
                              className={css({
                                  color: 'white',
                                  textDecoration: 'none',
@@ -36,7 +36,7 @@ const ConversationHeader = props => {
                              })}>
                         <i className="fa fa-arrow-left fa-2x"></i>
                     </NavLink> :
-                    <NavLink to='../conv-redirect'
+                    <NavLink to='../../conversations'
                              className={css({
                                  color: 'white',
                                  textDecoration: 'none',
@@ -51,7 +51,7 @@ const ConversationHeader = props => {
                 <span className={css({
                     width: '60%',
                 })}>
-                    <img src="../images/image.png" height="60" width="60"
+                    <img src="../images/image.png" height="60" width="60" alt=""
                          className={css({
                              display: 'block',
                              marginLeft: 'auto',
@@ -68,8 +68,11 @@ const ConversationHeader = props => {
                             float: 'left',
                             color: props.search ? '#45AAEB' : 'white',
                         }}></i>
-                    <i className="fa fa-cog fa-2x"
-                       style={{float: 'right'}}></i>
+                    {props.isGroup && !props.inThread ?
+                        <NavLink to={`../../../group-settings/${props.conversationId}`}>
+                            <i className="fa fa-cog fa-2x"
+                               style={{float: 'right'}}></i>
+                        </NavLink> : null}
                 </span>
             </div>
         </div>

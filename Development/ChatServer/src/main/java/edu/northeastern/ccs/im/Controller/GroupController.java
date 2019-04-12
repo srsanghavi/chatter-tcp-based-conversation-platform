@@ -29,6 +29,15 @@ public class GroupController {
     private static String ERROR = "error";
     private static String MISSING_PARAMETER = "missing_parameter";
 
+    /**
+     * Initialize Model
+     * @param gm GroupModel
+     */
+    public GroupController(GroupModel gm){
+        groupModel = gm;
+    }
+
+    public GroupController(){ }
 
     /**
      * Get all groups list.
@@ -58,7 +67,8 @@ public class GroupController {
     /**
      * Gets group users.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the group users
      * @throws NoSuchFieldException the no such field exception
      */
@@ -84,7 +94,8 @@ public class GroupController {
     /**
      * Add user to group map.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the map
      */
     public Map<String,Object> addUserToGroup(String username,Map<String,Object> json){
@@ -115,7 +126,8 @@ public class GroupController {
     /**
      * Modify group name map.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the map
      */
     public Map<String,Object> modifyGroupName(String username, Map<String,Object> json){
@@ -144,7 +156,8 @@ public class GroupController {
     /**
      * Delete group map.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the map
      */
     public Map<String,Object> deleteGroup(String username,Map<String,Object> json){
@@ -167,11 +180,12 @@ public class GroupController {
         else return error500(json);
     }
 
-  /**
-   * Create group.
-   * @param json the json
-   * @return the json map
-   */
+    /**
+     * Create group.
+     *
+     * @param json the json
+     * @return the json map
+     */
     public Map<String,Object> createGroup(Map<String,Object> json){
       if(!json.containsKey(GROUP_NAME)||
           !json.containsKey("admin_id")){
@@ -182,17 +196,21 @@ public class GroupController {
       }
       String groupName = (String) json.get(GROUP_NAME);
       int adminId = Math.toIntExact(Math.round((double) json.get("admin_id")));
-      if(groupModel.createGroup(groupName,adminId) > 0){
+      int id = groupModel.createGroup(groupName,adminId);
+      if(id > 0){
         json.put(RESULT_CODE,201);
         json.put(RESULT,"OK");
+        json.put("id", id);
         return json;
       }
       else return error500(json);
     }
+
     /**
      * Add group to group map.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the map
      */
     public Map<String,Object> addGroupToGroup(String username, Map<String,Object> json){

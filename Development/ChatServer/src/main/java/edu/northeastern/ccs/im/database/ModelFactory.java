@@ -12,6 +12,11 @@ public class ModelFactory {
         conn = new MysqlCon();
     }
 
+    /**
+     * Get instance model factory.
+     *
+     * @return the model factory
+     */
     public static ModelFactory getInstance(){
         if (modelFactory == null){
             modelFactory = new ModelFactory();
@@ -25,8 +30,9 @@ public class ModelFactory {
      * @return the user model
      */
     public static UserModel getUserModel(){
-        return new UserModel(conn);
+        return new UserModel(conn, getS3Model());
     }
+
 
     /**
      * Get conversation model conversation model.
@@ -54,4 +60,6 @@ public class ModelFactory {
     public static MessageModel getMessageModel(){
         return new MessageModel(conn);
     }
+
+    public static S3Model getS3Model(){ return new S3Model();}
 }

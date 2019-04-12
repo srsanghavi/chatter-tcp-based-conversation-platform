@@ -2,25 +2,31 @@ package edu.northeastern.ccs.im;
 
 /**
  * Enumeration for the different types of messages.
- * 
- * @author Maria Jump
  *
+ * @author Maria Jump
  */
 public enum MessageType {
-	/**
-	 * Message sent by the user attempting to login using a specified username.
-	 */
-	HELLO("HLO"),
-	/**
-	 * Message sent by the user to start the logging out process and sent by the
-	 * server once the logout process completes.
-	 */
-	QUIT("BYE"),
-	/** Message whose contents is broadcast to all connected users. */
-	BROADCAST("BCT"),
-	/** Message for API */
-	API("API"),
-	NOTIFICATION("NOTI");
+    /**
+     * Message sent by the user attempting to login using a specified username.
+     */
+    HELLO("HLO"),
+    /**
+     * Message sent by the user to start the logging out process and sent by the
+     * server once the logout process completes.
+     */
+    QUIT("BYE"),
+    /**
+     * Message whose contents is broadcast to all connected users.
+     */
+    BROADCAST("BCT"),
+    /**
+     * Message for API
+     */
+    API("API"),
+    /**
+     * Notification message type.
+     */
+    NOTIFICATION("NOTI");
 
 	/** Store the short name of this message type. */
 	private String abbreviation;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import UserActions from "../Actions/UserActions";
 import UserStore from "../Store/UserStore";
 import {css} from "emotion";
 
@@ -19,7 +18,7 @@ class ProfileEdit extends Component {
 
     componentDidMount() {
         let user = JSON.parse(UserStore._getUsers()).result.filter(user => {
-            return user.id == this.props.match.params.id
+            return user.id === this.props.match.params.id
         });
         this.setState({
             username: user[0].username,
@@ -31,7 +30,6 @@ class ProfileEdit extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.state.isSearchable)
     }
 
     privateChange() {
@@ -56,7 +54,7 @@ class ProfileEdit extends Component {
                     padding: '1em',
                     alignSelf: 'center'
                 })}>
-                    <img src="../images/image.png" height="75" width="75"
+                    <img src="../images/image.png" height="75" width="75" alt=""
                           className={css({
                               borderRadius: 50
                           })}/>
@@ -107,10 +105,6 @@ class ProfileEdit extends Component {
                                className="input-group-text"
                                value={this.state.email}/>
                     </p>
-                    {/*<p>*/}
-                        {/*<label>Date Joined:</label>*/}
-                        {/*<h6>{this.state.createdDate}</h6>*/}
-                    {/*</p>*/}
                     <p>
                         <label>Private:</label>
                         <label className="switch">
@@ -120,7 +114,7 @@ class ProfileEdit extends Component {
                             <span className="slider round"></span>
                         </label>
                     </p>
-                    <button onClick={() => console.log(this.state)}>
+                    <button>
                         Save
                     </button>
                 </div>

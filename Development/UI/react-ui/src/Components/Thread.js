@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import {css} from 'emotion';
 import ConversationHeader from "./ConversationHeader";
 import ConversationFooter from "./ConversationFooter";
-import ThreadContainer from "./ThreadContainer";
 import SearchBar from "./SearchBar";
 import  { Redirect } from 'react-router-dom'
-import ThreadActions from "../Actions/ThreadActions";
 import ThreadStore from "../Store/ThreadStore";
 import MessageActions from "../Actions/MessageActions";
 import MessageStore from "../Store/MessageStore";
 import MessageContainer from "./MessageContainer";
+import AuthStore from '../Store/AuthStore';
 
 
 // component updates every interval (in ms)
@@ -27,45 +26,77 @@ class Thread extends Component {
             firstMessage: {},
             replies: [],
             newMessage: '',
+            previousMessageCount: 0
         };
 
         this.toggleSearch = this.toggleSearch.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.onMessageChange = this.onMessageChange.bind(this);
+
+        this._onMessagesChanged = this._onMessagesChanged.bind(this);
+        this._onNewMessageReceieved = this._onNewMessageReceieved.bind(this);
+
     }
 
+    _onNewMessageReceieved(){
+        MessageActions.getMessagesInThread(AuthStore._getAuthUser().username, this.props.match.params.threadId);
+    }
+
+    newMessageHere(){
+        if(window.newNoti){
+            const notiMessage =(window.newNotiContent);
+            
+            if(notiMessage.conversation_id==this.props.match.params.id){
+                MessageActions.getMessagesInThread(AuthStore._getAuthUser().username, this.props.match.params.threadId);
+            }
+            window.newNotiContent = "";
+            window.newNoti = false;
+        }
+    }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.update(), INTERVAL);
-        if(MessageStore._getThreadMessages() != undefined) {
-            this.setState({
-                messages: JSON.parse(MessageStore._getThreadMessages()).result
-            })
-        }
-        MessageActions.getMessagesInThread(localStorage.getItem('username'), this.props.match.params.threadId);
+        // this.interval = setInterval(() => this.update(), INTERVAL);
+        // if(MessageStore._getThreadMessages() !== undefined) {
+        //     this.setState({
+        //         previousMessageCount: this.state.messages.length,
+        //         messages: JSON.parse(MessageStore._getThreadMessages()).result
+        //     })
+        // }
+        MessageStore.addThreadMessagesChangeListner(this._onMessagesChanged);
+        MessageStore.addNewMessageListener(this._onNewMessageReceieved);
+        MessageActions.getMessagesInThread(AuthStore._getAuthUser().username, this.props.match.params.threadId);
+        this.interval = setInterval(() => this.newMessageHere(), INTERVAL);
+
     }
 
     componentWillUnmount() {
         clearInterval(this.interval);
+        MessageStore.removeThreadMessagesChangeListner(this._onMessagesChanged);
+        MessageStore.removeNewMessageListener(this._onNewMessageReceieved);
+
     }
 
-    update() {
-        if(MessageStore._getThreadMessages() != undefined) {
-            this.setState({
-                messages: JSON.parse(MessageStore._getThreadMessages()).result
-            })
-        }
-        MessageActions.getMessagesInThread(localStorage.getItem('username'), this.props.match.params.threadId);
+    _onMessagesChanged(){
+        const _messages = MessageStore._getThreadMessages();
+        this.setState({
+            previousMessageCount: this.state.messages.length,
+            messages: _messages,
+        })
     }
 
 
     sendMessage() {
-        console.log(this.state.newMessageText);
+        const conversationId = this.props.match.params.id;
+        MessageActions.createMessageForThread(AuthStore._getAuthUser().username, AuthStore._getAuthUser().id,
+            this.props.match.params.threadId, this.state.newMessage , conversationId,0);
+        this.setState({
+            newMessage: ''
+        })
     }
 
     onMessageChange = (event) => {
-        this.setState({ newMessageText: event.target.value })
+        this.setState({ newMessage: event.target.value })
     };
 
 
@@ -91,7 +122,7 @@ class Thread extends Component {
     }
 
     renderMessages() {
-        if(MessageStore._getThreadMessages() == undefined) {
+        if(MessageStore._getThreadMessages() === undefined) {
             return(
                 <div className={css({
                     textAlign: 'center',
@@ -109,19 +140,22 @@ class Thread extends Component {
                 </div>
             )
         } else {
-            let threadMessages = this.state.messages.filter(message => {
-                return message.thread_id == this.props.match.params.threadId
-            });
             return(
-                <MessageContainer messages={threadMessages}/>
+                <div>
+                    <MessageContainer messages={this.state.messages}/>
+                    <ConversationFooter onChange={this.onMessageChange}
+                                        onClick={this.sendMessage}
+                                        value={this.state.newMessage}
+                                        conversation_id={this.props.match.params.id}
+                                        threadid={this.props.match.params.threadId}/>
+                </div>
             )
         }
     }
 
     render() {
-        const conversationId = JSON.parse(ThreadStore._getThreads()).result.filter(thread => {
-            return thread.id == this.props.match.params.threadId
-        })[0].conversations_id;
+            window.scrollTo(0, document.body.scrollHeight);
+        const conversationId = 0;
         if (!(localStorage.getItem('loggedIn') === 'true')) {
             return <Redirect to='/login'/>
         } else {
@@ -139,7 +173,7 @@ class Thread extends Component {
                         <ConversationHeader search={this.state.searchBar}
                                             searchClick={this.toggleSearch}
                                             inThread={true}
-                                            conversationId={conversationId}/>
+                                            conversationId={this.props.match.params.id}/>
                     </div>
                     {this.renderSearchBar()}
 
@@ -147,14 +181,6 @@ class Thread extends Component {
                     {this.state.replies.map(message => {
                         return <p>{message.text}</p>
                     })}
-                    <ConversationFooter onChange={this.onMessageChange}
-                                        onClick={this.sendMessage}/>
-                    {/*<ThreadContainer threads={this.state.threads}/>*/}
-                    {/*<div className={css({paddingBottom: '5em'})}></div>*/}
-                    {/*<ConversationFooter onChange={this.onMessageChange}*/}
-                    {/*onClick={this.sendMessage}*/}
-                    {/*value={this.state.newMessageText}/>*/}
-                    {/*<h1 className={css({padding: '3em'})}>{this.state.conversation}</h1>*/}
                 </div>
             );
         }

@@ -17,7 +17,7 @@ public class ConversationController {
     /**
      * The Conversation model.
      */
-    private ConversationModel conversationModel = ModelFactory.getInstance().getConversationModel();
+    private ConversationModel conversationModel = ModelFactory.getConversationModel();
     private static String CONVERSATION_ID = "conversation_id";
     private static String THREAD_ID = "thread_id";
     private static String MESSAGE = "message";
@@ -52,9 +52,8 @@ public class ConversationController {
     /**
      * Gets threads in conversation.
      *
-     *
      * @param username the username of the client user
-     * @param json the json
+     * @param json     the json
      * @return the threads in conversation
      * @throws NoSuchFieldException the no such field exception
      */
@@ -70,14 +69,14 @@ public class ConversationController {
             return error401();
         }
 
-        return conversationModel.getThreadsForConversation(conversationId);
-
+       return conversationModel.getThreadsForConversation(conversationId);
     }
 
     /**
      * Gets messages in conversation.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the messages in conversation
      * @throws NoSuchFieldException the no such field exception
      */
@@ -88,18 +87,24 @@ public class ConversationController {
         int conversationId;
         conversationId = Math.toIntExact(Math.round((double) json.getOrDefault(CONVERSATION_ID, 0)));
 
-        if(!isConversationParticipant(username,conversationId)){
+        if(!isConversationParticipant(username,conversationId) && !groupConversation(conversationId)){
             return error401();
         }
 
-        return conversationModel.getMessagesForConversation(conversationId);
+        return conversationModel.getMessagesForConversation(username,conversationId);
+    }
+
+    private boolean groupConversation(int conversationId) {
+        List<Map<String, Object>> res = ModelFactory.getConversationModel().getConversationGroup(conversationId);
+        return res.size()>0;
     }
 
 
     /**
      * Gets users in conversation.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the users in conversation
      * @throws NoSuchFieldException the no such field exception
      */
@@ -118,11 +123,11 @@ public class ConversationController {
     /**
      * Gets messages in thread.
      *
-     * @param json the json
+     * @param username the username
+     * @param json     the json
      * @return the messages in thread
      * @throws NoSuchFieldException the no such field exception
      */
-
     public List<Map<String,Object>> getMessagesInThread(String username,Map<String,Object> json) throws NoSuchFieldException {
         if(!json.containsKey(THREAD_ID)) {
             throw new NoSuchFieldException();
@@ -135,18 +140,19 @@ public class ConversationController {
         }
         int conversationId = (int) thread.get(0).get(CONVERSATIONS_ID);
 
-        if(!isConversationParticipant(username,conversationId)){
+        if(!isConversationParticipant(username,conversationId) && !groupConversation(conversationId)){
             return error401();
         }
 
-        return conversationModel.getMessagesInThread(threadId);
+        return conversationModel.getMessagesInThread(username,threadId);
     }
 
-  /**
-   * Create a conversation between User and User.
-   * @param json the json
-   * @return the json object
-   */
+    /**
+     * Create a conversation between User and User.
+     *
+     * @param json the json
+     * @return the json object
+     */
     public Map<String, Object> createUserUserConversation(Map<String,Object> json){
       if(!json.containsKey("user_id1") ||
               !json.containsKey("user_id2")){
@@ -170,21 +176,24 @@ public class ConversationController {
     }
 
     /**
-     * Create message map.
+     * Create message
      *
      * @param json the json
      * @return the map
+     *
+     * thread_id in JSON should be -1 if new thread needs to be created
      */
     public Map<String, Object> createMessage(Map<String,Object> json) {
         if(!json.containsKey(SENDER_ID) ||
         !json.containsKey(THREAD_ID) ||
-        !json.containsKey(MESSAGE) ||
+        !(json.containsKey(MESSAGE) || json.containsKey("mediaURL")) ||
         !json.containsKey(CONVERSATION_ID)){
             json.put(RESULT_CODE,400);
             json.put(RESULT,ERROR);
             json.put(ERROR_MESSAGE, MISSING_PARAMETER);
             return json;
         }
+
         int senderId = Math.toIntExact(Math.round((double) json.get(SENDER_ID)));
         int conversationId = Math.toIntExact(Math.round((double) json.get(CONVERSATION_ID)));
 
@@ -193,7 +202,13 @@ public class ConversationController {
         String senderName = (String) sender.get(USERNAME);
 
         int threadId = Math.toIntExact(Math.round((double) json.get(THREAD_ID)));
-        String message = (String) json.get(MESSAGE);
+        String message="";
+        String mediapath="";
+        if(json.containsKey(MESSAGE)){
+             message = (String) json.get(MESSAGE);
+        }else if(json.containsKey("mediaURL")){
+            mediapath = (String) json.get("mediaURL");
+        }
 
         if(threadId==-1){
             if(conversationModel.createThreadForConversation(conversationId)>0){
@@ -202,18 +217,31 @@ public class ConversationController {
                 return error500(json);
             }
         }
-
-        List<Map<String, Object>> users = conversationModel.getUsersInConversation(conversationId);
         List<String> destinationNames = new ArrayList<>();
-        for(Map<String,Object> user:users){
-            if(user.containsKey(USERNAME) &&
-                user.get(USERNAME)!=senderName){
-                destinationNames.add((String) user.get(USERNAME));
+
+        if(groupConversation(conversationId)){
+            List<Map<String, Object>> res = ModelFactory.getConversationModel().getConversationGroup(conversationId);
+            int groupId = (int) res.get(0).get("id");
+            List<Map<String, Object>> users = ModelFactory.getGroupModel().getUsersInGroups(groupId);
+            for (Map<String, Object> user : users) {
+                if (user.containsKey(USERNAME) &&
+                        !user.get(USERNAME).equals(senderName)) {
+                    destinationNames.add((String) user.get(USERNAME));
+                }
+            }
+            System.out.println(destinationNames);
+        }else {
+            List<Map<String, Object>> users = conversationModel.getUsersInConversation(conversationId);
+            for (Map<String, Object> user : users) {
+                if (user.containsKey(USERNAME) &&
+                            !user.get(USERNAME).equals(senderName)) {
+                    destinationNames.add((String) user.get(USERNAME));
+                }
             }
         }
 
-        String data = "{\"sender_name\":\""+senderName+"\",\"message\":\""+message+"\"}";
-        if(conversationModel.createMessageForThread(threadId, senderId,message)>0){
+        String data = "{\"sender_name\":\""+senderName+"\",\"message\":\""+message+"\",\"conversation_id\":"+conversationId+"}";
+        if(conversationModel.createMessageForThread(threadId, senderId,message,mediapath)>0){
             Message msg = Message.makeNotificationMessage(senderName,data);
             for(String destinationName:destinationNames) {
                 Prattle.sendMessageToUser(destinationName, msg);
@@ -291,7 +319,7 @@ public class ConversationController {
         for (Map<String, Object> conversation : conversations){
             conversationId = (Integer) conversation.get("id");
             threadId = conversationModel.createThreadForConversation(conversationId);
-            messageId = conversationModel.createMessageForThread(threadId, sender, text);
+            messageId = conversationModel.createMessageForThread(threadId, sender, text,"");
             conversationModel.addMessageToThread(messageId, threadId);
         }
         json.put(RESULT_CODE,201);
@@ -341,4 +369,16 @@ public class ConversationController {
         }
         return false;
     }
+
+
+    public List<Map<String, Object>> getGroupConversations(Map<String,Object> json) throws NoSuchFieldException {
+        int userId;
+        if(json.containsKey(USER_ID)) {
+            userId = Math.toIntExact(Math.round((double) json.get(USER_ID)));
+        }else {
+            throw new NoSuchFieldException();
+        }
+        return conversationModel.getGroupConversations(userId);
+    }
+
 }

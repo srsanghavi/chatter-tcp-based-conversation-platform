@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import UserStore from "../Store/UserStore";
-import { NavLink, Redirect } from 'react-router-dom';
+import {  Redirect } from 'react-router-dom';
 import { css } from 'emotion';
 import UserActions from "../Actions/UserActions";
 import ConversationStore from "../Store/ConversationStore";
 import ConversationActions from "../Actions/ConversationActions";
 import GroupStore from "../Store/GroupStore";
 import GroupActions from "../Actions/GroupActions";
+import AuthStore from '../Store/AuthStore';
 
 
 const status = {
@@ -70,14 +71,14 @@ class LoginProcessing extends Component {
     }
 
     authenticate() {
-        if(UserStore._getSignIn() === undefined){
+        if(AuthStore._getAuthUser() === undefined){
             if(this.state.interval < TIMEOUT) {
                 this.setState({ interval: this.state.interval + 1});
             } else {
                 this.setState({ status: status.FAILURE });
                 clearInterval(this.interval);
             }
-        } else if (UserStore._getSignIn() === 'Incorrect username/password') {
+        } else if (AuthStore._getAuthUser() === 'Incorrect username/password') {
             this.setState({ status: status.FAILURE });
             clearInterval(this.interval);
         } else {

@@ -1,32 +1,22 @@
-
-function initwebtcp() {
-    const script = document.createElement("script");
-    script.onload = () => {
-        this.loadClientWhenGapiReady(script);
-    };
-    script.src = "js/webtcp-0.0.1.min.js";
-    document.body.appendChild(script);
-}
-
 export default class Gateway{
 
     sendTcp(msg){
-        window.newResponse = false;
         window.apiResponse = {};
-        var data = msg.split(" ");
-        data = data.slice(4);
-        data = data.join(" ");
         // print("<span style='color:Blue'>Me: </span>"+data);
+        window.newResponse = false;
+        console.log(msg);
         window.socket.write(msg);  
+        
 
     }
 
     getResult() {
-        if(window.newResponse==true){
+        if(window.newResponse===true){
+            window.newResponse = false;
             return window.apiResponse;
         }
         else{
-             setTimeout(() => {return this.getResult()}, 100);
+             setTimeout(() => {return this.getResult()}, 6000);
         }
     }
 }

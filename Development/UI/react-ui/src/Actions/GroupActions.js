@@ -24,6 +24,38 @@ class GroupActions {
         });
     }
 
+    getGroupUsers(username, groupId) {
+        api.getGroupUsers(username, groupId).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.GET_GROUP_USERS,
+                payload: value,
+            })
+        })
+    }
+
+    addUserToGroup(username, userId, groupId) {
+        api.addUserToGroup(username, userId, groupId).then(value => {
+        })
+    }
+
+    getGroupConversations(username,userid){
+        api.getGroupConversations(username,userid).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.GET_GROUP_CONVERSATIONS,
+                payload: value,
+            })
+        })
+    }
+
+    createGroup(useranme, groupName, adminId) {
+        api.createGroup(useranme, groupName, adminId).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.CREATE_GROUP,
+                payload: value,
+            })
+        })
+    }
+
 }
 
 export default new GroupActions();

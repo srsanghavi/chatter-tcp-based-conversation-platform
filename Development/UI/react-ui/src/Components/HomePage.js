@@ -2,30 +2,29 @@ import React, { Component } from 'react';
 import {css} from 'emotion';
 import Header from './Header'
 import Footer from './Footer'
-import DataService from "./Data";
 import Api from '../Services/Api';
 import UserStore from '../Store/UserStore';
-import UserActions from '../Actions/UserActions';
-import ConversationActions from "../Actions/ConversationActions";
 import ConversationStore from "../Store/ConversationStore";
 import Conversation from "./Conversation";
-import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import Settings from './Settings';
-import Conversations from './Conversations';
+import ConversationContainer from './ConversationContainer';
 import UserSearch from './UserSearch';
 import ProfileEdit from './ProfileEdit';
 import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
-import GroupOrUserBar from "./GroupOrUserBar";
-import GroupActions from "../Actions/GroupActions";
 import GroupStore from "../Store/GroupStore";
+import MessageActions from "../Actions/MessageActions";
+import ConversationActions from '../Actions/ConversationActions';
+import UserActions from '../Actions/UserActions';
+import GroupActions from '../Actions/GroupActions';
+import SearchUsers from './SearchUsers';
+import SearchGroups from './SearchGroups'
 
-const tab = {
-    CONVERSATIONS: 'conversations',
-    SETTINGS: 'settings',
-    PROFILE: 'profile'
-};
+import AuthStore from '../Store/AuthStore';
+import GroupSettings from "./GroupSettings";
+
 
 class HomePage extends Component {
     constructor(props) {
@@ -42,12 +41,11 @@ class HomePage extends Component {
             myGroups: [],
             groups: [],
             conversations: [],
-            userButtonSelected: true
         };
 
         this.api = new Api();
-        this._onChange = this._onChange.bind(this);
         this._onConversationsChanged = this._onConversationsChanged.bind(this);
+        this._onGroupConversationsChanged = this._onGroupConversationsChanged.bind(this);
         this.conversationTabSelected = this.conversationTabSelected.bind(this);
         this.searchTabSelected = this.searchTabSelected.bind(this);
         this.settingsTabSelected = this.settingsTabSelected.bind(this);
@@ -55,43 +53,64 @@ class HomePage extends Component {
         this.toggleSearch = this.toggleSearch.bind(this);
         this.toggleBroadcast = this.toggleBroadcast.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
-        this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this)
+        this.onBroadcastChange = this.onBroadcastChange.bind(this);
+        this.sendBroadcast = this.sendBroadcast.bind(this);
 
     }
 
     componentWillMount(){
-        UserStore.addChangeListener(this._onChange);
+        console.log(AuthStore._getAuthUser());
         ConversationStore.addChangeListener(this._onConversationsChanged);
+        GroupStore.addGroupsChangeListener(this._onGroupConversationsChanged);
     }
 
 
     componentDidMount() {
+        const user = AuthStore._getAuthUser();
         this.setState({
-            user: JSON.parse(UserStore._getUser()).result[0],
-            users: JSON.parse(UserStore._getUsers()).result,
-            myGroups: JSON.parse(GroupStore._getGroups()).result,
-            groups: JSON.parse(GroupStore._getAllGroups()).result,
-            conversations: JSON.parse(ConversationStore._getConversations()).result
+            user: user,
+            conversations: ConversationStore._getConversations().concat(GroupStore._getGroups()),
         });
+        const PATH = window.location.pathname.split('/');
+        if(PATH[PATH.length - 1] === 'conversations') {
+            ConversationActions.getConversations(user.username, user.id);
+        }
+        
     }
 
     componentWillUnmount() {
         clearInterval(this.interval);
-        UserStore.removeChangeListener(this._onChange);
         ConversationStore.removeChangeListener(this._onConversationsChanged);
+        GroupStore.removeGroupsListener(this._onGroupConversationsChanged);
     }
-
-    componentDidUpdate() {
-        //UserActions.getUsers(this.state.user.username)
-        //ConversationActions.getConversations(this.state.user.username, this.state.user.id)
-        //console.log(ConversationStore._getConversations())
-    }
-
+    
     _onChange() {
     }
 
     _onConversationsChanged(){
-        var conv = ConversationStore.getConversations();
+        const conversations = ConversationStore._getConversations();
+        this.setState({
+            conversations: conversations,
+        });
+        GroupActions.getGroupConversations(AuthStore._getAuthUser().username,AuthStore._getAuthUser().id);
+        
+    }
+
+    _onGroupConversationsChanged(){
+        var convs = GroupStore._getGroups();
+        convs = convs.map(c => {
+            return {
+            created_on:c.created_on,
+            destination_firstname:c.name,
+            destination_id:-1,
+            destination_lastname:"",
+            destination_username:"",
+            id:c.conversation_id,
+            isGroup: true
+        }})
+             this.setState({
+                 conversations:this.state.conversations.concat(convs),
+             })
     }
 
     conversationTabSelected() {
@@ -155,9 +174,15 @@ class HomePage extends Component {
         this.setState({search: event.target.value});
     }
 
-    groupOrUserBarButtonChange() {
+    onBroadcastChange(event) {
+        this.setState({broadcast: event.target.value});
+    }
+
+    sendBroadcast() {
+        MessageActions.broadcastMessage(AuthStore._getAuthUser().username, AuthStore._getAuthUser().id,
+        "\"" + this.state.broadcast + "\"");
         this.setState({
-            userButtonSelected: !this.state.userButtonSelected
+            broadcast: ''
         })
     }
 
@@ -177,18 +202,9 @@ class HomePage extends Component {
         if(this.state.broadcastBar) {
             return(
                 <div className={css({paddingBottom: '3em'})}>
-                    <Broadcast/>
-                </div>
-            )
-        }
-    }
-
-    renderGroupOrUserBar() {
-        if(this.state.tab === 'search') {
-            return(
-                <div className={css({paddingBottom: '3em'})}>
-                    <GroupOrUserBar userButtonSelected={this.state.userButtonSelected}
-                                    onButtonClick={this.groupOrUserBarButtonChange}/>
+                    <Broadcast onChange={this.onBroadcastChange}
+                               onClick={this.sendBroadcast}
+                               value={this.state.broadcast}/>
                 </div>
             )
         }
@@ -198,7 +214,7 @@ class HomePage extends Component {
     render() {
         const filteredUsers = this.state.users.filter(user => {
             return (
-                user.id != this.state.user.id &&
+                user.id !== this.state.user.id &&
                 user.isSearchable &&
                 !user.deleted &&
                 (user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
@@ -210,6 +226,13 @@ class HomePage extends Component {
         const filteredGroups = this.state.groups.filter(group => {
             return (
                 group.isSearchable && group.name.toUpperCase().includes(this.state.search.toUpperCase())
+            )
+        });
+
+        const filteredMyGroups = this.state.myGroups.filter(group => {
+            return (
+                group.isSearchable &&
+                group.name.toUpperCase().includes(this.state.search.toUpperCase())
             )
         });
 
@@ -231,31 +254,45 @@ class HomePage extends Component {
                 </div>
                 {this.renderBroadcast()}
                 {this.renderSearchBar()}
-                {this.renderGroupOrUserBar()}
                 <Switch>
-                    <Route path="/profile/:id"
-                           component={Profile}>
-                    </Route>
                     <Route path="/edit-profile/:id"
                            component={ProfileEdit}>
                     </Route>
+
+
                     <Route path="/settings">
                         {() => <Settings/>}
                     </Route>
                     <Route path="/conv-redirect">
-                        {() => <Redirect to={'./conversations'}/>}
+                        {() => <Redirect to={'../conversations'}/>}
                     </Route>
+
                     <Route path="/conversations">
-                        {() => <Conversations conversations={JSON.parse(ConversationStore._getConversations()).result}/>}
+                        {() => <ConversationContainer conversations={this.state.conversations}
+                                                      myGroups={filteredMyGroups}
+                                                      users={this.state.users}
+                                                      search={this.state.search}/>}
                     </Route>
-                    <Route path="/conversations/:id">
-                        {() => <Conversation/>}
+                    <Route exact path="/conversations/user-conversation/:id"
+                           component={Conversation}>
+                    </Route>
+                    <Route exact path="/conversations/group-conversation/:id"
+                           component={Conversation}>
                     </Route>
                     <Route path="/search">
                         {() => <UserSearch users={filteredUsers}
                                            groups={filteredGroups}
                                            userButtonSelected={this.state.userButtonSelected}
                                            profileOnClick={this.profileTabSelected}/>}
+                    </Route>
+                    <Route path="/search-users">
+                        {() => <SearchUsers search={this.state.search}/>}
+                    </Route>
+                    <Route path="/search-groups">
+                        {() => <SearchGroups search={this.state.search}/>}
+                    </Route>
+                    <Route exact path="/group-settings/:id"
+                           component={GroupSettings}>
                     </Route>
                 </Switch>
                 <div className={css({

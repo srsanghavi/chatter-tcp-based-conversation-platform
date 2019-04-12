@@ -4,9 +4,9 @@ import edu.northeastern.ccs.im.ChatLogger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.jws.WebParam;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 public class MessageModelTest {
     MessageModel messageModel;
@@ -18,7 +18,7 @@ public class MessageModelTest {
 
     @Test
     void testDeleteMessage(){
-        ChatLogger.info(Integer.toString(messageModel.deleteMessage(312)));
+        assertTrue(messageModel.deleteMessage(312) >= 0);
     }
 }
 

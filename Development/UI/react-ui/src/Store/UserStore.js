@@ -1,12 +1,18 @@
 import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher';
 import ActionTypes from '../AppConstants';
+import UserActions from '../Actions/UserActions';
+import AuthStore from './AuthStore';
 
 const CHANGE = 'CHANGE';
+const USERS_LIST_CHANGE = "USERS_LIST_CHANGE";
+const ONLINE = "ONLINE";
 
-let _user;
-let _signin;
-let _users;
+let _user = {};
+let _users = [];
+let _onlineUsers = [];
+let _newuser;
+
 class UserStore extends EventEmitter {
     constructor() {
         super();
@@ -17,52 +23,58 @@ class UserStore extends EventEmitter {
 
     // Switches over the action's type when an action is dispatched.
     _registerToActions(action) {
-
         switch(action.actionType) {
-            
-            case ActionTypes.ACCOUNT_SIGN_IN:
-                console.log(action);
-                this._setSignin(action.payload);
-                break;
+
             case ActionTypes.GET_USERS:
-                console.log(action);
                 this._setUsers(action.payload);
                 break;
             case ActionTypes.GET_USER_BY_USERNAME:
-                console.log(action);
                 this._setUser(action.payload);
                 break;
+            case ActionTypes.UPDATE_USER:
+                this._updateUser(action.payload);
+                break;
+            case ActionTypes.ONLINE_USER:
+                this._setOnlineUsers(action.payload);
+                break;
+
             default:
             break;
         }
     }
 
-
+    _updateUser(res){
+        if(res){
+            UserActions.getUserByUsername(AuthStore._getAuthUser().username);
+        }
+    }
     _setUser(user){
-        console.log(user);
-        _user=user;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(CHANGE);
-        }, 0);
+        if(user){
+            _user=user.result[0];
+            let self = this;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(CHANGE);
+            }, 0);
+        }
     }
 
     _getUser() {
-        return _user
+        return _user;
     }
 
     _clearUser() {
-        _user = undefined
+        _user = {}
     }
 
 
     _setUsers(users){
-        console.log(users);
-        _users=users;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(CHANGE);
-        }, 0);
+        if(users){
+            _users=users.result;
+            let self = this;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(USERS_LIST_CHANGE);
+            }, 0);
+        }
     }
 
     _getUsers() {
@@ -74,28 +86,23 @@ class UserStore extends EventEmitter {
     }
 
 
-    _setSignin(payload){
-        console.log(payload);
-        _signin=payload;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(CHANGE);
-        }, 0);
+
+    _setNewUser(user) {
+        _newuser = user;
     }
 
-    _getSignIn() {
-        return _signin
+    _getNewUser() {
+        return _newuser;
     }
 
-    _clearSignin() {
-        _signin = undefined
+    _clearNewUser() {
+        _newuser = undefined;
     }
-
 
     _clearAll() {
-        _user = undefined;
-        _users = undefined;
-        _signin = undefined;
+        this._clearUser();
+        this._clearUsers();
+        this._clearNewUser();
     }
 
 
@@ -109,6 +116,14 @@ class UserStore extends EventEmitter {
         this.removeListener(CHANGE, callback);
     }
 
+
+    addUserListChangeListener(callback){
+        this.on(USERS_LIST_CHANGE,callback);
+    }
+
+    removeUserListChangeListener(callback){
+        this.removeListener(USERS_LIST_CHANGE,callback);
+    }
 }
 
 export default new UserStore();

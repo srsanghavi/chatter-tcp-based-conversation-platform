@@ -1,72 +1,64 @@
 package edu.northeastern.ccs.im.database;
 
-import edu.northeastern.ccs.im.ChatLogger;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.AfterClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConversationModelTest {
-    ConversationModel conversationModel;
+    private static ConversationModel conversationModel;
+    private static int lastCreatedConversation;
+    private static int user_id1 = 1;
+    private static int user_id2 = 21;
 
-    @BeforeEach
-    void setup(){
+    @BeforeAll
+    static void setup(){
         conversationModel = ModelFactory.getInstance().getConversationModel();
+        lastCreatedConversation = conversationModel.createConversationForUser(user_id1, user_id2);
     }
     @Test
     public void createConversation(){
         int r = conversationModel.createConversationForUser(1,8);
-        ChatLogger.info(String.valueOf(r));
+        assertTrue(r > 0);
+        conversationModel.deleteConversationPermanently(r);
     }
 
     @Test
     public void testCreateThreadAndMessage(){
-        int user_id1 = 1;
-        int user_id2 = 21;
-        int r = conversationModel.createConversationForUser(user_id1,user_id2);
-        int t = conversationModel.createThreadForConversation(r);
-        ChatLogger.info("Conversation ID:"+String.valueOf(r));
-        ChatLogger.info("Thread ID:" +String.valueOf(t));
-        assertTrue(conversationModel.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.")>0);
+        int t = conversationModel.createThreadForConversation(lastCreatedConversation);
+        assertTrue(t > 0);
+        assertTrue(conversationModel.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.","")>0);
     }
 
     @Test
     public void testMultipleThreadFromUsers() {
-        int user_id1 = 1;
-        int user_id2 = 21;
-        int r = conversationModel.createConversationForUser(user_id1, user_id2);
-        int t = conversationModel.createThreadForConversation(r);
-        System.out.println(String.valueOf(r));
-        System.out.println(String.valueOf(t));
-        int e = conversationModel.createThreadForConversation(r);
-        System.out.println(String.valueOf(e));
+        int t = conversationModel.createThreadForConversation(lastCreatedConversation);
+        int e = conversationModel.createThreadForConversation(lastCreatedConversation);
+        assertTrue(t > 0);
+        assertTrue(e > 0);
     }
 
     @Test
     public void testGetMessagesInAConversation(){
-        int user_id1 = 1;
-        int user_id2 = 21;
-        int r = conversationModel.createConversationForUser(user_id1,user_id2);
-        ChatLogger.info("Conversation ID:"+String.valueOf(r));
-        ChatLogger.info("Messages For Conversation: "+ conversationModel.getMessagesForConversation(r));
+        int t = conversationModel.createThreadForConversation(lastCreatedConversation);
+        assertTrue(conversationModel.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.","")>0);
+        assertTrue(conversationModel.getMessagesForConversation("hsbudhia", lastCreatedConversation).size() > 0);
     }
 
     @Test
     public void testGetConversations(){
-        ChatLogger.info(conversationModel.getConversations().toString());
+        assertTrue(conversationModel.getConversations().size() > 0);
     }
 
     @Test
     public void testGetConversationsById(){
-        ChatLogger.info(conversationModel.getConversationsById(24).toString());
+        assertTrue(conversationModel.getConversationsById(lastCreatedConversation).size() == 1);
     }
 
     @Test
     public void testGetThreadsForConversation(){
-        ChatLogger.info(conversationModel.getThreadsForConversation(21).toString());
+        assertTrue(conversationModel.getThreadsForConversation(lastCreatedConversation).size() > 0);
     }
 
     @Test
@@ -76,11 +68,36 @@ public class ConversationModelTest {
 
     @Test
     public void  testGetConversationsForUser(){
-        System.out.println(conversationModel.getConversations(1));
+        assertTrue(conversationModel.getConversations(1).size() > 0);
     }
 
     @Test
     public void testAddMessageToThread(){
-      System.out.println(conversationModel.addMessageToThread(311,519));
+        assertTrue(conversationModel.addMessageToThread(311,519) <= 0);
+    }
+
+    @AfterClass
+    static void cleanup(){
+        conversationModel.deleteConversationPermanently(lastCreatedConversation);
+    }
+
+    @Test
+    public void testCreateMessageInEnglish(){
+        System.out.println(conversationModel.createMessageForThread(2633,814,"Como estas?",""));
+    }
+
+    @Test
+    public void testReceivedTranslatedMessageInThread(){
+        System.out.println(conversationModel.getMessagesInThread("rashy",2633));
+    }
+
+    @Test
+    public void testReceivedTranslatedMessageInConversation(){
+        System.out.println(conversationModel.getMessagesForConversation("budhiahimanshu96",898));
+    }
+
+    @Test
+    public void testGetGroupConversation(){
+        System.out.println(conversationModel.getGroupConversations(814));
     }
 }

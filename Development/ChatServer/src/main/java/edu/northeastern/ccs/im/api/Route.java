@@ -15,13 +15,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Route.
+ */
 public class Route {
 
     /**
      * Get GET API response string.
      *
-     * @param route  the route
-     * @param params the params JSON string with all elements as strings
+     * @param username the username
+     * @param route    the route
+     * @param params   the params JSON string with all elements as strings
      * @return the string
      */
     public static String getResponseGet(String username, String route, String params){
@@ -31,6 +35,11 @@ public class Route {
         try {
             switch (route) {
 
+                case ApiMessageType.ONLINE_USERS:
+                    response = ControllerFactory
+                            .getUserController()
+                            .getOnlineUsers();
+                    break;
                 case ApiMessageType.GET_USERS:
                     response = ControllerFactory
                             .getUserController()
@@ -91,8 +100,11 @@ public class Route {
                             .getConversationController()
                             .getMessagesInThread(username,json);
                     break;
-
-
+                case ApiMessageType.GET_GROUP_CONVERSATION:
+                    response = ControllerFactory
+                            .getConversationController()
+                            .getGroupConversations(json);
+                    break;
                 default:
                     return "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
             }
@@ -108,8 +120,9 @@ public class Route {
     /**
      * Get POST response  string.
      *
-     * @param route the route
-     * @param data  the data JSON
+     * @param username the username
+     * @param route    the route
+     * @param data     the data JSON
      * @return the string with POST response
      */
     public static String getResponsePost(String username, String route,String data){
@@ -188,6 +201,12 @@ public class Route {
                         .getGroupController()
                         .createGroup(json);
                 break;
+            case ApiMessageType.MODIFY_USER:
+                json = ControllerFactory
+                        .getUserController()
+                        .modifyUser(json);
+                break;
+
 
             default:
                 return  "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";

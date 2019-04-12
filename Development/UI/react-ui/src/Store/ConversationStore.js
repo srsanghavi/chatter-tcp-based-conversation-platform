@@ -4,7 +4,7 @@ import ActionTypes from '../AppConstants';
 
 const CONV_CHANGED = 'CONV_CHANGED';
 
-let _conversations;
+let _conversations = [];
 class ConversationStore extends EventEmitter {
     constructor() {
         super();
@@ -26,8 +26,8 @@ class ConversationStore extends EventEmitter {
         }
     }
 
-    _setConversations(conversations){
-        _conversations = conversations;
+    _setConversations(conversations){        
+        _conversations = conversations.result;
         let self = this;
         setTimeout(() => { // Run after dispatcher has finished
             self.emit(CONV_CHANGED);

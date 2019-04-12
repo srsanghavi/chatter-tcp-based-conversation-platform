@@ -5,13 +5,19 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * The type Conversation.
+ */
 public class Conversation {
 
   private String id; // UUID
   private Timestamp createdOn; // Creation Timestamp
 
 
-  public Conversation() {
+    /**
+     * Instantiates a new Conversation.
+     */
+    public Conversation() {
     UUID uid = UUID.randomUUID();
     id = uid.toString();
 
@@ -20,19 +26,21 @@ public class Conversation {
   }
 
 
-  /**
-   *
-   * @return conversation ID
-   */
-  public String getId() {
+    /**
+     * Gets id.
+     *
+     * @return conversation ID
+     */
+    public String getId() {
     return id;
   }
 
-  /**
-   *
-   * @return conversation creation timestamp
-   */
-  public Timestamp getCreatedOn() {
+    /**
+     * Gets created on.
+     *
+     * @return conversation creation timestamp
+     */
+    public Timestamp getCreatedOn() {
     return createdOn;
   }
 }
