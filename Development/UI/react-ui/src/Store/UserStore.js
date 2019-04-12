@@ -37,6 +37,10 @@ class UserStore extends EventEmitter {
             case ActionTypes.ONLINE_USER:
                 this._setOnlineUsers(action.payload);
                 break;
+            case ActionTypes.USER_CREATED:
+                setTimeout(() => { // Run after dispatcher has finished
+                    this.emit(CHANGE);
+                }, 0);
 
             default:
             break;

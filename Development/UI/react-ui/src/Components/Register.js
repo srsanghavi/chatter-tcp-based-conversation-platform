@@ -4,6 +4,7 @@ import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
 import {NavLink} from 'react-router-dom';
 import {css} from 'emotion';
+import AuthStore from '../Store/AuthStore';
 
 class Register extends Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class Register extends Component {
             password: '',
             firstName: '',
             lastName: '',
-            email: ''
+            email: '',
+            status:'',
         };
 
         this.onUsernameChange = this.onUsernameChange.bind(this);
@@ -24,21 +26,35 @@ class Register extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.api = new Api();
         this._onChange = this._onChange.bind(this);
+
+        this._onAuthorized = this._onAuthorized.bind(this);
     }
 
     componentWillMount(){
         UserStore.addChangeListener(this._onChange);
+        AuthStore.addChangeListener(this._onAuthorized);
     }
 
     componentWillUnmount(){
         UserStore.removeChangeListener(this._onChange);
+        AuthStore.removeChangeListener(this._onAuthorized);
+    }
+
+    _onAuthorized(){
+        this.setState({
+            status: "Authorized! Signing up",
+        });
+        UserActions.registerUser(AuthStore._getAuthUser().username,this.state.username,this.state.password,this.state.firstName,this.state.lastName,this.state.email);
+
     }
 
     componentDidMount() {
     }
 
     _onChange(){
-        // UserActions.getUsers('srsanghavi');
+        this.setState({
+            status:"Account created",
+        })
         // setTimeout(function(){}, 3000);
         // UserActions.getUserByUsername('srsanghavi');
     }
@@ -74,8 +90,8 @@ class Register extends Component {
     }
 
     handleSubmit() {
-        UserStore._setNewUser(this.state);
-        UserActions.signin('john','123');
+        UserActions.signin("srsanghavi","12345678");
+        // UserStore._setNewUser(this.state);
     }
 
 
@@ -116,12 +132,13 @@ class Register extends Component {
                             value={this.state.email}
                             onChange={this.onEmailChange}
                             required/>
-                        <NavLink to={'./processing'}>
+                        {/* <NavLink to={'./processing'}> */}
                             <button className="btn btn-block btn-outline-primary"
                                     onClick={this.handleSubmit}>
                                 Register
                             </button>
-                        </NavLink>
+                            {this.state.status}
+                        {/* </NavLink> */}
                     </div>
                 </div>
                 <h3 className="signin-text">Already Registered?

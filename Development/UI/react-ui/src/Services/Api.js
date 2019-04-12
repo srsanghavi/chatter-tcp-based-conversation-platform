@@ -33,8 +33,8 @@ export default class Api {
     }
 
     registerUser(sender, username, password, first_name, last_name, email) {
-        let msg = this.messageType.makeApiMessage(sender,"registerUser/::POST::{username:"+username+"," +
-            "password:"+password+",first_name:"+first_name+",last_name:"+last_name+",email:"+email+"}");
+        let msg = this.messageType.makeApiMessage(sender,"registerUser/::POST::{username:'"+username+"'," +
+            "password:'"+password+"',first_name:'"+first_name+"',last_name:'"+last_name+"',email:'"+email+"'}");
         gateway.sendTcp(msg);
         return this.promise();
     }
