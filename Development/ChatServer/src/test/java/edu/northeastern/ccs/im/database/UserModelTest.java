@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotSame;
+import edu.northeastern.ccs.im.database.DataCon;
 
 
 public class UserModelTest {
@@ -15,9 +16,13 @@ public class UserModelTest {
     @BeforeAll
     public static void setup(){
 
-        userModel = ModelFactory.getInstance().getUserModel();
+//        userModel = ModelFactory.getInstance().getUserModel();
+
+        DataCon sqliteCon = new SqliteCon();
+        userModel = new UserModel(sqliteCon, new S3Model());
         userModel.createUser("junitTest","junittest@prattle.com","123","JUnit","Test");
         lastCreatedUser = userModel.lastCreatedUser();
+        System.out.println(lastCreatedUser);
 
     }
     @Test
@@ -58,17 +63,19 @@ public class UserModelTest {
 
     @Test
     public void testAuthorized(){
-        assertEquals(1,userModel.isAuthorized("junittest", "123"));
+        assertEquals(1,userModel.isAuthorized("junitTest", "123"));
     }
 
     @Test
     public void testNotAuthorized(){
-        assertNotSame(1,userModel.isAuthorized("junittest", "1234678"));
+        assertNotSame(1,userModel.isAuthorized("junitTest", "1234678"));
     }
 
     @Test
     public void testDeleteUser(){
-        assertEquals(1, userModel.deleteUser(1167));
+        userModel.createUser("junitTest1","junittest1@prattle.com","123","JUnit","Test");
+        int r = userModel.lastCreatedUser();
+        assertEquals(1, userModel.deleteUser(r));
     }
 
     @Test

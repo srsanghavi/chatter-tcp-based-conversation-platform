@@ -88,47 +88,6 @@ public class MysqlCon implements DataCon{
      * @return the JDBC ResultTest
      */
 
-//    public List<Map<String, Object>> sqlGet(String query) {
-//            Statement stmt = null;
-//            ResultSet rs = null;
-//            List<Map<String, Object>> resultList = new ArrayList<>();
-//            Map<String, Object> row = null;
-//
-//            try {
-//                stmt = con.createStatement();
-//                try {
-//                    rs = stmt.executeQuery(query);
-//
-//                    ResultSetMetaData metaData = rs.getMetaData();
-//                    int columnCount = metaData.getColumnCount();
-//
-//                    while (rs.next()) {
-//                        row = new HashMap<>();
-//                        for (int i = 1; i <= columnCount; i++) {
-//                            row.put(metaData.getColumnName(i), rs.getObject(i));
-//                        }
-//                        resultList.add(row);
-//                    }
-//                }
-//                finally {
-//                    if (rs!= null)
-//                        rs.close();
-//                }
-//
-//            } catch (SQLException e ) {
-//                ChatLogger.warning(e.toString());
-//            } finally {
-//                if (stmt != null) {
-//                    try {
-//                        stmt.close();
-//                    } catch (SQLException e) {
-//                        ChatLogger.error(e.toString());
-//                    }
-//                }
-//            }
-//        return resultList;
-//    }
-
     public List<Map<String, Object>> sqlGet(String query, List<String> arguments) {
         ResultSet rs = null;
         PreparedStatement ps = null;
