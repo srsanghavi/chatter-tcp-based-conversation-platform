@@ -25,12 +25,12 @@ public class ClientRunnableTest {
         when(nc.iterator()).thenReturn(new Iterator<Message>() {
             @Override
             public boolean hasNext() {
-                return false;
+                return true;
             }
 
             @Override
             public Message next() {
-                return null;
+                return new Message(MessageType.BROADCAST, "hsbudhia", "API 4 john 22 getAllGroups/::GET::{}");
             }
         });
 

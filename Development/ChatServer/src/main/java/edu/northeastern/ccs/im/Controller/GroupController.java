@@ -29,6 +29,15 @@ public class GroupController {
     private static String ERROR = "error";
     private static String MISSING_PARAMETER = "missing_parameter";
 
+    /**
+     * Initialize Model
+     * @param gm GroupModel
+     */
+    public GroupController(GroupModel gm){
+        groupModel = gm;
+    }
+
+    public GroupController(){ }
 
     /**
      * Get all groups list.

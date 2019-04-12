@@ -123,13 +123,6 @@ public class ClientRunnable implements Runnable {
 				initialized = true;
 				String response = Route.getResponseGet(this.name, ApiMessageType.GET_USER_BY_USERNAME,"{username:'"+userName+"'}");
 
-//                UserModel u = ModelFactory.getUserModel();
-//                List<Map<String, Object>> r = u.getUsers();
-//                List<String> usernames = new ArrayList<>();
-//                for(Map<String,Object> user:r){
-//                    usernames.add(user.get("username").toString());
-//                }
-//                Message usernamesMessage = Message.makeBroadcastMessage("ADMIN","Available Users are " + usernames.toString());
 				Message message = Message.makeBroadcastMessage(msg.getName(),response);
 				this.sendMessage(message);
 			} else {
