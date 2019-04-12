@@ -184,4 +184,3 @@ export default class Api {
         return this.promise();
     }
 }
-
