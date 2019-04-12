@@ -257,4 +257,8 @@ public class RouteTest {
   public void testAddAdmin(){
       ChatLogger.info(Route.getResponsePost("ram","addAdminGroup/","{username:ram, group_id:534, user_id: 21}"));
     }
+  @Test
+  public void testAddAdminMissingParameter(){
+    ChatLogger.info(Route.getResponsePost("ram","addAdminGroup/","{username:ram, group_id:534}"));
+  }
 }
