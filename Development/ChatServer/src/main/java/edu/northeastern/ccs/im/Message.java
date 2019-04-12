@@ -103,7 +103,7 @@ public class Message {
 		int conversationID = conversationModel.createConversationForUser(senderID,receiverID);
 		int messageThreadId = conversationModel.createThreadForConversation(conversationID);
     this.threadId = messageThreadId;
-		return conversationModel.createMessageForThread(messageThreadId,senderID,message);
+		return conversationModel.createMessageForThread(messageThreadId,senderID,message,"");
 	}
 
     /**

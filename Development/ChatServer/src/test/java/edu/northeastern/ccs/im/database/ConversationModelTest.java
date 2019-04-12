@@ -28,7 +28,7 @@ public class ConversationModelTest {
     public void testCreateThreadAndMessage(){
         int t = conversationModel.createThreadForConversation(lastCreatedConversation);
         assertTrue(t > 0);
-        assertTrue(conversationModel.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.")>0);
+        assertTrue(conversationModel.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.","")>0);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class ConversationModelTest {
     @Test
     public void testGetMessagesInAConversation(){
         int t = conversationModel.createThreadForConversation(lastCreatedConversation);
-        assertTrue(conversationModel.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.")>0);
+        assertTrue(conversationModel.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.","")>0);
         assertTrue(conversationModel.getMessagesForConversation("hsbudhia", lastCreatedConversation).size() > 0);
     }
 
@@ -83,7 +83,7 @@ public class ConversationModelTest {
 
     @Test
     public void testCreateMessageInEnglish(){
-        System.out.println(conversationModel.createMessageForThread(2633,814,"Como estas?"));
+        System.out.println(conversationModel.createMessageForThread(2633,814,"Como estas?",""));
     }
 
     @Test
@@ -91,8 +91,8 @@ public class ConversationModelTest {
         System.out.println(conversationModel.getMessagesInThread("rashy",2633));
     }
 
-    @Test
-    public void testReceivedTranslatedMessageInConversation(){
-        System.out.println(conversationModel.getMessagesForConversation("rashy",555));
-    }
+//    @Test
+//    public void testReceivedTranslatedMessageInConversation(){
+//        System.out.println(conversationModel.getMessagesForConversation("rashy",555));
+//    }
 }

@@ -6,10 +6,11 @@ import AuthStore from './AuthStore';
 
 const CHANGE = 'CHANGE';
 const USERS_LIST_CHANGE = "USERS_LIST_CHANGE";
+const ONLINE = "ONLINE";
 
-let _user;
-let _signin;
+let _user = {};
 let _users = [];
+let _onlineUsers = [];
 let _newuser;
 
 class UserStore extends EventEmitter {
@@ -22,9 +23,8 @@ class UserStore extends EventEmitter {
 
     // Switches over the action's type when an action is dispatched.
     _registerToActions(action) {
-
         switch(action.actionType) {
-            
+
             case ActionTypes.GET_USERS:
                 this._setUsers(action.payload);
                 break;
@@ -33,11 +33,15 @@ class UserStore extends EventEmitter {
                 break;
             case ActionTypes.UPDATE_USER:
                 this._updateUser(action.payload);
+                break;
+            case ActionTypes.ONLINE_USER:
+                this._setOnlineUsers(action.payload);
+                break;
+
             default:
             break;
         }
     }
-
 
     _updateUser(res){
         if(res){
@@ -46,7 +50,7 @@ class UserStore extends EventEmitter {
     }
     _setUser(user){
         if(user){
-            _user=user;
+            _user=user.result[0];
             let self = this;
             setTimeout(() => { // Run after dispatcher has finished
                 self.emit(CHANGE);
@@ -55,11 +59,11 @@ class UserStore extends EventEmitter {
     }
 
     _getUser() {
-        return _user
+        return _user;
     }
 
     _clearUser() {
-        _user = undefined
+        _user = {}
     }
 
 
@@ -82,22 +86,6 @@ class UserStore extends EventEmitter {
     }
 
 
-    _setSignin(payload){
-        _signin=payload;
-        let self = this;
-        setTimeout(() => { // Run after dispatcher has finished
-            self.emit(CHANGE);
-        }, 0);
-    }
-
-    _getSignIn() {
-        return _signin
-    }
-
-    _clearSignin() {
-        _signin = undefined
-    }
-
 
     _setNewUser(user) {
         _newuser = user;
@@ -114,7 +102,6 @@ class UserStore extends EventEmitter {
     _clearAll() {
         this._clearUser();
         this._clearUsers();
-        this._clearSignin();
         this._clearNewUser();
     }
 

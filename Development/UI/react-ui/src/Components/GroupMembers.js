@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import {css} from "emotion";
-import GroupMember from './GroupMember'
+import GroupActions from '../Actions/GroupActions'
+import GroupStore from "../Store/GroupStore";
+import AuthStore from "../Store/AuthStore";
+import GroupMember from "./GroupMember";
+import GroupHeader from "./GroupHeader";
 
 class GroupMembers extends Component {
     constructor(props) {
@@ -8,15 +12,31 @@ class GroupMembers extends Component {
         this.state = {
             id: this.props.match.params.id,
             groupMembers: []
-        }
+        };
+
+        this._onGroupChanged = this._onGroupChanged.bind(this);
+    }
+
+    componentWillMount() {
+        GroupStore.addGroupMembersChangeListener(this._onGroupChanged);
+        GroupActions.getGroupUsers(AuthStore._getAuthUser().username, this.props.match.params.id);
     }
 
     componentDidMount() {
-        // GroupActions.getGroupUsers(localStorage.getItem('username'), this.props.match.params.id);
-        // setTimeout(function(){}, 3000);
-        // this.setState({
-        //    groupMembers: JSON.parse(GroupStore._getGroupUsers()).result
-        // })
+        this.setState({
+            groupMembers: GroupStore._getGroupMembers()
+        })
+    }
+
+    componentWillUnmount(){
+        GroupStore.removeGroupMembersChangeListener(this._onGroupChanged);
+        GroupStore._clearGroupMembers()
+    }
+
+    _onGroupChanged(){
+        this.setState({
+            groupMembers: GroupStore._getGroupMembers()
+        })
     }
 
     render() {
@@ -28,9 +48,16 @@ class GroupMembers extends Component {
                 height: '100%',
                 overflowX: 'hidden',
             })}>
-                {this.state.groupMembers.map(member => {
-                    return(<GroupMember user={member}/>)
-                })}
+                <div className={css({
+                    paddingBottom: '5em'
+                })}>
+                    <GroupHeader fromConversation={false}/>
+                </div>
+                {this.state.groupMembers.length > 0 ?
+                this.state.groupMembers.map(member=> {
+                    return(<GroupMember key={member.id}
+                                        user={member}/>)
+                }) : null}
             </div>
         )
     }

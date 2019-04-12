@@ -11,6 +11,8 @@ import MessageActions from "../Actions/MessageActions";
 import MessageStore from "../Store/MessageStore";
 import ConversationStore from "../Store/ConversationStore";
 import AuthStore from '../Store/AuthStore';
+import {EmojiPicker} from 'emoji-picker-react';
+import {jsemoji} from 'emoji-js';
 
 
 // component updates every interval (in ms)
@@ -27,7 +29,9 @@ class Conversation extends Component {
             threads: [],
             messages: [],
             newMessage: '',
-            previousThreadCount: 0
+            previousThreadCount: 0,
+            editProfilePic: false,
+            isGroup: false,
         };
 
         this.toggleSearch = this.toggleSearch.bind(this);
@@ -39,6 +43,9 @@ class Conversation extends Component {
         this._onMessageschanged = this._onMessageschanged.bind(this);
 
         this._onNewMessageReceieved = this._onNewMessageReceieved.bind(this);
+        this.handleEmojiClick = this.handleEmojiClick.bind(this);
+
+        console.log(window.location.pathname.split('/'))
 
     }
 
@@ -47,6 +54,12 @@ class Conversation extends Component {
       }
       
 
+    handleEmojiClick=(code,emoji) => {
+        // let emojiPic = jsemoji.replace_colons(`:${emoji.name}:`);
+        // this.setState({
+        // newMessage: event.target.value + emojiPic,
+        // });
+    }
     componentWillMount(){
         ThreadStore.addThreadsChangeListener(this._onThreadsChanged);
         MessageStore.addMessagesChangeListener(this._onMessageschanged);
@@ -61,6 +74,10 @@ class Conversation extends Component {
    
     componentDidMount(){
         this.scrollToBottom();
+        const PATH = window.location.pathname.split('/');
+        this.setState({
+            isGroup: PATH[PATH.length - 2] === "group-conversation"
+        });
     }
     componentDidUpdate(){
         this.scrollToBottom();
@@ -125,11 +142,16 @@ class Conversation extends Component {
     }
 
     sendMessage() {
+        var newMesage = this.state.newMessage;
+        newMesage = newMesage.replace('\n',' ');
+        console.log(newMesage);
+
         MessageActions.createMessageForThread(AuthStore._getAuthUser().username,
                                               AuthStore._getAuthUser().id,
                                                -1, 
-                                               "\"" + this.state.newMessage + "\"", 
-                                               this.props.match.params.id);
+                                                newMesage, 
+                                               this.props.match.params.id,
+                                               0);
             this.setState({
             newMessage: '',
         })
@@ -162,36 +184,44 @@ class Conversation extends Component {
         }
     }
 
+  
+
+   
+
     renderThreads() {
-        if((ThreadStore._getThreads() === undefined || MessageStore._getMessages() === undefined)
-                && this.state.threads.length === 0) {
-            return(
-                <div className={css({
-                    textAlign: 'center',
-                    position: 'absolute',
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translateY(-50%) translateX(-50%)',
-                })}>
-                    <div className="lds-ring">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                </div>
-            )
-        } else {
+        // if((ThreadStore._getThreads() === undefined || MessageStore._getMessages() === undefined)
+        //         && this.state.threads.length === 0) {
+        //     // return(
+            //     <div className={css({
+            //         textAlign: 'center',
+            //         position: 'absolute',
+            //         left: '50%',
+            //         top: '50%',
+            //         transform: 'translateY(-50%) translateX(-50%)',
+            //     })}>
+            //         <div className="lds-ring">
+            //             <div></div>
+            //             <div></div>
+            //             <div></div>
+            //             <div></div>
+            //         </div>
+            //     </div>
+            // )
+        // } else {
             return(
                 <div>
                     <ThreadContainer threads={this.state.threads}
-                                     conversation_id = {this.props.match.params.id}/>
+                                     conversation_id = {this.props.match.params.id}
+                                     isGroup={this.state.isGroup}/>
                     <ConversationFooter onChange={this.onMessageChange}
                                         onClick={this.sendMessage}
-                                        value={this.state.newMessage}/>
+                                        value={this.state.newMessage}
+                                        conversation_id={this.props.match.params.id}
+                                        threadid={-1}
+                                       />
                 </div>
             )
-        }
+        // }
     }
 
     render() {
@@ -218,7 +248,9 @@ class Conversation extends Component {
                     })}>
                         <ConversationHeader search={this.state.searchBar}
                                             searchClick={this.toggleSearch}
-                                            inThread={false}/>
+                                            inThread={false}
+                                            isGroup={this.state.isGroup}
+                                            conversationId={this.state.id}/>
                     </div>
                     {this.renderSearchBar()}
                     {this.renderThreads()}

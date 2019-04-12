@@ -7,7 +7,7 @@ const CHANGE = 'CHANGE';
 let _user;
 
 
-class UserStore extends EventEmitter {
+class AuthStore extends EventEmitter {
     constructor() {
         super();
  
@@ -22,6 +22,11 @@ class UserStore extends EventEmitter {
             
             case ActionTypes.ACCOUNT_SIGN_IN:
                 this._setUser(action.payload);
+                break;
+            case ActionTypes.MODIFY_USER:
+                if(action.payload.username === _user.username) {
+                    this._updateUser(action.payload);
+                }
                 break;
             default:
             break;
@@ -38,6 +43,21 @@ class UserStore extends EventEmitter {
             let self = this;
             localStorage.setItem("loggedIn",true);
             _user = users.result[0];
+            _user.isSearchable = _user.isSearchable==1;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(CHANGE);
+            }, 0);
+        }
+    }
+
+    _updateUser(user){
+        if(user){
+          
+            let self = this;
+            let username = _user.username;
+            _user = user;
+            _user.isSearchable = _user.isSearchable==1;
+            _user.user = username;
             setTimeout(() => { // Run after dispatcher has finished
                 self.emit(CHANGE);
             }, 0);
@@ -60,4 +80,4 @@ class UserStore extends EventEmitter {
 
 }
 
-export default new UserStore();
+export default new AuthStore();

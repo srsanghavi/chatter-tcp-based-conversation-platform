@@ -128,11 +128,11 @@ public class ConversationModel {
      * @param text     the text
      * @return the int
      */
-    public int createMessageForThread(int threadId, int senderId, String text){
+    public int createMessageForThread(int threadId, int senderId, String text,String mediaURL){
         text = translateText(text,"English");
-        String query = "INSERT INTO message(sender_id,thread_id,text) VALUES (?, ?, ?);";
+        String query = "INSERT INTO message(sender_id,thread_id,text,mediaURL) VALUES (?, ?, ?, ?);";
         List<String> args = new ArrayList<>();
-        Collections.addAll(args, Integer.toString(senderId), Integer.toString(threadId), text);
+        Collections.addAll(args, Integer.toString(senderId), Integer.toString(threadId), text, mediaURL);
         int r = conn.sqlcreate(query, args);
         if(r>0){
             return conn.getLastInsertedID();
@@ -217,8 +217,9 @@ public class ConversationModel {
      * @param threadID the thread id
      * @return list of messages in the thread
      */
-    public List<Map<String, Object>> getMessagesInThread(String username, int threadID){
-        String sql = "select * from message where thread_id =?;";
+    public List<Map<String, Object>> getMessagesInThread(String username,int threadID){
+        String sql = "select * from message JOIN users on message.sender_id = users.id where thread_id=?;";
+
         List<String> args = new ArrayList<>();
         args.add(Integer.toString(threadID));
         List<Map<String, Object>> result = conn.sqlGet(sql,  args);
@@ -256,9 +257,26 @@ public class ConversationModel {
      * @return the list
      */
     public List<Map<String, Object>> getConversations(int userId){
-        String sql = "SELECT * FROM conversations as c JOIN users_converses_users as uu on c.id = uu.Conversations_id WHERE uu.users_id=? OR uu.users_id1=?;";
+        String sql = "SELECT c.id as id, c.created_on,\n" +
+                "\t\t\t\tCASE WHEN uu.users_id != ? THEN uu.users_id1 ELSE uu.users_id END as destination_id,\n" +
+                "\t\t\t\tCASE WHEN uu.users_id != ? THEN u1.username ELSE u2.username END as destination_username,\n" +
+                "\t\t\t\tCASE WHEN uu.users_id != ? THEN u1.first_name ELSE u2.first_name END as destination_firstname,\n" +
+                "\t\t\t\tCASE WHEN uu.users_id != ? THEN u1.last_name ELSE u2.last_name END as destination_lastname,\n" +
+                "\t\t\t\tCASE WHEN uu.users_id != ? THEN u1.profilePicture ELSE u2.profilePicture END as destination_profilePicture\n" +
+                "\n" +
+                "FROM conversations as c JOIN users_converses_users as uu on c.id = uu.Conversations_id \n" +
+                "\t\t\tJOIN users as u1 on users_id = u1.id \n" +
+                "            JOIN users as u2 on users_id1 = u2.id\n" +
+                "WHERE uu.users_id=? OR uu.users_id1=?;";
+
         List<String> args = new ArrayList<>();
-        Collections.addAll(args, Integer.toString(userId), Integer.toString(userId));
+        Collections.addAll(args,Integer.toString(userId),
+                                Integer.toString(userId),
+                                Integer.toString(userId),
+                                Integer.toString(userId),
+                                Integer.toString(userId),
+                                Integer.toString(userId),
+                                Integer.toString(userId));
         ChatLogger.info(sql);
         return conn.sqlGet(sql, args);
     }
@@ -286,6 +304,26 @@ public class ConversationModel {
         return conn.getLastInsertedID();
     }
 
+    public List<Map<String, Object>> getGroupConversations(int userId) {
+        String sql = "SELECT Groups_id as groupid, u.id as user_id, first_name,last_name, conversation_id, name as destination_name, username, c.created_on\n" +
+                "FROM groups_has_users as gu JOIN \n" +
+                "\t\t\tgroups as g on gu.Groups_id = g.id JOIN \n" +
+                "            conversations as c on g.conversation_id = c.id JOIN\n" +
+                "            users as u on u.id=gu.Users_id\n" +
+                "where Users_id =?;";
+
+        List<String> args = new ArrayList<>();
+        args.add((Integer.toString(userId)));
+        return conn.sqlGet(sql,args);
+    }
+
+    public List<Map<String, Object>> getConversationGroup(int conversationId) {
+        String sql = "SELECT * FROM groups WHERE conversation_id=?;";
+
+        List<String> args = new ArrayList<>();
+        args.add((Integer.toString(conversationId)));
+        return conn.sqlGet(sql,args);
+    }
   /**
    * Method to translate the given text in to target language.
    * @param text to translate
@@ -294,6 +332,9 @@ public class ConversationModel {
    */
     public String translateText(String text, String language){
 
+      if(text.compareTo("") == 0){
+        return text;
+      }
       Translate translate = TranslateOptions.newBuilder().setApiKey("AIzaSyAYnvDZd5G7FNPRbbeDhGvmRzT2B7mbVWU").build().getService();
 
       String translatedText;

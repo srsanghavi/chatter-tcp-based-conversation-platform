@@ -3,6 +3,7 @@ package edu.northeastern.ccs.im.server;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Logger;
 
 import edu.northeastern.ccs.im.ChatLogger;
 import edu.northeastern.ccs.im.Message;
@@ -275,21 +276,25 @@ public class ClientRunnable implements Runnable {
                         msg.storeMessageInDb();
 						Prattle.sendMessageToUser(destinationUser,message1);
 					}else if(msg.isApiMessage()){
+						try {
+							String rawMessage = msg.getText();
+							String route = rawMessage.split("::")[0];   // route
+							String method = rawMessage.split("::")[1];  // method
+							String data = rawMessage.split("::")[2];    // data
 
-						String rawMessage = msg.getText();
-						String route = rawMessage.split("::")[0];   // route
-						String method = rawMessage.split("::")[1];  // method
-						String data = rawMessage.split("::")[2];    // data
+							if (method.equals("GET")) {
+								String response = Route.getResponseGet(this.name, route, data);
+								Message message = Message.makeBroadcastMessage(msg.getName(), response);
+								this.sendMessage(message);
 
-						if(method.equals("GET")){
-							String response = Route.getResponseGet(this.name,route,data);
-							Message message = Message.makeBroadcastMessage(msg.getName(),response);
-							this.sendMessage(message);
+							} else if (method.equals("POST")) {
+								String response = Route.getResponsePost(this.name, route, data);
+								Message message = Message.makeBroadcastMessage(msg.getName(), response);
+								this.sendMessage(message);
+							}
+						}catch (Exception e){
+							ChatLogger.warning(e.toString());
 
-						}else if(method.equals("POST")){
-							String response = Route.getResponsePost(this.name,route,data);
-							Message message = Message.makeBroadcastMessage(msg.getName(),response);
-							this.sendMessage(message);
 						}
 					}else {
 						ChatLogger.warning("UserModel already logged in");
