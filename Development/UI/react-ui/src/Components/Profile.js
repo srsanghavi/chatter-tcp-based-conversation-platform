@@ -424,14 +424,6 @@ class Profile extends Component {
                                 </button>}
                         </div> : null}
                 </div>
-                {/* <div className={this.state.edit?'hidden':''}>
-                    <a href="#" onClick={this._onEdit}>Edit</a>
-                </div> */}
-                <div className={this.state.edit?'':''}>
-                    <a href="#" onClick={this._onSave}>Save</a>
-                </div>
-
-
             </div>
         )
 

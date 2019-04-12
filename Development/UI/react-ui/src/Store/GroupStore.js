@@ -4,10 +4,12 @@ import ActionTypes from '../AppConstants';
 
 const GROUP_CHANGED = 'GROUP_CHANGED';
 const GROUPS_CHANGED = "GROUPS_CHANGED";
-let _userGroups = [];
 const GROUP_MEMBERS_CHANGED = "GROUP_MEMBERS_CHANGED";
+const NEW_GROUP_CHANGED = "NEW_GROUP_CHANGED";
+let _userGroups = [];
 let _allGroups = [];
 let _groupMembers = [];
+let _newGroup = {};
 
 class GroupStore extends EventEmitter {
     constructor() {
@@ -34,8 +36,8 @@ class GroupStore extends EventEmitter {
             case ActionTypes.GET_GROUP_CONVERSATIONS:
                 this._setGroups(action.payload);
                 break;
-            case ActionTypes.GET_GROUP_CONVERSATIONS:
-                this._setGroups(action.payload);
+            case ActionTypes.CREATE_GROUP:
+                this._setNewGroup(action.payload);
                 break;
             default:
                 break;
@@ -94,6 +96,26 @@ class GroupStore extends EventEmitter {
     }
 
 
+    _setNewGroup(group){
+        if(group){
+            console.log(group);
+            _newGroup = group;
+            let self = this;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(NEW_GROUP_CHANGED);
+            }, 0);
+        }
+    }
+
+    _getNewGroup() {
+        return _newGroup;
+    }
+
+    _clearNewGroup() {
+        _newGroup = {};
+    }
+
+
     // Hooks a React component's callback to the CHANGED event.
     addChangeListener(callback) {
         this.on(GROUP_CHANGED, callback);
@@ -118,6 +140,14 @@ class GroupStore extends EventEmitter {
 
     removeGroupMembersChangeListener(callback) {
         this.removeListener(GROUP_MEMBERS_CHANGED, callback);
+    }
+
+    addNewGroupChangeListener(callback) {
+        this.on(NEW_GROUP_CHANGED, callback);
+    }
+
+    removeNewGroupChangeListener(callback) {
+        this.removeListener(NEW_GROUP_CHANGED, callback);
     }
 }
 

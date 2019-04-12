@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import UserActions from "../Actions/UserActions";
 
 import AuthStore from '../Store/AuthStore';
+import GroupStore from "../Store/GroupStore";
+import GroupActions from "../Actions/GroupActions";
 
 
 
@@ -12,25 +14,53 @@ class Settings extends Component {
         super(props);
         this.state = {
             creatingGroup: false,
-            groupName: ''
+            groupName: '',
+            newGroupSubmitted: false,
         };
 
         this.createGroupOnClick = this.createGroupOnClick.bind(this);
         this.onGroupNameChange = this.onGroupNameChange.bind(this);
         this.logOut = this.logOut.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
+        this.submitNewGroup = this.submitNewGroup.bind(this);
+        this._newGroupChange = this._newGroupChange.bind(this);
+    }
+
+
+    componentWillMount() {
+        GroupStore._clearNewGroup();
+        GroupStore.addNewGroupChangeListener(this._newGroupChange)
+    }
+
+    componentWillUnmount() {
+        GroupStore.removeNewGroupChangeListener(this._newGroupChange)
+    }
+
+    _newGroupChange() {
+        this.setState({
+            newGroupSubmitted: true,
+        })
     }
 
     createGroupOnClick() {
         this.setState({
             creatingGroup: !this.state.creatingGroup,
-            groupName: ''
+            groupName: '',
+            newGroupSubmitted: false
         })
     }
 
     onGroupNameChange(event) {
         this.setState({
             groupName: event.target.value
+        })
+    }
+
+    submitNewGroup() {
+        GroupStore._clearNewGroup();
+        GroupActions.createGroup(AuthStore._getAuthUser().username, this.state.groupName, AuthStore._getAuthUser().id)
+        this.setState({
+            groupName: ''
         })
     }
 
@@ -62,6 +92,7 @@ class Settings extends Component {
                 <div className={css({
                     display: 'flex',
                     justifyContent: 'space-between',
+                    marginBottom: '0.5em'
 
                 })}>
                     <input type="text"
@@ -74,15 +105,19 @@ class Settings extends Component {
                                    fontWeight: 'bold',
                                    textAlign: 'left'
                                }}/>
-                    <button className="btn btn-outline-primary">Submit</button>
+                    <button className="btn btn-outline-primary"
+                            onClick={this.submitNewGroup}>Submit</button>
                 </div>
+                {!this.state.newGroupSubmitted || GroupStore._getNewGroup().id === undefined ? null :
+                    <NavLink to={`/group-settings/${GroupStore._getNewGroup().id}`}>
+                        <h5 >Go to {GroupStore._getNewGroup().group_name}</h5>
+                    </NavLink>}
             </div>
                 : null
         )
     }
 
     render() {
-
         return(
             <div>
                 <div className={css({

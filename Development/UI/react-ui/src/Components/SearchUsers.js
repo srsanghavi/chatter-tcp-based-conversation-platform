@@ -5,6 +5,7 @@ import UserActions from "../Actions/UserActions";
 import AuthStore from "../Store/AuthStore";
 import UserPreviews from "./UserPreviews";
 import { NavLink } from 'react-router-dom';
+import SearchBar from "./SearchBar";
 
 
 class SearchUsers extends Component {
@@ -59,55 +60,6 @@ class SearchUsers extends Component {
                 overflowX: 'hidden',
             })}>
                 <div className={css({
-                    display: 'flex',
-                    position: 'fixed',
-                    width: '100%',
-                    height: '3em',
-                    color: 'white',
-                    border: '0.05em solid gray',
-                    borderBottomColor: 'black',
-                    boxShadow: '0 0 25px 0 rgba(0,0,0,0.5)',
-                    backgroundColor: 'white',
-                    zIndex: 5
-                })}>
-                    <div className={css({
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '50%',
-                        borderRight: '0.05em solid black',
-                        backgroundColor: '#CEDAE5'
-                    })}>
-                        <h6 className={css({
-                            color: 'black',
-                            fontWeight: 'bold',
-                            fontFamily: 'Titillium Web',
-                            fontStyle: 'underline'
-                        })}>Users</h6>
-                    </div>
-
-                    <div className={css({
-                        width: '50%',
-                    })}>
-                        <NavLink to={'/search-groups'}
-                                className={css({
-                                    display: 'flex',
-                                    width: '100%',
-                                    height: '100%',
-                                    textAlign: 'center',
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                })}>
-                            <h6 className={css({
-                                color: 'black',
-                                fontWeight: 'bold',
-                                fontFamily: 'Titillium Web',
-                            })}>Groups</h6>
-                        </NavLink>
-                    </div>
-                </div>
-                <div className={css({
-                    marginTop: '3em'
                 })}>
                     {filteredUsers.map(user => {
                         return( <UserPreviews key={user.id}

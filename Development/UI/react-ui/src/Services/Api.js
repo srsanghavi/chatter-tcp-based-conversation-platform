@@ -153,5 +153,11 @@ export default class Api {
         return this.promise();
     }
 
+    createGroup(username, groupName, adminId) {
+        let msg = this.messageType.makeApiMessage(username,"createGroup/::POST::{group_name:"+groupName+",admin_id:"+adminId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
 }
 

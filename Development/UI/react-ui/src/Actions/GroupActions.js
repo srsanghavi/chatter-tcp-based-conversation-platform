@@ -47,6 +47,15 @@ class GroupActions {
         })
     }
 
+    createGroup(useranme, groupName, adminId) {
+        api.createGroup(useranme, groupName, adminId).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.CREATE_GROUP,
+                payload: value,
+            })
+        })
+    }
+
 }
 
 export default new GroupActions();

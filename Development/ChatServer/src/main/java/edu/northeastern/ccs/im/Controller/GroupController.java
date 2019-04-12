@@ -187,9 +187,11 @@ public class GroupController {
       }
       String groupName = (String) json.get(GROUP_NAME);
       int adminId = Math.toIntExact(Math.round((double) json.get("admin_id")));
-      if(groupModel.createGroup(groupName,adminId) > 0){
+      int id = groupModel.createGroup(groupName,adminId);
+      if(id > 0){
         json.put(RESULT_CODE,201);
         json.put(RESULT,"OK");
+        json.put("id", id);
         return json;
       }
       else return error500(json);
