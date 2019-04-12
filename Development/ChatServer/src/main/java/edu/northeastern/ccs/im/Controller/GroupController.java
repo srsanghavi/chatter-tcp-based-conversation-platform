@@ -206,7 +206,7 @@ public class GroupController {
       else return error500(json);
     }
 
-    public Map<String,Object> addAdmin(Map<String,Object> json){
+    public Map<String,Object> addAdmin(String username, Map<String,Object> json){
         if(!json.containsKey(GROUP_ID) ||
         !json.containsKey("user_id")){
             json.put(RESULT_CODE,400);
@@ -214,8 +214,15 @@ public class GroupController {
             json.put(ERROR_MESSAGE,MISSING_PARAMETER);
             return json;
         }
+
+        int userId = ModelFactory.getUserModel().getUserID(username);
+
         int groupID = Math.toIntExact(Math.round((double) json.get(GROUP_ID)));
         int userID = Math.toIntExact(Math.round((double) json.get("user_id")));
+
+        if(!isGroupAdmin(groupID,userId)){
+            return error401Post();
+        }
 
         int r = groupModel.addGroupAdmin(groupID,userID);
         if(r > 0){
