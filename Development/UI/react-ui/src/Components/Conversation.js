@@ -65,8 +65,6 @@ class Conversation extends Component {
         ThreadStore.addThreadsChangeListener(this._onThreadsChanged);
         MessageStore.addMessagesChangeListener(this._onMessageschanged);
         MessageStore.addNewMessageListener(this._onNewMessageReceieved);
-        // console.log(this.props)
-        // ThreadActions.getThreadsInConversation(localStorage.getItem("username"),this.props.match.params.id);
         MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,this.props.match.params.id);
 
         this.interval = setInterval(() => this.newMessage(), INTERVAL);
@@ -93,7 +91,6 @@ class Conversation extends Component {
     }
     _onThreadsChanged(){
         const _threads = ThreadStore._getThreads();
-        console.log(_threads);
         this.setState({
             threads: _threads,
         });
@@ -125,14 +122,12 @@ class Conversation extends Component {
     }
 
     _onNewMessageReceieved(){
-        console.log("new Message")
         MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,this.props.match.params.id);
     }
 
     newMessage(){
         if(window.newNoti){
             const notiMessage =(window.newNotiContent);
-            console.log(notiMessage);
             
             if(notiMessage.conversation_id==this.props.match.params.id){
                 MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,this.props.match.params.id);
@@ -145,7 +140,6 @@ class Conversation extends Component {
     sendMessage() {
         var newMesage = this.state.newMessage;
         newMesage = newMesage.replace('\n',' ');
-        console.log(newMesage);
 
         MessageActions.createMessageForThread(AuthStore._getAuthUser().username,
                                               AuthStore._getAuthUser().id,

@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 const Header = props => {
 
-    // const PATH = window.location.pathname.split('/');
+    const PATH = window.location.pathname.split('/');
 
     return (
         <div className={css({
@@ -32,7 +32,7 @@ const Header = props => {
                              color: 'white',
                              textDecoration: 'none',
                              '&:hover': {
-                                 color: '#45AAEB'
+                                 color: 'white'
                              }
                          })}>
                     <i className="fa fa-arrow-left fa-2x"
@@ -40,10 +40,10 @@ const Header = props => {
                 </NavLink> :
                 <NavLink to={`../profile/${props.user.username}`}
                          className={css({
-                             color: props.tab === 'profile' ? '#45AAEB' : 'white',
+                             color: PATH[1] === 'profile' ? '#45AAEB' : 'white',
                              textDecoration: 'none',
                              '&:hover': {
-                                 color: props.tab === 'profile' ? '#45AAEB' : 'white'
+                                 color: '#45AAEB'
                              }
                          })}>
                     <i className="fa fa-user-circle-o fa-2x"

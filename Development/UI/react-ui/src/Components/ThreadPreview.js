@@ -21,7 +21,6 @@ const ThreadPreview = props => {
                             <source src="movie.ogg" type="video/ogg" />
                         Your browser does not support the video tag.
                         </video>)
-            console.log("yes "+ props.threadMessages[0].mediaURL);
         }
 
     if(props.threadMessages.length === 0) {

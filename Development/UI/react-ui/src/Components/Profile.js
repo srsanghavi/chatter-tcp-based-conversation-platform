@@ -150,7 +150,6 @@ class Profile extends Component {
         })
     }
     _onEdit(e){
-        console.log("hi");
         e.preventDefault();
         this.setState({
             edit:true,
@@ -375,7 +374,7 @@ class Profile extends Component {
                             padding: '1em'
                         })}>
                             {this.state.conversation.length > 0 ?
-                                <NavLink to={`../conversations/${this.state.conversation[0].id}`}>
+                                <NavLink to={`../conversations/user-conversation/${this.state.conversation[0].id}`}>
                                     <button className="btn btn-primary"
                                             onClick={this.sendMessage}>
                                         Send Message

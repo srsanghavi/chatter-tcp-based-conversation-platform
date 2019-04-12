@@ -98,7 +98,6 @@ class GroupStore extends EventEmitter {
 
     _setNewGroup(group){
         if(group){
-            console.log(group);
             _newGroup = group;
             let self = this;
             setTimeout(() => { // Run after dispatcher has finished

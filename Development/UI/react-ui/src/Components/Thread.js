@@ -121,7 +121,8 @@ class Thread extends Component {
         }
     }
 
-    renderMessages() {
+    renderMessages(filteredMessages) {
+
         if(MessageStore._getThreadMessages() === undefined) {
             return(
                 <div className={css({
@@ -140,9 +141,10 @@ class Thread extends Component {
                 </div>
             )
         } else {
+
             return(
                 <div>
-                    <MessageContainer messages={this.state.messages}/>
+                    <MessageContainer messages={filteredMessages}/>
                     <ConversationFooter onChange={this.onMessageChange}
                                         onClick={this.sendMessage}
                                         value={this.state.newMessage}
@@ -154,6 +156,11 @@ class Thread extends Component {
     }
 
     render() {
+
+        const filteredMessages = this.state.messages.filter(message => {
+            return message.text.indexOf(this.state.search) !== -1
+        });
+
             window.scrollTo(0, document.body.scrollHeight);
         const conversationId = 0;
         if (!(localStorage.getItem('loggedIn') === 'true')) {
@@ -177,7 +184,7 @@ class Thread extends Component {
                     </div>
                     {this.renderSearchBar()}
 
-                    {this.renderMessages()}
+                    {this.renderMessages(filteredMessages)}
                     {this.state.replies.map(message => {
                         return <p>{message.text}</p>
                     })}

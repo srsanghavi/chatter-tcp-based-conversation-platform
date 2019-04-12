@@ -48,11 +48,12 @@ class ThreadContainer extends Component {
                 })}>
                     {props.threads.map(thread => {
                         return (
-                            <ThreadPreview threadMessages={thread.messages}
-                                        threadId={thread.id}
-                                        conversationId={this.props.conversation_id}
-                                        displayDate={thread.displayDate}
-                                        isGroup={this.props.isGroup}/>
+                            <ThreadPreview key={thread.id}
+                                           threadMessages={thread.messages}
+                                           threadId={thread.id}
+                                           conversationId={this.props.conversation_id}
+                                           displayDate={thread.displayDate}
+                                           isGroup={this.props.isGroup}/>
                         )
                     })}
                 </div>

@@ -30,6 +30,7 @@ class MessageContainer extends Component {
         this.setState({
             firstMessage: msgs[0],
         })
+        window.scrollTo(0, document.body.scrollHeight);
     }
 
     render(){
@@ -81,8 +82,7 @@ class MessageContainer extends Component {
                     })}>
                         {props.messages.map(message => {
                             return (
-                                <Message key={message.id}
-                                         message={message}/>
+                                <Message message={message}/>
                             )
                         })}
                     </div>

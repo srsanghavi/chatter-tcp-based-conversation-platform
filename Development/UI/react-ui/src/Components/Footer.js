@@ -43,7 +43,7 @@ const Footer = props => {
                 </NavLink>
                 <NavLink to={'./search-users'}
                          className={css({
-                             color: PATH[1] === 'search' ? '#45AAEB' : 'white',
+                             color: PATH[1] === 'search-users' || PATH[1] === 'search-groups' ? '#45AAEB' : 'white',
                              textDecoration: 'none',
                              '&:hover': {
                                  color: PATH[1] === 'search' ? '#45AAEB' : 'white'

@@ -67,7 +67,6 @@ class UserActions {
     }
 
     updateUser(username,userId,firstName,lastName,isSearchable,profilePicture,language){
-        console.log(profilePicture);
         api.updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture,language).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.MODIFY_USER,

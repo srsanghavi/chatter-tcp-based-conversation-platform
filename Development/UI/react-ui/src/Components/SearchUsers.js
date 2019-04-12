@@ -14,7 +14,6 @@ class SearchUsers extends Component {
         this.state = {
             users: [],
         };
-        console.log(props);
         this._onUsersChanged = this._onUsersChanged.bind(this);
     }
 
