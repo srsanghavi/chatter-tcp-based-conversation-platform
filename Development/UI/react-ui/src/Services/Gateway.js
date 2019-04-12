@@ -16,7 +16,7 @@ export default class Gateway{
             return window.apiResponse;
         }
         else{
-             setTimeout(() => {return this.getResult()}, 600);
+             setTimeout(() => {return this.getResult()}, 2000);
         }
     }
 }
