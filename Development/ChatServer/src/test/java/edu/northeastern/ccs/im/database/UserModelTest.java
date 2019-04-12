@@ -73,9 +73,7 @@ public class UserModelTest {
 
     @Test
     public void testDeleteUser(){
-        userModel.createUser("junitTest1","junittest1@prattle.com","123","JUnit","Test");
-        int r = userModel.lastCreatedUser();
-        assertEquals(1, userModel.deleteUser(r));
+        assertEquals(1, userModel.deleteUser(lastCreatedUser));
     }
 
     @Test
