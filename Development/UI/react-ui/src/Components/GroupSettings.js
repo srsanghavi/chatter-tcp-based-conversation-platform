@@ -140,6 +140,12 @@ class GroupSettings extends Component {
         }
     }
 
+    addAdmin(id, username) {
+        if(window.confirm("Make " + username + " an Admin?")) {
+            GroupActions.addAdmin(AuthStore._getAuthUser().username, id, username, this.state.groupId)
+        }
+    }
+
     toggleSearch() {
         this.setState({
             broadcastBar: this.state.searchBar ? this.state.broadcastBar : false,
@@ -206,6 +212,8 @@ class GroupSettings extends Component {
                                 {user.username}</h6>
                             <h6 style={{fontFamily:"Titillium Web", fontWeight:'bold'}}>
                                 {user.preferredLanguage}</h6>
+                            <button className="btn btn-outline-dark"
+                                    onClick={() => this.addAdmin(user.id, user.username)}>Add as Admin</button>
                         </div>
                     )
                 })}

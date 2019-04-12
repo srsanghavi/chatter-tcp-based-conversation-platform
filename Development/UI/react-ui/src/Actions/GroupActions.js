@@ -81,6 +81,16 @@ class GroupActions {
         })
     }
 
+    addAdmin(username, userId, name, groupId) {
+        api.addAdmin(username, userId, groupId).then(value => {
+            if(value.result === "OK") {
+                alert("Added " + name + " as admin")
+            } else {
+                alert("Could not add admin")
+            }
+        })
+    }
+
 
 }
 

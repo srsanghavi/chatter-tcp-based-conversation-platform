@@ -177,5 +177,11 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
+
+    addAdmin(username, userId, groupId) {
+        let msg = this.messageType.makeApiMessage(username,"addAdminGroup/::POST::{group_id:"+groupId+",user_id:"+userId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
 }
 
