@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Switch, BrowserRouter, withRouter} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './App.css';
@@ -12,6 +12,8 @@ import RegisterProcessing from "./Components/RegisterProcessing";
 import Register from "./Components/Register";
 import Thread from './Components/Thread';
 import GroupMembers from "./Components/GroupMembers";
+import Profile from "./Components/Profile";
+import AuthStore from "./Store/AuthStore";
 
 class App extends Component {
 
@@ -38,11 +40,14 @@ class App extends Component {
                       <Route exact path="/conversations/:id/thread/:threadId"
                              component={Thread}>
                       </Route>
-                      <Route path="/">
-                          <Authentication page={<HomePage/>}/>
-                      </Route>
                       <Route path="/group/:id"
                              component={GroupMembers}>
+                      </Route>
+                      <Route path="/profile/:username"
+                             component={Profile}>
+                      </Route>
+                      <Route path="/">
+                          <Authentication page={<HomePage/>}/>
                       </Route>
                   </Switch>
           </div>

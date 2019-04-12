@@ -100,8 +100,11 @@ public class Route {
                             .getConversationController()
                             .getMessagesInThread(username,json);
                     break;
-
-
+                case ApiMessageType.GET_GROUP_CONVERSATION:
+                    response = ControllerFactory
+                            .getConversationController()
+                            .getGroupConversations(json);
+                    break;
                 default:
                     return "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";
             }
@@ -203,6 +206,7 @@ public class Route {
                         .getUserController()
                         .modifyUser(json);
                 break;
+
 
             default:
                 return  "{result: error, resultCode: 404, resultMessage = 'invalid endpoint'}";

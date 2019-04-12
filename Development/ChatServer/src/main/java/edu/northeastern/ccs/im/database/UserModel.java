@@ -247,19 +247,19 @@ public class UserModel {
         String[] parts = file.split("\\.");
         String extension = parts[parts.length -1];
 
-        String currentPicture = "u/" + userid + "." + extension;
-        String tempPicture = file.replace("https://s3.amazonaws.com/cs5500/", "");
-        mconn.deleteObject(currentPicture);
-        mconn.moveObject(tempPicture, currentPicture);
-        String url = profileLocation + userid + "." + extension;
+//        String currentPicture = "u/" + userid + "." + extension;
+//        String tempPicture = file.replace("https://s3.amazonaws.com/cs5500/", "");
+//        mconn.deleteObject(currentPicture);
+//        mconn.moveObject(tempPicture, currentPicture);
+//        String url = profileLocation + userid + "." + extension;
 
-        String query = "UPDATE users SET profile_picture=? where id=?;";
-        List<String> args = new ArrayList<>(Arrays.asList(url, Integer.toString(userid)));
+        String query = "UPDATE users SET profilePicture=? where id=?;";
+        List<String> args = new ArrayList<>(Arrays.asList(file, Integer.toString(userid)));
         int r = conn.sqlcreate(query, args);
         if (r <=0 )
             return "";
         else
-            return url;
+            return file;
 
     }
 

@@ -5,6 +5,7 @@ import {NavLink} from 'react-router-dom';
 import {css} from 'emotion';
 import AuthStore from '../Store/AuthStore';
 import {withRouter} from "react-router-dom";
+import Mediauploader from './Mediauploader';
 
 
 class Login extends Component {
@@ -96,6 +97,7 @@ class Login extends Component {
                         <p style={{color: '#6F4F67'}}> Register here</p>
                     </NavLink>
                 </h3>
+                <Mediauploader/>
             </div>
         )
     }

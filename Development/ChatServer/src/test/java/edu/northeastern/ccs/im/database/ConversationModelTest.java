@@ -30,7 +30,7 @@ public class ConversationModelTest {
         int t = conversationModel.createThreadForConversation(r);
         ChatLogger.info("Conversation ID:"+String.valueOf(r));
         ChatLogger.info("Thread ID:" +String.valueOf(t));
-        assertTrue(conversationModel.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.")>0);
+        assertTrue(conversationModel.createMessageForThread(t,user_id2,"Hello, testcase from junit - 2.","")>0);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ConversationModelTest {
 
     @Test
     public void testCreateMessageInEnglish(){
-        System.out.println(conversationModel.createMessageForThread(2633,814,"Como estas?"));
+        System.out.println(conversationModel.createMessageForThread(2633,814,"Como estas?",""));
     }
 
     @Test

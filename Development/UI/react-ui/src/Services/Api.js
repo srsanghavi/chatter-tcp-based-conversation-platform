@@ -51,8 +51,15 @@ export default class Api {
         return this.promise();
     }
 
-    getUserByUsername(username){
-        let msg = this.messageType.makeApiMessage(username,"getUserByUsername/::GET::{username:"+username+"}");
+    getUserByUsername(loggedInUsername, searchingForUsername){
+        let msg = this.messageType.makeApiMessage(loggedInUsername,"getUserByUsername/::GET::{username:"+searchingForUsername+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    modifyUser(username, first_name, last_name, isSearchable) {
+        let msg = this.messageType.makeApiMessage(username,"modifyUser/::POST::{first_name:"+first_name+"," +
+            "last_name:"+last_name+",isSearchable:"+isSearchable+"}");
         gateway.sendTcp(msg);
         return this.promise();
     }
@@ -93,9 +100,15 @@ export default class Api {
         return this.promise();
     }
 
-    createMessageForThread(username, userId, threadId, messageText, conversationId) {
-        let msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
-            "sender_id:"+userId+",thread_id:"+threadId+",message:"+messageText+",conversation_id:"+conversationId+"}");
+    createMessageForThread(username, userId, threadId, messageText, conversationId,media) {
+        let msg;
+        if(media!=1){
+        msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
+            "sender_id:"+userId+",thread_id:"+threadId+",message:\""+messageText+"\",conversation_id:"+conversationId+"}");
+        }else{
+            msg = this.messageType.makeApiMessage(username,"sendMessage/::POST::{" +
+            "sender_id:"+userId+",thread_id:"+threadId+",mediaURL:\""+messageText+"\",conversation_id:"+conversationId+"}");
+        }
         gateway.sendTcp(msg);
         return this.promise();
     }
@@ -127,9 +140,15 @@ export default class Api {
         return this.promise();
     }
 
-    updateProfile(username,userId,firstName,lastName,isSearchable){
+    updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture){
         let msg = this.messageType.makeApiMessage(username,"modifyUser/::POST::{" +
-        "user_id:"+userId+",first_name:"+firstName+",last_name:"+lastName+",isSearchable:"+isSearchable+"}");
+        "user_id:"+userId+",first_name:"+firstName+",last_name:"+lastName+",isSearchable:"+isSearchable+",profilePicture:'"+profilePicture+"'}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    getGroupConversations(username,userid){
+        let msg = this.messageType.makeApiMessage(username,"getGroupConversation/::GET::{user_id:"+userid+"}");
         gateway.sendTcp(msg);
         return this.promise();
     }

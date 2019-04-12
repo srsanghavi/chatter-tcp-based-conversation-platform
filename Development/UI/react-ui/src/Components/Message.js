@@ -1,11 +1,25 @@
 import React, {Component} from 'react';
 import {css} from 'emotion';
 import AuthStore from '../Store/AuthStore';
+import Emojify from 'react-emojione';
+const isImage = require('is-image');
+var isVideo = require('is-video');
+
 
 class Message extends Component {
 
     render(){
         let props = this.props;
+        let videoPrev;
+        if(props.message.mediaURL && 
+            props.message.mediaURL!=="" 
+            && isVideo(props.message.mediaURL)){
+                videoPrev = (<video width="200"  controls > 
+                                <source src={props.message.mediaURL} type="video/mp4" />
+                                <source src="movie.ogg" type="video/ogg" />
+                            Your browser does not support the video tag.
+                            </video>)
+            }
     return(
         <div className={css({
             width: '100%',
@@ -36,7 +50,14 @@ class Message extends Component {
                     textDecoration: 'none'
                 })}>
                  <h6>{props.message.first_name} {props.message.last_name}</h6>
+                 <img src={props.message.mediaURL && props.message.mediaURL!=="" 
+                                        && isImage(props.message.mediaURL)?props.message.mediaURL:""} width="200" />
+                            
+                            {videoPrev}
+                 <Emojify style={{height: 32, width: 32}} onClick={e => alert(e.target.title)}>
+
                     {props.message.text}
+                    </Emojify>
                 </p>
             </div>
         </div>

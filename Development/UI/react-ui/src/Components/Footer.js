@@ -41,7 +41,7 @@ const Footer = props => {
                     <i className="fa fa-comments fa-2x"
                        onClick={props.conversationsOnClick}></i>
                 </NavLink>
-                <NavLink to={'./search'}
+                <NavLink to={'./search-users'}
                          className={css({
                              color: PATH[1] === 'search' ? '#45AAEB' : 'white',
                              textDecoration: 'none',

@@ -1,5 +1,6 @@
 import React from 'react';
 import {css} from 'emotion';
+import { NavLink } from 'react-router-dom';
 
 const GroupPreviews = props => {
     return (
@@ -25,12 +26,11 @@ const GroupPreviews = props => {
                     width: '75%'
                 })}>
                     <h5>{props.group.name}</h5>
-                    {/*<h6 className={css({opacity: '0.5'})}>[ ] Members</h6>*/}
                 </span>
                 <span className={css({
                     width: '25%',
                 })}>
-                {/*<NavLink to={`./group/${props.group.id}`}*/}
+                <NavLink to={`./group/${props.group.id}`}
                          className={css({
                              color: 'black',
                              textDecoration: 'none',
@@ -39,9 +39,8 @@ const GroupPreviews = props => {
                              }
                          })}>
                     <i className="fa fa-angle-right fa-2x"
-                       style={{float: 'right'}}
-                    ></i>
-                {/*</NavLink>*/}
+                       style={{float: 'right'}}></i>
+                </NavLink>
             </span>
             </div>
         </div>

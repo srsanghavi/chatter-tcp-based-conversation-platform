@@ -14,20 +14,16 @@ import ProfileEdit from './ProfileEdit';
 import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
-import GroupOrUserBar from "./GroupOrUserBar";
 import GroupStore from "../Store/GroupStore";
 import MessageActions from "../Actions/MessageActions";
 import ConversationActions from '../Actions/ConversationActions';
 import UserActions from '../Actions/UserActions';
 import GroupActions from '../Actions/GroupActions';
+import SearchUsers from './SearchUsers';
+import SearchGroups from './SearchGroups'
 
 import AuthStore from '../Store/AuthStore';
 
-// const tab = {
-//     CONVERSATIONS: 'conversations',
-//     SETTINGS: 'settings',
-//     PROFILE: 'profile'
-// };
 
 class HomePage extends Component {
     constructor(props) {
@@ -44,12 +40,11 @@ class HomePage extends Component {
             myGroups: [],
             groups: [],
             conversations: [],
-            userButtonSelected: true
         };
 
         this.api = new Api();
-        this._onChange = this._onChange.bind(this);
         this._onConversationsChanged = this._onConversationsChanged.bind(this);
+        this._onGroupConversationsChanged = this._onGroupConversationsChanged.bind(this);
         this.conversationTabSelected = this.conversationTabSelected.bind(this);
         this.searchTabSelected = this.searchTabSelected.bind(this);
         this.settingsTabSelected = this.settingsTabSelected.bind(this);
@@ -59,16 +54,13 @@ class HomePage extends Component {
         this.onSearchChange = this.onSearchChange.bind(this);
         this.onBroadcastChange = this.onBroadcastChange.bind(this);
         this.sendBroadcast = this.sendBroadcast.bind(this);
-        this.groupOrUserBarButtonChange = this.groupOrUserBarButtonChange.bind(this);
-        this.barGroupPressed = this.barGroupPressed.bind(this);
-        this.barUserPressed = this.barUserPressed.bind(this);
 
     }
 
     componentWillMount(){
         console.log(AuthStore._getAuthUser());
-        UserStore.addChangeListener(this._onChange);
         ConversationStore.addChangeListener(this._onConversationsChanged);
+        GroupStore.addGroupsChangeListener(this._onGroupConversationsChanged);
     }
 
 
@@ -76,32 +68,47 @@ class HomePage extends Component {
         const user = AuthStore._getAuthUser();
         this.setState({
             user: user,
-            conversations: ConversationStore._getConversations(),
+            conversations: ConversationStore._getConversations().concat(GroupStore._getGroups()),
         });
-        ConversationActions.getConversations(user.username,user.id);
+        const PATH = window.location.pathname.split('/');
+        if(PATH[PATH.length - 1] === 'conversations') {
+            ConversationActions.getConversations(user.username, user.id);
+        }
         
     }
 
     componentWillUnmount() {
         clearInterval(this.interval);
-        UserStore.removeChangeListener(this._onChange);
         ConversationStore.removeChangeListener(this._onConversationsChanged);
+        GroupStore.removeGroupsListener(this._onGroupConversationsChanged);
     }
-
-
-
+    
     _onChange() {
     }
 
     _onConversationsChanged(){
         const conversations = ConversationStore._getConversations();
         this.setState({
-            // users: JSON.parse(UserStore._getUsers()).result,
-            // myGroups: JSON.parse(GroupStore._getGroups()).result,
-            // groups: JSON.parse(GroupStore._getAllGroups()).result,
             conversations: conversations,
         });
+        GroupActions.getGroupConversations(AuthStore._getAuthUser().username,AuthStore._getAuthUser().id);
         
+    }
+
+    _onGroupConversationsChanged(){
+        var convs = GroupStore._getGroups();
+        convs = convs.map(c => {
+            return {
+            created_on:c.created_on,
+            destination_firstname:c.name,
+            destination_id:-1,
+            destination_lastname:"",
+            destination_username:"",
+            id:c.conversation_id,
+        }})
+             this.setState({
+                 conversations:this.state.conversations.concat(convs),
+             })
     }
 
     conversationTabSelected() {
@@ -177,32 +184,7 @@ class HomePage extends Component {
         })
     }
 
-    groupOrUserBarButtonChange(opt) {
-        this.setState({
-            userButtonSelected: opt
-        })
-        console.log(this.state.userButtonSelected);
-        if(this.state.userButtonSelected==true){
-            UserActions.getUsers(AuthStore._getAuthUser().username);
-        }else{
-            GroupActions.getAllGroups(AuthStore._getAuthUser().username);
-        }
-    }
 
-    barGroupPressed(){
-        this.setState({
-            userButtonSelected: false,
-        })
-        GroupActions.getAllGroups(AuthStore._getAuthUser().username);
-    }
-
-    barUserPressed(){
-        this.setState({
-            userButtonSelected: true,
-        })
-
-        UserActions.getUsers(AuthStore._getAuthUser().username);
-    }
     renderSearchBar() {
         if(this.state.searchBar) {
             return(
@@ -221,18 +203,6 @@ class HomePage extends Component {
                     <Broadcast onChange={this.onBroadcastChange}
                                onClick={this.sendBroadcast}
                                value={this.state.broadcast}/>
-                </div>
-            )
-        }
-    }
-
-    renderGroupOrUserBar() {
-        if(this.state.tab === 'search') {
-            return(
-                <div className={css({paddingBottom: '3em'})}>
-                    <GroupOrUserBar userButtonSelected={this.state.userButtonSelected}
-                                    onUserClick={this.barUserPressed}
-                                    onGroupClick={this.barGroupPressed}/>
                 </div>
             )
         }
@@ -282,14 +252,12 @@ class HomePage extends Component {
                 </div>
                 {this.renderBroadcast()}
                 {this.renderSearchBar()}
-                {this.renderGroupOrUserBar()}
                 <Switch>
-                    <Route path="/profile/:id"
-                           component={Profile}>
-                    </Route>
                     <Route path="/edit-profile/:id"
                            component={ProfileEdit}>
                     </Route>
+
+
                     <Route path="/settings">
                         {() => <Settings/>}
                     </Route>
@@ -310,6 +278,12 @@ class HomePage extends Component {
                                            groups={filteredGroups}
                                            userButtonSelected={this.state.userButtonSelected}
                                            profileOnClick={this.profileTabSelected}/>}
+                    </Route>
+                    <Route path="/search-users">
+                        {() => <SearchUsers search={this.state.search}/>}
+                    </Route>
+                    <Route path="/search-groups">
+                        {() => <SearchGroups search={this.state.search}/>}
                     </Route>
                 </Switch>
                 <div className={css({

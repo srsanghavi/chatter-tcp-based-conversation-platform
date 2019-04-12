@@ -24,8 +24,8 @@ class UserActions {
       });
     }
 
-    getUserByUsername(username){
-        api.getUserByUsername(username).then(value => {
+    getUserByUsername(username1, username2){
+        api.getUserByUsername(username1, username2).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.GET_USER_BY_USERNAME,
                 payload:    value,
@@ -42,6 +42,15 @@ class UserActions {
         });
     }
 
+    modifyUser(username, firstName, lastName, isSearchable) {
+        api.modifyUser(username, firstName, lastName, isSearchable).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.MODIFY_USER,
+                payload:    value,
+            })
+        });
+    }
+
     registerUser(sender, username, password, firstName, lastName, email) {
         api.registerUser(sender, username, password, firstName, lastName, email).then(value => {
         })
@@ -52,8 +61,9 @@ class UserActions {
         })
     }
 
-    updateUser(username,userId,firstName,lastName,isSearchable){
-        api.updateProfile(username,userId,firstName,lastName,isSearchable).then(value => {
+    updateUser(username,userId,firstName,lastName,isSearchable,profilePicture){
+        console.log(profilePicture);
+        api.updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.UPDATE_USER,
                 payload: value,

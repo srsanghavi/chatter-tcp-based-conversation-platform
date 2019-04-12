@@ -58,6 +58,7 @@ public class GroupModel {
         return conn.sqlGet(sql, args);
   }
 
+
     /**
      * retrieves a all users in the group
      *
@@ -65,7 +66,7 @@ public class GroupModel {
      * @return the list of users in the group
      */
     public List<Map<String, Object>> getUsersInGroups(int id){
-        String sql = "SELECT * FROM groups_has_users where Groups_id=?;";
+        String sql = "SELECT * FROM groups_has_users as gs JOIN users as u on u.id=gs.Users_id where Groups_id=?;";
         List<String> args = new ArrayList<>();
         args.add(Integer.toString(id));
       return conn.sqlGet(sql, args);
