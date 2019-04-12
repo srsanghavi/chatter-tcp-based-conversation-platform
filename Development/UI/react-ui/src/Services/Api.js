@@ -183,4 +183,4 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
-}
+} 
