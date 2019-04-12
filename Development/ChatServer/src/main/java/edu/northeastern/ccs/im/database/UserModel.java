@@ -34,15 +34,10 @@ public class UserModel {
      * @return the int (1 if authorized, 0 otherwise)
      */
     public int isAuthorized(String username,String pass){
-//        String sql = "SELECT user_auth(?, ?) as authorized;";
-//        List<Map<String, Object>> res = conn.sqlGet(sql, arguments);
-//        return (int) res.get(0).get("authorized");
-
         List<String> arguments = new ArrayList<>();
         String query = "SELECT * from users WHERE username=?;";
         arguments.add(username);
         List<Map<String, Object>> res = conn.sqlGet(query, arguments);
-        System.out.println(res.toString());
         String p = (String) res.get(0).get("password");
         if (p.equals(MD5(pass)))
             return 1;
