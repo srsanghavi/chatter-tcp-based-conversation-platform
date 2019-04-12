@@ -46,6 +46,12 @@ const GroupHeader = props => {
                          })}>
                     <i className="fa fa-arrow-left fa-2x"></i>
                 </NavLink>}
+                {props.fromConversation ?
+                <i className="fa fa-search fa-2x"
+                   onClick={props.searchClick}
+                   style={{
+                       float: 'left',
+                   }}></i> : null}
             </div>
         </div>
     );

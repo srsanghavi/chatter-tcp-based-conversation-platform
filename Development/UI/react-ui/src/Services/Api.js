@@ -140,6 +140,13 @@ export default class Api {
         return this.promise();
     }
 
+    addGroupToGroup(username, id1, id2) {
+        let msg = this.messageType.makeApiMessage(username,"addGroupToGroup/::POST::{" +
+            "group_id1:"+id1+",group_id2:"+id2+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
     updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture,language){
         let msg = this.messageType.makeApiMessage(username,"modifyUser/::POST::{" +
         "user_id:"+userId+",first_name:"+firstName+",last_name:"+lastName+",isSearchable:"+isSearchable+",profilePicture:'"+profilePicture+"', preferredLanguage:'"+language+"'}");

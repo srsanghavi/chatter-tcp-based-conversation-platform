@@ -33,8 +33,23 @@ class GroupActions {
         })
     }
 
-    addUserToGroup(username, userId, groupId) {
+    addUserToGroup(username, userId, groupId, name) {
         api.addUserToGroup(username, userId, groupId).then(value => {
+            if(value.result === "OK") {
+                alert("Added " + name + " to group")
+            } else {
+                alert("Could not add " + name + " to the group")
+            }
+        })
+    }
+
+    addGroupToGroup(username, id1, id2, name) {
+        api.addGroupToGroup(username, id1, id2).then(value => {
+            if(value.result === "OK") {
+                alert("Added " + name + " to group")
+            } else {
+                alert("Could not add " + name + " to the group")
+            }
         })
     }
 

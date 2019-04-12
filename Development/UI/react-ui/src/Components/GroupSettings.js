@@ -7,6 +7,7 @@ import AuthStore from "../Store/AuthStore";
 import UserActions from "../Actions/UserActions";
 import UserStore from "../Store/UserStore";
 import GroupStore from "../Store/GroupStore";
+import SearchBar from "./SearchBar"
 
 
 
@@ -21,6 +22,8 @@ class GroupSettings extends Component {
             groups: [],
             showGroupForm: false,
             showUsers: false,
+            showGroups: false,
+            search: ''
         };
 
         this.changeGroupName = this.changeGroupName.bind(this);
@@ -31,6 +34,9 @@ class GroupSettings extends Component {
         this._onGroupsChanged = this._onGroupsChanged.bind(this);
         this._onUsersChanged = this._onUsersChanged.bind(this);
         this.addUserToGroup = this.addUserToGroup.bind(this);
+        this.addGroupToGroup = this.addGroupToGroup.bind(this);
+        this.toggleSearch = this.toggleSearch.bind(this);
+        this.onSearchChange = this.onSearchChange.bind(this);
 
     }
 
@@ -58,14 +64,22 @@ class GroupSettings extends Component {
 
 
     getUsersOnClick() {
-        UserActions.getUsers(AuthStore._getAuthUser().username);
+        if(!this.state.showUsers) {
+            UserActions.getUsers(AuthStore._getAuthUser().username);
+        }
         this.setState({
             showUsers: !this.state.showUsers,
         })
     }
 
     getGroupsOnClick() {
-        GroupActions.getAllGroups(AuthStore._getAuthUser().username);
+        if(!this.state.showGroups) {
+            GroupActions.getAllGroups(AuthStore._getAuthUser().username);
+        }
+        this.setState({
+            showGroups: !this.state.showGroups,
+        })
+
     }
 
     changeGroupName() {
@@ -93,14 +107,55 @@ class GroupSettings extends Component {
     }
 
     addUserToGroup(id, username) {
-        console.log(id)
-        console.log(username)
         if(window.confirm("Add " + username + "to group?")) {
-            GroupActions.addUserToGroup(AuthStore._getAuthUser().username, id, this.state.groupId)
+            GroupActions.addUserToGroup(AuthStore._getAuthUser().username, id, this.state.groupId, username)
+        }
+    }
+
+    addGroupToGroup(id, name) {
+        if(window.confirm("Add " + name + "to group?")) {
+            GroupActions.addGroupToGroup(AuthStore._getAuthUser().username, this.state.groupId, id, name)
+        }
+    }
+
+    toggleSearch() {
+        this.setState({
+            broadcastBar: this.state.searchBar ? this.state.broadcastBar : false,
+            searchBar: !this.state.searchBar,
+            search: ''
+        })
+    }
+
+    onSearchChange(event) {
+        this.setState({search: event.target.value});
+    }
+
+    renderSearchBar() {
+        if(this.state.searchBar) {
+            return(
+                <div className={css({paddingBottom: '3em'})}>
+                    <SearchBar search={this.state.search}
+                               onChange={this.onSearchChange}/>
+                </div>
+            )
         }
     }
 
     renderUsers() {
+
+        const filteredUsers = this.state.users.filter(user => {
+            return (
+                user.id !== AuthStore._getAuthUser().id &&
+                user.isSearchable &&
+                !user.deleted &&
+                (user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
+                    user.last_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
+                    user.username.toUpperCase().includes(this.state.search.toUpperCase()))
+            )
+        });
+
+
+
         return(
             <div className={css({
                 display: 'flex',
@@ -108,7 +163,7 @@ class GroupSettings extends Component {
                 overflowY: 'scroll',
                 borderBottom: '1px solid gray',
             })}>
-                {this.state.users.map(user => {
+                {filteredUsers.map(user => {
                     return(
                             <div onClick={() => {this.addUserToGroup(user.id, user.username)}}
                                 className={css({
@@ -145,6 +200,63 @@ class GroupSettings extends Component {
                                 <h6 style={{fontFamily:"Titillium Web", fontWeight:'bold'}}>
                                     {user.preferredLanguage}</h6>
                             </div>
+                    )
+                })}
+            </div>
+        )
+    }
+
+
+    renderGroups() {
+
+        const filteredGroups = this.state.groups.filter(group => {
+            return (
+                group.isSearchable &&
+                group.id != this.state.groupId &&
+                group.name.toUpperCase().includes(this.state.search.toUpperCase())
+            )
+        });
+
+        return(
+            <div className={css({
+                display: 'flex',
+                flexDirection: 'row',
+                overflowY: 'scroll',
+                borderBottom: '1px solid gray',
+            })}>
+                {filteredGroups.map(group => {
+                    return(
+                        <div onClick={() => {this.addGroupToGroup(group.id, group.name)}}
+                             className={css({
+                                 display: 'flex',
+                                 flexDirection: 'column',
+                                 textAlign: 'center',
+                                 border: '1px solid black',
+                                 borderRadius: '5px',
+                                 boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.75)',
+                                 padding: '1em',
+                                 margin: '1em',
+                                 width: '250px',
+                                 minHeight: '250px'
+                             })}>
+                            <div className={css({
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                height: '200px',
+                                width: '200px',
+                                backgroundColor: '#FCF7FC',
+                                marginBottom: '0.5em'
+                            })}>
+                                <img src={"../../images/group.png"}
+                                     width='100%' height='100%' alt=""
+                                     className={css({
+                                         border: '1px solid gray',
+                                         borderRadius: '5px',
+                                     })}/>
+                            </div>
+                            <h4 style={{fontFamily:"Titillium Web", fontWeight:'bold'}}>
+                                {group.name}</h4>
+                        </div>
                     )
                 })}
             </div>
@@ -198,8 +310,10 @@ class GroupSettings extends Component {
                 })}>
                     <GroupHeader fromConversation={true}
                                  groupId={this.state.groupId}
-                                 conversationId={this.state.conversationId}/>
+                                 conversationId={this.state.conversationId}
+                                 searchClick={this.toggleSearch}/>
                 </div>
+                {this.renderSearchBar()}
                 <div className={css({
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -270,10 +384,14 @@ class GroupSettings extends Component {
                                      color: '#45AAEB'
                                  }
                              })}>
-                        <i className="fa fa-angle-down fa-2x"
-                           onClick={this.getGroupsOnClick}></i>
+                        {this.state.showGroups ?
+                            <i className="fa fa-angle-up fa-2x"
+                               onClick={this.getGroupsOnClick}></i> :
+                            <i className="fa fa-angle-down fa-2x"
+                               onClick={this.getGroupsOnClick}></i>}
                     </NavLink>
                 </div>
+                {this.state.showGroups ? this.renderGroups() : null}
             </div>
         )
     }
