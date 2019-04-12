@@ -283,7 +283,7 @@ public class UserModel {
      * @return result code
      */
     public int modifyPreferredLanguage(int userID, String language){
-        String query = "UPDATE users SET preferredLanguage ='"+ language +"' where id='"+ userID +"';";
+        String query = "UPDATE users SET preferredLanguage = ? where id=?;";
         List<String> args = new ArrayList<>(Arrays.asList(language, Integer.toString(userID)));
         int r = conn.sqlcreate(query, args);
         return r<=0?-1:r;

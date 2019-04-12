@@ -35,6 +35,8 @@ class Profile extends Component {
         this.lastNameChange = this.lastNameChange.bind(this);
         this.isSearchableChange = this.isSearchableChange.bind(this);
         this.createConversation = this.createConversation.bind(this);
+        this.onLanguageChange = this.onLanguageChange.bind(this);
+        this._onAuthChanged = this._onAuthChanged.bind(this);
     }
 
     componentWillMount() {
@@ -187,22 +189,29 @@ class Profile extends Component {
         console.log(this.state);
         
         UserActions.updateUser(this.state.username,
-                                this.state.userid,
-                                this.state.firstName,
-                                this.state.lastName,
+                                this.state.id,
+                                this.state.first_name,
+                                this.state.last_name,
                                 this.state.isSearchable,
-                                this.state.profilePicture);
+                                this.state.profilePicture,
+                                this.state.preferredLanguage);
     }
 
     firstNameChange(e){
         this.setState({
-            firstName:e.target.value,
+            first_name:e.target.value,
         })
     }
 
     lastNameChange(e){
         this.setState({
-            lastName:e.target.value,
+            last_name:e.target.value,
+        })
+    }
+
+    onLanguageChange(e) {
+        this.setState({
+            preferredLanguage: e.target.value
         })
     }
 
@@ -285,10 +294,13 @@ class Profile extends Component {
                         padding: '1em',
                         alignSelf: 'center'
                     })}>
-                        <img src={this.state.profilePicture} alt="" height="75" width="75"
+                        <Mediauploader
+                           icon = {(<img src={this.state.profilePicture} alt="" height="75" width="75"
                              className={css({
                                  borderRadius: 50
-                             })}/>
+                             })}/>)}
+                            onSave ={this.onProfilePicChange}
+                            />
                     </div>
                     <div className={css({
                         "& label": {
@@ -352,6 +364,7 @@ class Profile extends Component {
                             <label>Language:</label>
                             {this.state.editMode ?
                                 <select className="custom-select"
+                                onChange={this.onLanguageChange}
                                         style={{
                                             width: '65%',
                                             backgroundColor: 'white',
@@ -360,7 +373,11 @@ class Profile extends Component {
                                             fontWeight: 'bold',
                                         }}>
                                     {data.LANGUAGES.map(language => {
-                                        return <option value={language}>{language}</option>
+                                        if(this.state.preferredLanguage === language){
+                                            return <option value={language}>{language} </option>
+                                        } else {
+                                            return <option value={language}>{language}</option>
+                                        } 
                                     })}
                                 </select> :
                                 <input type="text"
@@ -397,7 +414,7 @@ class Profile extends Component {
                                         float: 'left',
                                         marginRight: '0.25em'
                                     }}
-                                    onClick={this.handleSubmit}>Save</button>
+                                    onClick={this._onSave}>Save</button>
                             <button className="btn btn-danger"
                                     style={{
                                         width: '35%',
@@ -427,9 +444,7 @@ class Profile extends Component {
                 {/* <div className={this.state.edit?'hidden':''}>
                     <a href="#" onClick={this._onEdit}>Edit</a>
                 </div> */}
-                <div className={this.state.edit?'':''}>
-                    <a href="#" onClick={this._onSave}>Save</a>
-                </div>
+                
 
 
             </div>
