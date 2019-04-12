@@ -13,7 +13,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import sun.jvm.hotspot.debugger.proc.aarch64.ProcAARCH64ThreadFactory;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
