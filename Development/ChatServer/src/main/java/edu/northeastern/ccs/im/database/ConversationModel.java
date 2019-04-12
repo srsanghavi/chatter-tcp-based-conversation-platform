@@ -129,6 +129,7 @@ public class ConversationModel {
      * @return the int
      */
     public int createMessageForThread(int threadId, int senderId, String text,String mediaURL){
+        text = translateText(text,"English");
         String query = "INSERT INTO message(sender_id,thread_id,text,mediaURL) VALUES (?, ?, ?, ?);";
         List<String> args = new ArrayList<>();
         Collections.addAll(args, Integer.toString(senderId), Integer.toString(threadId), text, mediaURL);
