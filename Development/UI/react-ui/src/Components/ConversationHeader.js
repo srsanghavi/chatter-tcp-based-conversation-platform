@@ -3,6 +3,7 @@ import {css} from 'emotion';
 import {NavLink} from 'react-router-dom';
 
 const ConversationHeader = props => {
+
     return (
         <div className={css({
             display: 'flex',
@@ -65,11 +66,18 @@ const ConversationHeader = props => {
                     <i className="fa fa-search fa-2x"
                        onClick={props.searchClick}
                         style={{
-                            float: 'left',
+                            float: props.isGroup && !props.inThread ? 'left' : 'right',
                             color: props.search ? '#45AAEB' : 'white',
                         }}></i>
                     {props.isGroup && !props.inThread ?
-                        <NavLink to={`../../../group-settings/${props.conversationId}`}>
+                        <NavLink to={`../../../group-settings/${props.groupId}/${props.conversationId}`}
+                                 className={css({
+                                     color: 'white',
+                                     textDecoration: 'none',
+                                     '&:hover': {
+                                         color: '#45AAEB'
+                                     }
+                                 })}>
                             <i className="fa fa-cog fa-2x"
                                style={{float: 'right'}}></i>
                         </NavLink> : null}

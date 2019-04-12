@@ -47,15 +47,13 @@ class ThreadContainer extends Component {
                     paddingBottom: '5em'
                 })}>
                     {props.threads.map(thread => {
-                        // let threadMessages = props.messages.filter(message => {
-                        //     return message.thread_id === thread.id
-                        // });
                         return (
-                            <ThreadPreview threadMessages={thread.messages}
-                                        threadId={thread.id}
-                                        conversationId={this.props.conversation_id}
-                                        displayDate={thread.displayDate}
-                                        isGroup={this.props.isGroup}/>
+                            <ThreadPreview key={thread.id}
+                                           threadMessages={thread.messages}
+                                           threadId={thread.id}
+                                           conversationId={this.props.conversation_id}
+                                           displayDate={thread.displayDate}
+                                           isGroup={this.props.isGroup}/>
                         )
                     })}
                 </div>

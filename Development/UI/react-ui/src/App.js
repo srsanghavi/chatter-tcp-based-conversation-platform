@@ -6,9 +6,7 @@ import './App.css';
 import Conversation from './Components/Conversation';
 import Login from "./Components/Login";
 import HomePage from "./Components/HomePage";
-import Authentication from './Components/Authentication'
-import LoginProcessing from "./Components/LoginProcessing";
-import RegisterProcessing from "./Components/RegisterProcessing";
+import Authentication from './Components/Authentication';
 import Register from "./Components/Register";
 import Thread from './Components/Thread';
 import GroupMembers from "./Components/GroupMembers";
@@ -27,17 +25,11 @@ class App extends Component {
       return (
           <div>
                   <Switch>
-                      <Route path="/authentication">
-                          {() => <LoginProcessing/>}
-                      </Route>
                       <Route path="/login">
                           {() => <Login/>}
                       </Route>
                       <Route path="/register">
                           {() => <Register/>}
-                      </Route>
-                      <Route path="/processing">
-                          {() => <RegisterProcessing/>}
                       </Route>
                       <Route exact path="/conversations/user-conversation/:id"
                              component={Conversation}>
@@ -45,7 +37,7 @@ class App extends Component {
                       <Route exact path="/conversations/group-conversation/:id"
                              component={Conversation}>
                       </Route>
-                      <Route exact path="/group-settings/:id"
+                      <Route exact path="/group-settings/:gid/:cid"
                              component={GroupSettings}>
                       </Route>
                       <Route exact path="/conversations/user-conversation/:id/thread/:threadId"

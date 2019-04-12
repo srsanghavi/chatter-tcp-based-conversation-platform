@@ -54,6 +54,10 @@ class UserActions {
 
     registerUser(sender, username, password, firstName, lastName, email) {
         api.registerUser(sender, username, password, firstName, lastName, email).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.USER_CREATED,
+                payload: value,
+            })
         })
     }
 
@@ -63,7 +67,6 @@ class UserActions {
     }
 
     updateUser(username,userId,firstName,lastName,isSearchable,profilePicture,language){
-        console.log(profilePicture);
         api.updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture,language).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.MODIFY_USER,

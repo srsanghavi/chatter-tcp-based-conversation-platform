@@ -7,11 +7,12 @@ import AuthStore from './AuthStore';
 const CHANGE = 'CHANGE';
 const USERS_LIST_CHANGE = "USERS_LIST_CHANGE";
 const ONLINE = "ONLINE";
+const NEW_USER_CHANGE = "NEW_USER_CHANGE"
 
 let _user = {};
 let _users = [];
 let _onlineUsers = [];
-let _newuser;
+let _newuser = {};
 
 class UserStore extends EventEmitter {
     constructor() {
@@ -37,6 +38,10 @@ class UserStore extends EventEmitter {
             case ActionTypes.ONLINE_USER:
                 this._setOnlineUsers(action.payload);
                 break;
+            case ActionTypes.USER_CREATED:
+                setTimeout(() => { // Run after dispatcher has finished
+                    this.emit(CHANGE);
+                }, 0);
 
             default:
             break;
@@ -88,7 +93,13 @@ class UserStore extends EventEmitter {
 
 
     _setNewUser(user) {
-        _newuser = user;
+        if(user){
+            _newuser=user.result;
+            let self = this;
+            setTimeout(() => { // Run after dispatcher has finished
+                self.emit(NEW_USER_CHANGE);
+            }, 0);
+        }
     }
 
     _getNewUser() {
@@ -96,7 +107,7 @@ class UserStore extends EventEmitter {
     }
 
     _clearNewUser() {
-        _newuser = undefined;
+        _newuser = {};
     }
 
     _clearAll() {

@@ -33,8 +33,8 @@ export default class Api {
     }
 
     registerUser(sender, username, password, first_name, last_name, email) {
-        let msg = this.messageType.makeApiMessage(sender,"registerUser/::POST::{username:"+username+"," +
-            "password:"+password+",first_name:"+first_name+",last_name:"+last_name+",email:"+email+"}");
+        let msg = this.messageType.makeApiMessage(sender,"registerUser/::POST::{username:\""+username+"\"," +
+            "password:\""+password+"\",first_name:\""+first_name+"\",last_name:\""+last_name+"\",email:\""+email+"\"}");
         gateway.sendTcp(msg);
         return this.promise();
     }
@@ -140,6 +140,13 @@ export default class Api {
         return this.promise();
     }
 
+    addGroupToGroup(username, id1, id2) {
+        let msg = this.messageType.makeApiMessage(username,"addGroupToGroup/::POST::{" +
+            "group_id1:"+id1+",group_id2:"+id2+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
     updateProfile(username,userId,firstName,lastName,isSearchable,profilePicture,language){
         let msg = this.messageType.makeApiMessage(username,"modifyUser/::POST::{" +
         "user_id:"+userId+",first_name:"+firstName+",last_name:"+lastName+",isSearchable:"+isSearchable+",profilePicture:'"+profilePicture+"', preferredLanguage:'"+language+"'}");
@@ -164,5 +171,16 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
-}
 
+    updateGroupName(username, groupName, groupId) {
+        let msg = this.messageType.makeApiMessage(username,"updateGroupName/::POST::{group_name:"+groupName+",group_id:"+groupId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+
+    addAdmin(username, userId, groupId) {
+        let msg = this.messageType.makeApiMessage(username,"addAdminGroup/::POST::{group_id:"+groupId+",user_id:"+userId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
+}

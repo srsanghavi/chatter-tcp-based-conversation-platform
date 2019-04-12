@@ -5,23 +5,24 @@ import AuthStore from '../Store/AuthStore';
 import Emojify from 'react-emojione';
 
 const isImage = require('is-image');
-var isVideo = require('is-video');
+let isVideo = require('is-video');
 
 
 
 
 const ThreadPreview = props => {
+
     let videoPrev;
     if(props.threadMessages[0].mediaURL && 
         props.threadMessages[0].mediaURL!=="" 
         && isVideo(props.threadMessages[0].mediaURL)){
-            videoPrev = (<video width="200"  controls > 
+            videoPrev = (<video width="100%"  controls >
                             <source src={props.threadMessages[0].mediaURL} type="video/mp4" />
                             <source src="movie.ogg" type="video/ogg" />
                         Your browser does not support the video tag.
                         </video>)
-            console.log("yes "+ props.threadMessages[0].mediaURL);
         }
+
     if(props.threadMessages.length === 0) {
         return null
     } else {
@@ -51,7 +52,7 @@ const ThreadPreview = props => {
                             borderRadius: '0.25em',
                             border: '1px solid black',
                             wordWrap: 'break-word',
-                            maxWidth: '45%',
+                            maxWidth: '47.5%',
                             backgroundColor: props.threadMessages.length > 1 ? '#edd0b7' : 'white',
                             color: 'black',
                             textDecoration: 'none'
@@ -61,7 +62,7 @@ const ThreadPreview = props => {
                                 borderBottom: '1px solid gray'
                             })}>{props.threadMessages[0].first_name}</h6>
                             <img src={props.threadMessages[0].mediaURL && props.threadMessages[0].mediaURL!=="" 
-                                        && isImage(props.threadMessages[0].mediaURL)?props.threadMessages[0].mediaURL:""} width="200" />
+                                        && isImage(props.threadMessages[0].mediaURL)?props.threadMessages[0].mediaURL:""} width="100%" />
                             
                             {videoPrev}
                             

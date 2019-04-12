@@ -4,7 +4,6 @@ export default class Gateway{
         window.apiResponse = {};
         // print("<span style='color:Blue'>Me: </span>"+data);
         window.newResponse = false;
-        console.log(msg);
         window.socket.write(msg);  
         
 

@@ -65,8 +65,27 @@ class Login extends Component {
 
     render() {
         return(
-            <div>
-                <div className="signin container-fluid">
+            <div className={css({
+                display: 'flex',
+                flexDirection: 'column',
+            })}>
+                <div className={css({
+                    backgroundColor: '#342E37',
+                    boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
+                    textAlign: 'center',
+                })}>
+                <h1 id="logo" className={css({
+                    color: 'white',
+                    fontSize: '3em',
+                    fontFamily: 'Pacifico',
+                    paddingTop: '0.5em',
+                    transform: 'rotate(-5deg)'
+                })}>Chatter</h1>
+                </div>
+                <div className={css({
+                    backgroundColor: '#342E37',
+                    padding: '1em 1em 2em 1em'
+                })}>
                     <div className="card form-signin form-group">
                         <input
                             className="form-control"

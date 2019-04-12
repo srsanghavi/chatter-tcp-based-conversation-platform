@@ -68,6 +68,7 @@ class AuthStore extends EventEmitter {
         return _user
     }
 
+
     // Hooks a React component's callback to the CHANGED event.
     addChangeListener(callback) {
         this.on(CHANGE, callback);

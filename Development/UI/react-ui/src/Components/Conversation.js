@@ -13,6 +13,7 @@ import ConversationStore from "../Store/ConversationStore";
 import AuthStore from '../Store/AuthStore';
 import {EmojiPicker} from 'emoji-picker-react';
 import {jsemoji} from 'emoji-js';
+import GroupStore from "../Store/GroupStore";
 
 
 // component updates every interval (in ms)
@@ -64,8 +65,6 @@ class Conversation extends Component {
         ThreadStore.addThreadsChangeListener(this._onThreadsChanged);
         MessageStore.addMessagesChangeListener(this._onMessageschanged);
         MessageStore.addNewMessageListener(this._onNewMessageReceieved);
-        // console.log(this.props)
-        // ThreadActions.getThreadsInConversation(localStorage.getItem("username"),this.props.match.params.id);
         MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,this.props.match.params.id);
 
         this.interval = setInterval(() => this.newMessage(), INTERVAL);
@@ -92,7 +91,6 @@ class Conversation extends Component {
     }
     _onThreadsChanged(){
         const _threads = ThreadStore._getThreads();
-        console.log(_threads);
         this.setState({
             threads: _threads,
         });
@@ -124,14 +122,12 @@ class Conversation extends Component {
     }
 
     _onNewMessageReceieved(){
-        console.log("new Message")
         MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,this.props.match.params.id);
     }
 
     newMessage(){
         if(window.newNoti){
             const notiMessage =(window.newNotiContent);
-            console.log(notiMessage);
             
             if(notiMessage.conversation_id==this.props.match.params.id){
                 MessageActions.getMessagesInConversation(AuthStore._getAuthUser().username,this.props.match.params.id);
@@ -144,7 +140,6 @@ class Conversation extends Component {
     sendMessage() {
         var newMesage = this.state.newMessage;
         newMesage = newMesage.replace('\n',' ');
-        console.log(newMesage);
 
         MessageActions.createMessageForThread(AuthStore._getAuthUser().username,
                                               AuthStore._getAuthUser().id,
@@ -225,12 +220,24 @@ class Conversation extends Component {
     }
 
     render() {
+
+        let groupId;
+
+        const group = GroupStore._getGroups().filter(group => {
+            return group.conversation_id == this.state.id
+        });
+        if(group.length > 0) {
+            groupId = group[0].Groups_id;
+        }
+
+
         if(this.state.threads.length > this.state.previousThreadCount) {
             window.scrollTo(0, document.body.scrollHeight);
         }
         if (!(localStorage.getItem('loggedIn') === 'true')) {
             return <Redirect to='/login'/>
         } else {
+
             return (
                 <div ref={(div) => {
                     this.messageList = div;
@@ -250,7 +257,8 @@ class Conversation extends Component {
                                             searchClick={this.toggleSearch}
                                             inThread={false}
                                             isGroup={this.state.isGroup}
-                                            conversationId={this.state.id}/>
+                                            conversationId={this.state.id}
+                                            groupId={groupId}/>
                     </div>
                     {this.renderSearchBar()}
                     {this.renderThreads()}

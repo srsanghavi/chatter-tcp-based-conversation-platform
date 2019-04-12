@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 localStorage.clear()
 function newNotification(msg){
-  console.log(msg);
+  //console.log(msg);
 }
 
 ReactDOM.render(<BrowserRouter>

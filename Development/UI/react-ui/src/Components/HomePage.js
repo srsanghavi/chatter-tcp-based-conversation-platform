@@ -3,15 +3,11 @@ import {css} from 'emotion';
 import Header from './Header'
 import Footer from './Footer'
 import Api from '../Services/Api';
-import UserStore from '../Store/UserStore';
 import ConversationStore from "../Store/ConversationStore";
 import Conversation from "./Conversation";
 import {Route, Switch, Redirect} from 'react-router-dom';
 import Settings from './Settings';
 import ConversationContainer from './ConversationContainer';
-import UserSearch from './UserSearch';
-import ProfileEdit from './ProfileEdit';
-import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Broadcast from './Broadcast'
 import GroupStore from "../Store/GroupStore";
@@ -59,7 +55,6 @@ class HomePage extends Component {
     }
 
     componentWillMount(){
-        console.log(AuthStore._getAuthUser());
         ConversationStore.addChangeListener(this._onConversationsChanged);
         GroupStore.addGroupsChangeListener(this._onGroupConversationsChanged);
     }
@@ -83,8 +78,14 @@ class HomePage extends Component {
         ConversationStore.removeChangeListener(this._onConversationsChanged);
         GroupStore.removeGroupsListener(this._onGroupConversationsChanged);
     }
-    
-    _onChange() {
+
+    _onChange(){
+        const user = AuthStore._getAuthUser();
+        if(user===null){
+            alert("Could not register");
+        }else{
+            UserActions.registerUser()
+        }
     }
 
     _onConversationsChanged(){
@@ -212,22 +213,6 @@ class HomePage extends Component {
 
 
     render() {
-        const filteredUsers = this.state.users.filter(user => {
-            return (
-                user.id !== this.state.user.id &&
-                user.isSearchable &&
-                !user.deleted &&
-                (user.first_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
-                user.last_name.toUpperCase().includes(this.state.search.toUpperCase()) ||
-                user.username.toUpperCase().includes(this.state.search.toUpperCase()))
-            )
-        });
-
-        const filteredGroups = this.state.groups.filter(group => {
-            return (
-                group.isSearchable && group.name.toUpperCase().includes(this.state.search.toUpperCase())
-            )
-        });
 
         const filteredMyGroups = this.state.myGroups.filter(group => {
             return (
@@ -255,11 +240,6 @@ class HomePage extends Component {
                 {this.renderBroadcast()}
                 {this.renderSearchBar()}
                 <Switch>
-                    <Route path="/edit-profile/:id"
-                           component={ProfileEdit}>
-                    </Route>
-
-
                     <Route path="/settings">
                         {() => <Settings/>}
                     </Route>
@@ -279,19 +259,13 @@ class HomePage extends Component {
                     <Route exact path="/conversations/group-conversation/:id"
                            component={Conversation}>
                     </Route>
-                    <Route path="/search">
-                        {() => <UserSearch users={filteredUsers}
-                                           groups={filteredGroups}
-                                           userButtonSelected={this.state.userButtonSelected}
-                                           profileOnClick={this.profileTabSelected}/>}
-                    </Route>
                     <Route path="/search-users">
                         {() => <SearchUsers search={this.state.search}/>}
                     </Route>
                     <Route path="/search-groups">
                         {() => <SearchGroups search={this.state.search}/>}
                     </Route>
-                    <Route exact path="/group-settings/:id"
+                    <Route exact path="/group-settings/:gid/:cid"
                            component={GroupSettings}>
                     </Route>
                 </Switch>

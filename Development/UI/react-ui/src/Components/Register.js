@@ -4,6 +4,7 @@ import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
 import {NavLink} from 'react-router-dom';
 import {css} from 'emotion';
+import AuthStore from '../Store/AuthStore';
 
 class Register extends Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class Register extends Component {
             password: '',
             firstName: '',
             lastName: '',
-            email: ''
+            email: '',
+            status:'',
         };
 
         this.onUsernameChange = this.onUsernameChange.bind(this);
@@ -24,23 +26,39 @@ class Register extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.api = new Api();
         this._onChange = this._onChange.bind(this);
+
+
+        this._onAuthorized = this._onAuthorized.bind(this);
     }
 
     componentWillMount(){
         UserStore.addChangeListener(this._onChange);
+        AuthStore.addChangeListener(this._onAuthorized);
     }
 
     componentWillUnmount(){
         UserStore.removeChangeListener(this._onChange);
+        AuthStore.removeChangeListener(this._onAuthorized);
     }
 
-    componentDidMount() {
+    _onAuthorized(){
+        this.setState({
+            status: "Authorized! Signing up",
+        });
+        UserActions.registerUser(AuthStore._getAuthUser().username,this.state.username,this.state.password,
+            this.state.firstName,this.state.lastName,this.state.email);
     }
+
+
 
     _onChange(){
-        // UserActions.getUsers('srsanghavi');
-        // setTimeout(function(){}, 3000);
-        // UserActions.getUserByUsername('srsanghavi');
+        this.setState({
+            status:"Account created",
+        });
+        if(window.confirm(this.state.status)) {
+            window.location.replace('./login').window.location.reload()
+        }
+
     }
 
     onUsernameChange(event) {
@@ -73,17 +91,35 @@ class Register extends Component {
         })
     }
 
+    missingFieldsCheck() {
+        return this.state.username === '' ||
+            this.state.password === '' ||
+            this.state.email === '' ||
+            this.state.firstName === '' ||
+            this.state.lastName === ''
+    }
+
     handleSubmit() {
-        UserStore._setNewUser(this.state);
-        UserActions.signin('john','123');
+        if(this.missingFieldsCheck()) {
+            alert('All fields are required')
+        } else {
+            UserActions.signin("srsanghavi", "12345678");
+        }
     }
 
 
     render() {
         return(
-            <div>
-                <div className="signin container-fluid">
+            <div className={css({
+                display: 'flex',
+                flexDirection: 'column',
+            })}>
+                <div className={css({
+                    backgroundColor: '#342E37',
+                    padding: '1em'
+                })}>
                     <div className="card form-signin form-group">
+                        <h5 className={css({ textAlign: 'center '})}>{this.state.status}</h5>
                         <input
                             className="form-control"
                             placeholder="Username"
@@ -97,18 +133,18 @@ class Register extends Component {
                             value={this.state.password}
                             onChange={this.onPasswordChange}
                             required/>
-                        {/*<input*/}
-                            {/*className="form-control"*/}
-                            {/*placeholder="First Name"*/}
-                            {/*value={this.state.firstName}*/}
-                            {/*onChange={this.onFirstNameChange}*/}
-                            {/*required/>*/}
-                        {/*<input*/}
-                            {/*className="form-control"*/}
-                            {/*placeholder="Last Name"*/}
-                            {/*value={this.state.lastName}*/}
-                            {/*onChange={this.onLastNameChange}*/}
-                            {/*required/>*/}
+                        <input
+                            className="form-control"
+                            placeholder="First Name"
+                            value={this.state.firstName}
+                            onChange={this.onFirstNameChange}
+                            required/>
+                        <input
+                            className="form-control"
+                            placeholder="Last Name"
+                            value={this.state.lastName}
+                            onChange={this.onLastNameChange}
+                            required/>
                         <input
                             className="form-control"
                             type="email"
@@ -116,12 +152,13 @@ class Register extends Component {
                             value={this.state.email}
                             onChange={this.onEmailChange}
                             required/>
-                        <NavLink to={'./processing'}>
+
+                        {/* <NavLink to={'./processing'}> */}
                             <button className="btn btn-block btn-outline-primary"
                                     onClick={this.handleSubmit}>
                                 Register
                             </button>
-                        </NavLink>
+                        {/* </NavLink> */}
                     </div>
                 </div>
                 <h3 className="signin-text">Already Registered?
@@ -134,6 +171,18 @@ class Register extends Component {
                         <p style={{color: '#6F4F67'}}> Log in here</p>
                     </NavLink>
                 </h3>
+                <div className={css({
+                    textAlign: 'center',
+                    padding: '1em 1em 2em 1em',
+                })}>
+                    <h1 id="logo" className={css({
+                        color: '#342E37',
+                        fontSize: '3em',
+                        fontFamily: 'Pacifico',
+                        paddingTop: '0.5em',
+                        transform: 'rotate(-5deg)'
+                    })}>Chatter</h1>
+                </div>
             </div>
         )
 

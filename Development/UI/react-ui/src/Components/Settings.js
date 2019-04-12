@@ -138,8 +138,11 @@ class Settings extends Component {
                             color: '#45AAEB'
                         }
                     })}>
-                        <i className="fa fa-angle-down fa-2x"
-                           onClick={this.createGroupOnClick}></i>
+                        {this.state.creatingGroup ?
+                            <i className="fa fa-angle-up fa-2x"
+                               onClick={this.createGroupOnClick}></i> :
+                            <i className="fa fa-angle-down fa-2x"
+                                onClick={this.createGroupOnClick}></i>}
                     </NavLink>
                 </div>
                 {this.renderGroupForm()}

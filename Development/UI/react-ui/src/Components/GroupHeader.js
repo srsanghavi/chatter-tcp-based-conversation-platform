@@ -26,7 +26,7 @@ const GroupHeader = props => {
                 padding: '0 0.75em'
             })}>
                 {props.fromConversation ?
-                <NavLink to={`/conversations/group-conversation/${props.id}`}
+                <NavLink to={`/conversations/group-conversation/${props.conversationId}`}
                          className={css({
                              color: 'white',
                              textDecoration: 'none',
@@ -46,6 +46,12 @@ const GroupHeader = props => {
                          })}>
                     <i className="fa fa-arrow-left fa-2x"></i>
                 </NavLink>}
+                {props.fromConversation ?
+                <i className="fa fa-search fa-2x"
+                   onClick={props.searchClick}
+                   style={{
+                       float: 'left',
+                   }}></i> : null}
             </div>
         </div>
     );
