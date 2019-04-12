@@ -26,7 +26,7 @@ const GroupHeader = props => {
                 padding: '0 0.75em'
             })}>
                 {props.fromConversation ?
-                <NavLink to={`/conversations/group-conversation/${props.id}`}
+                <NavLink to={`/conversations/group-conversation/${props.conversationId}`}
                          className={css({
                              color: 'white',
                              textDecoration: 'none',

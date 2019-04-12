@@ -30,13 +30,20 @@ class Profile extends Component {
         this._onUserChanged = this._onUserChanged.bind(this);
         this.editOnClick = this.editOnClick.bind(this);
         this.cancelOnClick = this.cancelOnClick.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.firstNameChange = this.firstNameChange.bind(this);
         this.lastNameChange = this.lastNameChange.bind(this);
         this.isSearchableChange = this.isSearchableChange.bind(this);
         this.createConversation = this.createConversation.bind(this);
         this.onLanguageChange = this.onLanguageChange.bind(this);
         this._onAuthChanged = this._onAuthChanged.bind(this);
+        this._onEdit = this._onEdit.bind(this);
+        this._onSave = this._onSave.bind(this);
+        this.lastNameChange = this.lastNameChange.bind(this);
+        this.firstNameChange = this.firstNameChange.bind(this);
+        this.onEditProfilePicClick = this.onEditProfilePicClick.bind(this);
+        this.onSaveProfilePicClick = this.onSaveProfilePicClick.bind(this);
+        this.onCancelProfilePicClick = this.onCancelProfilePicClick.bind(this);
+        this.onProfilePicChange = this.onProfilePicChange.bind(this);
     }
 
     componentWillMount() {
@@ -45,19 +52,6 @@ class Profile extends Component {
         if(this.props.match.params.username !== AuthStore._getAuthUser().username) {
             UserActions.getUserByUsername(AuthStore._getAuthUser().username, this.props.match.params.username)
         }
-
-        this._onEdit = this._onEdit.bind(this);
-        this._onSave = this._onSave.bind(this);
-        this.lastNameChange = this.lastNameChange.bind(this);
-        this.firstNameChange = this.firstNameChange.bind(this);
-        // this._onProfileUpdated = this._onProfileUpdated.bind(this);
-
-        this.onEditProfilePicClick = this.onEditProfilePicClick.bind(this);
-        this.onSaveProfilePicClick = this.onSaveProfilePicClick.bind(this);
-        this.onCancelProfilePicClick = this.onCancelProfilePicClick.bind(this);
-
-        this.onProfilePicChange = this.onProfilePicChange.bind(this);
-
     }
 
   
@@ -112,6 +106,7 @@ class Profile extends Component {
             created_on: user.created_on,
             preferredLanguage: user.preferredLanguage,
             isSearchable: user.isSearchable,
+            editMode: false
         })
     }
 
@@ -144,27 +139,9 @@ class Profile extends Component {
         })
     }
 
-    handleSubmit() {
-        UserActions.modifyUser(AuthStore._getAuthUser().username, this.state.first_name,
-            this.state.last_name, this.state.isSearchable)
-    }
-
     createConversation() {
         ConversationActions.createUserUserConversation(AuthStore._getAuthUser().username,
             AuthStore._getAuthUser().id, this.state.id)
-    }
-
-
-    firstNameChange(event) {
-        this.setState({
-            first_name: event.target.value
-        })
-    }
-
-    lastNameChange(event) {
-        this.setState({
-            last_name: event.target.value
-        })
     }
 
     isSearchableChange() {
@@ -182,12 +159,9 @@ class Profile extends Component {
 
     _onSave(e){
         e.preventDefault();
-        
         this.setState({
-            edit:false
-        })
-        console.log(this.state);
-        
+            editMode: false
+        });
         UserActions.updateUser(this.state.username,
                                 this.state.id,
                                 this.state.first_name,
@@ -233,34 +207,10 @@ class Profile extends Component {
         })
     }
 
-    onProfilePicChange(e){
-        // e.preventDefault();
+    onProfilePicChange(e) {
         this.setState({
             profilePicture:e,
         })
-    }
-    renderProfileEdit(){
-       
-        return(
-
-            <div class="" id="exampleModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Upload picture</h5>
-                        
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" value={this.state.profilePicture} onChange={this.onProfilePicChange}></input>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={this.onSaveProfilePicClick}>Save</button>
-                        <button type="button" className="btn btn-secondary" onClick={this.onCancelProfilePicClick} data-dismiss="modal">Close</button>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        )
     }
 
     render() {
@@ -373,11 +323,7 @@ class Profile extends Component {
                                             fontWeight: 'bold',
                                         }}>
                                     {data.LANGUAGES.map(language => {
-                                        if(this.state.preferredLanguage === language){
-                                            return <option value={language}>{language} </option>
-                                        } else {
-                                            return <option value={language}>{language}</option>
-                                        } 
+                                        return <option value={language}>{language} </option>
                                     })}
                                 </select> :
                                 <input type="text"

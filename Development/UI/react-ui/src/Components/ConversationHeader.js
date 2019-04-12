@@ -69,7 +69,7 @@ const ConversationHeader = props => {
                             color: props.search ? '#45AAEB' : 'white',
                         }}></i>
                     {props.isGroup && !props.inThread ?
-                        <NavLink to={`../../../group-settings/${props.conversationId}`}>
+                        <NavLink to={`../../../group-settings/${props.groupId}/${props.conversationId}`}>
                             <i className="fa fa-cog fa-2x"
                                style={{float: 'right'}}></i>
                         </NavLink> : null}

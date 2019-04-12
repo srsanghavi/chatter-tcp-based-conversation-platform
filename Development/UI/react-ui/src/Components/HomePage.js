@@ -291,7 +291,7 @@ class HomePage extends Component {
                     <Route path="/search-groups">
                         {() => <SearchGroups search={this.state.search}/>}
                     </Route>
-                    <Route exact path="/group-settings/:id"
+                    <Route exact path="/group-settings/:gid/:cid"
                            component={GroupSettings}>
                     </Route>
                 </Switch>

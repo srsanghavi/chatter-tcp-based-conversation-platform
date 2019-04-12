@@ -13,6 +13,7 @@ import ConversationStore from "../Store/ConversationStore";
 import AuthStore from '../Store/AuthStore';
 import {EmojiPicker} from 'emoji-picker-react';
 import {jsemoji} from 'emoji-js';
+import GroupStore from "../Store/GroupStore";
 
 
 // component updates every interval (in ms)
@@ -225,6 +226,14 @@ class Conversation extends Component {
     }
 
     render() {
+        let groupId;
+        const group = GroupStore._getGroups().filter(group => {
+            return group.conversation_id == this.state.id
+        });
+        if(group.length > 0) {
+            groupId = group.Groups_id;
+        }
+
         if(this.state.threads.length > this.state.previousThreadCount) {
             window.scrollTo(0, document.body.scrollHeight);
         }
@@ -250,7 +259,8 @@ class Conversation extends Component {
                                             searchClick={this.toggleSearch}
                                             inThread={false}
                                             isGroup={this.state.isGroup}
-                                            conversationId={this.state.id}/>
+                                            conversationId={this.state.id}
+                                            groupId={groupId}/>
                     </div>
                     {this.renderSearchBar()}
                     {this.renderThreads()}

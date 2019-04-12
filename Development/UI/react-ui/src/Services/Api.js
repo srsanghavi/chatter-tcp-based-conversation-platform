@@ -164,5 +164,11 @@ export default class Api {
         gateway.sendTcp(msg);
         return this.promise();
     }
+
+    updateGroupName(username, groupName, groupId) {
+        let msg = this.messageType.makeApiMessage(username,"updateGroupName/::POST::{group_name:"+groupName+",group_id:"+groupId+"}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
 }
 

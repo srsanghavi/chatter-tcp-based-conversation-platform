@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
 import GroupHeader from "./GroupHeader";
+import GroupActions from "../Actions/GroupActions";
+import AuthStore from "../Store/AuthStore";
 
 
 
@@ -9,12 +11,14 @@ class GroupSettings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: this.props.match.params.id,
+            groupId: this.props.match.params.gid,
+            conversationId: this.props.match.params.cid,
             groupName: ''
         };
 
         this.changeGroupName = this.changeGroupName.bind(this);
         this.onGroupNameChange = this.onGroupNameChange.bind(this);
+        this.onGroupNameSubmit = this.onGroupNameSubmit.bind(this);
 
     }
 
@@ -29,6 +33,17 @@ class GroupSettings extends Component {
         this.setState({
             groupName: event.target.value
         })
+    }
+
+    onGroupNameSubmit() {
+        if(this.state.groupName === '') {
+            alert('Please enter a group name')
+        } else {
+            GroupActions.updateGroupName(AuthStore._getAuthUser().username, this.state.groupName, this.state.groupId)
+            this.setState({
+                groupName: ''
+            })
+        }
     }
 
     renderGroupForm() {
@@ -57,7 +72,8 @@ class GroupSettings extends Component {
                                    fontWeight: 'bold',
                                    textAlign: 'left'
                                }}/>
-                        <button className="btn btn-outline-primary">Submit</button>
+                        <button className="btn btn-outline-primary"
+                            onClick={this.onGroupNameSubmit}>Submit</button>
                     </div>
                 </div>
                 : null
@@ -78,7 +94,8 @@ class GroupSettings extends Component {
                     paddingBottom: '5em'
                 })}>
                     <GroupHeader fromConversation={true}
-                                 id={this.state.id}/>
+                                 groupId={this.state.groupId}
+                                 conversationId={this.state.conversationId}/>
                 </div>
                 <div className={css({
                     display: 'flex',

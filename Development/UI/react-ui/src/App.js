@@ -45,7 +45,7 @@ class App extends Component {
                       <Route exact path="/conversations/group-conversation/:id"
                              component={Conversation}>
                       </Route>
-                      <Route exact path="/group-settings/:id"
+                      <Route exact path="/group-settings/:gid/:cid"
                              component={GroupSettings}>
                       </Route>
                       <Route exact path="/conversations/user-conversation/:id/thread/:threadId"

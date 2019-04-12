@@ -47,14 +47,25 @@ class GroupActions {
         })
     }
 
-    createGroup(useranme, groupName, adminId) {
-        api.createGroup(useranme, groupName, adminId).then(value => {
+    createGroup(username, groupName, adminId) {
+        api.createGroup(username, groupName, adminId).then(value => {
             Dispatcher.dispatch({
                 actionType: ActionTypes.CREATE_GROUP,
                 payload: value,
             })
         })
     }
+
+    updateGroupName(username, groupName, groupId) {
+        api.updateGroupName(username, groupName, groupId).then(value => {
+            if(value.result === "OK") {
+                alert("Changed group name to " + groupName)
+            } else {
+                alert("Could not change group name")
+            }
+        })
+    }
+
 
 }
 

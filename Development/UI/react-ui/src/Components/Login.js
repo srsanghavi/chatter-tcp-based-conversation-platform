@@ -97,6 +97,14 @@ class Login extends Component {
                         <p style={{color: '#6F4F67'}}> Register here</p>
                     </NavLink>
                 </h3>
+                <h1 className={css({
+                    fontFamily: 'Pacifico',
+                    fontSize: '3em',
+                    color: '#342E37',
+                    textAlign: 'center',
+                    padding: '0.5em',
+                    transform: 'rotate(-10deg)'
+                })}>Chatter</h1>
                 <Mediauploader/>
             </div>
         )
