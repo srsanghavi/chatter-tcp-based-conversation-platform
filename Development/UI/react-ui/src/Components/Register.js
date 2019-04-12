@@ -45,7 +45,8 @@ class Register extends Component {
         this.setState({
             status: "Authorized! Signing up",
         });
-        UserActions.registerUser(AuthStore._getAuthUser().username,this.state.username,this.state.password,this.state.firstName,this.state.lastName,this.state.email);
+        UserActions.registerUser(AuthStore._getAuthUser().username,this.state.username,this.state.password,
+            this.state.firstName,this.state.lastName,this.state.email);
     }
 
 
@@ -53,9 +54,10 @@ class Register extends Component {
     _onChange(){
         this.setState({
             status:"Account created",
-        })
-        // setTimeout(function(){}, 3000);
-        // UserActions.getUserByUsername('srsanghavi');
+        });
+        if(window.confirm(this.state.status)) {
+            window.location.replace('./login').window.location.reload()
+        }
 
     }
 
@@ -98,7 +100,11 @@ class Register extends Component {
     }
 
     handleSubmit() {
-        UserActions.signin("srsanghavi","12345678");
+        if(this.missingFieldsCheck()) {
+            alert('All fields are required')
+        } else {
+            UserActions.signin("srsanghavi", "12345678");
+        }
     }
 
 
@@ -113,6 +119,7 @@ class Register extends Component {
                     padding: '1em'
                 })}>
                     <div className="card form-signin form-group">
+                        <h5 className={css({ textAlign: 'center '})}>{this.state.status}</h5>
                         <input
                             className="form-control"
                             placeholder="Username"
@@ -151,7 +158,6 @@ class Register extends Component {
                                     onClick={this.handleSubmit}>
                                 Register
                             </button>
-                            {this.state.status}
                         {/* </NavLink> */}
                     </div>
                 </div>
