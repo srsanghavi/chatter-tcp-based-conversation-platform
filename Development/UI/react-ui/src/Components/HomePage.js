@@ -179,7 +179,7 @@ class HomePage extends Component {
     }
 
     sendBroadcast() {
-        MessageActions.broadcastMessage(localStorage.getItem('username'), localStorage.getItem('id'),
+        MessageActions.broadcastMessage(AuthStore._getAuthUser().username, AuthStore._getAuthUser().id,
         "\"" + this.state.broadcast + "\"");
         this.setState({
             broadcast: ''
