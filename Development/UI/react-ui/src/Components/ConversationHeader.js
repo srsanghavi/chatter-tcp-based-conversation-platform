@@ -26,7 +26,7 @@ const ConversationHeader = props => {
                     width: '20%'
                 })}>
                     {props.inThread ?
-                    <NavLink to={`/conversations/${props.conversationId}`}
+                    <NavLink to={`../../${props.conversationId}`}
                              className={css({
                                  color: 'white',
                                  textDecoration: 'none',
@@ -36,7 +36,7 @@ const ConversationHeader = props => {
                              })}>
                         <i className="fa fa-arrow-left fa-2x"></i>
                     </NavLink> :
-                    <NavLink to='../conv-redirect'
+                    <NavLink to='../../conversations'
                              className={css({
                                  color: 'white',
                                  textDecoration: 'none',

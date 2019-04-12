@@ -31,6 +31,7 @@ class Conversation extends Component {
             newMessage: '',
             previousThreadCount: 0,
             editProfilePic: false,
+            isGroup: false,
         };
 
         this.toggleSearch = this.toggleSearch.bind(this);
@@ -43,7 +44,8 @@ class Conversation extends Component {
 
         this._onNewMessageReceieved = this._onNewMessageReceieved.bind(this);
         this.handleEmojiClick = this.handleEmojiClick.bind(this);
-        
+
+        console.log(window.location.pathname.split('/'))
 
     }
 
@@ -72,6 +74,10 @@ class Conversation extends Component {
    
     componentDidMount(){
         this.scrollToBottom();
+        const PATH = window.location.pathname.split('/');
+        this.setState({
+            isGroup: PATH[PATH.length - 2] === "group-conversation"
+        });
     }
     componentDidUpdate(){
         this.scrollToBottom();
@@ -205,7 +211,8 @@ class Conversation extends Component {
             return(
                 <div>
                     <ThreadContainer threads={this.state.threads}
-                                     conversation_id = {this.props.match.params.id}/>
+                                     conversation_id = {this.props.match.params.id}
+                                     isGroup={this.state.isGroup}/>
                     <ConversationFooter onChange={this.onMessageChange}
                                         onClick={this.sendMessage}
                                         value={this.state.newMessage}
@@ -241,7 +248,8 @@ class Conversation extends Component {
                     })}>
                         <ConversationHeader search={this.state.searchBar}
                                             searchClick={this.toggleSearch}
-                                            inThread={false}/>
+                                            inThread={false}
+                                            />
                     </div>
                     {this.renderSearchBar()}
                     {this.renderThreads()}

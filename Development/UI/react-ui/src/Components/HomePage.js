@@ -263,16 +263,20 @@ class HomePage extends Component {
                         {() => <Settings/>}
                     </Route>
                     <Route path="/conv-redirect">
-                        {() => <Redirect to={'./conversations'}/>}
+                        {() => <Redirect to={'../conversations'}/>}
                     </Route>
+
                     <Route path="/conversations">
                         {() => <ConversationContainer conversations={this.state.conversations}
                                                       myGroups={filteredMyGroups}
                                                       users={this.state.users}
                                                       search={this.state.search}/>}
                     </Route>
-                    <Route path="/conversations/:id">
-                        {() => <Conversation/>}
+                    <Route exact path="/conversations/user-conversation/:id"
+                           component={Conversation}>
+                    </Route>
+                    <Route exact path="/conversations/group-conversation/:id"
+                           component={Conversation}>
                     </Route>
                     <Route path="/search">
                         {() => <UserSearch users={filteredUsers}

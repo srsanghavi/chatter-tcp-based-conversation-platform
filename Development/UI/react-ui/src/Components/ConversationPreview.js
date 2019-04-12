@@ -42,7 +42,7 @@ const ConversationPreview = props => {
                 <span className={css({
                     width: '25%',
                 })}>
-                <NavLink to={`./user-conversations/${props.conversation.id}`}
+                <NavLink to={`./conversations/user-conversation/${props.conversation.id}`}
                          className={css({
                              color: 'black',
                              textDecoration: 'none',

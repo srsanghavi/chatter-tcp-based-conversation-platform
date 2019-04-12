@@ -54,7 +54,8 @@ class ThreadContainer extends Component {
                             <ThreadPreview threadMessages={thread.messages}
                                         threadId={thread.id}
                                         conversationId={this.props.conversation_id}
-                                        displayDate={thread.displayDate}/>
+                                        displayDate={thread.displayDate}
+                                        isGroup={this.props.isGroup}/>
                         )
                     })}
                 </div>
