@@ -13,6 +13,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import sun.jvm.hotspot.debugger.proc.aarch64.ProcAARCH64ThreadFactory;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PrattleTest {
@@ -166,4 +168,16 @@ public class PrattleTest {
 
 
     }
+
+    @Test
+    public void testGetActiveUsersAndIsOnline(){
+        List<String> activeUsers = Prattle.getActiveUsers();
+        assertTrue(activeUsers.size() >= 0);
+        if (activeUsers.size() > 0){
+            assertTrue(Prattle.isOnline(activeUsers.get(0)));
+            ChatLogger.info(activeUsers.get(0) + " is Online!!!!");
+        }
+    }
+
+
 }
