@@ -105,6 +105,7 @@ class HomePage extends Component {
             destination_lastname:"",
             destination_username:"",
             id:c.conversation_id,
+            isGroup: true
         }})
              this.setState({
                  conversations:this.state.conversations.concat(convs),

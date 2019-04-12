@@ -38,7 +38,10 @@ class App extends Component {
                       <Route path="/processing">
                           {() => <RegisterProcessing/>}
                       </Route>
-                      <Route exact path="/conversations/:id"
+                      <Route exact path="/group-conversations/:id"
+                             component={Conversation}>
+                      </Route>
+                      <Route exact path="/user-conversations/:id"
                              component={Conversation}>
                       </Route>
                       <Route exact path="/conversations/:id/thread/:threadId"

@@ -19,15 +19,11 @@ class ConversationContainer extends Component{
                 overflowX: 'hidden',
             })}>
                 {conversations.map(conversation => {
-                        return(
-                            <ConversationPreview conversation={conversation}
-                                                 user={[]}/>)
-                    }
-                )}
-                {this.props.myGroups.map(group => {
-                    return(
-                        <GroupConversationPreview conversation={group}/>
-                    )
+                            if(conversation.isGroup) {
+                                return(<GroupConversationPreview conversation={conversation}/>)
+                            } else {
+                                return(<ConversationPreview conversation={conversation}/>)
+                            }
                 })}
             </div>
         )

@@ -5,7 +5,7 @@ import ThreadStore from "../Store/ThreadStore";
 import MessageStore from "../Store/MessageStore";
 
 const GroupConversationPreview = props => {
-    return (
+    return(
         <div className={css({
             display: 'flex',
             flexDirection: 'row',
@@ -25,15 +25,25 @@ const GroupConversationPreview = props => {
                 padding: '0 0.75em'
             })}>
                 <span className={css({
-                    width: '75%'
+                    width: '25%',
                 })}>
-                    <h5>{props.conversation.name}</h5>
-                    <h6 className={css({opacity: '0.5'})}>{props.conversation.modifiedOn}</h6>
+                    <img src={"./images/group.png"}
+                         height="60" width="60" alt=""
+                         className={css({
+                             borderRadius: 50,
+                             border: '1px solid gray'
+                         })}/>
+                </span>
+                <span className={css({
+                    width: '55%'
+                })}>
+                    <h6 className={css({ fontSize: '0.8em'})}>Group Chat</h6>
+                    <h5>{props.conversation.destination_firstname}</h5>
                 </span>
                 <span className={css({
                     width: '25%',
                 })}>
-                <NavLink to={`./conversations/${props.conversation.id}`}
+                <NavLink to={`./group-conversations/${props.conversation.id}`}
                          className={css({
                              color: 'black',
                              textDecoration: 'none',
