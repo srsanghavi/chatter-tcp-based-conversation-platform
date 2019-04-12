@@ -95,4 +95,9 @@ public class ConversationModelTest {
     public void testReceivedTranslatedMessageInConversation(){
         System.out.println(conversationModel.getMessagesForConversation("budhiahimanshu96",898));
     }
+
+    @Test
+    public void testGetGroupConversation(){
+        System.out.println(conversationModel.getGroupConversations(814));
+    }
 }
