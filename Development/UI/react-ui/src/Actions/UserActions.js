@@ -71,6 +71,15 @@ class UserActions {
         })
     }
 
+    onlineUsers(username){
+        api.onlineUsers(username).then(value => {
+            Dispatcher.dispatch({
+                actionType: ActionTypes.ONLINE_USER,
+                payload:value,
+            })
+        })
+    }
+
 }
 
 export default new UserActions();

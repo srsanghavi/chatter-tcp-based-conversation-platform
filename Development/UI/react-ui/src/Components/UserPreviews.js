@@ -33,7 +33,7 @@ const UserPreviews = props => {
                 <span className={css({
                     width: '50%'
                 })}>
-                    <h5>{props.user.first_name + ' ' + props.user.last_name}</h5>
+                    <h5><span className={css({color:"green"})}>{props.user.online?'•':''}</span>{props.user.first_name + ' ' + props.user.last_name}</h5>
                     <h6 className={css({opacity: '0.5'})}>{props.user.username}</h6>
                 </span>
                 <span className={css({

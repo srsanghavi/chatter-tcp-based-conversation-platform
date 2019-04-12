@@ -93,6 +93,7 @@ public class UserModel {
         String sql = "SELECT * FROM users";
         List<Map<String, Object>> r = conn.sqlGet(sql, new ArrayList<>());
         for(Map<String, Object> user: r){
+            user.put("online",Prattle.isOnline((String) user.get("username")));
             user.remove("password");
         }
         return r;

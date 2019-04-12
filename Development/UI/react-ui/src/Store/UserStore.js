@@ -6,9 +6,11 @@ import AuthStore from './AuthStore';
 
 const CHANGE = 'CHANGE';
 const USERS_LIST_CHANGE = "USERS_LIST_CHANGE";
+const ONLINE = "ONLINE";
 
 let _user = {};
 let _users = [];
+let _onlineUsers = [];
 let _newuser;
 
 class UserStore extends EventEmitter {
@@ -32,12 +34,14 @@ class UserStore extends EventEmitter {
             case ActionTypes.UPDATE_USER:
                 this._updateUser(action.payload);
                 break;
+            case ActionTypes.ONLINE_USER:
+                this._setOnlineUsers(action.payload);
+                break;
 
             default:
             break;
         }
     }
-
 
     _updateUser(res){
         if(res){

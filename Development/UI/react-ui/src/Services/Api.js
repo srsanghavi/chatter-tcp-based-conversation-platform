@@ -153,5 +153,10 @@ export default class Api {
         return this.promise();
     }
 
+    getOnlineUsers(username){
+        let msg = this.messageType.makeApiMessage(username,"onlineUsers/::GET::{}");
+        gateway.sendTcp(msg);
+        return this.promise();
+    }
 }
 

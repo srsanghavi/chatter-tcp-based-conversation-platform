@@ -207,4 +207,13 @@ public abstract class Prattle {
     }
     return ret;
   }
+
+  public static boolean isOnline(String username){
+		for(ClientRunnable a: active){
+			if(a.getName().compareTo(username)==0){
+				return true;
+			}
+		}
+	  return false;
+  }
 }
