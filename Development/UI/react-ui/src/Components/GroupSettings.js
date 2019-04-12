@@ -20,10 +20,12 @@ class GroupSettings extends Component {
             groupName: '',
             users: [],
             groups: [],
+            groupMembers: [],
             showGroupForm: false,
             showUsers: false,
             showGroups: false,
-            search: ''
+            showGroupMembers: false,
+            search: '',
         };
 
         this.changeGroupName = this.changeGroupName.bind(this);
@@ -31,8 +33,10 @@ class GroupSettings extends Component {
         this.onGroupNameSubmit = this.onGroupNameSubmit.bind(this);
         this.getGroupsOnClick = this.getGroupsOnClick.bind(this);
         this.getUsersOnClick = this.getUsersOnClick.bind(this);
+        this.getGroupMembersOnClick = this.getGroupMembersOnClick.bind(this)
         this._onGroupsChanged = this._onGroupsChanged.bind(this);
         this._onUsersChanged = this._onUsersChanged.bind(this);
+        this._onGroupChanged = this._onGroupChanged.bind(this);
         this.addUserToGroup = this.addUserToGroup.bind(this);
         this.addGroupToGroup = this.addGroupToGroup.bind(this);
         this.toggleSearch = this.toggleSearch.bind(this);
@@ -43,11 +47,13 @@ class GroupSettings extends Component {
     componentWillMount() {
         UserStore.addUserListChangeListener(this._onUsersChanged);
         GroupStore.addGroupsChangeListener(this._onGroupsChanged);
+        GroupStore.addGroupMembersChangeListener(this._onGroupChanged);
     }
 
     componentWillUnmount(){
         UserStore.removeUserListChangeListener(this._onUsersChanged);
         GroupStore.removeGroupsListener(this._onGroupsChanged);
+        GroupStore.removeGroupMembersChangeListener(this._onGroupChanged);
     }
 
     
@@ -61,6 +67,12 @@ class GroupSettings extends Component {
     _onGroupsChanged(){
         this.setState({
             groups: GroupStore._getAllGroups()
+        })
+    }
+
+    _onGroupChanged(){
+        this.setState({
+            groupMembers: GroupStore._getGroupMembers()
         })
     }
 
@@ -81,8 +93,16 @@ class GroupSettings extends Component {
         this.setState({
             showGroups: !this.state.showGroups,
         })
-
     }
+
+    getGroupMembersOnClick() {
+        if(!this.state.showGroupMembers) {
+            GroupActions.getGroupUsers(AuthStore._getAuthUser().username, this.state.groupId);
+        }
+        this.setState({
+            showGroupMembers: !this.state.showGroupMembers,
+        })
+    };
 
     changeGroupName() {
         this.setState({
@@ -142,6 +162,57 @@ class GroupSettings extends Component {
             )
         }
     }
+
+    renderGroupMembers() {
+        return(
+            <div className={css({
+                display: 'flex',
+                flexDirection: 'row',
+                overflowY: 'scroll',
+                borderBottom: '1px solid gray',
+            })}>
+                {this.state.groupMembers.map(user => {
+                    return(
+                        <div className={css({
+                                 display: 'flex',
+                                 flexDirection: 'column',
+                                 textAlign: 'center',
+                                 border: '1px solid black',
+                                 borderRadius: '5px',
+                                 boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.75)',
+                                 padding: '1em',
+                                 margin: '1em',
+                                 width: '250px',
+                                 minHeight: '300px'
+                             })}>
+                            <div className={css({
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                height: '200px',
+                                width: '200px',
+                                backgroundColor: '#FCF7FC',
+                                marginBottom: '0.5em'
+                            })}>
+                                <img src={user.profilePicture}
+                                     width='100%' height='100%'
+                                     className={css({
+                                         border: '1px solid gray',
+                                         borderRadius: '5px',
+                                     })}/>
+                            </div>
+                            <h4 style={{fontFamily:"Titillium Web", fontWeight:'bold'}}>
+                                {user.first_name} {user.last_name}</h4>
+                            <h6 style={{fontFamily:"Titillium Web", fontWeight:'bold'}}>
+                                {user.username}</h6>
+                            <h6 style={{fontFamily:"Titillium Web", fontWeight:'bold'}}>
+                                {user.preferredLanguage}</h6>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
+
 
     renderUsers() {
 
@@ -265,6 +336,8 @@ class GroupSettings extends Component {
         )
     }
 
+
+
     renderGroupForm() {
         return(
             <div className={css({
@@ -342,6 +415,32 @@ class GroupSettings extends Component {
                     </NavLink>
                 </div>
                 {this.state.showGroupForm ? this.renderGroupForm() : null}
+                <div className={css({
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    borderBottom: '1px solid gray',
+                    padding: '1em',
+                    fontFamily: 'Titillium Web',
+                    fontWeight: 'bold',
+                    textAlign: 'left'
+                })}>
+                    <p>View Group Members</p>
+                    <NavLink to={window.location}
+                             className={css({
+                                 color: 'black',
+                                 textDecoration: 'none',
+                                 '&:hover': {
+                                     color: '#45AAEB'
+                                 }
+                             })}>
+                        {this.state.showGroupMembers ?
+                            <i className="fa fa-angle-up fa-2x"
+                               onClick={this.getGroupMembersOnClick}></i> :
+                            <i className="fa fa-angle-down fa-2x"
+                               onClick={this.getGroupMembersOnClick}></i>}
+                    </NavLink>
+                </div>
+                {this.state.showGroupMembers ? this.renderGroupMembers() : null}
                 <div className={css({
                     display: 'flex',
                     justifyContent: 'space-between',

@@ -176,7 +176,7 @@ class Register extends Component {
                     padding: '1em 1em 2em 1em',
                 })}>
                     <h1 id="logo" className={css({
-                        color: '342E37',
+                        color: '#342E37',
                         fontSize: '3em',
                         fontFamily: 'Pacifico',
                         paddingTop: '0.5em',
