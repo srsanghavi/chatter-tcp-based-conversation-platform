@@ -23,6 +23,17 @@ public class UserController {
     private UserModel userModel = ModelFactory.getUserModel();
 
     /**
+     * Initialize usermodel
+     * @param um UserModel
+     */
+    public UserController(UserModel um){
+        userModel = um;
+    }
+
+    public UserController(){
+    }
+
+    /**
      * Get users list.
      *
      * @return the list
