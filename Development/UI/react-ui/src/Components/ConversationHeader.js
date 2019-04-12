@@ -3,6 +3,7 @@ import {css} from 'emotion';
 import {NavLink} from 'react-router-dom';
 
 const ConversationHeader = props => {
+
     return (
         <div className={css({
             display: 'flex',

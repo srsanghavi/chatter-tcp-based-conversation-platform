@@ -226,13 +226,16 @@ class Conversation extends Component {
     }
 
     render() {
+
         let groupId;
+
         const group = GroupStore._getGroups().filter(group => {
             return group.conversation_id == this.state.id
         });
         if(group.length > 0) {
-            groupId = group.Groups_id;
+            groupId = group[0].Groups_id;
         }
+
 
         if(this.state.threads.length > this.state.previousThreadCount) {
             window.scrollTo(0, document.body.scrollHeight);
@@ -240,6 +243,7 @@ class Conversation extends Component {
         if (!(localStorage.getItem('loggedIn') === 'true')) {
             return <Redirect to='/login'/>
         } else {
+
             return (
                 <div ref={(div) => {
                     this.messageList = div;
