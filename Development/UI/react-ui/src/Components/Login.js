@@ -65,8 +65,26 @@ class Login extends Component {
 
     render() {
         return(
-            <div>
-                <div className="signin container-fluid">
+            <div className={css({
+                display: 'flex',
+                flexDirection: 'column',
+            })}>
+                <div className={css({
+                    backgroundColor: '#342E37',
+                    boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.75)',
+                    textAlign: 'center',
+                })}>
+                <h1 className={css({
+                    color: 'white',
+                    fontSize: '3em',
+                    fontFamily: 'Pacifico',
+                    paddingTop: '0.5em'
+                })}>Chatter</h1>
+                </div>
+                <div className={css({
+                    backgroundColor: '#342E37',
+                    padding: '1em 1em 2em 1em'
+                })}>
                     <div className="card form-signin form-group">
                         <input
                             className="form-control"
@@ -97,14 +115,6 @@ class Login extends Component {
                         <p style={{color: '#6F4F67'}}> Register here</p>
                     </NavLink>
                 </h3>
-                <h1 className={css({
-                    fontFamily: 'Pacifico',
-                    fontSize: '3em',
-                    color: '#342E37',
-                    textAlign: 'center',
-                    padding: '0.5em',
-                    transform: 'rotate(-10deg)'
-                })}>Chatter</h1>
                 <Mediauploader/>
             </div>
         )

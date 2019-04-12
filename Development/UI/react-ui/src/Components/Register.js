@@ -74,15 +74,37 @@ class Register extends Component {
     }
 
     handleSubmit() {
-        UserStore._setNewUser(this.state);
-        UserActions.signin('john','123');
+        if(this.state.username === '' || this.state.password === '' || this.state.email === '') {
+            alert('All fields are required')
+        } else {
+            UserStore._setNewUser(this.state);
+            UserActions.signin('john', '123');
+        }
     }
 
 
     render() {
         return(
-            <div>
-                <div className="signin container-fluid">
+            <div className={css({
+                display: 'flex',
+                flexDirection: 'column',
+            })}>
+                <div className={css({
+                    backgroundColor: '#342E37',
+                    textAlign: 'center',
+                    padding: '1em 1em 2em 1em'
+                })}>
+                    <h1 className={css({
+                        color: 'white',
+                        fontSize: '3em',
+                        fontFamily: 'Pacifico',
+                        paddingTop: '0.5em'
+                    })}>Chatter</h1>
+                </div>
+                <div className={css({
+                    backgroundColor: '#342E37',
+                    padding: '1em'
+                })}>
                     <div className="card form-signin form-group">
                         <input
                             className="form-control"

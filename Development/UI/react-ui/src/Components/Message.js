@@ -14,7 +14,7 @@ class Message extends Component {
         if(props.message.mediaURL && 
             props.message.mediaURL!=="" 
             && isVideo(props.message.mediaURL)){
-                videoPrev = (<video width="200"  controls > 
+                videoPrev = (<video width="100%"  controls >
                                 <source src={props.message.mediaURL} type="video/mp4" />
                                 <source src="movie.ogg" type="video/ogg" />
                             Your browser does not support the video tag.
@@ -49,9 +49,12 @@ class Message extends Component {
                     color: 'black',
                     textDecoration: 'none'
                 })}>
-                 <h6>{props.message.first_name} {props.message.last_name}</h6>
+                    <h6 className={css({
+                        fontSize: '0.9em',
+                        borderBottom: '1px solid gray'
+                    })}>{props.message.first_name}</h6>
                  <img src={props.message.mediaURL && props.message.mediaURL!=="" 
-                                        && isImage(props.message.mediaURL)?props.message.mediaURL:""} width="200" />
+                                        && isImage(props.message.mediaURL)?props.message.mediaURL:""} width="100%" />
                             
                             {videoPrev}
                  <Emojify style={{height: 32, width: 32}} onClick={e => alert(e.target.title)}>
