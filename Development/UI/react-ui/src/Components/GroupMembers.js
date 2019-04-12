@@ -51,7 +51,7 @@ class GroupMembers extends Component {
                 <div className={css({
                     paddingBottom: '5em'
                 })}>
-                    <GroupHeader/>
+                    <GroupHeader fromConversation={false}/>
                 </div>
                 {this.state.groupMembers.length > 0 ?
                 this.state.groupMembers.map(member=> {

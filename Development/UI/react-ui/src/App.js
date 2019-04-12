@@ -14,6 +14,7 @@ import Thread from './Components/Thread';
 import GroupMembers from "./Components/GroupMembers";
 import Profile from "./Components/Profile";
 import AuthStore from "./Store/AuthStore";
+import GroupSettings from "./Components/GroupSettings";
 
 
 const PATH = window.location.pathname.split('/');
@@ -45,7 +46,7 @@ class App extends Component {
                              component={Conversation}>
                       </Route>
                       <Route exact path="/group-settings/:id"
-                             component={Conversation}>
+                             component={GroupSettings}>
                       </Route>
                       <Route exact path="/conversations/user-conversation/:id/thread/:threadId"
                              component={Thread}>

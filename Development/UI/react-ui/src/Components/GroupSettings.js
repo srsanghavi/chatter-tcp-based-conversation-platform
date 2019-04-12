@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {css} from 'emotion';
 import { NavLink } from 'react-router-dom';
+import GroupHeader from "./GroupHeader";
 
 
 
@@ -8,7 +9,7 @@ class GroupSettings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            id: this.props.match.params.id
         };
 
     }
@@ -16,7 +17,19 @@ class GroupSettings extends Component {
 
     render() {
         return(
-            <div>
+            <div className={css({
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '100%',
+                overflowX: 'hidden',
+            })}>
+                <div className={css({
+                    paddingBottom: '5em'
+                })}>
+                    <GroupHeader fromConversation={true}
+                                 id={this.state.id}/>
+                </div>
                 <div className={css({
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -35,27 +48,7 @@ class GroupSettings extends Component {
                                      color: '#45AAEB'
                                  }
                              })}>
-                        <i className="fa fa-angle-down fa-2x"
-                           onClick={this.createGroupOnClick}></i>
-                    </NavLink>
-                </div>
-                {this.renderGroupForm()}
-                <div className={css({
-                    borderBottom: '1px solid gray',
-                    padding: '1em',
-                    fontFamily: 'Titillium Web',
-                    fontWeight: 'bold',
-                    textAlign: 'left'
-                })}>
-                    <NavLink to={'/settings'}
-                             className={css({
-                                 color: 'black',
-                                 textDecoration: 'none',
-                                 '&:hover': {
-                                     color: '#45AAEB'
-                                 }
-                             })}>
-                        <p onClick={this.logOut}>Log Out</p>
+                        <i className="fa fa-angle-down fa-2x"></i>
                     </NavLink>
                 </div>
                 <div className={css({
@@ -73,7 +66,25 @@ class GroupSettings extends Component {
                                      color: '#45AAEB'
                                  }
                              })}>
-                        <p onClick={this.deleteUser}>Delete Account</p>
+                        <p>Log Out</p>
+                    </NavLink>
+                </div>
+                <div className={css({
+                    borderBottom: '1px solid gray',
+                    padding: '1em',
+                    fontFamily: 'Titillium Web',
+                    fontWeight: 'bold',
+                    textAlign: 'left'
+                })}>
+                    <NavLink to={'/settings'}
+                             className={css({
+                                 color: 'black',
+                                 textDecoration: 'none',
+                                 '&:hover': {
+                                     color: '#45AAEB'
+                                 }
+                             })}>
+                        <p>Delete Account</p>
                     </NavLink>
                 </div>
             </div>

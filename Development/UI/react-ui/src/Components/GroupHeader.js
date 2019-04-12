@@ -25,6 +25,17 @@ const GroupHeader = props => {
                 width: '100%',
                 padding: '0 0.75em'
             })}>
+                {props.fromConversation ?
+                <NavLink to={`/conversations/group-conversation/${props.id}`}
+                         className={css({
+                             color: 'white',
+                             textDecoration: 'none',
+                             '&:hover': {
+                                 color: '#45AAEB'
+                             }
+                         })}>
+                    <i className="fa fa-arrow-left fa-2x"></i>
+                </NavLink> :
                 <NavLink to={`/search-groups`}
                          className={css({
                              color: 'white',
@@ -34,7 +45,7 @@ const GroupHeader = props => {
                              }
                          })}>
                     <i className="fa fa-arrow-left fa-2x"></i>
-                </NavLink>
+                </NavLink>}
             </div>
         </div>
     );

@@ -249,7 +249,8 @@ class Conversation extends Component {
                         <ConversationHeader search={this.state.searchBar}
                                             searchClick={this.toggleSearch}
                                             inThread={false}
-                                            />
+                                            isGroup={this.state.isGroup}
+                                            conversationId={this.state.id}/>
                     </div>
                     {this.renderSearchBar()}
                     {this.renderThreads()}
