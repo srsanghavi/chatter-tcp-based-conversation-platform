@@ -206,6 +206,26 @@ public class GroupController {
       else return error500(json);
     }
 
+    public Map<String,Object> addAdmin(Map<String,Object> json){
+        if(!json.containsKey(GROUP_ID) ||
+        !json.containsKey("user_id")){
+            json.put(RESULT_CODE,400);
+            json.put(RESULT,ERROR);
+            json.put(ERROR_MESSAGE,MISSING_PARAMETER);
+            return json;
+        }
+        int groupID = Math.toIntExact(Math.round((double) json.get(GROUP_ID)));
+        int userID = Math.toIntExact(Math.round((double) json.get("user_id")));
+
+        int r = groupModel.addGroupAdmin(groupID,userID);
+        if(r > 0){
+            json.put(RESULT_CODE,201);
+            json.put(RESULT,"OK");
+            return json;
+        }
+        else return error500(json);
+    }
+
     /**
      * Add group to group map.
      *
