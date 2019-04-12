@@ -164,7 +164,6 @@ public class ConversationModel {
      * @param conversationId the conversation id
      * @return the list of messages inside a conversation
      */
-    //TODO Add translaltion
     public List<Map<String,Object>> getMessagesForConversation(String username, int conversationId){
         String query = "CALL message_in_conversation(?);";
         List<String> args = new ArrayList<>();

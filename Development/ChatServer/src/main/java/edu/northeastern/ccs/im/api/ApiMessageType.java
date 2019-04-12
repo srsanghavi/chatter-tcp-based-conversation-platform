@@ -49,7 +49,7 @@ public final class ApiMessageType {
     /**
      * The Add admin group.
      */
-    static final String ADD_ADMIN_GROUP =        "";
+    static final String ADD_ADMIN_GROUP =        "addAdminGroup/";
     /**
      * The Modify group name.
      */

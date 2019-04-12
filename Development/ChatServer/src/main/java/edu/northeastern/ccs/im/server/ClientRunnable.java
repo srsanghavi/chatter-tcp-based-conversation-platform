@@ -85,6 +85,27 @@ public class ClientRunnable implements Runnable {
 	}
 
 	/**
+	 * Create a new thread with which we will communicate with this single client.
+	 *
+	 * @param network NetworkConnection used by this new client
+	 */
+	public ClientRunnable(NetworkConnection network, ClientTimer t, boolean term, boolean init, String n) {
+		// Create the class we will use to send and receive communication
+		connection = network;
+		// Mark that we are not initialized
+		initialized = init;
+		// Mark that we are not terminated
+		terminate = term;
+		// Create the queue of messages to be sent
+		waitingList = new ConcurrentLinkedQueue<>();
+		// Mark that the client is active now and start the timer until we
+		// terminate for inactivity.
+		timer = t;
+
+		name = n;
+	}
+
+	/**
 	 * Check to see for an initialization attempt and process the message sent.
 	 */
 	private void checkForInitialization() {
@@ -104,13 +125,6 @@ public class ClientRunnable implements Runnable {
 				initialized = true;
 				String response = Route.getResponseGet(this.name, ApiMessageType.GET_USER_BY_USERNAME,"{username:'"+userName+"'}");
 
-//                UserModel u = ModelFactory.getUserModel();
-//                List<Map<String, Object>> r = u.getUsers();
-//                List<String> usernames = new ArrayList<>();
-//                for(Map<String,Object> user:r){
-//                    usernames.add(user.get("username").toString());
-//                }
-//                Message usernamesMessage = Message.makeBroadcastMessage("ADMIN","Available Users are " + usernames.toString());
 				Message message = Message.makeBroadcastMessage(msg.getName(),response);
 				this.sendMessage(message);
 			} else {

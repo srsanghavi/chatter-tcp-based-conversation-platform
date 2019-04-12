@@ -211,4 +211,12 @@ public class GroupModel {
         int r = conn.sqlcreate(query, args);
         return r<=0?-1:r;
     }
+
+    public int addGroupAdmin(int groupID, int userID){
+      String query = "UPDATE groups_has_users SET is_admin = 1 where Groups_id = ? and Users_id = ?;";
+      List<String> args = new ArrayList<>();
+      Collections.addAll(args,Integer.toString(groupID),Integer.toString(userID));
+      int r = conn.sqlcreate(query, args);
+      return r<=0?-1:r;
+    }
 }
