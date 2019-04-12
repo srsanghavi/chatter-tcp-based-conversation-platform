@@ -13,21 +13,26 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<!-- Build an executable JAR -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>edu.northeastern.ccs.im.server.Prattle</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <executions>
+        <execution>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+            <configuration>
+                <shadedArtifactAttached>true</shadedArtifactAttached>
+                <transformers>
+                    <transformer implementation=
+                      "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <mainClass>edu.northeastern.ccs.im.server.Prattle</mainClass>
+                </transformer>
+            </transformers>
+        </configuration>
+        </execution>
+    </executions>
+</plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -118,6 +123,14 @@
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-translate</artifactId>
 			<version>1.66.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

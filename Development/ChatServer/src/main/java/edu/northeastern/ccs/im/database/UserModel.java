@@ -331,8 +331,8 @@ public class UserModel {
      * @return online users 
      */
     public List<Map<String,Object>> getOnlineUsers(){
-        List<Map<String,Object>> result = null;
-        Map<String,Object> users = null;
+        List<Map<String,Object>> result = new ArrayList<>();
+        Map<String,Object> users = new HashMap<>();
         users.put("onlineUsers",Prattle.getActiveUsers());
         result.add(users);
         return result;

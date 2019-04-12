@@ -54,11 +54,10 @@ class UserActions {
 
     registerUser(sender, username, password, firstName, lastName, email) {
         api.registerUser(sender, username, password, firstName, lastName, email).then(value => {
-            if(value.result === "OK") {
-                alert("Successfully Registered. Return to Login Screen")
-            } else {
-                alert("Could not register")
-            }
+            Dispatcher.dispatch({
+                actionType: ActionTypes.USER_CREATED,
+                payload: value,
+            })
         })
     }
 

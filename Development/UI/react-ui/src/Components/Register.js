@@ -4,10 +4,7 @@ import UserStore from '../Store/UserStore';
 import UserActions from '../Actions/UserActions';
 import {NavLink} from 'react-router-dom';
 import {css} from 'emotion';
-import AuthStore from "../Store/AuthStore";
-
-const REGISTER_HANDLER_USERNAME = 'registerHandler';
-const REGISTER_HANDLER_PASSWORD = 'registerHandler';
+import AuthStore from '../Store/AuthStore';
 
 class Register extends Component {
     constructor(props) {
@@ -17,7 +14,8 @@ class Register extends Component {
             password: '',
             firstName: '',
             lastName: '',
-            email: ''
+            email: '',
+            status:'',
         };
 
         this.onUsernameChange = this.onUsernameChange.bind(this);
@@ -28,35 +26,37 @@ class Register extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.api = new Api();
         this._onChange = this._onChange.bind(this);
-        this.missingFieldsCheck = this.missingFieldsCheck.bind(this)
+
+
+        this._onAuthorized = this._onAuthorized.bind(this);
     }
 
     componentWillMount(){
-        AuthStore.addChangeListener(this._onChange);
+        UserStore.addChangeListener(this._onChange);
+        AuthStore.addChangeListener(this._onAuthorized);
     }
 
     componentWillUnmount(){
-        AuthStore.removeChangeListener(this._onChange);
+        UserStore.removeChangeListener(this._onChange);
+        AuthStore.removeChangeListener(this._onAuthorized);
+    }
+
+    _onAuthorized(){
+        this.setState({
+            status: "Authorized! Signing up",
+        });
+        UserActions.registerUser(AuthStore._getAuthUser().username,this.state.username,this.state.password,this.state.firstName,this.state.lastName,this.state.email);
     }
 
 
 
-    _onChange() {
-        const user = AuthStore._getAuthUser();
-        if(user===null){
-            alert("Error");
-        }else{
-            UserActions.registerUser(AuthStore._getAuthUser().username, this.state.username, this.state.password,
-            this.state.firstName, this.state.lastName, this.state.email);
-            AuthStore._clearAuthUser();
-        }
+    _onChange(){
         this.setState({
-            username: '',
-            password: '',
-            firstName: '',
-            lastName: '',
-            email: ''
+            status:"Account created",
         })
+        // setTimeout(function(){}, 3000);
+        // UserActions.getUserByUsername('srsanghavi');
+
     }
 
     onUsernameChange(event) {
@@ -98,11 +98,7 @@ class Register extends Component {
     }
 
     handleSubmit() {
-        if(this.missingFieldsCheck()) {
-            alert('All fields are required')
-        } else {
-            UserActions.signin(REGISTER_HANDLER_USERNAME, REGISTER_HANDLER_PASSWORD);
-        }
+        UserActions.signin("srsanghavi","12345678");
     }
 
 
@@ -149,12 +145,14 @@ class Register extends Component {
                             value={this.state.email}
                             onChange={this.onEmailChange}
                             required/>
-                            <NavLink to={window.location}>
-                                <button className="btn btn-block btn-outline-primary"
-                                        onClick={this.handleSubmit}>
-                                    Register
-                                </button>
-                            </NavLink>
+
+                        {/* <NavLink to={'./processing'}> */}
+                            <button className="btn btn-block btn-outline-primary"
+                                    onClick={this.handleSubmit}>
+                                Register
+                            </button>
+                            {this.state.status}
+                        {/* </NavLink> */}
                     </div>
                 </div>
                 <h3 className="signin-text">Already Registered?

@@ -21,6 +21,9 @@ public class RouteTest {
     @Test
     public void testCreateUserDuplicateUser(){
         System.out.println(Route.getResponsePost("srsanghavi","registerUser/","{first_name:test;last_name:user;username:testUser;email:test@prattle.com;password:'12345678'}"));
+        System.out.println(Route.getResponsePost("srsanghavi","registerUser/","{last_name:user;username:testUser;email:test@prattle.com;password:'12345678'}"));
+        System.out.println(Route.getResponsePost("srsanghavi","registerUser/","{first_name:test;username:testUser;email:test@prattle.com;password:'12345678'}"));
+        System.out.println(Route.getResponsePost("srsanghavi","registerUser/","{first_name:test;last_name:user;email:test@prattle.com;password:'12345678'}"));
     }
 
     @Test
