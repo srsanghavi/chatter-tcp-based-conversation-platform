@@ -5,6 +5,15 @@
 - Shashwat Sanghavi (sanghavis)
 - John Goodacre (jgoodacre)
 
+## Links
+
+- Server: http://ec2-18-234-159-228.compute-1.amazonaws.com:4545/
+- React Client: http://ec2-18-234-159-228.compute-1.amazonaws.com:3000/login
+
+- System Demo: https://youtu.be/0ip6OYNTJ4Y
+- System Setup: https://youtu.be/MmCKiArkris
+- Final Presentation: https://youtu.be/BppZbMyqy-w
+
 ## Description
 
 We've built a ChatServer that can communicate and coordinate message communication with different clients.
