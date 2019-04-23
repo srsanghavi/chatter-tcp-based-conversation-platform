@@ -68,7 +68,7 @@ public class RouteTest {
 
     @Test
   public void testGetThreadInConversation(){
-      ChatLogger.info(Route.getResponseGet("hsbudhia","getThreadsInConversation/","{conversation_id:555}"));
+      ChatLogger.info(Route.getResponseGet("rashy","getThreadsInConversation/","{conversation_id:555}"));
     }
 
     @Test
